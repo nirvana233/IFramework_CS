@@ -10,7 +10,7 @@ using System;
 
 namespace IFramework.Net
 {
-    public class CycQueue<T> : IDisposable
+    class CycQueue<T> : IDisposable
     {
         private T[] array = null;
         private int capacity = 4;

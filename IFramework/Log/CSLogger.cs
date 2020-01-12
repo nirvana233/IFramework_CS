@@ -2,7 +2,7 @@
 
 namespace IFramework
 {
-    public class CSLogger : ILoger
+     class CSLogger : ILoger
     {
         public void Log(LogType logType, object message, params object[] paras)
         {

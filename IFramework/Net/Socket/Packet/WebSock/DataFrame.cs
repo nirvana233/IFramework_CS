@@ -11,7 +11,7 @@ using System.Text;
 
 namespace IFramework.Net
 {
-    public class DataFrame
+     class DataFrame
     {
         /// <summary>
         /// 如果为true则该消息为消息尾部,如果false为零则还有后续数据包;
@@ -207,7 +207,7 @@ namespace IFramework.Net
             return true;
         }
     }
-    public class WebsocketFrame : DataFrame
+     class WebsocketFrame : DataFrame
     {
         private Encoding encoding = Encoding.UTF8;
         private const string acceptMask = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";//固定字符串
@@ -347,7 +347,7 @@ namespace IFramework.Net
     }
 
     [Flags]
-    public enum OpCodeType : byte
+     enum OpCodeType : byte
     {
         Attach = 0x0,
         Text = 0x1,

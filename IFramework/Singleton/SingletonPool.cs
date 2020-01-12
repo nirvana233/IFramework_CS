@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 namespace IFramework
 {
+    [OnFrameworkInitClass]
     public static class SingletonPool
     {
         static Dictionary<Type, ISingleton> pairs;
         static SingletonPool()
         {
             pairs = new Dictionary<Type, ISingleton>();
+            Framework.onDispose += Dispose;
         }
         public static void Set<T>(T singleton) where T : ISingleton
         {

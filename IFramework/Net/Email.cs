@@ -13,7 +13,6 @@ using System.Text;
 
 namespace IFramework.Net
 {
-#if !UNITY_5_3_OR_NEWER
     public class Email
     {
         private SmtpException error;
@@ -186,10 +185,4 @@ namespace IFramework.Net
             email.Send(title, content, strto, strcc,attachPath);
         }
     }
-
-
-
-#endif
-
-
 }

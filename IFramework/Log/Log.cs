@@ -1,4 +1,5 @@
-﻿namespace IFramework
+﻿using System;
+namespace IFramework
 {
     public class Log
     {
@@ -10,6 +11,7 @@
         public static bool WarnningEnable = true;
         public static bool ErrEnable = true;
         public static ILoger loger { get; set; }
+
         static Log()
         {
             loger = new CSLogger();

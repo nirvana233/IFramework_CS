@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace IFramework.Net
 {
-    public class PacketQueue
+     class PacketQueue
     {
         private CycQueue<byte> bucket = null;
         private Packet pkg = null;

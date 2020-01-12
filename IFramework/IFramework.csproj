@@ -53,13 +53,17 @@
     <Compile Include="Moudles\Coroutine\CoroutineInstruction.cs" />
     <Compile Include="Moudles\Coroutine\CoroutineMoudle.cs" />
     <Compile Include="Moudles\Coroutine\WaitForTimeSpan.cs" />
+    <Compile Include="Moudles\FrameworkMoudle.cs" />
     <Compile Include="Moudles\IFrameworkMoudle.cs" />
+    <Compile Include="Moudles\IFrameworkMoudles.cs" />
+    <Compile Include="Moudles\Loom\LoomMoudle.cs" />
     <Compile Include="Moudles\Message\IMeaasgeMoudle.cs" />
     <Compile Include="Moudles\Message\IObserver.cs" />
     <Compile Include="Moudles\Message\IPublisher.cs" />
     <Compile Include="Moudles\Message\MessageMoudle.cs" />
     <Compile Include="Moudles\NodeAction\ActionNode.cs" />
     <Compile Include="Moudles\NodeAction\ActionNodePool.cs" />
+    <Compile Include="Moudles\Timer\TimerMoudle.cs" />
     <Compile Include="Utility\Astar\AStarMap2X.cs" />
     <Compile Include="Utility\Astar\AStarMap3X.cs" />
     <Compile Include="Utility\Astar\AStarNode2X.cs" />
@@ -165,7 +169,6 @@
     <Compile Include="Pool\PoolObjectPool.cs" />
     <Compile Include="Pool\ObjectPool.cs" />
     <Compile Include="Utility\ProcessUtil.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extension\StringExtension.cs" />
     <Compile Include="Extension\StringExtension_Regex.cs" />
     <Compile Include="Extension\TypeExtension.cs" />
@@ -177,6 +180,8 @@
     <Compile Include="Moudles\Fsm\TransitionCondition.cs" />
     <Compile Include="Utility\Verifier.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

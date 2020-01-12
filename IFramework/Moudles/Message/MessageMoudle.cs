@@ -72,12 +72,7 @@ namespace IFramework.Moudles.Message
 
         private LockParam para = new LockParam();
         private Dictionary<Type, Observe> observes;
-        protected MessageMoudle(string chunck) : base(chunck)
-        {
-            observes = new Dictionary<Type, Observe>();
-            delayPublish = new Queue<Action>();
-            tmpDelayPublish = new Queue<Action>();
-        }
+
         protected override void OnDispose()
         {
             delayPublish.Clear();
@@ -89,7 +84,30 @@ namespace IFramework.Moudles.Message
             observes.Clear();
             observes = null;
         }
+        private Queue<Action> delayPublish;
+        private Queue<Action> tmpDelayPublish;
 
+
+
+        protected override void Awake()
+        {
+            observes = new Dictionary<Type, Observe>();
+            delayPublish = new Queue<Action>();
+            tmpDelayPublish = new Queue<Action>();
+        }
+
+        protected override void OnUpdate()
+        {
+            if (delayPublish.Count == 0) return;
+            while (delayPublish.Count > 0)
+                tmpDelayPublish.Enqueue(delayPublish.Dequeue());
+            while (tmpDelayPublish.Count > 0)
+            {
+                var action = tmpDelayPublish.Dequeue();
+                if (action != null)
+                    action();
+            }
+        }
         public bool Subscribe(Type type, IObserver observer)
         {
             using (new LockWait(ref para))
@@ -159,23 +177,6 @@ namespace IFramework.Moudles.Message
             delayPublish.Enqueue(() => {
                 Publish(publisher, type, code, args, param);
             });
-        }
-
-
-        private Queue<Action> delayPublish;
-        private Queue<Action> tmpDelayPublish;
-
-        public override void Update()
-        {
-            if (delayPublish.Count == 0) return;
-            while (delayPublish.Count > 0)
-                tmpDelayPublish.Enqueue(delayPublish.Dequeue());
-            while (tmpDelayPublish.Count > 0)
-            {
-                var action = tmpDelayPublish.Dequeue();
-                if (action != null)
-                    action();
-            }
         }
     }
 

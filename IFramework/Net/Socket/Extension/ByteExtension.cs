@@ -10,7 +10,7 @@ using System;
 
 namespace IFramework.Net
 {
-	public static class ByteExtension
+	 static class ByteExtension
 	{
         public static UInt16 ToUInt16(this byte[] array, int offset = 0)
         {

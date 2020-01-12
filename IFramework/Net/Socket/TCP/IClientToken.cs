@@ -8,7 +8,7 @@
 *********************************************************************************/
 namespace IFramework.Net
 {
-    public interface IClientToken
+     interface IClientToken
     {
         //bool IsRunning { get; }
         void ConnectAsync(int port, string ip);

@@ -17,8 +17,22 @@ namespace IFramework.Net
         private static byte subFlag = 0xfd;
         public static byte PackFlag { get { return packFlag; } }
         public static byte SubFlag { get { return subFlag; } }
-        public PacketHeader Head { get; set; }
-        public byte[] MsgBuff { get; set; }
+        private PacketHeader Head { get; set; }
+        public ushort Count { get { return Head.PackCount; } }
+        public uint ID { get { return Head.PackID; } }
+        public byte Type { get { return Head.PackType; } }
+
+        public byte[] MsgBuff { get;private set; }
+
+        public Packet() { }
+        public Packet(ushort pkgCount,uint pkgID,byte pkgType,byte[] buffer) {
+
+            Head = new PacketHeader();
+            Head.PackCount = pkgCount;
+            Head.PackID = pkgID;
+            Head.PackType = pkgType;
+            MsgBuff = buffer;
+        }
         public byte[] Pack()
         {
             int plen = MsgBuff.Length;

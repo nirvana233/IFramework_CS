@@ -11,7 +11,7 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
-    public interface ITcpSocket
+     interface ITcpSocket
     {
         Socket Sock { get; }
         bool IsConnected { get; }

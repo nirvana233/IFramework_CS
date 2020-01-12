@@ -10,7 +10,7 @@ using System;
 
 namespace IFramework.Net
 {
-    public class PacketHeader
+     class PacketHeader
     {
         public UInt32 PackID { get; set; }
         public byte PackType { get; set; }

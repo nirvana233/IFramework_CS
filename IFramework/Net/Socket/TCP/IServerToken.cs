@@ -8,7 +8,7 @@
 *********************************************************************************/
 namespace IFramework.Net
 {
-    public interface IServerToken
+     interface IServerToken
     {
         int BufferSize { get; }
         int MaxConCount { get; }

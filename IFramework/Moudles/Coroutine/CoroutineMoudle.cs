@@ -6,10 +6,6 @@ namespace IFramework.Moudles.Coroutine
 {
     public class CoroutineMoudle : FrameworkMoudle
     {
-        protected CoroutineMoudle(string chunck):base(chunck)
-        {
-            pool = new CoroutinePool();
-        }
         class CoroutinePool : IDisposable
         {
             public CoroutinePool() { coroutines = new Queue<Coroutine>(); }
@@ -33,6 +29,8 @@ namespace IFramework.Moudles.Coroutine
                 coroutines.Clear();
             }
         }
+
+      
         private CoroutinePool pool;
         internal Coroutine Get(IEnumerator routine)
         {
@@ -46,10 +44,6 @@ namespace IFramework.Moudles.Coroutine
         {
             pool.Set(routine);
         }
-        protected override void OnDispose()
-        {
-            pool.Dispose();
-        }
 
 
         public Coroutine StartCoroutine(IEnumerator routine)
@@ -59,10 +53,19 @@ namespace IFramework.Moudles.Coroutine
             return coroutine;
         }
         internal event Action update;
-        public override void Update()
+        protected override void OnUpdate()
         {
             if (update != null)
                 update();
+        }
+        protected override void OnDispose()
+        {
+            pool.Dispose();
+        }
+
+        protected override void Awake()
+        {
+            pool = new CoroutinePool();
         }
     }
 

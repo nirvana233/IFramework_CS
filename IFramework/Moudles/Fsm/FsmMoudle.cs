@@ -48,54 +48,50 @@ namespace IFramework.Moudles.Fsm
         public IFsmState EnterState { get; set; }
         public IFsmState CurrentState { get; private set; }
 
-        public bool IsRuning { get; private set; }
-        public bool IsDisposed { get; private set; }
+        public bool IsRuning { get { return enable; } }
 
         private Dictionary<IFsmState, StateInfo> stateInfo;
         private Dictionary<Type, Dictionary<string, IFsmConditionValue>> conditionValues;
 
-        public FsmMoudle(string chunck):base(chunck)
+        protected override void Awake()
         {
-            IsRuning = false;
-            IsDisposed = false;
+            enable = false;
             stateInfo = new Dictionary<IFsmState, StateInfo>();
             conditionValues = new Dictionary<Type, Dictionary<string, IFsmConditionValue>>();
         }
         protected override void OnDispose()
         {
-            IsDisposed = true;
-            IsRuning = false;
             CurrentState = EnterState =ExitState = null;
             stateInfo.Clear();
             conditionValues.Clear();
         }
         public void Start()
         {
-            if (IsDisposed) return;
+            if (disposed) return;
             if (EnterState == null) throw new Exception("EnterState Is Null");
-            IsRuning = true;
+            enable = true;
             EnterState.OnEnter();
             CurrentState = EnterState;
         }
         public void Pause()
         {
-            if (IsDisposed) return;
-            IsRuning = false;
+            if (disposed) return;
+            enable = false;
         }
         public void UnPause()
         {
-            if (IsDisposed) return;
-            IsRuning = true;
+            if (disposed) return;
+            enable = true;
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
-            if (IsDisposed) return;
+            if (disposed) return;
             if (!IsRuning) return;
             CurrentState.Update();
             TryGoNext();
             if (CurrentState == ExitState)
-                IsRuning = false;
+                enable = false;
         }
         private void TryGoNext()
         {
@@ -235,5 +231,6 @@ namespace IFramework.Moudles.Fsm
             return TrySetConditionValue(typeof(string), valName, value);
         }
 
+        
     }
 }

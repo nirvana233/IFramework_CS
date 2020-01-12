@@ -12,7 +12,7 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
-    public class SocketReceive : UdpSocket, IDisposable
+     class SocketReceive : UdpSocket, IDisposable
     {
         private SocketAsyncEventArgs recArgs;
         //private LockParam lockParam = new LockParam();

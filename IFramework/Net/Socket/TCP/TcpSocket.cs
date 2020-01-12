@@ -12,7 +12,7 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
-    public class TcpSocket : ITcpSocket
+     public class TcpSocket : ITcpSocket
     {
         protected Socket sock = null;
         protected bool isConnected = false;

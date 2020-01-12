@@ -12,7 +12,7 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
-	public class NetUtil
+	public static class NetUtil
 	{
         public static IPAddress[] GetLoacalIpv4()
         {

@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace IFramework.Net
 {
-    public class SocketEventArgPool : ObjectPool<SocketAsyncEventArgs>
+     class SocketEventArgPool : ObjectPool<SocketAsyncEventArgs>
     {
         public SocketEventArgPool(int capcity) : base(capcity) { }
         protected override void OnClear(SocketAsyncEventArgs t, IEventArgs arg, params object[] param)

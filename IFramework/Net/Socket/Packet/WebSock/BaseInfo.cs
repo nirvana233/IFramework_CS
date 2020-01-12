@@ -8,7 +8,7 @@
 *********************************************************************************/
 namespace IFramework.Net
 {
-    public class AccessInfo : BaseInfo
+     class AccessInfo : BaseInfo
     {
         /// <summary>
         /// 连接主机
@@ -55,7 +55,7 @@ namespace IFramework.Net
         }
     }
 
-    public class BaseInfo
+     class BaseInfo
     {
         /// <summary>
         /// http连接协议
@@ -80,7 +80,7 @@ namespace IFramework.Net
             Connection = "Upgrade";
         }
     }
-    public class AcceptInfo : BaseInfo
+     class AcceptInfo : BaseInfo
     {
         /// <summary>
         /// 接入访问验证码

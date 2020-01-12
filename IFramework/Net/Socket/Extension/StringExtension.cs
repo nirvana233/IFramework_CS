@@ -12,7 +12,7 @@ using System.Text;
 
 namespace IFramework.Net
 {
-    public static partial class StringExtension
+     static partial class StringExtension
     {
         public static string ToSha1Base64(this string value, Encoding encoding)
         {

@@ -1,6 +1,9 @@
 ﻿using IFramework.Moudles;
 using IFramework.Moudles.Coroutine;
+using IFramework.Moudles.Fsm;
+using IFramework.Moudles.Loom;
 using IFramework.Moudles.Message;
+using IFramework.Moudles.Timer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -45,7 +48,11 @@ namespace IFramework
         public static event Action onDispose;
 
         public static IFrameworkContainer Container { get; set; }
-        private static List<FrameworkMoudle> moudles;
+
+        private static FrameworkMoudles _moudles;
+        public static IFrameworkMoudles moudles { get { return _moudles; } }
+
+
 
         static Framework()
         {
@@ -67,32 +74,26 @@ namespace IFramework
                                 }
                             });
             deltaTime = TimeSpan.Zero;
-            stopwatch2 = new Stopwatch();
-            stopwatch2.Start();
+            _moudles = new FrameworkMoudles();
+            if (onInit != null) onInit();
             _disposed = false;
             haveInit = true;
-
-            moudles = new List<FrameworkMoudle>();
-            if (onInit != null) onInit();
+            stopwatch2 = new Stopwatch();
+            stopwatch2.Start();
         }
         public static void Dispose()
         {
             if (_disposed) return;
             _disposed = true;
             stopwatch2.Stop();
-            stopwatch2 = null;
             if (onDispose != null) onDispose();
-
-            for (int i = 0; i < moudles.Count; i++)
-            {
-                moudles[i].Dispose();
-                moudles[i] = null;
-            }
-            moudles.Clear();
-            moudles = null;
-
             Container.Dispose();
-            SingletonPool.Dispose();
+
+            stopwatch2 = null;
+            _moudles = null;
+            onInit = null;
+            update = null;
+            onDispose = null;
         }
         public static void Update()
         {
@@ -104,8 +105,9 @@ namespace IFramework
         }
 
 
-        public static CoroutineMoudle CoroutineMoudle { get; set; }
-        public static MessageMoudle MessageMoudle { get; set; }
+
+
+
 
         public static void BindFrameworkUpdate(this Action action)
         {
@@ -123,30 +125,96 @@ namespace IFramework
         {
             onDispose -= action;
         }
-        public static void BindFramework(this FrameworkMoudle moude)
+        public static void BindFramework(this FrameworkMoudle moudle)
         {
-            if (!moudles.Contains(moude))
-            {
-                moudles.Add(moude);
-                update += moude.Update;
-                onDispose += moude.Dispose;
-            }
-            else
-            {
-                Log.W(string.Format("Have Bind Moudle : {0}", moude.name));
-            }
+            _moudles.Bind(moudle);
         }
-        public static void UnBindFramework(this FrameworkMoudle moude)
+        public static void UnBindFramework(this FrameworkMoudle moudle)
         {
-            if (!moudles.Contains(moude))
+            _moudles.UnBind(moudle);
+        }
+
+        class FrameworkMoudles : IFrameworkMoudles, IDisposable
+        {
+            public FsmMoudle Fsm { get; set; }
+            public TimerMoudle Timer { get; set; }
+            public LoomMoudle Loom { get; set; }
+            public CoroutineMoudle Coroutine { get; set; }
+            public MessageMoudle Message { get; set; }
+
+            private Dictionary<Type, List<FrameworkMoudle>> moudles;
+            private List<FrameworkMoudle> mou;
+            public FrameworkMoudles()
             {
-                Log.W(string.Format("Have Not Bind Moudle : {0}", moude.name));
+                mou = new List<FrameworkMoudle>();
+                moudles = new Dictionary<Type, List<FrameworkMoudle>>();
+                Framework.update += Update;
+                Framework.onDispose += Dispose;
             }
-            else
+            public void Dispose()
             {
-                moudles.Remove(moude);
-                update -= moude.Update;
-                onDispose -= moude.Dispose;
+                Framework.update -= Update;
+                Framework.onDispose -= Dispose;
+                for (int i = 0; i < mou.Count; i++)
+                {
+                    var m = mou[i];
+                    m.Dispose();
+                }
+                mou.Clear();
+                moudles.Clear();
+                mou = null;
+                moudles = null;
+            }
+            protected void Update()
+            {
+                mou.ForEach((m) => { m.Update(); });
+            }
+            public void Bind(FrameworkMoudle moudle)
+            {
+                Type type = moudle.GetType();
+                if (!moudles.ContainsKey(type))
+                    moudles.Add(type, new List<FrameworkMoudle>());
+                var list = moudles[type];
+                var tmpMoudle = list.Find((m) => { return moudle.name == m.name; });
+                if (tmpMoudle == null)
+                {
+                    list.Add(moudle);
+                    mou.Add(moudle);
+                }
+                else
+                    Log.E(string.Format("Have Bind Moudle | Type {0}  Name {1}", type, moudle.name));
+            }
+            public void UnBind(FrameworkMoudle moudle)
+            {
+                Type type = moudle.GetType();
+                if (moudles.ContainsKey(type))
+                    Log.E(string.Format("Have Not Bind Moudle | Type {0}  Name {1}", type, moudle.name));
+                else
+                {
+                    var list = moudles[type];
+                    var tmpMoudle = list.Find((m) => { return moudle == m; });
+                    if (tmpMoudle == null)
+                        Log.E(string.Format("Have Not Bind Moudle | Type {0}  Name {1}", type, moudle.name));
+                    else
+                    {
+                        mou.Remove(moudle);
+                        list.Remove(moudle);
+                    }
+                }
+            }
+            public FrameworkMoudle this[Type type, string name]
+            {
+                get { return FindMoudle(type, name); }
+            }
+            public FrameworkMoudle FindMoudle(Type type, string name)
+            {
+                if (!moudles.ContainsKey(type))
+                    return default(FrameworkMoudle);
+                return moudles[type].Find((m) => { return m.name == name; });
+            }
+            public T FindMoudle<T>(string name) where T : FrameworkMoudle
+            {
+                return FindMoudle(typeof(T), name) as T;
             }
         }
     }

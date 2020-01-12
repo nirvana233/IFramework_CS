@@ -12,7 +12,7 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
-    public class SockArgBuffers
+     class SockArgBuffers
     {
         private int totalSize = 0;
         private int curOffset = 0;

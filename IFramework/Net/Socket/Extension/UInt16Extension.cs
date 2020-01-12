@@ -10,7 +10,7 @@ using System;
 
 namespace IFramework.Net
 {
-	public static class UInt16Extension
+	 static class UInt16Extension
 	{
         public static byte[] ToBytes(this UInt16 value)
         {

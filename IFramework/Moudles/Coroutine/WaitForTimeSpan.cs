@@ -57,4 +57,23 @@ namespace IFramework.Moudles.Coroutine
         {
         }
     }
+
+    public class WaitForConditionsMet : CoroutineInstruction
+    {
+        public WaitForConditionsMet(Func<bool> condition)
+        {
+            Condition = condition;
+        }
+
+        private Func<bool> Condition { get; }
+
+        protected override IEnumerator InnerLogoc()
+        {
+            while (!Condition.Invoke())
+            {
+                yield return false;
+            }
+            yield return true;
+        }
+    }
 }

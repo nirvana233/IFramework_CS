@@ -15,7 +15,7 @@ using System.Threading;
 
 namespace IFramework.Net
 {
-    public enum ClientChannelType
+    enum ClientChannelType
     {
         Async = 0,
         AsyncWait = 1,

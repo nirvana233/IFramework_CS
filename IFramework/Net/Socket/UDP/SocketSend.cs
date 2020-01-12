@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace IFramework.Net
 {
-    public class SocketSend : UdpSocket, IDisposable
+     class SocketSend : UdpSocket, IDisposable
     {
         private SocketEventArgPool sendArgs;
         private SockArgBuffers sendBuff;
