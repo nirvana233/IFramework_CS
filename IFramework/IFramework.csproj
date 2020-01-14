@@ -22,11 +22,12 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>
     </DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <NoWarn>CA1009;</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +36,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -57,7 +61,7 @@
     <Compile Include="Moudles\IFrameworkMoudle.cs" />
     <Compile Include="Moudles\IFrameworkMoudles.cs" />
     <Compile Include="Moudles\Loom\LoomMoudle.cs" />
-    <Compile Include="Moudles\Message\IMeaasgeMoudle.cs" />
+    <Compile Include="Moudles\Message\IMessageMoudle.cs" />
     <Compile Include="Moudles\Message\IObserver.cs" />
     <Compile Include="Moudles\Message\IPublisher.cs" />
     <Compile Include="Moudles\Message\MessageMoudle.cs" />

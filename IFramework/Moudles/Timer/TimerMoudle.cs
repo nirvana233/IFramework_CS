@@ -5,12 +5,21 @@ using System.Text;
 
 namespace IFramework.Moudles.Timer
 {
-    public class TimerMoudle : FrameworkMoudle
+    public enum TaskState
     {
-        public enum TaskState
-        {
-            Running, Stoped, Paused, None
-        }
+        Running, Stoped, Paused, None
+    }
+    public interface ITimerMoudle
+    {
+        string RunTask(double space, Action action, Action onCompeleted, double delay, int count);
+        void StopTask(string id);
+        void PauseTask(string id);
+        void UnPauseTask(string id);
+        TaskState GetTaskState(string id);
+    }
+    public class TimerMoudle : FrameworkMoudle, ITimerMoudle
+    {
+
         private class FrameTask
         {
             public string id;
@@ -67,7 +76,6 @@ namespace IFramework.Moudles.Timer
                 LastTime = CurTime;
             }
         }
-
         private class Timer:IDisposable
         {
             private class TimeTaskPool : ObjectPool<FrameTask>
@@ -178,11 +186,6 @@ namespace IFramework.Moudles.Timer
 
         private Timer timer;
 
-        protected override void OnUpdate()
-        {
-            timer.Tick();
-
-        }
         public string RunTask(double space, Action action, Action onCompeleted, double delay, int count)
         {
             return timer.RunTimerTask(space, action, onCompeleted, delay, count);
@@ -205,12 +208,16 @@ namespace IFramework.Moudles.Timer
             return timer.GetTaskState(id);
         }
 
+        protected override void OnUpdate()
+        {
+            timer.Tick();
+
+        }
         protected override void OnDispose()
         {
             timer.Dispose();
             timer = null;
         }
-
         protected override void Awake()
         {
             timer = new Timer();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace IFramework.Moudles.Message
 {
-    public class MessageMoudle : FrameworkMoudle, IMeaasgeMoudle
+    public class MessageMoudle : FrameworkMoudle, IMessageMoudle
     {
         private interface IObserve : IDisposable
         {
@@ -73,6 +73,11 @@ namespace IFramework.Moudles.Message
         private LockParam para = new LockParam();
         private Dictionary<Type, Observe> observes;
 
+        private Queue<Action> delayPublish;
+        private Queue<Action> tmpDelayPublish;
+
+
+
         protected override void OnDispose()
         {
             delayPublish.Clear();
@@ -84,18 +89,12 @@ namespace IFramework.Moudles.Message
             observes.Clear();
             observes = null;
         }
-        private Queue<Action> delayPublish;
-        private Queue<Action> tmpDelayPublish;
-
-
-
         protected override void Awake()
         {
             observes = new Dictionary<Type, Observe>();
             delayPublish = new Queue<Action>();
             tmpDelayPublish = new Queue<Action>();
         }
-
         protected override void OnUpdate()
         {
             if (delayPublish.Count == 0) return;
@@ -108,6 +107,7 @@ namespace IFramework.Moudles.Message
                     action();
             }
         }
+
         public bool Subscribe(Type type, IObserver observer)
         {
             using (new LockWait(ref para))

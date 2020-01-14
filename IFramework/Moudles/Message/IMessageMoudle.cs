@@ -2,7 +2,7 @@
 
 namespace IFramework.Moudles.Message
 {
-    public interface IMeaasgeMoudle
+    public interface IMessageMoudle
     {
         bool Subscribe(Type type, IObserver observer);
         bool Subscribe<T>(IObserver observer) where T : IPublisher;

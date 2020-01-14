@@ -3,11 +3,42 @@ using System.Collections.Generic;
 
 namespace IFramework.Moudles.Fsm
 {
-    public class FsmMoudle : FrameworkMoudle
+    public interface IFsmMoudle
+    {
+        IFsmState ExitState { get; set; }
+        IFsmState EnterState { get; set; }
+        IFsmState CurrentState { get; }
+        bool IsRuning { get; }
+        void Start();
+        void Pause();
+        void UnPause();
+        void SubscribeState(IFsmState state);
+        void UnSubscribeState(IFsmState state);
+
+
+        FsmTransition CreateTransition(IFsmState head, IFsmState trail);
+        void DestoryTransition(IFsmState head, IFsmState trail);
+
+
+        FsmConditionValue<T> CreateConditionValue<T>(string name, T value);
+        void DestoryConditionValue<T>(string name, T value);
+
+        TransitionCondition<T> CreateCondition<T>(string conditionValName, T CompareValue, ConditionCompareType CompareType);
+        TransitionCondition<T> CreateCondition<T>(FsmConditionValue<T> value, T CompareValue, ConditionCompareType CompareType);
+
+
+
+        bool TrySetConditionValue(Type valType, string name, object value);
+        bool SetBool(string valName, bool value);
+        bool SetInt(string valName, int value);
+        bool SetFloat(string valName, float value);
+        bool SetString(string valName, string value);
+    }
+    public class FsmMoudle : FrameworkMoudle, IFsmMoudle
     {
         private class StateInfo
         {
-            private IFsmState state { get;  }
+            private IFsmState state { get; }
             private List<FsmTransition> transitions { get; }
             public StateInfo(IFsmState state)
             {
@@ -61,7 +92,7 @@ namespace IFramework.Moudles.Fsm
         }
         protected override void OnDispose()
         {
-            CurrentState = EnterState =ExitState = null;
+            CurrentState = EnterState = ExitState = null;
             stateInfo.Clear();
             conditionValues.Clear();
         }
@@ -86,8 +117,8 @@ namespace IFramework.Moudles.Fsm
 
         protected override void OnUpdate()
         {
-            if (disposed) return;
-            if (!IsRuning) return;
+            //if (disposed) return;
+            //if (!IsRuning) return;
             CurrentState.Update();
             TryGoNext();
             if (CurrentState == ExitState)
@@ -96,7 +127,7 @@ namespace IFramework.Moudles.Fsm
         private void TryGoNext()
         {
             if (CurrentState == null) return;
-            var state= stateInfo[CurrentState].TryGoNext();
+            var state = stateInfo[CurrentState].TryGoNext();
             if (state == null) return;
             CurrentState = state;
         }
@@ -199,7 +230,7 @@ namespace IFramework.Moudles.Fsm
 
 
 
-        public bool TrySetConditionValue(Type valType, string name,object value)
+        public bool TrySetConditionValue(Type valType, string name, object value)
         {
             if (!conditionValues.ContainsKey(valType))
             {
@@ -231,6 +262,6 @@ namespace IFramework.Moudles.Fsm
             return TrySetConditionValue(typeof(string), valName, value);
         }
 
-        
+
     }
 }

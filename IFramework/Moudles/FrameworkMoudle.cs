@@ -5,26 +5,37 @@ namespace IFramework.Moudles
 {
     public abstract class FrameworkMoudle : IFrameworkMoudle
     {
-        public static T CreatInstance<T>(string chunck = "Framework",bool autoBind=true) where T : FrameworkMoudle
+        public static T CreatInstance<T>(string chunck = "Framework",bool bind=true) where T : FrameworkMoudle
         {
-            T t = Activator.CreateInstance(typeof(T),
+            return CreatInstance(typeof(T),chunck,bind) as T;
+        }
+        public static FrameworkMoudle CreatInstance(Type type,string chunck = "Framework", bool bind = true) 
+        {
+            FrameworkMoudle moudle = Activator.CreateInstance(type,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
-                null, null, null) as T;
-            if (t != null)
+                null, null, null) as FrameworkMoudle;
+            if (moudle != null)
             {
-                t._disposed = false;
-                t._name = string.Format("{0}.{1}", chunck, t.GetType().Name);
-                t.Awake();
-                t.enable = true;
-                if (autoBind)
-                    t.BindFramework();
+                moudle._disposed = false;
+                moudle._moudleType = moudle.GetType().Name;
+                moudle._chunck = chunck;
+
+                moudle._name = string.Format("{0}.{1}", moudle._chunck, moudle._moudleType);
+                moudle.Awake();
+                moudle.enable = true;
+                if (bind)
+                    moudle.BindFramework();
             }
-            return t;
+            return moudle;
         }
         private string _name;
         private bool _disposed;
         private bool _enable;
+        private string _chunck;
+        private string _moudleType;
 
+        public string moudeType { get { return _moudleType; } }
+        public string chunck { get { return _chunck; } }
         public string name { get { return _name; } }
         public bool disposed { get { return _disposed; } }
         public bool enable

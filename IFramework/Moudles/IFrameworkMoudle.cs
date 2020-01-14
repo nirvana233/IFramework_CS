@@ -4,6 +4,8 @@ namespace IFramework.Moudles
 {
     internal interface IFrameworkMoudle : IDisposable
     {
+        string moudeType { get; }
+        string chunck { get; }
         string name { get; }
         bool disposed { get; }
         bool enable { get; set; }

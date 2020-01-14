@@ -4,7 +4,11 @@ using System.Collections.Generic;
 
 namespace IFramework.Moudles.Coroutine
 {
-    public class CoroutineMoudle : FrameworkMoudle
+    public interface ICoroutineMoudle
+    {
+        Coroutine StartCoroutine(IEnumerator routine);
+    }
+    public class CoroutineMoudle : FrameworkMoudle, ICoroutineMoudle
     {
         class CoroutinePool : IDisposable
         {

@@ -1,8 +1,8 @@
 ﻿namespace IFramework.Utility
 {
-    public interface IExplainer<T, V>
+    public interface IExplainer<Type1, Type2>
     {
-        V ExplainToV(T t, IEventArgs arg, params object[] param);
-        T ExplainToT(V v, IEventArgs arg, params object[] param);
+        Type2 Explain(Type1 type1, IEventArgs arg, params object[] param);
+        Type1 Explain(Type2 type2, IEventArgs arg, params object[] param);
     }
 }

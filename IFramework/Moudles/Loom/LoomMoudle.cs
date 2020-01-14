@@ -6,7 +6,12 @@ using System.Threading;
 
 namespace IFramework.Moudles.Loom
 {
-    public class LoomMoudle : FrameworkMoudle
+    public interface ILoomMoudle
+    {
+        void RunOnMainThread(Action action, float time = 0.0f);
+        void RunOnSubThread(Action action);
+    }
+    public class LoomMoudle : FrameworkMoudle, ILoomMoudle
     {
         private struct DelayedTask
         {
@@ -49,7 +54,6 @@ namespace IFramework.Moudles.Loom
                 }
             }
         }
-
         public void RunOnSubThread(Action action)
         {
             semaphore.WaitOne();
@@ -91,8 +95,6 @@ namespace IFramework.Moudles.Loom
                 }
             }
         }
-
-
         protected override void OnDispose()
         {
             NoDelayTasks.Clear();
@@ -100,7 +102,6 @@ namespace IFramework.Moudles.Loom
             delayedTasks.Clear();
             semaphore.Close();
         }
-
         protected override void Awake()
         {
             semaphore = new Semaphore(MaxThreadCount, MaxThreadCount);

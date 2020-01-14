@@ -11,6 +11,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+[assembly: AssemblyVersion("0.0.0.1")]
+namespace IFramework { }
 namespace IFramework
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
@@ -18,39 +20,37 @@ namespace IFramework
 
     public static class Framework
     {
-        public const string FrameworkName = "IFramework";
-        public const string Author = "OnClick";
-        public const string Version = "0.0.1";
-        public const string Description = FrameworkName;
-        private static bool haveInit;
-        public static bool HaveInit { get { return haveInit; } }
+        private static bool _haveInit;
         private static bool _disposed;
-        public static bool disposed { get { return _disposed; } }
-        public static TimeSpan deltaTime { get; private set; }
-
-        private static Stopwatch stopwatch2;
-
-        public static TimeSpan timeSinceInit
-        {
-            get
-            {
-                if (stopwatch2 == null) return TimeSpan.Zero;
-                stopwatch2.Stop();
-                var span = stopwatch2.Elapsed;
-                stopwatch2.Start();
-                return span;
-            }
-        }
-        private static Stopwatch stopwatch = new Stopwatch();
+        private static FrameworkMoudles _moudles;
+        private static Stopwatch sw_init;
+        private static Stopwatch sw_delta;
 
         public static event Action update;
         public static event Action onInit;
         public static event Action onDispose;
-
+        public const string FrameworkName = "IFramework";
+        public const string Author = "OnClick";
+        public const string Version = "0.0.1";
+        public const string Description = FrameworkName;
+        public static bool haveInit { get { return _haveInit; } }
+        public static bool disposed { get { return _disposed; } }
         public static IFrameworkContainer Container { get; set; }
-
-        private static FrameworkMoudles _moudles;
         public static IFrameworkMoudles moudles { get { return _moudles; } }
+        public static TimeSpan deltaTime { get; private set; }
+        public static TimeSpan timeSinceInit
+        {
+            get
+            {
+                if (sw_init == null) return TimeSpan.Zero;
+                sw_init.Stop();
+                var span = sw_init.Elapsed;
+                sw_init.Start();
+                return span;
+            }
+        }
+
+
 
 
 
@@ -61,7 +61,7 @@ namespace IFramework
 
         public static void Init()
         {
-            if (haveInit) return;
+            if (_haveInit) return;
             AppDomain.CurrentDomain.GetAssemblies()
                             .SelectMany(item => item.GetTypes())
                             .Where(item => item.IsDefined(typeof(OnFrameworkInitClassAttribute), false))
@@ -77,31 +77,35 @@ namespace IFramework
             _moudles = new FrameworkMoudles();
             if (onInit != null) onInit();
             _disposed = false;
-            haveInit = true;
-            stopwatch2 = new Stopwatch();
-            stopwatch2.Start();
+            _haveInit = true;
+            sw_delta = new Stopwatch();
+            sw_init = new Stopwatch();
+            sw_init.Start();
         }
         public static void Dispose()
         {
             if (_disposed) return;
             _disposed = true;
-            stopwatch2.Stop();
             if (onDispose != null) onDispose();
+            sw_init.Stop();
+            sw_delta.Stop();
             Container.Dispose();
 
-            stopwatch2 = null;
+            sw_delta = null;
+            sw_init = null;
             _moudles = null;
             onInit = null;
             update = null;
             onDispose = null;
         }
+
         public static void Update()
         {
             if (_disposed) return;
-            stopwatch.Restart();
+            sw_delta.Restart();
             if (update != null) update();
-            stopwatch.Stop();
-            deltaTime = stopwatch.Elapsed;
+            sw_delta.Stop();
+            deltaTime = sw_delta.Elapsed;
         }
 
 
@@ -129,9 +133,9 @@ namespace IFramework
         {
             _moudles.Bind(moudle);
         }
-        public static void UnBindFramework(this FrameworkMoudle moudle)
+        public static void UnBindFramework(this FrameworkMoudle moudle,bool dispose=true)
         {
-            _moudles.UnBind(moudle);
+            _moudles.UnBind(moudle,dispose);
         }
 
         class FrameworkMoudles : IFrameworkMoudles, IDisposable
@@ -141,6 +145,43 @@ namespace IFramework
             public LoomMoudle Loom { get; set; }
             public CoroutineMoudle Coroutine { get; set; }
             public MessageMoudle Message { get; set; }
+            public event Action<Type, string> onMoudleNotExist;
+
+            public FrameworkMoudle CreateMoudle(Type type, string chunck = "Framework", bool bind = true)
+            {
+                return FrameworkMoudle.CreatInstance(type, chunck, bind);
+            }
+            public T CreateMoudle<T>(string chunck = "Framework", bool bind = true) where T : FrameworkMoudle
+            {
+                return FrameworkMoudle.CreatInstance<T>(chunck, bind);
+            }
+
+
+            public FrameworkMoudle this[Type type, string name]
+            {
+                get { return FindMoudle(type, name); }
+            }
+            public FrameworkMoudle FindMoudle(Type type, string name)
+            {
+                FrameworkMoudle mou = default(FrameworkMoudle);
+                if (moudles.ContainsKey(type))
+                    mou = moudles[type].Find((m) => { return m.name == name; });
+                if (mou == null)
+                    if (onMoudleNotExist != null)
+                    {
+                        onMoudleNotExist(type, name);
+                        if (moudles.ContainsKey(type))
+                            mou = moudles[type].Find((m) => { return m.name == name; });
+                    }
+                return mou;
+            }
+            public T FindMoudle<T>(string name) where T : FrameworkMoudle
+            {
+                return FindMoudle(typeof(T), name) as T;
+            }
+
+
+
 
             private Dictionary<Type, List<FrameworkMoudle>> moudles;
             private List<FrameworkMoudle> mou;
@@ -184,7 +225,7 @@ namespace IFramework
                 else
                     Log.E(string.Format("Have Bind Moudle | Type {0}  Name {1}", type, moudle.name));
             }
-            public void UnBind(FrameworkMoudle moudle)
+            public void UnBind(FrameworkMoudle moudle,bool dispose=true)
             {
                 Type type = moudle.GetType();
                 if (moudles.ContainsKey(type))
@@ -199,22 +240,10 @@ namespace IFramework
                     {
                         mou.Remove(moudle);
                         list.Remove(moudle);
+                        if (dispose)
+                            moudle.Dispose();
                     }
                 }
-            }
-            public FrameworkMoudle this[Type type, string name]
-            {
-                get { return FindMoudle(type, name); }
-            }
-            public FrameworkMoudle FindMoudle(Type type, string name)
-            {
-                if (!moudles.ContainsKey(type))
-                    return default(FrameworkMoudle);
-                return moudles[type].Find((m) => { return m.name == name; });
-            }
-            public T FindMoudle<T>(string name) where T : FrameworkMoudle
-            {
-                return FindMoudle(typeof(T), name) as T;
             }
         }
     }
