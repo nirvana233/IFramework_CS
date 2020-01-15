@@ -58,7 +58,9 @@
     <Compile Include="Moudles\Coroutine\CoroutineMoudle.cs" />
     <Compile Include="Moudles\Coroutine\WaitForTimeSpan.cs" />
     <Compile Include="Moudles\FrameworkMoudle.cs" />
+    <Compile Include="Moudles\FrameworkMoudleContainer.cs" />
     <Compile Include="Moudles\IFrameworkMoudle.cs" />
+    <Compile Include="Moudles\IFrameworkMoudleContainer.cs" />
     <Compile Include="Moudles\IFrameworkMoudles.cs" />
     <Compile Include="Moudles\Loom\LoomMoudle.cs" />
     <Compile Include="Moudles\Message\IMessageMoudle.cs" />

@@ -18,6 +18,20 @@ namespace IFramework
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class OnFrameworkInitClassAttribute : Attribute { }
 
+    public class FrameworkMoudles : FrameworkMoudleContainer, IFrameworkMoudles
+    {
+        public FsmMoudle Fsm { get; set; }
+        public TimerMoudle Timer { get; set; }
+        public LoomMoudle Loom { get; set; }
+        public CoroutineMoudle Coroutine { get; set; }
+        public MessageMoudle Message { get; set; }
+        internal FrameworkMoudles() : base("Framework")
+        {
+
+        }
+
+    }
+
     public static class Framework
     {
         private static bool _haveInit;
@@ -36,7 +50,7 @@ namespace IFramework
         public static bool haveInit { get { return _haveInit; } }
         public static bool disposed { get { return _disposed; } }
         public static IFrameworkContainer Container { get; set; }
-        public static IFrameworkMoudles moudles { get { return _moudles; } }
+        public static FrameworkMoudles moudles { get { return _moudles; } }
         public static TimeSpan deltaTime { get; private set; }
         public static TimeSpan timeSinceInit
         {
@@ -48,15 +62,6 @@ namespace IFramework
                 sw_init.Start();
                 return span;
             }
-        }
-
-
-
-
-
-        static Framework()
-        {
-            Container = new FrameworkContainer();
         }
 
         public static void Init()
@@ -74,6 +79,7 @@ namespace IFramework
                                 }
                             });
             deltaTime = TimeSpan.Zero;
+            Container = new FrameworkContainer();
             _moudles = new FrameworkMoudles();
             if (onInit != null) onInit();
             _disposed = false;
@@ -91,6 +97,7 @@ namespace IFramework
             sw_delta.Stop();
             Container.Dispose();
 
+            Container = null;
             sw_delta = null;
             sw_init = null;
             _moudles = null;
@@ -129,122 +136,15 @@ namespace IFramework
         {
             onDispose -= action;
         }
+
+
         public static void BindFramework(this FrameworkMoudle moudle)
         {
-            _moudles.Bind(moudle);
+            moudle.Bind(moudles);
         }
         public static void UnBindFramework(this FrameworkMoudle moudle,bool dispose=true)
         {
-            _moudles.UnBind(moudle,dispose);
-        }
-
-        class FrameworkMoudles : IFrameworkMoudles, IDisposable
-        {
-            public FsmMoudle Fsm { get; set; }
-            public TimerMoudle Timer { get; set; }
-            public LoomMoudle Loom { get; set; }
-            public CoroutineMoudle Coroutine { get; set; }
-            public MessageMoudle Message { get; set; }
-            public event Action<Type, string> onMoudleNotExist;
-
-            public FrameworkMoudle CreateMoudle(Type type, string chunck = "Framework", bool bind = true)
-            {
-                return FrameworkMoudle.CreatInstance(type, chunck, bind);
-            }
-            public T CreateMoudle<T>(string chunck = "Framework", bool bind = true) where T : FrameworkMoudle
-            {
-                return FrameworkMoudle.CreatInstance<T>(chunck, bind);
-            }
-
-
-            public FrameworkMoudle this[Type type, string name]
-            {
-                get { return FindMoudle(type, name); }
-            }
-            public FrameworkMoudle FindMoudle(Type type, string name)
-            {
-                FrameworkMoudle mou = default(FrameworkMoudle);
-                if (moudles.ContainsKey(type))
-                    mou = moudles[type].Find((m) => { return m.name == name; });
-                if (mou == null)
-                    if (onMoudleNotExist != null)
-                    {
-                        onMoudleNotExist(type, name);
-                        if (moudles.ContainsKey(type))
-                            mou = moudles[type].Find((m) => { return m.name == name; });
-                    }
-                return mou;
-            }
-            public T FindMoudle<T>(string name) where T : FrameworkMoudle
-            {
-                return FindMoudle(typeof(T), name) as T;
-            }
-
-
-
-
-            private Dictionary<Type, List<FrameworkMoudle>> moudles;
-            private List<FrameworkMoudle> mou;
-            public FrameworkMoudles()
-            {
-                mou = new List<FrameworkMoudle>();
-                moudles = new Dictionary<Type, List<FrameworkMoudle>>();
-                Framework.update += Update;
-                Framework.onDispose += Dispose;
-            }
-            public void Dispose()
-            {
-                Framework.update -= Update;
-                Framework.onDispose -= Dispose;
-                for (int i = 0; i < mou.Count; i++)
-                {
-                    var m = mou[i];
-                    m.Dispose();
-                }
-                mou.Clear();
-                moudles.Clear();
-                mou = null;
-                moudles = null;
-            }
-            protected void Update()
-            {
-                mou.ForEach((m) => { m.Update(); });
-            }
-            public void Bind(FrameworkMoudle moudle)
-            {
-                Type type = moudle.GetType();
-                if (!moudles.ContainsKey(type))
-                    moudles.Add(type, new List<FrameworkMoudle>());
-                var list = moudles[type];
-                var tmpMoudle = list.Find((m) => { return moudle.name == m.name; });
-                if (tmpMoudle == null)
-                {
-                    list.Add(moudle);
-                    mou.Add(moudle);
-                }
-                else
-                    Log.E(string.Format("Have Bind Moudle | Type {0}  Name {1}", type, moudle.name));
-            }
-            public void UnBind(FrameworkMoudle moudle,bool dispose=true)
-            {
-                Type type = moudle.GetType();
-                if (moudles.ContainsKey(type))
-                    Log.E(string.Format("Have Not Bind Moudle | Type {0}  Name {1}", type, moudle.name));
-                else
-                {
-                    var list = moudles[type];
-                    var tmpMoudle = list.Find((m) => { return moudle == m; });
-                    if (tmpMoudle == null)
-                        Log.E(string.Format("Have Not Bind Moudle | Type {0}  Name {1}", type, moudle.name));
-                    else
-                    {
-                        mou.Remove(moudle);
-                        list.Remove(moudle);
-                        if (dispose)
-                            moudle.Dispose();
-                    }
-                }
-            }
+            moudle.UnBind(dispose);
         }
     }
 }
