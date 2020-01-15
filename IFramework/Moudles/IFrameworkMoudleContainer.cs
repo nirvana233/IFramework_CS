@@ -2,11 +2,13 @@
 
 namespace IFramework.Moudles
 {
-    internal interface IFrameworkMoudleContaner
+    internal interface IFrameworkMoudleContaner:IDisposable
     {
         string chunck { get; }
+        bool binded { get; }
         event Action<Type, string> onMoudleNotExist;
 
+        void Update();
         FrameworkMoudle this[Type type, string name] { get; }
         FrameworkMoudle CreateMoudle(Type type);
         T CreateMoudle<T>() where T : FrameworkMoudle;

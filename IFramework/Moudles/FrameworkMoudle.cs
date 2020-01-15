@@ -5,7 +5,7 @@ namespace IFramework.Moudles
 {
     public abstract class FrameworkMoudle : IFrameworkMoudle
     {
-        public static FrameworkMoudle CreatInstance(FrameworkMoudleContainer container, Type type, string chunck = "Framework")
+        public static FrameworkMoudle CreatInstance(Type type, string chunck)
         {
             FrameworkMoudle moudle = Activator.CreateInstance(type,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
@@ -18,9 +18,6 @@ namespace IFramework.Moudles
                 moudle._chunck = chunck;
                 moudle._moudleType = moudle.GetType().Name;
                 moudle._name = string.Format("{0}.{1}", moudle._chunck, moudle._moudleType);
-
-                if (container != null)
-                    moudle.Bind(container);
                 moudle.Awake();
                 moudle.enable = true;
             }
@@ -29,23 +26,7 @@ namespace IFramework.Moudles
 
             return moudle;
         }
-        public static FrameworkMoudle CreatInstance(FrameworkMoudleContainer container, Type type)
-        {
-            return CreatInstance(container, type);
-        }
-        public static FrameworkMoudle CreatInstance(Type type, string chunck = "Framework")
-        {
-            return CreatInstance(null, type, chunck);
-        }
-        public static T CreatInstance<T>(FrameworkMoudleContainer container) where T : FrameworkMoudle
-        {
-            return CreatInstance(container, typeof(T)) as T;
-        }
-        public static T CreatInstance<T>(FrameworkMoudleContainer container, string chunck = "Framework") where T : FrameworkMoudle
-        {
-            return CreatInstance(container, typeof(T), chunck) as T;
-        }
-        public static T CreatInstance<T>(string chunck = "Framework") where T : FrameworkMoudle
+        public static T CreatInstance<T>(string chunck ) where T : FrameworkMoudle
         {
             return CreatInstance(typeof(T), chunck) as T;
         }
@@ -65,12 +46,15 @@ namespace IFramework.Moudles
 
             container.AddMoudle(this);
         }
-        public void UnBind(bool dispose)
+        public void UnBind(bool dispose=true)
         {
-            if (this._container != null)
+            if (!binded) return;
+            if (binded && this._container != null)
+            {
                 this._container.RemoveBindMoudle(this);
-            this._binded = false;
-            this._container = null;
+                this._binded = false;
+                this._container = null;
+            }
             if (dispose)
                 Dispose();
         }
@@ -110,9 +94,10 @@ namespace IFramework.Moudles
         public void Dispose()
         {
             enable = false;
+            OnDispose();
+            UnBind(false);
             _disposed = true;
             _name = string.Empty;
-            OnDispose();
         }
         public void Update()
         {

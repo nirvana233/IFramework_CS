@@ -20,7 +20,7 @@ namespace IFramework.Net
         private bool _isDisposed = false;
         public OnReceieve onReceive { get; set; }
         public OnSendCallBack onSendCallback { get; set; }
-        public OnDisConnect onDisconnect { get; set; }
+        //public OnDisConnect onDisconnect { get; set; }
         public OnReceivedString onRecieveString { get; set; }
         private Encoding encoding = Encoding.UTF8;
         private int recBufferSize = 4096;

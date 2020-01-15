@@ -25,7 +25,7 @@ namespace IFramework
         public LoomMoudle Loom { get; set; }
         public CoroutineMoudle Coroutine { get; set; }
         public MessageMoudle Message { get; set; }
-        internal FrameworkMoudles() : base("Framework")
+        internal FrameworkMoudles() : base("Framework",true)
         {
 
         }
@@ -67,6 +67,9 @@ namespace IFramework
         public static void Init()
         {
             if (_haveInit) return;
+            Container = new FrameworkContainer();
+            _moudles = new FrameworkMoudles();
+
             AppDomain.CurrentDomain.GetAssemblies()
                             .SelectMany(item => item.GetTypes())
                             .Where(item => item.IsDefined(typeof(OnFrameworkInitClassAttribute), false))
@@ -78,10 +81,9 @@ namespace IFramework
                                     RuntimeHelpers.RunClassConstructor(type.TypeHandle);
                                 }
                             });
-            deltaTime = TimeSpan.Zero;
-            Container = new FrameworkContainer();
-            _moudles = new FrameworkMoudles();
             if (onInit != null) onInit();
+
+            deltaTime = TimeSpan.Zero;
             _disposed = false;
             _haveInit = true;
             sw_delta = new Stopwatch();
