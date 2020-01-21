@@ -17,15 +17,15 @@ namespace IFramework.Moudles
         public event Action<Type, string> onMoudleNotExist;
 
 
-        public FrameworkMoudle CreateMoudle(Type type)
+        public FrameworkMoudle CreateMoudle(Type type,string name="")
         {
-            var mou= FrameworkMoudle.CreatInstance(type, chunck);
+            var mou= FrameworkMoudle.CreatInstance(type, chunck,name);
             mou.Bind(this);
             return mou;
         }
-        public T CreateMoudle<T>() where T : FrameworkMoudle
+        public T CreateMoudle<T>(string name="") where T : FrameworkMoudle
         {
-            return CreateMoudle(typeof(T)) as T;
+            return CreateMoudle(typeof(T),name) as T;
         }
 
         public FrameworkMoudle this[Type type, string name]

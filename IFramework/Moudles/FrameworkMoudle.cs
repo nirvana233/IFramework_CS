@@ -5,7 +5,7 @@ namespace IFramework.Moudles
 {
     public abstract class FrameworkMoudle : IFrameworkMoudle
     {
-        public static FrameworkMoudle CreatInstance(Type type, string chunck)
+        public static FrameworkMoudle CreatInstance(Type type, string chunck,string name="")
         {
             FrameworkMoudle moudle = Activator.CreateInstance(type,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
@@ -17,7 +17,11 @@ namespace IFramework.Moudles
                 moudle._disposed = false;
                 moudle._chunck = chunck;
                 moudle._moudleType = moudle.GetType().Name;
-                moudle._name = string.Format("{0}.{1}", moudle._chunck, moudle._moudleType);
+                if (string.IsNullOrEmpty(name))
+                    moudle._name = string.Format("{0}.{1}", moudle._chunck, moudle._moudleType);
+                else
+                    moudle._name = name;
+
                 moudle.Awake();
                 moudle.enable = true;
             }
@@ -26,9 +30,9 @@ namespace IFramework.Moudles
 
             return moudle;
         }
-        public static T CreatInstance<T>(string chunck ) where T : FrameworkMoudle
+        public static T CreatInstance<T>(string chunck ,string name="") where T : FrameworkMoudle
         {
-            return CreatInstance(typeof(T), chunck) as T;
+            return CreatInstance(typeof(T), chunck,name) as T;
         }
 
 
@@ -41,7 +45,7 @@ namespace IFramework.Moudles
             }
             this._binded = true;
             this._chunck = container.chunck;
-            this._name = string.Format("{0}.{1}", this._chunck, this._moudleType);
+            //this._name = string.Format("{0}.{1}", this._chunck, this._moudleType);
             this._container = container;
 
             container.AddMoudle(this);
@@ -69,7 +73,7 @@ namespace IFramework.Moudles
 
         public string moudeType { get { return _moudleType; } }
         public string chunck { get { return _chunck; } }
-        public string name { get { return _name; } }
+        public string name { get { return _name; } set { _name = value; } }
         public bool binded { get { return _binded; } }
         public bool disposed { get { return _disposed; } }
         public bool enable
