@@ -13,10 +13,7 @@ namespace IFramework.Moudles.Message
         bool Publish(Type type, int code, IEventArgs args, params object[] param);
         bool Publish(IPublisher publisher, Type type, int code, IEventArgs args, params object[] param);
 
-        void DelayPublish<T>(int code, IEventArgs args, params object[] param) where T : IPublisher;
-        void DelayPublish<T>(T t, int code, IEventArgs args, params object[] param) where T : IPublisher;
-        void DelayPublish(Type type, int code, IEventArgs args, params object[] param);
-        void DelayPublish(IPublisher publisher, Type type, int code, IEventArgs args, params object[] param);
+       
     }
 
 }

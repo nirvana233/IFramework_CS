@@ -1,11 +1,7 @@
-E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csproj.CoreCompileInputs.cache
 C:\Users\28093\Desktop\IFramwork_CS\IFramework.dll
 C:\Users\28093\Desktop\IFramwork_CS\IFramework.pdb
 C:\Users\28093\Desktop\IFramwork_CS\IFramework.dll.CodeAnalysisLog.xml
 C:\Users\28093\Desktop\IFramwork_CS\IFramework.dll.lastcodeanalysissucceeded
-E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.dll
-E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.pdb
-E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csproj.CopyComplete
 C:\Users\28093\Desktop\IF_Git - 副本\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll
 C:\Users\28093\Desktop\IF_Git - 副本\Assets\IFramework\0.1Core\0.1Plugins\IFramework.pdb
 C:\Users\28093\Desktop\IF_Git - 副本\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.CodeAnalysisLog.xml
@@ -18,3 +14,8 @@ E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll
 E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.pdb
 E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.CodeAnalysisLog.xml
 E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.lastcodeanalysissucceeded
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csproj.CoreCompileInputs.cache
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csproj.CopyComplete
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.dll
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.pdb
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csprojAssemblyReference.cache

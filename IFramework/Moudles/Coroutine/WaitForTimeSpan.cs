@@ -58,9 +58,9 @@ namespace IFramework.Moudles.Coroutine
         }
     }
 
-    public class WaitForConditionsMet : CoroutineInstruction
+    public class WaitUtil : CoroutineInstruction
     {
-        public WaitForConditionsMet(Func<bool> condition)
+        public WaitUtil(Func<bool> condition)
         {
             Condition = condition;
         }
@@ -74,6 +74,48 @@ namespace IFramework.Moudles.Coroutine
                 yield return false;
             }
             yield return true;
+        }
+    }
+    public class WaitWhile : CoroutineInstruction
+    {
+        public WaitWhile(Func<bool> condition)
+        {
+            Condition = condition;
+        }
+
+        private Func<bool> Condition { get; }
+
+        protected override IEnumerator InnerLogoc()
+        {
+            while (Condition.Invoke())
+            {
+                yield return false;
+            }
+            yield return true;
+        }
+    }
+    public class WaitForFrames : CoroutineInstruction
+    {
+        public WaitForFrames(int count)
+        {
+            curCount = 0;
+            Count = count;
+        }
+        private int curCount;
+        public int Count { get; }
+        protected override IEnumerator InnerLogoc()
+        {
+            while (curCount++<Count)
+            {
+                yield return false;
+            }
+            yield return true;
+        }
+    }
+    public class WaitForFrame : WaitForFrames
+    {
+        public WaitForFrame() : base(1)
+        {
         }
     }
 }

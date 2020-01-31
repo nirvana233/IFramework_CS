@@ -75,9 +75,22 @@ namespace IFramework.Moudles.Fsm
                 return null;
             }
         }
+        protected override bool needUpdate { get { return true; } }
+
         public IFsmState ExitState { get; set; }
         public IFsmState EnterState { get; set; }
-        public IFsmState CurrentState { get; private set; }
+        public event Action<IFsmState> onStateChange;
+        private IFsmState _CurrentState;
+        public IFsmState CurrentState { get { return _CurrentState; }
+           private set {
+                if (value!= _CurrentState)
+                {
+                    _CurrentState = value;
+                    if (onStateChange != null)
+                        onStateChange(value);
+                }
+            }
+        }
 
         public bool IsRuning { get { return enable; } }
 

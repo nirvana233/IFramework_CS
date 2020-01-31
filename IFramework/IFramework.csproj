@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\FormSever\FormSever\Properties\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\IFrameworkDemo\FormSever\FormSever\Plugins\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Moudles\APP\AppMoudle.cs" />
     <Compile Include="Moudles\Coroutine\Coroutine.cs" />
     <Compile Include="Moudles\Coroutine\CoroutineInstruction.cs" />
     <Compile Include="Moudles\Coroutine\CoroutineMoudle.cs" />
@@ -69,7 +70,10 @@
     <Compile Include="Moudles\Message\MessageMoudle.cs" />
     <Compile Include="Moudles\NodeAction\ActionNode.cs" />
     <Compile Include="Moudles\NodeAction\ActionNodePool.cs" />
+    <Compile Include="Moudles\Pool\PoolMoudle.cs" />
+    <Compile Include="Moudles\Threads\ThreadMoudle.cs" />
     <Compile Include="Moudles\Timer\TimerMoudle.cs" />
+    <Compile Include="Test\IComponent.cs" />
     <Compile Include="Utility\Astar\AStarMap2X.cs" />
     <Compile Include="Utility\Astar\AStarMap3X.cs" />
     <Compile Include="Utility\Astar\AStarNode2X.cs" />

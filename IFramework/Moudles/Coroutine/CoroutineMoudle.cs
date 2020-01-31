@@ -36,6 +36,9 @@ namespace IFramework.Moudles.Coroutine
 
       
         private CoroutinePool pool;
+
+        protected override bool needUpdate { get { return true; } }
+
         internal Coroutine Get(IEnumerator routine)
         {
             var coroutine = pool.Get(routine);

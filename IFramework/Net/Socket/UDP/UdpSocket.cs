@@ -64,10 +64,18 @@ namespace IFramework.Net
                 ReceiveTimeout = receiveTimeout,
                 SendTimeout = sendTimeout
             };
-            if (Broadcast)
-                sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
-            else
-                sock.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.PacketInformation, true);
+            try
+            {
+                if (Broadcast)
+                    sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
+                else
+                    sock.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.PacketInformation, true);
+            }
+            catch (Exception)
+            {
+                 
+            }
+           
         }
     }
 

@@ -79,33 +79,7 @@ namespace IFramework.Net
                 sendArgs.Set(sendArg);
             }
             return true;
-            //int retry = 3;
-            //again:
-            //try
-            //{
-            //    SocketAsyncEventArgs sArgs = new SocketAsyncEventArgs();
-            //    sArgs.Completed += IOCompleted;
-            //    sArgs.UserToken = sock;
-            //    sArgs.RemoteEndPoint = endPoint;
-            //    sArgs.SetBuffer(new byte[] { 0 }, 0, 1);
-            //    bool rt = sock.SendToAsync(sArgs);
-            //    if (rt)
-            //    {
-            //        StartReceive();
-            //        mReset.WaitOne();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    retry -= 1;
-            //    if (retry > 0)
-            //    {
-            //        Thread.Sleep(1000);
-            //        goto again;
-            //    }
-            //    throw ex;
-            //}
-            //return isConnected;
+            
         }
         private void Close()
         {

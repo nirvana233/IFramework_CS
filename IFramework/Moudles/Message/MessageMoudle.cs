@@ -73,17 +73,12 @@ namespace IFramework.Moudles.Message
         private LockParam para = new LockParam();
         private Dictionary<Type, Observe> observes;
 
-        private Queue<Action> delayPublish;
-        private Queue<Action> tmpDelayPublish;
+        protected override bool needUpdate { get { return false; } }
 
 
 
         protected override void OnDispose()
         {
-            delayPublish.Clear();
-            tmpDelayPublish.Clear();
-            tmpDelayPublish = null;
-            delayPublish = null;
             foreach (var item in observes.Values)
                 item.Dispose();
             observes.Clear();
@@ -92,20 +87,10 @@ namespace IFramework.Moudles.Message
         protected override void Awake()
         {
             observes = new Dictionary<Type, Observe>();
-            delayPublish = new Queue<Action>();
-            tmpDelayPublish = new Queue<Action>();
         }
         protected override void OnUpdate()
         {
-            if (delayPublish.Count == 0) return;
-            while (delayPublish.Count > 0)
-                tmpDelayPublish.Enqueue(delayPublish.Dequeue());
-            while (tmpDelayPublish.Count > 0)
-            {
-                var action = tmpDelayPublish.Dequeue();
-                if (action != null)
-                    action();
-            }
+           
         }
 
         public bool Subscribe(Type type, IObserver observer)
@@ -160,24 +145,7 @@ namespace IFramework.Moudles.Message
 
         }
 
-        public void DelayPublish<T>(int code, IEventArgs args, params object[] param) where T : IPublisher
-        {
-            DelayPublish(typeof(T), code, args, param);
-        }
-        public void DelayPublish<T>(T t, int code, IEventArgs args, params object[] param) where T : IPublisher
-        {
-            DelayPublish(t, typeof(T), code, args, param);
-        }
-        public void DelayPublish(Type type, int code, IEventArgs args, params object[] param)
-        {
-            DelayPublish(null, type, code, args, param);
-        }
-        public void DelayPublish(IPublisher publisher, Type type, int code, IEventArgs args, params object[] param)
-        {
-            delayPublish.Enqueue(() => {
-                Publish(publisher, type, code, args, param);
-            });
-        }
+       
     }
 
 }

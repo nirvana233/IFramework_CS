@@ -43,12 +43,15 @@ namespace IFramework.Moudles
                 Log.E(string.Format("Have Bind One Container chunck: {0},You Can UnBind First", this._container.chunck));
                 return;
             }
-            this._binded = true;
-            this._chunck = container.chunck;
-            //this._name = string.Format("{0}.{1}", this._chunck, this._moudleType);
-            this._container = container;
 
-            container.AddMoudle(this);
+            if (container.AddMoudle(this))
+            {
+                this._binded = true;
+                this._chunck = container.chunck;
+                //this._name = string.Format("{0}.{1}", this._chunck, this._moudleType);
+                this._container = container;
+            }
+            
         }
         public void UnBind(bool dispose=true)
         {
@@ -66,10 +69,12 @@ namespace IFramework.Moudles
         private FrameworkMoudleContainer _container;
         private string _name;
         private bool _disposed;
+       
         private bool _enable;
         private string _chunck;
         private string _moudleType;
         private bool _binded;
+        protected abstract bool needUpdate { get; }
 
         public string moudeType { get { return _moudleType; } }
         public string chunck { get { return _chunck; } }
@@ -105,7 +110,7 @@ namespace IFramework.Moudles
         }
         public void Update()
         {
-            if (!enable || disposed) return;
+            if (!needUpdate || !enable || disposed) return;
             OnUpdate();
         }
 

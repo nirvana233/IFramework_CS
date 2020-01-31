@@ -1,8 +1,11 @@
 ﻿using IFramework.Moudles;
+using IFramework.Moudles.APP;
 using IFramework.Moudles.Coroutine;
 using IFramework.Moudles.Fsm;
 using IFramework.Moudles.Loom;
 using IFramework.Moudles.Message;
+using IFramework.Moudles.Pool;
+using IFramework.Moudles.Threads;
 using IFramework.Moudles.Timer;
 using System;
 using System.Collections.Generic;
@@ -25,12 +28,54 @@ namespace IFramework
         public LoomMoudle Loom { get; set; }
         public CoroutineMoudle Coroutine { get; set; }
         public MessageMoudle Message { get; set; }
+        public FrameworkAppMoudle App { get; set; }
+        public PoolMoudle Pool { get; set; }
+        public ThreadMoudle ThreadPool { get; set; }
+
         internal FrameworkMoudles() : base("Framework",true)
         {
 
         }
 
     }
+    internal class FrameworkArgsPool : IDisposable
+        {
+            interface IFrameworkArgsInnerPool { }
+            class FrameworkArgsInnerPool<Args> : ObjectPool<Args>, IFrameworkArgsInnerPool where Args : FrameworkArgs
+            {
+                protected override Args CreatNew(IEventArgs arg, params object[] param)
+                {
+                    return Activator.CreateInstance<Args>();
+                }
+            }
+
+            private Dictionary<Type, IFrameworkArgsInnerPool> ArgMap;
+            public FrameworkArgsPool()
+            {
+                ArgMap = new Dictionary<Type, IFrameworkArgsInnerPool>();
+            }
+            public void Dispose()
+            {
+                foreach (var item in ArgMap.Values)
+                    (item as FrameworkArgsInnerPool<FrameworkArgs>).Dispose();
+                ArgMap.Clear();
+            }
+
+            private FrameworkArgsInnerPool<FrameworkArgs> GetPool(Type type)
+            {
+                if (!ArgMap.ContainsKey(type))
+                    ArgMap.Add(type, new FrameworkArgsInnerPool<FrameworkArgs>());
+                return ArgMap[type] as FrameworkArgsInnerPool<FrameworkArgs>;
+            }
+            public T Allocate<T>() where T : FrameworkArgs
+            {
+                return GetPool(typeof(T)).Get() as T;
+            }
+            public void Set<T>(T t) where T : FrameworkArgs
+            {
+                GetPool(typeof(T)).Set(t);
+            }
+        }
 
     public static class Framework
     {
@@ -40,17 +85,23 @@ namespace IFramework
         private static Stopwatch sw_init;
         private static Stopwatch sw_delta;
 
+        internal static FrameworkArgsPool argPool { get; private set; }
+
         public static event Action update;
         public static event Action onInit;
         public static event Action onDispose;
+
         public const string FrameworkName = "IFramework";
         public const string Author = "OnClick";
         public const string Version = "0.0.1";
         public const string Description = FrameworkName;
+
         public static bool haveInit { get { return _haveInit; } }
         public static bool disposed { get { return _disposed; } }
         public static IFrameworkContainer Container { get; set; }
         public static FrameworkMoudles moudles { get { return _moudles; } }
+
+
         public static TimeSpan deltaTime { get; private set; }
         public static TimeSpan timeSinceInit
         {
@@ -69,6 +120,7 @@ namespace IFramework
             if (_haveInit) return;
             Container = new FrameworkContainer();
             _moudles = new FrameworkMoudles();
+            argPool = new FrameworkArgsPool();
 
             AppDomain.CurrentDomain.GetAssemblies()
                             .SelectMany(item => item.GetTypes())
@@ -98,6 +150,7 @@ namespace IFramework
             sw_init.Stop();
             sw_delta.Stop();
             Container.Dispose();
+            argPool.Dispose();
 
             Container = null;
             sw_delta = null;
@@ -149,4 +202,5 @@ namespace IFramework
             moudle.UnBind(dispose);
         }
     }
+
 }

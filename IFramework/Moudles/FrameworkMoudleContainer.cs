@@ -107,7 +107,7 @@ namespace IFramework.Moudles
             moudle_list.ForEach((m) => { m.Update(); });
         }
 
-        internal void AddMoudle(FrameworkMoudle moudle)
+        internal bool AddMoudle(FrameworkMoudle moudle)
         {
             Type type = moudle.GetType();
             if (!moudle_dic.ContainsKey(type))
@@ -118,24 +118,35 @@ namespace IFramework.Moudles
             {
                 list.Add(moudle);
                 moudle_list.Add(moudle);
+                return true;
             }
             else
+            {
                 Log.E(string.Format("Have Bind Moudle | Type {0}  Name {1}", type, moudle.name));
+                return false;
+            }
         }
-        internal void RemoveBindMoudle(FrameworkMoudle moudle)
+        internal bool RemoveBindMoudle(FrameworkMoudle moudle)
         {
             Type type = moudle.GetType();
             if (!moudle_dic.ContainsKey(type))
+            {
                 Log.E(string.Format("01,Have Not Bind Moudle | Type {0}  Name {1}", type, moudle.name));
+                return false;
+            }
             else
             {
                 var tmpMoudle = moudle_dic[type].Find((m) => { return moudle.name == m.name; });
                 if (tmpMoudle == null)
+                {
                     Log.E(string.Format("02,Have Not Bind Moudle | Type {0}  Name {1}", type, moudle.name));
+                    return false;
+                }
                 else
                 {
                     moudle_list.Remove(moudle);
                     moudle_dic[type].Remove(moudle);
+                    return true;
                 }
             }
         }

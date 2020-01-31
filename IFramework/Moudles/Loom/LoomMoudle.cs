@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace IFramework.Moudles.Loom
@@ -24,15 +23,16 @@ namespace IFramework.Moudles.Loom
             }
 
         }
-        private static int MaxThreadCount = 8;
-        private static int ThreadCount;
+        private int MaxThreadCount = 8;
+        private int ThreadCount;
         private Semaphore semaphore;
         private List<DelayedTask> tasks;
         private List<DelayedTask> delayedTasks;
         private List<DelayedTask> NoDelayTasks;
+        protected override bool needUpdate { get { return true; } }
 
 
-        private static double GetUtcFrame(DateTime time)
+        private double GetUtcFrame(DateTime time)
         {
             DateTime timeZerro = new DateTime(1970, 1, 1);
             return (time - timeZerro).TotalMilliseconds;
@@ -58,7 +58,7 @@ namespace IFramework.Moudles.Loom
         {
             semaphore.WaitOne();
             Interlocked.Increment(ref ThreadCount);
-            System.Threading.ThreadPool.QueueUserWorkItem((ar) => {
+            ThreadPool.QueueUserWorkItem((ar) => {
 
                 try
                 {

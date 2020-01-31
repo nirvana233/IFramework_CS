@@ -30,7 +30,7 @@ namespace IFramework.Serialization.Csv
             streamWriter.Close();
         }
 
-        public void Write<T>(List<T> ts, string path)
+        public void Write<T>(List<T> ts)
         {
             List<List<CsvColumn>> rows = new List<List<CsvColumn>>();
             var members = CsvTool.GetMemberInfo(typeof(T));

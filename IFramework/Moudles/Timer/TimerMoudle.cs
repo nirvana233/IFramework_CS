@@ -183,6 +183,7 @@ namespace IFramework.Moudles.Timer
                 Tasks.Clear();
             }
         }
+        protected override bool needUpdate { get { return true; } }
 
         private Timer timer;
 
