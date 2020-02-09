@@ -24,6 +24,7 @@ namespace IFramework
         {
 
             OnDispose();
+            Clear();
             pool = null;
             lockParam = null;
             OnClearObject = null;
@@ -31,6 +32,7 @@ namespace IFramework
             OnSetObject = null;
             OnCreateObject = null;
         }
+        protected virtual void OnDispose() { }
 
 
         public T Peek()
@@ -183,10 +185,6 @@ namespace IFramework
         protected virtual void OnCreate(T t, IEventArgs arg, params object[] param)
         {
             if (OnCreateObject != null) OnCreateObject(t, arg, param);
-        }
-        protected virtual void OnDispose()
-        {
-            Clear();
         }
     }
 

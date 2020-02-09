@@ -1,91 +1,55 @@
-﻿using IFramework.Moudles;
-using IFramework.Moudles.APP;
-using IFramework.Moudles.Coroutine;
-using IFramework.Moudles.Fsm;
-using IFramework.Moudles.Loom;
-using IFramework.Moudles.Message;
-using IFramework.Moudles.Pool;
-using IFramework.Moudles.Threads;
-using IFramework.Moudles.Timer;
+﻿using IFramework.Modules;
+using IFramework.Modules.APP;
+using IFramework.Modules.Coroutine;
+using IFramework.Modules.ECS;
+using IFramework.Modules.Fsm;
+using IFramework.Modules.Loom;
+using IFramework.Modules.Message;
+using IFramework.Modules.Pool;
+using IFramework.Modules.Threads;
+using IFramework.Modules.Timer;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyVersion("0.0.0.1")]
+[assembly: AssemblyVersion("0.0.0.2")]
 namespace IFramework { }
 namespace IFramework
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class OnFrameworkInitClassAttribute : Attribute { }
 
-    public class FrameworkMoudles : FrameworkMoudleContainer, IFrameworkMoudles
+    public class FrameworkModules : FrameworkModuleContainer, IFrameworkModules
     {
-        public FsmMoudle Fsm { get; set; }
-        public TimerMoudle Timer { get; set; }
-        public LoomMoudle Loom { get; set; }
-        public CoroutineMoudle Coroutine { get; set; }
-        public MessageMoudle Message { get; set; }
-        public FrameworkAppMoudle App { get; set; }
-        public PoolMoudle Pool { get; set; }
-        public ThreadMoudle ThreadPool { get; set; }
+        public FsmModule Fsm { get; set; }
+        public TimerModule Timer { get; set; }
+        public LoomModule Loom { get; set; }
+        public CoroutineModule Coroutine { get; set; }
+        public MessageModule Message { get; set; }
+        public FrameworkAppModule App { get; set; }
+        public PoolModule Pool { get; set; }
+        public ThreadModule ThreadPool { get; set; }
+        public ECSModule ECS { get; set; }
 
-        internal FrameworkMoudles() : base("Framework",true)
+        internal FrameworkModules() : base("Framework",true)
         {
 
         }
 
     }
-    internal class FrameworkArgsPool : IDisposable
-        {
-            interface IFrameworkArgsInnerPool { }
-            class FrameworkArgsInnerPool<Args> : ObjectPool<Args>, IFrameworkArgsInnerPool where Args : FrameworkArgs
-            {
-                protected override Args CreatNew(IEventArgs arg, params object[] param)
-                {
-                    return Activator.CreateInstance<Args>();
-                }
-            }
-
-            private Dictionary<Type, IFrameworkArgsInnerPool> ArgMap;
-            public FrameworkArgsPool()
-            {
-                ArgMap = new Dictionary<Type, IFrameworkArgsInnerPool>();
-            }
-            public void Dispose()
-            {
-                foreach (var item in ArgMap.Values)
-                    (item as FrameworkArgsInnerPool<FrameworkArgs>).Dispose();
-                ArgMap.Clear();
-            }
-
-            private FrameworkArgsInnerPool<FrameworkArgs> GetPool(Type type)
-            {
-                if (!ArgMap.ContainsKey(type))
-                    ArgMap.Add(type, new FrameworkArgsInnerPool<FrameworkArgs>());
-                return ArgMap[type] as FrameworkArgsInnerPool<FrameworkArgs>;
-            }
-            public T Allocate<T>() where T : FrameworkArgs
-            {
-                return GetPool(typeof(T)).Get() as T;
-            }
-            public void Set<T>(T t) where T : FrameworkArgs
-            {
-                GetPool(typeof(T)).Set(t);
-            }
-        }
+   
 
     public static class Framework
     {
         private static bool _haveInit;
         private static bool _disposed;
-        private static FrameworkMoudles _moudles;
+        private static FrameworkModules _modules;
         private static Stopwatch sw_init;
         private static Stopwatch sw_delta;
 
-        internal static FrameworkArgsPool argPool { get; private set; }
+        public static RecyclableObjectPool cyclePool { get; private set; }
 
         public static event Action update;
         public static event Action onInit;
@@ -99,7 +63,7 @@ namespace IFramework
         public static bool haveInit { get { return _haveInit; } }
         public static bool disposed { get { return _disposed; } }
         public static IFrameworkContainer Container { get; set; }
-        public static FrameworkMoudles moudles { get { return _moudles; } }
+        public static FrameworkModules modules { get { return _modules; } }
 
 
         public static TimeSpan deltaTime { get; private set; }
@@ -119,8 +83,8 @@ namespace IFramework
         {
             if (_haveInit) return;
             Container = new FrameworkContainer();
-            _moudles = new FrameworkMoudles();
-            argPool = new FrameworkArgsPool();
+            _modules = new FrameworkModules();
+            cyclePool = new RecyclableObjectPool();
 
             AppDomain.CurrentDomain.GetAssemblies()
                             .SelectMany(item => item.GetTypes())
@@ -145,17 +109,18 @@ namespace IFramework
         public static void Dispose()
         {
             if (_disposed) return;
-            _disposed = true;
             if (onDispose != null) onDispose();
             sw_init.Stop();
             sw_delta.Stop();
-            Container.Dispose();
-            argPool.Dispose();
 
+            Container.Dispose();
+            cyclePool.Dispose();
+
+            _disposed = true;
             Container = null;
             sw_delta = null;
             sw_init = null;
-            _moudles = null;
+            _modules = null;
             onInit = null;
             update = null;
             onDispose = null;
@@ -192,15 +157,6 @@ namespace IFramework
             onDispose -= action;
         }
 
-
-        public static void BindFramework(this FrameworkMoudle moudle)
-        {
-            moudle.Bind(moudles);
-        }
-        public static void UnBindFramework(this FrameworkMoudle moudle,bool dispose=true)
-        {
-            moudle.UnBind(dispose);
-        }
     }
 
 }

@@ -1,35 +1,135 @@
 ﻿
 using System;
+using System.Collections.Generic;
 
 namespace IFramework
 {
     public interface IEventArgs { }
     public interface IEventArgs<T> : IEventArgs { Type EventType { get; } }
-    public abstract class FrameworkArgs : IEventArgs
+    public interface IRecyclable
     {
-        public static T Allocate<T>() where T : FrameworkArgs
+        void Recyle();
+        void ResetData();
+    }
+    public abstract class RecyclableObject : IRecyclable
+    {
+        private bool _recyled;
+        private bool _datadirty;
+        public bool recyled { get { return _recyled; } }
+        public bool dataDirty { get { return _datadirty; } }
+        public static T Allocate<T>() where T : RecyclableObject
         {
-            T arg = Framework.argPool.Allocate<T>();
-            arg.Reset();
-            return arg;
+            T t = Framework.cyclePool.Allocate<T>();
+            t.OnAllocate();
+            return t;
+        }
+
+        protected virtual void OnAllocate() {
+            _recyled = false;
+            ResetData();
         }
         public void Recyle()
         {
-            Framework.argPool.Set(this);
+            OnRecyle();
+            _recyled = true;
+            Framework.cyclePool.Recyle(this);
         }
 
-        private bool _dirty;
-        public bool dirty { get { return _dirty; } }
-
-        protected abstract void OnReset();
-        public void Reset()
+        public void ResetData()
         {
-            _dirty = false;
-            OnReset();
+            if (!_datadirty) return;
+            OnDataReset();
+            _datadirty = false;
         }
-        public void SetDirty()
+
+        public void SetDataDirty()
         {
-            _dirty = true;
+            _datadirty = true;
+        }
+
+        protected virtual void OnRecyle() { }
+        protected abstract void OnDataReset();
+    }
+    public abstract class FrameworkArgs : RecyclableObject, IEventArgs
+    {
+        public static FrameworkArgs Empty;
+
+        private bool _argsDirty;
+
+        public bool argsDirty { get { return _argsDirty; }set { _argsDirty = value; } }
+        protected override void OnAllocate()
+        {
+            base.OnAllocate();
+            _argsDirty = false;
+        }
+    }
+
+    public class RecyclableObjectPool : IDisposable
+    {
+        interface IFrameworkObjectInnerPool { }
+        class FrameworkObjectInnerPool<Object> : ObjectPool<Object>, IFrameworkObjectInnerPool where Object : IRecyclable
+        {
+            public  FrameworkObjectInnerPool(Type objType)
+            {
+                ObjType = objType;
+            }
+                
+            private Type ObjType;
+            protected override Object CreatNew(IEventArgs arg, params object[] param)
+            {
+                return (Object)Activator.CreateInstance(ObjType);
+            }
+            protected override void OnDispose()
+            {
+                base.OnDispose();
+               
+
+                for (int i = 0; i < pool.Count; i++)
+                {
+                    IDisposable dispose = pool[i] as IDisposable;
+                    if (dispose != null)
+                        dispose.Dispose();
+                }
+            }
+
+        }
+
+        private Dictionary<Type, IFrameworkObjectInnerPool> poolMap;
+        private LockParam para = new LockParam();
+        public RecyclableObjectPool()
+        {
+            poolMap = new Dictionary<Type, IFrameworkObjectInnerPool>();
+        }
+        public void Dispose()
+        {
+            using (new LockWait(ref para))
+            {
+                foreach (var item in poolMap.Values)
+                    (item as FrameworkObjectInnerPool<IRecyclable>).Dispose();
+                poolMap.Clear();
+            }
+           
+        }
+
+        private FrameworkObjectInnerPool<IRecyclable> GetPool(Type type)
+        {
+            using (new LockWait(ref para))
+            {
+                if (!poolMap.ContainsKey(type))
+                    poolMap.Add(type, new FrameworkObjectInnerPool<IRecyclable>(type));
+                return poolMap[type] as FrameworkObjectInnerPool<IRecyclable>;
+            }
+        }
+        public T Allocate<T>() where T : IRecyclable
+        {
+            
+            T t = (T)GetPool(typeof(T)).Get();
+           
+            return t;
+        }
+        public void Recyle<T>(T t) where T : IRecyclable
+        {
+            GetPool(t.GetType()).Set(t);
         }
     }
 }
