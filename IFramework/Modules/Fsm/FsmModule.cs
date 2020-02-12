@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace IFramework.Modules.Fsm
 {
-    public interface IFsmModule
+    internal interface IFsmModule
     {
         IFsmState ExitState { get; set; }
         IFsmState EnterState { get; set; }

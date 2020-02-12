@@ -2,48 +2,51 @@
 
 namespace IFramework.Modules.NodeAction
 {
+    [FrameworkVersion(3)]
     public abstract class ContainerNode : ActionNode
     {
         public int count
         {
             get
             {
-                if (childNodes == null)
+                if (nodeList == null)
                     return -1;
-                return childNodes.Count;
+                return nodeList.Count;
             }
         }
-        protected List<ActionNode> childNodes=new List<ActionNode>();
-        public void Append(ActionNode node)
+        protected ContainerNode()
         {
-            if (childNodes == null)
-                childNodes = new List<ActionNode>();
-            childNodes.Add(node);
+            nodeList = new List<ActionNode>();
+        }
+        protected List<ActionNode> nodeList;
+        public virtual void Append(ActionNode node)
+        {
+            nodeList.Add(node);
         }
         protected override void OnRecyle()
         {
             base.OnRecyle();
-            for (int i = 0; i < childNodes.Count; i++)
-                childNodes[i].Recyle();
-            childNodes.Clear();
+            for (int i = 0; i < nodeList.Count; i++)
+                nodeList[i].Recyle();
+            nodeList.Clear();
         }
         protected override void OnDispose()
         {
-            for (int i = 0; i < childNodes.Count; i++)
-                childNodes[i].Dispose();
-            childNodes.Clear();
-            childNodes = null;
+            for (int i = 0; i < nodeList.Count; i++)
+                nodeList[i].Dispose();
+            nodeList.Clear();
+            nodeList = null;
         }
         protected override void OnDataReset()
         {
             base.OnDataReset();
-            for (int i = 0; i < childNodes.Count; i++)
-                childNodes[i].ResetData();
+            for (int i = 0; i < nodeList.Count; i++)
+                nodeList[i].ResetData();
         }
         public override void OnNodeReset()
         {
-            for (int i = 0; i < childNodes.Count; i++)
-                childNodes[i].NodeReset();
+            for (int i = 0; i < nodeList.Count; i++)
+                nodeList[i].NodeReset();
         }
        
     }

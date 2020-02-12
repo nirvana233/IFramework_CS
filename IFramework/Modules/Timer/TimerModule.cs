@@ -9,7 +9,7 @@ namespace IFramework.Modules.Timer
     {
         Running, Stoped, Paused, None
     }
-    public interface ITimerModule
+    internal interface ITimerModule
     {
         string RunTask(double space, Action action, Action onCompeleted, double delay, int count);
         void StopTask(string id);

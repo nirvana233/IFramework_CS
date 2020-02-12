@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace IFramework.Modules.Coroutine
 {
-    public interface ICoroutineModule
+    internal interface ICoroutineModule
     {
         Coroutine StartCoroutine(IEnumerator routine);
     }
@@ -75,5 +75,13 @@ namespace IFramework.Modules.Coroutine
             pool = new CoroutinePool();
         }
     }
-
+    [FrameworkVersion(3)]
+    public static class CoroutineModuleExtension
+    {
+        public static Coroutine StartCoroutine(this object obj,int envIndex,IEnumerator routine)
+        {
+            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            return _env.modules.Coroutine.StartCoroutine(routine);
+        }
+    }
 }

@@ -15,11 +15,34 @@ namespace IFramework
     {
         private bool _recyled;
         private bool _datadirty;
+        private FrameworkEnvironment _env;
+
         public bool recyled { get { return _recyled; } }
         public bool dataDirty { get { return _datadirty; } }
-        public static T Allocate<T>() where T : RecyclableObject
+        public FrameworkEnvironment env { get { return _env; } set { _env = value; } }
+
+        public static RecyclableObject Allocate(Type type, int envIndex) 
         {
-            T t = Framework.cyclePool.Allocate<T>();
+            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            return Allocate(type,_env);
+        }
+        public static RecyclableObject Allocate(Type type, FrameworkEnvironment env)
+        {
+            RecyclableObject t = env.cyclePool.Allocate(type) as RecyclableObject;
+            t._env = env;
+            t.OnAllocate();
+            return t;
+        }
+
+        public static T Allocate<T>(int envIndex) where T : RecyclableObject
+        {
+            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            return Allocate<T>(_env);
+        }
+        public static T Allocate<T>(FrameworkEnvironment env) where T : RecyclableObject
+        {
+            T t = env.cyclePool.Allocate<T>();
+            t._env = env;
             t.OnAllocate();
             return t;
         }
@@ -30,9 +53,10 @@ namespace IFramework
         }
         public void Recyle()
         {
+            if (_recyled) return;
             OnRecyle();
             _recyled = true;
-            Framework.cyclePool.Recyle(this);
+            _env.cyclePool.Recyle(this);
         }
 
         public void ResetData()
@@ -120,6 +144,12 @@ namespace IFramework
                 return poolMap[type] as FrameworkObjectInnerPool<IRecyclable>;
             }
         }
+
+        public IRecyclable Allocate(Type type)
+        {
+            IRecyclable recyclable = GetPool(type).Get();
+            return recyclable;
+        }
         public T Allocate<T>() where T : IRecyclable
         {
             
@@ -127,9 +157,13 @@ namespace IFramework
            
             return t;
         }
+        public void Recyle(Type type,IRecyclable t)
+        {
+            GetPool(type).Set(t);
+        }
         public void Recyle<T>(T t) where T : IRecyclable
         {
-            GetPool(t.GetType()).Set(t);
+            Recyle(t.GetType(), t);
         }
     }
 }

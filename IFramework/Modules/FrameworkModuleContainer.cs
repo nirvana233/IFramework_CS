@@ -6,10 +6,12 @@ namespace IFramework.Modules
     public class FrameworkModuleContainer : IFrameworkModuleContaner
     {
         private string _chunck;
-        public string chunck { get { return _chunck; } }
-
-        public bool binded { get { return _binded; } }
         private bool _binded;
+        private FrameworkEnvironment _env;
+
+        public string chunck { get { return _chunck; } }
+        public FrameworkEnvironment env { get { return _env; } }
+        public bool binded { get { return _binded; } }
 
         private Dictionary<Type, List<FrameworkModule>> moudle_dic;
         private List<FrameworkModule> moudle_list;
@@ -32,8 +34,10 @@ namespace IFramework.Modules
         {
             get { return FindModule(type, name); }
         }
-        public FrameworkModule FindModule(Type type, string name)
+        public FrameworkModule FindModule(Type type, string name="")
         {
+            if (string.IsNullOrEmpty(name))
+                name = string.Format("{0}.{1}", _chunck,type.Name);
             FrameworkModule mou = default(FrameworkModule);
             if (moudle_dic.ContainsKey(type))
                 mou = moudle_dic[type].Find((m) => { return m.name == name; });
@@ -46,21 +50,22 @@ namespace IFramework.Modules
                 }
             return mou;
         }
-        public T FindModule<T>(string name) where T : FrameworkModule
+        public T FindModule<T>(string name="") where T : FrameworkModule
         {
             return FindModule(typeof(T), name) as T;
         }
 
 
-        public FrameworkModuleContainer(string chunck,bool bind=true)
+        public FrameworkModuleContainer(string chunck,FrameworkEnvironment env,bool bind=true)
         {
             _chunck = chunck;
+            this._env = env;
             moudle_list = new List<FrameworkModule>();
             moudle_dic = new Dictionary<Type, List<FrameworkModule>>();
             if (bind)
-                BindFramework();
+                BindEnv();
         }
-        public void BindFramework()
+        public void BindEnv()
         {
             if (_binded)
             {
@@ -68,16 +73,16 @@ namespace IFramework.Modules
                 return;
             }
             _binded = true;
-            Framework.update += Update;
-            Framework.onDispose += Dispose;
+            _env.update += Update;
+            _env.onDispose += Dispose;
         }
-        public void UnBindFramework(bool dispose=true)
+        public void UnBindEnv(bool dispose=true)
         {
             if (_binded)
             {
                 _binded = false;
-                Framework.update += Update;
-                Framework.onDispose += Dispose;
+                _env.update += Update;
+                _env.onDispose += Dispose;
             }
             else
             {
@@ -89,7 +94,7 @@ namespace IFramework.Modules
 
         public void Dispose()
         {
-            UnBindFramework(false);
+            UnBindEnv(false);
             for (int i = 0; i < moudle_list.Count; i++)
             {
                 var m = moudle_list[i];

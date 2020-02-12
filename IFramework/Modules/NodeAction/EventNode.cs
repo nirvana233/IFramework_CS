@@ -2,6 +2,7 @@
 
 namespace IFramework.Modules.NodeAction
 {
+    [FrameworkVersion(3)]
     public class EventNode : ActionNode
     {
         public void Config(Action func, bool autoRecyle)
@@ -30,6 +31,7 @@ namespace IFramework.Modules.NodeAction
 
         protected override bool OnMoveNext()
         {
+            
             func.Invoke();
             return false;
         }

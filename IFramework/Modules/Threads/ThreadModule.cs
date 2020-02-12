@@ -147,7 +147,7 @@ namespace IFramework.Modules.Threads
         public void RunTask(Action task, Action callback)
         {
             lock (CacheArgs)
-                CacheArgs.Enqueue(FrameworkArgs.Allocate<ThreadArgs>().Config(task, callback, this));
+                CacheArgs.Enqueue(RecyclableObject.Allocate<ThreadArgs>(this.container.env).Config(task, callback, this));
         }
 
     }

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace IFramework.Modules.Loom
 {
-    public interface ILoomModule
+    internal interface ILoomModule
     {
         void RunOnMainThread(Action action, float time = 0.0f);
         void RunOnSubThread(Action action);

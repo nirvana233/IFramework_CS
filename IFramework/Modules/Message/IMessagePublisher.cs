@@ -1,6 +1,6 @@
 ﻿namespace IFramework.Modules.Message
 {
-    public interface IPublisher
+    public interface IMessagePublisher
     {
     }
 }

@@ -1,17 +1,20 @@
 ﻿namespace IFramework.Modules.NodeAction
 {
+    [FrameworkVersion(3)]
+
     public class SequenceNode : ContainerNode
     {
         private int curIndex;
-        public IActionNode curAction
+        public ActionNode curAction
         {
             get
             {
-                return childNodes[curIndex];
+                return nodeList[curIndex];
             }
         }
      
-
+        public SequenceNode():base()
+        { }
         protected override bool OnMoveNext()
         {
             if (curIndex >= count) return false;

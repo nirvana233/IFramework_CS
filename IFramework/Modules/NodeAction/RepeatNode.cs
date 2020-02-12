@@ -1,16 +1,30 @@
-﻿namespace IFramework.Modules.NodeAction
+﻿using System.Collections.Generic;
+
+namespace IFramework.Modules.NodeAction
 {
-    public class RepeatNode : ActionNode
+    [FrameworkVersion(3)]
+    public class RepeatNode : ContainerNode
     {
         private int curRepeat;
         private int repeat;
-        public ActionNode node;
-
+        public ActionNode node { get { return nodeList[0]; }set { nodeList[0] = value; } }
+        public RepeatNode() : base()
+        {
+           
+        }
         public void Config(int repeat, bool autoRecyle)
         {
             this.repeat = repeat;
             base.Config(autoRecyle);
         }
+        public override void Append(ActionNode node)
+        {
+            if (nodeList.Count >= 1)
+                Log.E("RepeatNode Can Have One Inner Node");
+            else
+                nodeList.Add(node);
+        }
+
 
         protected override void OnBegin()
         {
@@ -26,10 +40,9 @@
         {
             if (repeat == -1)
             {
-                if (node.MoveNext())
-                {
+               // Log.E(node.GetType());
+                if (!node.MoveNext())
                     node.NodeReset();
-                }
                 return true;
             }
             if (!node.MoveNext())
@@ -37,35 +50,23 @@
                 node.NodeReset();
                 curRepeat++;
             }
-            if (curRepeat == repeat)
+            if (curRepeat >= repeat)
                 return false;
             return true;
         }
-        protected override void OnDispose()
-        {
-            if (node != null)
-            {
-                node.Dispose();
-                node = null;
-            }
-        }
-        protected override void OnRecyle()
-        {
-            base.OnRecyle();
-            node.Recyle();
-            node = null;
-        }
+        
+
         protected override void OnDataReset()
         {
+            base.OnDataReset();
             repeat = -1;
-            curRepeat = 0;
-            node.ResetData();
+            curRepeat = -1;
         }
 
         public override void OnNodeReset()
         {
-            curRepeat = 0;
-            node.NodeReset();
+            base.OnNodeReset();
+            curRepeat = -1;
         }
     }
 

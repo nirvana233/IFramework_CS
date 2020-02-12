@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace IFramework.Modules.ECS
 {
+    [FrameworkVersion(10)]
     public class ECSModule : FrameworkModule
     {
         protected override bool needUpdate { get { return true; } }

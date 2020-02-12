@@ -70,8 +70,8 @@
     <Compile Include="Modules\IFrameworkModules.cs" />
     <Compile Include="Modules\Loom\LoomModule.cs" />
     <Compile Include="Modules\Message\IMessageModule.cs" />
-    <Compile Include="Modules\Message\IObserver.cs" />
-    <Compile Include="Modules\Message\IPublisher.cs" />
+    <Compile Include="Modules\Message\IMessageListener.cs" />
+    <Compile Include="Modules\Message\IMessagePublisher.cs" />
     <Compile Include="Modules\Message\MessageMoudle.cs" />
     <Compile Include="Modules\NodeAction\ActionNode.cs" />
     <Compile Include="Modules\Pool\PoolModule.cs" />
@@ -102,7 +102,7 @@
     <Compile Include="Modules\Fsm\FsmTransition.cs" />
     <Compile Include="Modules\Fsm\IFsmState.cs" />
     <Compile Include="Modules\NodeAction\IActionNode.cs" />
-    <Compile Include="Modules\NodeAction\IActionNodeExtension.cs" />
+    <Compile Include="Modules\NodeAction\ActionNodeExtension.cs" />
     <Compile Include="IFrameworkContainer.cs" />
     <Compile Include="Pool\SingletonPool.cs" />
     <Compile Include="Modules\NodeAction\RepeatNode.cs" />
