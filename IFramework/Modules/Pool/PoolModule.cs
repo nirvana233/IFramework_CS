@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace IFramework.Modules.Pool
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class PoolModule : FrameworkModule
     {
         private class PoolObjInfo
@@ -13,7 +14,7 @@ namespace IFramework.Modules.Pool
         }
         private class PoolObjInfoPool : ObjectPool<PoolObjInfo>
         {
-            protected override PoolObjInfo CreatNew(IEventArgs arg, params object[] param)
+            protected override PoolObjInfo CreatNew(IEventArgs arg)
             {
                 return new PoolObjInfo();
             }
@@ -49,10 +50,10 @@ namespace IFramework.Modules.Pool
                     var pool = new PoolObjectPool();
                     dic.Add(type, pool);
 
-                    pool.OnRunningPoolCreateObject += (obj, arg, paras) => { Log.E("Err running pool cant't Creat anything"); };
-                    pool.OnRunningPoolGetObject += (obj, arg, paras) => { /*Log.L("running pool Get obj");*/};
-                    pool.OnRunningPoolSetObject += (obj, arg, paras) => { /*Log.L("running pool Set obj"); */};
-                    pool.OnRunningPoolClearObject += (obj, arg, paras) => { /*Log.L("running pool Cycle obj");*/ };
+                    pool.OnRunningPoolCreateObject += (obj, arg) => { Log.E("Err running pool cant't Creat anything"); };
+                    pool.OnRunningPoolGetObject += (obj, arg) => { /*Log.L("running pool Get obj");*/};
+                    pool.OnRunningPoolSetObject += (obj, arg) => { /*Log.L("running pool Set obj"); */};
+                    pool.OnRunningPoolClearObject += (obj, arg) => { /*Log.L("running pool Cycle obj");*/ };
                 }
                 return dic[type];
             }
@@ -275,4 +276,5 @@ namespace IFramework.Modules.Pool
 
        
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

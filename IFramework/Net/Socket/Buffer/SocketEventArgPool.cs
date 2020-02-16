@@ -12,12 +12,12 @@ using System.Threading;
 
 namespace IFramework.Net
 {
-     class SocketEventArgPool : ObjectPool<SocketAsyncEventArgs>
+     class SocketEventArgPool : CapicityPool<SocketAsyncEventArgs>
     {
         public SocketEventArgPool(int capcity) : base(capcity) { }
-        protected override void OnClear(SocketAsyncEventArgs t, IEventArgs arg, params object[] param)
+        protected override void OnClear(SocketAsyncEventArgs t, IEventArgs arg)
         {
-            base.OnClear(t,arg,param);
+            base.OnClear(t,arg);
             t.Dispose();
         }
         public SocketAsyncEventArgs GetFreeArg(Func<object, bool> func, bool wait)
@@ -39,7 +39,7 @@ namespace IFramework.Net
             return default(SocketAsyncEventArgs);
         }
 
-        protected override SocketAsyncEventArgs CreatNew(IEventArgs arg, params object[] param)
+        protected override SocketAsyncEventArgs CreatNew(IEventArgs arg)
         {
             return default(SocketAsyncEventArgs);
         }

@@ -14,83 +14,85 @@ namespace IFramework.Net
 {
      class SockArgBuffers
     {
-        private int totalSize = 0;
-        private int curOffset = 0;
-        private int bufferSize = 2048;
-        private LockParam lockParam = new LockParam();
-        private byte[] buff = null;
-        private Queue<int> freeOffsets = null;
-        public int BufferSize { get { return bufferSize; } }
+        private int _totalSize = 0;
+        private int _curOffset = 0;
+        private int _bufferSize = 2048;
+        private LockParam _lockParam = new LockParam();
+        private byte[] _buff = null;
+        private Queue<int> _freeOffsets = null;
+
+        public int bufferSize { get { return _bufferSize; } }
+
         public SockArgBuffers(int maxCounts, int bufferSize)
         {
             if (bufferSize < 4) bufferSize = 4;
-            this.bufferSize = bufferSize;
-            this.curOffset = 0;
-            totalSize = maxCounts * bufferSize;
-            buff = new byte[totalSize];
-            freeOffsets = new Queue<int>(maxCounts);
+            this._bufferSize = bufferSize;
+            this._curOffset = 0;
+            _totalSize = maxCounts * bufferSize;
+            _buff = new byte[_totalSize];
+            _freeOffsets = new Queue<int>(maxCounts);
         }
         public void FreeBuffer()
         {
-            using (LockWait wait = new LockWait(ref lockParam))
+            using (LockWait wait = new LockWait(ref _lockParam))
             {
-                curOffset = 0;
-                freeOffsets.Clear();
+                _curOffset = 0;
+                _freeOffsets.Clear();
             }
         }
         public void Clear()
         {
-            using (LockWait wait = new LockWait(ref lockParam))
+            using (LockWait wait = new LockWait(ref _lockParam))
             {
-                freeOffsets.Clear();
+                _freeOffsets.Clear();
             }
         }
 
         public bool SetBuffer(SocketAsyncEventArgs agrs)
         {
-            using (LockWait wait = new LockWait(ref lockParam))
+            using (LockWait wait = new LockWait(ref _lockParam))
             {
-                if (freeOffsets.Count > 0)
+                if (_freeOffsets.Count > 0)
                 {
-                    agrs.SetBuffer(this.buff, this.freeOffsets.Dequeue(), bufferSize);
+                    agrs.SetBuffer(this._buff, this._freeOffsets.Dequeue(), _bufferSize);
                 }
                 else
                 {
-                    if ((totalSize - bufferSize) < curOffset) return false;
-                    agrs.SetBuffer(this.buff, this.curOffset, this.bufferSize);
-                    this.curOffset += this.bufferSize;
+                    if ((_totalSize - _bufferSize) < _curOffset) return false;
+                    agrs.SetBuffer(this._buff, this._curOffset, this._bufferSize);
+                    this._curOffset += this._bufferSize;
                 }
                 return true;
             }
         }
         public bool WriteBuffer(SocketAsyncEventArgs agrs, byte[] buffer, int offset, int len)
         {
-            using (LockWait wait = new LockWait(ref lockParam))
+            using (LockWait wait = new LockWait(ref _lockParam))
             {
-                if (agrs.Offset + len > this.buff.Length) return false;
-                if (len > bufferSize) return false;
-                Buffer.BlockCopy(buffer, offset, this.buff, agrs.Offset, len);
-                agrs.SetBuffer(this.buff, agrs.Offset, len);
+                if (agrs.Offset + len > this._buff.Length) return false;
+                if (len > _bufferSize) return false;
+                Buffer.BlockCopy(buffer, offset, this._buff, agrs.Offset, len);
+                agrs.SetBuffer(this._buff, agrs.Offset, len);
                 return true;
             }
         }
         public void FreeBuffer(SocketAsyncEventArgs arg)
         {
-            using (LockWait wait = new LockWait(ref lockParam))
+            using (LockWait wait = new LockWait(ref _lockParam))
             {
-                this.freeOffsets.Enqueue(arg.Offset);
+                this._freeOffsets.Enqueue(arg.Offset);
                 arg.SetBuffer(null, 0, 0);
             }
         }
         public ArraySegment<byte>[] BuffToSegs(byte[] buffer, int offset, int len)
         {
-            if (len <= bufferSize)
+            if (len <= _bufferSize)
                 return new ArraySegment<byte>[] { new ArraySegment<byte>(buffer, offset, len) };
-            int bSize = bufferSize;
-            int bCnt = len / bufferSize;
+            int bSize = _bufferSize;
+            int bCnt = len / _bufferSize;
             int bOffset = 0;
             bool isRem = false;
-            if (len % bufferSize != 0)
+            if (len % _bufferSize != 0)
             {
                 isRem = true;
                 bCnt += 1;
@@ -98,7 +100,7 @@ namespace IFramework.Net
             ArraySegment<byte>[] segItems = new ArraySegment<byte>[bCnt];
             for (int i = 0; i < bCnt; ++i)
             {
-                bOffset = i * bufferSize;
+                bOffset = i * _bufferSize;
                 if (i == (bCnt - 1) && isRem)
                 {
                     bSize = len - bOffset;

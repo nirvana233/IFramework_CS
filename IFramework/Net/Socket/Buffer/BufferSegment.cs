@@ -10,20 +10,20 @@ namespace IFramework.Net
 {
     public class BufferSegment
     {
-        private byte[] buffer;
-        private int offset;
-        private int len;
-        public byte[] Buffer { get { return buffer; } set { buffer = value; } }
-        public int Offset { get { return offset; } set { offset = value; } }
-        public int Len { get { return len; } set { len = value; } }
+        private byte[] _buffer;
+        private int _offset;
+        private int _count;
+        public byte[] buffer { get { return _buffer; } set { _buffer = value; } }
+        public int offset { get { return _offset; } set { _offset = value; } }
+        public int count { get { return _count; } set { _count = value; } }
         public BufferSegment() { }
         public BufferSegment(byte[] buffer) : this(buffer, 0, buffer.Length) { }
-        public BufferSegment(byte[] buffer, int len) : this(buffer, 0, len) { }
-        public BufferSegment(byte[] buffer, int offset, int Len)
+        public BufferSegment(byte[] buffer, int count) : this(buffer, 0, count) { }
+        public BufferSegment(byte[] buffer, int offset, int count)
         {
-            this.buffer = buffer;
-            this.offset = offset;
-            this.len = Len;
+            this._buffer = buffer;
+            this._offset = offset;
+            this._count = count;
         }
     }
 

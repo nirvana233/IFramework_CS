@@ -88,7 +88,7 @@ namespace IFramework.Utility
 
         private class IFThreadArgPool : SleepingPool<IFThreadArg>
         {
-            protected override IFThreadArg CreatNew(IEventArgs arg, params object[] param)
+            protected override IFThreadArg CreatNew(IEventArgs arg)
             {
                 return new IFThreadArg();
             }
@@ -96,7 +96,7 @@ namespace IFramework.Utility
         private class IFThreads : SleepingPool<IFThread>
         {
 
-            protected override IFThread CreatNew(IEventArgs arg, params object[] param)
+            protected override IFThread CreatNew(IEventArgs arg)
             {
                 return new IFThread();
             }

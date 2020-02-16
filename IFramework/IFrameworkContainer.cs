@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace IFramework
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class InjectAttribute : Attribute
     {
         public InjectAttribute(string name)
         {
-            Name = name;
+            this.name = name;
         }
-        public string Name { get; set; }
+        public string name { get; set; }
 
         public InjectAttribute()
         {
@@ -44,12 +44,13 @@ namespace IFramework
 
         object CreateInstance(Type type, params object[] ctrArgs);
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 
     class FrameworkContainer : IFrameworkContainer
     {
         /// http://stackoverflow.com/questions/1171812/multi-key-dictionary-in-c
-        public class Tuple<T1, T2>
+        private class Tuple<T1, T2>
         {
             public readonly T1 Item1;
             public readonly T2 Item2;
@@ -96,7 +97,7 @@ namespace IFramework
                 return hash;
             }
         }
-        public class TypeMappingCollection : Dictionary<Tuple<Type, string>, Type>
+        private class TypeMappingCollection : Dictionary<Tuple<Type, string>, Type>
         {
             public Type this[Type from, string name = null]
             {
@@ -115,7 +116,7 @@ namespace IFramework
                 }
             }
         }
-        public class TypeInstanceCollection : Dictionary<Tuple<Type, string>, object>
+        private class TypeInstanceCollection : Dictionary<Tuple<Type, string>, object>
         {
             public object this[Type from, string name = null]
             {
@@ -137,7 +138,7 @@ namespace IFramework
 
         private TypeInstanceCollection _instances;
         private TypeMappingCollection typeMap;
-        public TypeMappingCollection TypeMap
+        private TypeMappingCollection TypeMap
         {
             get
             {
@@ -147,7 +148,7 @@ namespace IFramework
             }
             set { typeMap = value; }
         }
-        public TypeInstanceCollection Instances
+        private TypeInstanceCollection Instances
         {
             get
             {
@@ -200,12 +201,12 @@ namespace IFramework
                 if (member is PropertyInfo)
                 {
                     var propertyInfo = member as PropertyInfo;
-                    propertyInfo.SetValue(obj, Resolve(propertyInfo.PropertyType, attr.Name), null);
+                    propertyInfo.SetValue(obj, Resolve(propertyInfo.PropertyType, attr.name), null);
                 }
                 else if (member is FieldInfo)
                 {
                     var fieldInfo = member as FieldInfo;
-                    fieldInfo.SetValue(obj, Resolve(fieldInfo.FieldType, attr.Name));
+                    fieldInfo.SetValue(obj, Resolve(fieldInfo.FieldType, attr.name));
                 }
             }
         }

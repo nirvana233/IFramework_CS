@@ -43,7 +43,7 @@ namespace IFramework.Modules.NodeAction
             for (int i = 0; i < nodeList.Count; i++)
                 nodeList[i].ResetData();
         }
-        public override void OnNodeReset()
+        protected override void OnNodeReset()
         {
             for (int i = 0; i < nodeList.Count; i++)
                 nodeList[i].NodeReset();

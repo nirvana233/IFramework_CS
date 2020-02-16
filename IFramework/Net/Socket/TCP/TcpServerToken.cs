@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace IFramework.Net
 {
-    public class TcpServerToken : TcpSocket, IServerToken, IDisposable
+    public class TcpServerToken : TcpSocket, IDisposable
     {
         private bool isRunning;
         private int curConCount;
@@ -358,7 +358,7 @@ namespace IFramework.Net
 
         public int SendSync(SocketToken token, BufferSegment seg)
         {
-            return token.Sock.Send(seg.Buffer, seg.Offset, seg.Len, SocketFlags.None);
+            return token.Sock.Send(seg.buffer, seg.offset, seg.count, SocketFlags.None);
         }
         public bool SendAsync(SocketToken token, BufferSegment seg, bool wait = false)
         {
@@ -366,7 +366,7 @@ namespace IFramework.Net
             {
                 if (!token.Sock.Connected) return false;
                 bool isWillEvent = true;
-                ArraySegment<byte>[] segs = sendBuffMgr.BuffToSegs(seg.Buffer, seg.Offset, seg.Len);
+                ArraySegment<byte>[] segs = sendBuffMgr.BuffToSegs(seg.buffer, seg.offset, seg.count);
                 for (int i = 0; i < segs.Length; i++)
                 {
                     SocketAsyncEventArgs senArg = GetFreeSendArg(wait, token.Sock);
@@ -375,7 +375,7 @@ namespace IFramework.Net
                     if (!sendBuffMgr.WriteBuffer(senArg, segs[i].Array, segs[i].Offset, segs[i].Count))
                     {
                         sendArgs.Set(senArg);
-                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", sendBuffMgr.BufferSize));
+                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", sendBuffMgr.bufferSize));
                     }
                     if (!token.Sock.Connected) return false;
                     isWillEvent &= token.Sock.SendAsync(senArg);
@@ -383,7 +383,7 @@ namespace IFramework.Net
                     {
                         SendCallBack(senArg);
                     }
-                    if (sendArgs.Count < (sendArgs.Capcity >> 2))
+                    if (sendArgs.count < (sendArgs.capcity >> 2))
                         Thread.Sleep(5);
                 }
                 return isWillEvent;

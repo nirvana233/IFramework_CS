@@ -21,7 +21,7 @@ namespace IFramework.Net
         AsyncWait = 1,
         Sync = 2
     }
-    public class TcpClientToken : TcpSocket, IClientToken, IDisposable
+    public class TcpClientToken : TcpSocket, IDisposable
     {
         private ClientChannelType channelType;
         private bool _isDisposed;
@@ -225,9 +225,9 @@ namespace IFramework.Net
             {
                 throw new Exception("需要使用同步连接...ConnectSync");
             }
-            int sent = sock.Send(sendbuff.Buffer, sendbuff.Offset, sendbuff.Len, SocketFlags.None);
-            if (recBuff.Buffer == null || recBuff.Len == 0) return sent;
-            /*int cnt =*/ sock.Receive(recBuff.Buffer, recBuff.Offset, recBuff.Len, 0);
+            int sent = sock.Send(sendbuff.buffer, sendbuff.offset, sendbuff.count, SocketFlags.None);
+            if (recBuff.buffer == null || recBuff.count == 0) return sent;
+            /*int cnt =*/ sock.Receive(recBuff.buffer, recBuff.offset, recBuff.count, 0);
             return sent;
         }
         public void SendFile(string filename)
@@ -255,7 +255,7 @@ namespace IFramework.Net
                     Close();
                     return false;
                 }
-                ArraySegment<byte>[] segs = sendBuffMgr.BuffToSegs(segBuff.Buffer, segBuff.Offset, segBuff.Len);
+                ArraySegment<byte>[] segs = sendBuffMgr.BuffToSegs(segBuff.buffer, segBuff.offset, segBuff.count);
                 bool isWillEvent = true;
                 foreach (var seg in segs)
                 {
@@ -264,7 +264,7 @@ namespace IFramework.Net
                     if (!sendBuffMgr.WriteBuffer(senArg, seg.Array, seg.Offset, seg.Count))
                     {
                         sendArgs.Set(senArg);
-                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", sendBuffMgr.BufferSize));
+                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", sendBuffMgr.bufferSize));
                     }
                     if (senArg.UserToken == null)
                         ((SocketToken)senArg.UserToken).Sock = sock;
@@ -278,7 +278,7 @@ namespace IFramework.Net
                     {
                         SendCallback(senArg);
                     }
-                    if (sendArgs.Count < (sendArgs.Capcity >> 2))
+                    if (sendArgs.count < (sendArgs.capcity >> 2))
                         Thread.Sleep(2);
                 }
                 return isWillEvent;
@@ -291,7 +291,7 @@ namespace IFramework.Net
         }
         public int SendSync(BufferSegment segBuff)
         {
-            return sock.Send(segBuff.Buffer, segBuff.Offset, segBuff.Len, SocketFlags.None);
+            return sock.Send(segBuff.buffer, segBuff.offset, segBuff.count, SocketFlags.None);
         }
         private void SendCallback(SocketAsyncEventArgs e)
         {

@@ -4,41 +4,30 @@ namespace IFramework.Modules.NodeAction
 {
     public class UntilNode : ActionNode
     {
-        public void Config(Func<bool> func, bool autoRecyle)
+
+        private Func<bool> _condition;
+        public Func<bool> condition { get { return _condition; }  }
+
+
+        public void Config(Func<bool> condition, bool autoRecyle)
         {
-            this.func = func;
+            this._condition = condition;
             base.Config(autoRecyle);
-        }
-
-        private Func<bool> func;
-
-        protected override void OnBegin()
-        {
-
-        }
-
-        protected override void OnCompelete()
-        {
         }
         protected override void OnDataReset()
         {
             base.OnDataReset();
-            func = null;
+            _condition = null;
         }
         protected override bool OnMoveNext()
         {
-            return !func.Invoke();
+            return !condition.Invoke();
         }
 
-        protected override void OnDispose()
-        {
-            
-        }
-
-        public override void OnNodeReset()
-        {
-            
-        }
+        protected override void OnBegin() { }
+        protected override void OnCompelete() { }
+        protected override void OnDispose() { }
+        protected override void OnNodeReset() { }
     }
 
 }

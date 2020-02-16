@@ -1,48 +1,40 @@
 ﻿namespace IFramework.Modules.NodeAction
 {
     [FrameworkVersion(3)]
-
     public class SequenceNode : ContainerNode
     {
-        private int curIndex;
+        private int _curIndex;
         public ActionNode curAction
         {
             get
             {
-                return nodeList[curIndex];
+                return nodeList[_curIndex];
             }
         }
-     
-        public SequenceNode():base()
-        { }
+
+        public SequenceNode() : base() { }
         protected override bool OnMoveNext()
         {
-            if (curIndex >= count) return false;
+            if (_curIndex >= count) return false;
             bool bo = curAction.MoveNext();
             if (bo) return true;
-            curIndex++;
-            if (curIndex >= count) return false;
+            _curIndex++;
+            if (_curIndex >= count) return false;
             return true;
         }
         protected override void OnDataReset()
         {
             base.OnDataReset();
-            curIndex = 0;
+            _curIndex = 0;
         }
 
-        protected override void OnBegin()
-        {
-            curIndex = 0;
-        }
-        public override void OnNodeReset()
+        protected override void OnNodeReset()
         {
             base.OnNodeReset();
-            curIndex = 0;
+            _curIndex = 0;
         }
-        protected override void OnCompelete()
-        {
-
-        }
+        protected override void OnBegin() { }
+        protected override void OnCompelete() { }
     }
 
 }

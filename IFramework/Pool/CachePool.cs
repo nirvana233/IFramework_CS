@@ -2,14 +2,14 @@
 
 namespace IFramework
 {
-    public class RunningPool<T> : ObjectPool<T>
+    public class RunningPool<T> : ListPool<T>
     {
-        protected override T CreatNew(IEventArgs arg, params object[] param)
+        protected override T CreatNew(IEventArgs arg)
         {
             return default(T);
         }
     }
-    public abstract class SleepingPool<T> : ObjectPool<T>
+    public abstract class SleepingPool<T> : ListPool<T>
     {
     }
     public class CachePool<T> : IDisposable
@@ -23,18 +23,18 @@ namespace IFramework
         public virtual RunningPool<T> RunningPoool { get { return runningPoool; } set { runningPoool = value; } }
         public virtual SleepingPool<T> SleepPool { get { return sleepPool; } set { sleepPool = value; } }
 
-        public int SleepCount { get { return SleepPool.Count; } }
-        public int RunningCount { get { return RunningPoool.Count; } }
+        public int SleepCount { get { return SleepPool.count; } }
+        public int RunningCount { get { return RunningPoool.count; } }
 
-        public event ObjPoolEventDel<T> OnRunningPoolClearObject { add { runningPoool.OnClearObject += value; } remove { runningPoool.OnClearObject -= value; } }
-        public event ObjPoolEventDel<T> OnRunningPoolGetObject { add { runningPoool.OnGetObject += value; } remove { runningPoool.OnGetObject -= value; } }
-        public event ObjPoolEventDel<T> OnRunningPoolSetObject { add { runningPoool.OnSetObject += value; } remove { runningPoool.OnSetObject -= value; } }
-        public event ObjPoolEventDel<T> OnRunningPoolCreateObject { add { runningPoool.OnCreateObject += value; } remove { runningPoool.OnCreateObject -= value; } }
+        public event Action<T, IEventArgs> OnRunningPoolClearObject { add { runningPoool.onClearObject += value; } remove { runningPoool.onClearObject -= value; } }
+        public event Action<T, IEventArgs> OnRunningPoolGetObject { add { runningPoool.onGetObject += value; } remove { runningPoool.onGetObject -= value; } }
+        public event Action<T, IEventArgs> OnRunningPoolSetObject { add { runningPoool.onSetObject += value; } remove { runningPoool.onSetObject -= value; } }
+        public event Action<T, IEventArgs> OnRunningPoolCreateObject { add { runningPoool.onCreateObject += value; } remove { runningPoool.onCreateObject -= value; } }
 
-        public event ObjPoolEventDel<T> OnClearObject { add { SleepPool.OnClearObject += value; } remove { SleepPool.OnClearObject -= value; } }
-        public event ObjPoolEventDel<T> OnGetObject { add { SleepPool.OnGetObject += value; } remove { SleepPool.OnGetObject -= value; } }
-        public event ObjPoolEventDel<T> OnSetObject { add { SleepPool.OnSetObject += value; } remove { SleepPool.OnSetObject -= value; } }
-        public event ObjPoolEventDel<T> OnCreateObject { add { SleepPool.OnCreateObject += value; } remove { SleepPool.OnCreateObject -= value; } }
+        public event Action<T, IEventArgs> OnClearObject { add { SleepPool.onClearObject += value; } remove { SleepPool.onClearObject -= value; } }
+        public event Action<T, IEventArgs> OnGetObject { add { SleepPool.onGetObject += value; } remove { SleepPool.onGetObject -= value; } }
+        public event Action<T, IEventArgs> OnSetObject { add { SleepPool.onSetObject += value; } remove { SleepPool.onSetObject -= value; } }
+        public event Action<T, IEventArgs> OnCreateObject { add { SleepPool.onCreateObject += value; } remove { SleepPool.onCreateObject -= value; } }
 
         public CachePool(SleepingPool<T> sleepPool) : this(new RunningPool<T>(), sleepPool, true, 16) { }
         public CachePool(RunningPool<T> runningPoool, SleepingPool<T> sleepPool) : this(runningPoool, sleepPool, true, 16) { }
@@ -69,22 +69,22 @@ namespace IFramework
             SleepPool.Set(t);
             AutoClean();
         }
-        public T Get(IEventArgs arg, params object[] param)
+        public T Get(IEventArgs arg)
         {
-            T t = SleepPool.Get(arg, param);
+            T t = SleepPool.Get(arg);
             RunningPoool.Set(t);
             return t;
         }
-        public void Set(T t, IEventArgs arg, params object[] param)
+        public void Set(T t, IEventArgs arg)
         {
             RunningPoool.Clear(t);
-            SleepPool.Set(t, arg, param);
+            SleepPool.Set(t, arg);
             AutoClean();
         }
         private void AutoClean()
         {
             if (!AutoClear) return;
-            SleepPool.Clear(SleepPool.Count - SleepCapcity);
+            SleepPool.Clear(SleepPool.count - SleepCapcity);
         }
 
         public void Clear(T t, bool ignoreRun = true)
@@ -103,26 +103,26 @@ namespace IFramework
                 Clear(t, ignoreRun);
             });
         }
-        public void Clear(T t, IEventArgs arg, bool ignoreRun = true, params object[] param)
+        public void Clear(T t, IEventArgs arg, bool ignoreRun = true)
         {
             if (IsRunning(t))
             {
                 if (ignoreRun) return;
-                Set(t, arg, param);
+                Set(t, arg);
             }
-            SleepPool.Clear(t, arg, param);
+            SleepPool.Clear(t, arg);
         }
-        public void Clear(T[] ts, IEventArgs arg, bool ignoreRun = true, params object[] param)
-        {
-            ts.ForEach((t) =>
-            {
-                Clear(t, arg, ignoreRun, param);
-            });
-        }
+        //public void Clear(T[] ts, IEventArgs arg, bool ignoreRun = true, params object[] param)
+        //{
+        //    ts.ForEach((t) =>
+        //    {
+        //        Clear(t, arg, ignoreRun, param);
+        //    });
+        //}
 
         public void CycleRunningPool(int count)
         {
-            while (RunningPoool.Count > 0)
+            while (RunningPoool.count > 0)
             {
                 T t = RunningPoool.Get();
                 SleepPool.Set(t);
@@ -132,7 +132,7 @@ namespace IFramework
 
         public void CycleRunningPool()
         {
-            while (RunningPoool.Count > 0)
+            while (RunningPoool.count > 0)
             {
                 T t = RunningPoool.Get();
                 SleepPool.Set(t);
@@ -143,18 +143,18 @@ namespace IFramework
         {
             SleepPool.Clear();
         }
-        public void CycleRunningPool(IEventArgs arg, params object[] param)
+        public void CycleRunningPool(IEventArgs arg)
         {
-            while (RunningPoool.Count > 0)
+            while (RunningPoool.count > 0)
             {
                 T t = RunningPoool.Get();
-                SleepPool.Set(t, arg, param);
+                SleepPool.Set(t, arg);
                 AutoClean();
             }
         }
-        public void ClearSleepPool(IEventArgs arg, params object[] param)
+        public void ClearSleepPool(IEventArgs arg)
         {
-            SleepPool.Clear(arg, param);
+            SleepPool.Clear(arg);
         }
     }
 }

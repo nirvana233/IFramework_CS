@@ -3,27 +3,40 @@ using System.Threading;
 
 namespace IFramework
 {
+    /// <summary>
+    /// 自旋锁
+    /// </summary>
     public sealed class LockWait : IDisposable
     {
-        private LockParam lParam = null;
-        public LockWait(ref LockParam lParam)
+        private LockParam _param = null;
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="param"></param>
+        public LockWait(ref LockParam param)
         {
-            this.lParam = lParam;
-            while (Interlocked.CompareExchange(ref lParam.Signal, 1, 0) == 1)
+            this._param = param;
+            while (Interlocked.CompareExchange(ref param.signal, 1, 0) == 1)
             {
-                Thread.Sleep(lParam.SleepInterval);
+                Thread.Sleep(param.sleepInterval);
             }
         }
-        public  void Dispose()
+        /// <summary>
+        /// 释放
+        /// </summary>
+        public void Dispose()
         {
-            Interlocked.Exchange(ref lParam.Signal, 0);
+            Interlocked.Exchange(ref _param.signal, 0);
         }
     }
 
-
+    /// <summary>
+    /// 自旋锁信号
+    /// </summary>
     public class LockParam
     {
-        public int Signal = 0;
-        public int SleepInterval = 1;
+        internal int signal = 0;
+
+        internal int sleepInterval = 1;
     }
 }

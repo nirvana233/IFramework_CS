@@ -13,7 +13,7 @@ namespace IFramework
         }
         private class PoolObjInfoPool : ObjectPool<PoolObjInfo>
         {
-            protected override PoolObjInfo CreatNew(IEventArgs arg, params object[] param)
+            protected override PoolObjInfo CreatNew(IEventArgs arg)
             {
                 return new PoolObjInfo();
             }
@@ -44,10 +44,10 @@ namespace IFramework
                     var pool = new PoolObjectPool();
                     Instance.dic.Add(type, pool);
 
-                    pool.OnRunningPoolCreateObject += (obj, arg, paras) => { Log.E("Err running pool cant't Creat anything"); };
-                    pool.OnRunningPoolGetObject += (obj, arg, paras) => { /*Log.L("running pool Get obj");*/};
-                    pool.OnRunningPoolSetObject += (obj, arg, paras) => { /*Log.L("running pool Set obj"); */};
-                    pool.OnRunningPoolClearObject += (obj, arg, paras) => { /*Log.L("running pool Cycle obj");*/ };
+                    pool.OnRunningPoolCreateObject += (obj, arg) => { Log.E("Err running pool cant't Creat anything"); };
+                    pool.OnRunningPoolGetObject += (obj, arg) => { /*Log.L("running pool Get obj");*/};
+                    pool.OnRunningPoolSetObject += (obj, arg) => { /*Log.L("running pool Set obj"); */};
+                    pool.OnRunningPoolClearObject += (obj, arg) => { /*Log.L("running pool Cycle obj");*/ };
                 }
                 return Instance.dic[type];
             }

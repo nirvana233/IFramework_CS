@@ -24,8 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\..\..\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <NoWarn>CA1009;</NoWarn>
   </PropertyGroup>
@@ -39,6 +38,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -65,18 +67,22 @@
     <Compile Include="Modules\ECS\IExcuteSystem.cs" />
     <Compile Include="Modules\FrameworkModule.cs" />
     <Compile Include="Modules\FrameworkModuleContainer.cs" />
-    <Compile Include="Modules\IFrameworkModule.cs" />
-    <Compile Include="Modules\IFrameworkModuleContaner.cs" />
-    <Compile Include="Modules\IFrameworkModules.cs" />
     <Compile Include="Modules\Loom\LoomModule.cs" />
-    <Compile Include="Modules\Message\IMessageModule.cs" />
     <Compile Include="Modules\Message\IMessageListener.cs" />
     <Compile Include="Modules\Message\IMessagePublisher.cs" />
     <Compile Include="Modules\Message\MessageMoudle.cs" />
+    <Compile Include="Modules\MVP\MVPEnity.cs" />
+    <Compile Include="Modules\MVP\MVPModule.cs" />
+    <Compile Include="Modules\MVP\MVPSystem.cs" />
+    <Compile Include="Modules\MVP\PolicyExecutorSystem.cs" />
+    <Compile Include="Modules\MVP\PolicySystem.cs" />
+    <Compile Include="Modules\MVP\SensorSystem.cs" />
+    <Compile Include="Modules\MVP\ViewSystem.cs" />
     <Compile Include="Modules\NodeAction\ActionNode.cs" />
     <Compile Include="Modules\Pool\PoolModule.cs" />
     <Compile Include="Modules\Threads\ThreadModule.cs" />
     <Compile Include="Modules\Timer\TimerModule.cs" />
+    <Compile Include="ObservableObject.cs" />
     <Compile Include="Utility\Astar\AStarMap2X.cs" />
     <Compile Include="Utility\Astar\AStarMap3X.cs" />
     <Compile Include="Utility\Astar\AStarNode2X.cs" />
@@ -101,7 +107,6 @@
     <Compile Include="Modules\Fsm\FsmConditionValue.cs" />
     <Compile Include="Modules\Fsm\FsmTransition.cs" />
     <Compile Include="Modules\Fsm\IFsmState.cs" />
-    <Compile Include="Modules\NodeAction\IActionNode.cs" />
     <Compile Include="Modules\NodeAction\ActionNodeExtension.cs" />
     <Compile Include="IFrameworkContainer.cs" />
     <Compile Include="Pool\SingletonPool.cs" />
@@ -135,9 +140,6 @@
     <Compile Include="Net\Socket\Packet\WebSock\DataFrame.cs" />
     <Compile Include="Net\Socket\SockDel.cs" />
     <Compile Include="Net\Socket\SocketToken.cs" />
-    <Compile Include="Net\Socket\TCP\IClientToken.cs" />
-    <Compile Include="Net\Socket\TCP\IServerToken.cs" />
-    <Compile Include="Net\Socket\TCP\ITcpSocket.cs" />
     <Compile Include="Net\Socket\TCP\TcpClientToken.cs" />
     <Compile Include="Net\Socket\TCP\TcpServerToken.cs" />
     <Compile Include="Net\Socket\TCP\TcpSocket.cs" />
@@ -172,7 +174,6 @@
     <Compile Include="Pool\IPoolObject.cs" />
     <Compile Include="LockWait.cs" />
     <Compile Include="Log\CSLogger.cs" />
-    <Compile Include="Log\ILog.cs" />
     <Compile Include="Log\ILoger.cs" />
     <Compile Include="Log\Log.cs" />
     <Compile Include="Log\LogExtension.cs" />

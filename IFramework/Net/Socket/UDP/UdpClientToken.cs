@@ -27,7 +27,7 @@ namespace IFramework.Net
         private SocketEventArgPool sendArgs = null;
         private SockArgBuffers sendBuff = null;
 
-        public int SendBufferPoolNumber { get { return sendArgs.Count; } }
+        public int SendBufferPoolNumber { get { return sendArgs.count; } }
         public OnReceieve onReceive { get; set; }
         public OnSendCallBack onSendCallback { get; set; }
         public OnReceivedString onRecieveString { get; set; }
@@ -140,8 +140,8 @@ namespace IFramework.Net
             int cnt = 0;
             do
             {
-                cnt = sock.ReceiveFrom(segRecieve.Buffer,
-                    segRecieve.Len,
+                cnt = sock.ReceiveFrom(segRecieve.buffer,
+                    segRecieve.count,
                     SocketFlags.None,
                     ref endPoint);
 
@@ -155,7 +155,7 @@ namespace IFramework.Net
             try
             {
                 bool isWillEvent = true;
-                ArraySegment<byte>[] segItems = sendBuff.BuffToSegs(segBuff.Buffer, segBuff.Offset, segBuff.Len);
+                ArraySegment<byte>[] segItems = sendBuff.BuffToSegs(segBuff.buffer, segBuff.offset, segBuff.count);
                 foreach (var seg in segItems)
                 {
                     SocketAsyncEventArgs sendArg = sendArgs.GetFreeArg((retry) => { return true; }, waiting);
@@ -165,7 +165,7 @@ namespace IFramework.Net
                     if (!sendBuff.WriteBuffer(sendArg, seg.Array, seg.Offset, seg.Count))
                     {
                         sendArgs.Set(sendArg);
-                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", sendBuff.BufferSize));
+                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", sendBuff.bufferSize));
                     }
                     isWillEvent &= sock.SendToAsync(sendArg);
                     if (!isWillEvent)
@@ -183,9 +183,9 @@ namespace IFramework.Net
         }
         public int SendSync(BufferSegment segSend, BufferSegment segRecieve)
         {
-            int sent = sock.SendTo(segSend.Buffer, segSend.Offset, segSend.Len, 0, endPoint);
-            if (segSend == null|| segSend.Buffer == null || segSend.Len == 0) return sent;
-            /*int cnt =*/ sock.ReceiveFrom(segRecieve.Buffer, segRecieve.Offset, segRecieve.Len, SocketFlags.None, ref endPoint);
+            int sent = sock.SendTo(segSend.buffer, segSend.offset, segSend.count, 0, endPoint);
+            if (segSend == null|| segSend.buffer == null || segSend.count == 0) return sent;
+            /*int cnt =*/ sock.ReceiveFrom(segRecieve.buffer, segRecieve.offset, segRecieve.count, SocketFlags.None, ref endPoint);
             return sent;
         }
         private void SendCallBack(SocketAsyncEventArgs e)

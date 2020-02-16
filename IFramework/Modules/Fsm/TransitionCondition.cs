@@ -3,85 +3,125 @@ using System;
 
 namespace IFramework.Modules.Fsm
 {
+    /// <summary>
+    /// 比较方式
+    /// </summary>
     public enum ConditionCompareType
     {
         SmallerThanCompare, BiggerThanCompare, EqualsWithCompare, NotEqualsWithCompare
     }
     public interface ITransitionCondition
     {
-        Type Conditiontype { get; }
-        string Name { get; }
-        ConditionCompareType CompareType { get; set; }
+        Type type { get; }
+        string name { get; }
+        ConditionCompareType compareType { get;  }
         bool IsMetCondition();
     }
+    /// <summary>
+    /// 状态机过度条件
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class TransitionCondition<T> : ITransitionCondition
     {
-        protected IFsmConditionValue ConditionValue { get; set; }
-        public Type Conditiontype { get { return typeof(T); } }
-        protected T Value { get { return (T)ConditionValue.Value; } }
-        public string Name { get { return ConditionValue.Name; } }
+        private T _compareValue;
+        private ConditionCompareType _compareType;
+        private FsmConditionValue<T> _conditionValue { get; set; }
 
-        public T CompareValue { get; set; }
-        public ConditionCompareType CompareType { get; set; }
-        public TransitionCondition(FsmConditionValue<T> ConditionValue, object CompareValue, ConditionCompareType CompareType)
+        /// <summary>
+        /// 比较值（不变化）
+        /// </summary>
+        public T compareValue { get { return _compareValue; } }
+        /// <summary>
+        /// 过渡条件类型
+        /// </summary>
+        public Type type { get { return typeof(T); } }
+        /// <summary>
+        /// 比较值（变化）
+        /// </summary>
+        protected T value { get { return (T)_conditionValue.value; } }
+        /// <summary>
+        /// 条件的名称
+        /// </summary>
+        public string name { get { return _conditionValue.name; } }
+        /// <summary>
+        /// 比较方式
+        /// </summary>
+        public ConditionCompareType compareType { get { return _compareType; }protected set { _compareType = value; } }
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="cconditionValue">改变的数值</param>
+        /// <param name="compareValue">比较的默认值</param>
+        /// <param name="compareType">比较方式</param>
+        protected TransitionCondition(FsmConditionValue<T> cconditionValue, object compareValue, ConditionCompareType compareType)
         {
-            this.ConditionValue = ConditionValue;
-            this.CompareValue = (T)CompareValue;
-            SetConditionType(CompareType);
+            this._conditionValue = cconditionValue;
+            this._compareValue = (T)compareValue;
+            SetConditionType(compareType);
         }
-        protected abstract void SetConditionType(ConditionCompareType CompareType);
+        /// <summary>
+        /// 设置比较值
+        /// </summary>
+        /// <param name="compareType"></param>
+        protected abstract void SetConditionType(ConditionCompareType compareType);
+        /// <summary>
+        /// 是否条件成立
+        /// </summary>
+        /// <returns></returns>
         public abstract bool IsMetCondition();
     }
+
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class StringTransitionCondition : TransitionCondition<string>
     {
-        public StringTransitionCondition(FsmConditionValue<string> ConditionValue, object CompareValue, ConditionCompareType CompareType) : base(ConditionValue, CompareValue, CompareType) { }
+        public StringTransitionCondition(FsmConditionValue<string> cconditionValue, object CompareValue, ConditionCompareType compareType) : base(cconditionValue, CompareValue, compareType) { }
         public override bool IsMetCondition()
         {
-            switch (CompareType)
+            switch (compareType)
             {
                 case ConditionCompareType.EqualsWithCompare:
-                    return CompareValue == Value;
+                    return compareValue == value;
                 case ConditionCompareType.NotEqualsWithCompare:
-                    return CompareValue != Value;
+                    return compareValue != value;
                 case ConditionCompareType.SmallerThanCompare:
                 case ConditionCompareType.BiggerThanCompare:
                 default:
                     return false;
             }
         }
-        protected override void SetConditionType(ConditionCompareType CompareType)
+        protected override void SetConditionType(ConditionCompareType compareType)
         {
-            switch (CompareType)
+            switch (compareType)
             {
                 case ConditionCompareType.SmallerThanCompare:
                 case ConditionCompareType.BiggerThanCompare:
-                    throw new Exception("The Type is Illeagal whith " + Conditiontype);
+                    throw new Exception("The Type is Illeagal whith " + type);
                 case ConditionCompareType.EqualsWithCompare:
                 case ConditionCompareType.NotEqualsWithCompare:
-                    this.CompareType = CompareType;
+                    this.compareType = compareType;
                     break;
             }
         }
     }
     public class IntTransitionCondition : TransitionCondition<int>
     {
-        public IntTransitionCondition(FsmConditionValue<int> ConditionValue, object CompareValue, ConditionCompareType CompareType) : base(ConditionValue, CompareValue, CompareType) { }
-        protected override void SetConditionType(ConditionCompareType CompareType)
+        public IntTransitionCondition(FsmConditionValue<int> conditionValue, object compareValue, ConditionCompareType compareType) : base(conditionValue, compareValue, compareType) { }
+        protected override void SetConditionType(ConditionCompareType compareType)
         {
-            this.CompareType = CompareType;
+            this.compareType = compareType;
         }
         public override bool IsMetCondition()
         {
-            switch (CompareType)
+            switch (compareType)
             {
                 case ConditionCompareType.SmallerThanCompare:
-                    return Value < CompareValue;
+                    return value < compareValue;
                 case ConditionCompareType.BiggerThanCompare:
-                    return Value > CompareValue;
+                    return value > compareValue;
                 case ConditionCompareType.EqualsWithCompare:
-                    return CompareValue == Value;
+                    return compareValue == value;
                 case ConditionCompareType.NotEqualsWithCompare:
-                    return CompareValue != Value;
+                    return compareValue != value;
                 default:
                     return false;
             }
@@ -89,23 +129,23 @@ namespace IFramework.Modules.Fsm
     }
     public class FloatTransitionCondition : TransitionCondition<float>
     {
-        public FloatTransitionCondition(FsmConditionValue<float> ConditionValue, object CompareValue, ConditionCompareType CompareType) : base(ConditionValue, CompareValue, CompareType) { }
-        protected override void SetConditionType(ConditionCompareType CompareType)
+        public FloatTransitionCondition(FsmConditionValue<float> conditionValue, object compareValue, ConditionCompareType compareType) : base(conditionValue, compareValue, compareType) { }
+        protected override void SetConditionType(ConditionCompareType compareType)
         {
-            this.CompareType = CompareType;
+            this.compareType = compareType;
         }
         public override bool IsMetCondition()
         {
-            switch (CompareType)
+            switch (compareType)
             {
                 case ConditionCompareType.SmallerThanCompare:
-                    return Value < CompareValue;
+                    return value < compareValue;
                 case ConditionCompareType.BiggerThanCompare:
-                    return Value > CompareValue;
+                    return value > compareValue;
                 case ConditionCompareType.EqualsWithCompare:
-                    return CompareValue == Value;
+                    return compareValue == value;
                 case ConditionCompareType.NotEqualsWithCompare:
-                    return CompareValue != Value;
+                    return compareValue != value;
                 default:
                     return false;
             }
@@ -113,33 +153,35 @@ namespace IFramework.Modules.Fsm
     }
     public class BoolTransitionCondition : TransitionCondition<bool>
     {
-        public BoolTransitionCondition(FsmConditionValue<bool> ConditionValue, object CompareValue, ConditionCompareType CompareType) : base(ConditionValue, CompareValue, CompareType) { }
+        public BoolTransitionCondition(FsmConditionValue<bool> conditionValue, object compareValue, ConditionCompareType compareType) : base(conditionValue, compareValue, compareType) { }
         public override bool IsMetCondition()
         {
-            switch (CompareType)
+            switch (compareType)
             {
                 case ConditionCompareType.EqualsWithCompare:
-                    return CompareValue == Value;
+                    return compareValue == value;
                 case ConditionCompareType.NotEqualsWithCompare:
-                    return CompareValue != Value;
+                    return compareValue != value;
                 case ConditionCompareType.SmallerThanCompare:
                 case ConditionCompareType.BiggerThanCompare:
                 default:
                     return false;
             }
         }
-        protected override void SetConditionType(ConditionCompareType CompareType)
+        protected override void SetConditionType(ConditionCompareType compareType)
         {
-            switch (CompareType)
+            switch (compareType)
             {
                 case ConditionCompareType.SmallerThanCompare:
                 case ConditionCompareType.BiggerThanCompare:
-                    throw new Exception("The Type is Illeagal whith " + Conditiontype);
+                    throw new Exception("The Type is Illeagal whith " + type);
                 case ConditionCompareType.EqualsWithCompare:
                 case ConditionCompareType.NotEqualsWithCompare:
-                    this.CompareType = CompareType;
+                    this.compareType = compareType;
                     break;
             }
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

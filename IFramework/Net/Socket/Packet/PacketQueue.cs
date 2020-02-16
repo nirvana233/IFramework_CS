@@ -10,23 +10,23 @@ using System.Collections.Generic;
 
 namespace IFramework.Net
 {
-     class PacketQueue
+    class PacketQueue
     {
-        private CycQueue<byte> bucket = null;
-        private Packet pkg = null;
+        private CycQueue<byte> _bucket = null;
+        private Packet _pkg = null;
         public PacketQueue(int maxCount)
         {
-            bucket = new CycQueue<byte>(maxCount);
-            pkg = new Packet();
+            _bucket = new CycQueue<byte>(maxCount);
+            _pkg = new Packet();
         }
-        public int Count { get { return bucket.Length; } }
+        public int count { get { return _bucket.Length; } }
         public bool Set(byte[] buffer, int offset, int size)
         {
-            if (bucket.Capacity - bucket.Length < size)
+            if (_bucket.Capacity - _bucket.Length < size)
                 return false;
             for (int i = 0; i < size; ++i)
             {
-                bool rt = bucket.EnQueue(buffer[i + offset]);
+                bool rt = _bucket.EnQueue(buffer[i + offset]);
                 if (rt == false)
                     return false;
             }
@@ -36,28 +36,28 @@ namespace IFramework.Net
         {
             int _head = -1, _pos = 0;
             List<Packet> pkgs = new List<Packet>(2);
-            again:
-            _head = bucket.DeSearchIndex(Packet.PackFlag, _pos);
+        again:
+            _head = _bucket.DeSearchIndex(Packet.packFlag, _pos);
             if (_head == -1) return pkgs;
-            int peek = bucket.PeekIndex(Packet.PackFlag, 1);
+            int peek = _bucket.PeekIndex(Packet.packFlag, 1);
             if (peek >= 0)
             {
                 _pos = 1;
                 goto again;
             }
             //数据包长度
-            int pkgLength = CheckCompletePackageLength(bucket.Array, _head);
+            int pkgLength = CheckCompletePackageLength(_bucket.Array, _head);
             if (pkgLength == 0) return pkgs;
             //读取完整包并移出队列
-            byte[] array = bucket.DeQueue(pkgLength);
+            byte[] array = _bucket.DeQueue(pkgLength);
             if (array == null) return pkgs;
             //解析
-            bool rt = pkg.UnPack(array, 0, array.Length);
+            bool rt = _pkg.UnPack(array, 0, array.Length);
             if (rt)
             {
-                pkgs.Add(pkg);
+                pkgs.Add(_pkg);
             }
-            if (bucket.Length > 0)
+            if (_bucket.Length > 0)
             {
                 _pos = 0;
                 goto again;
@@ -73,22 +73,22 @@ namespace IFramework.Net
                 byte flag = 0;
                 do
                 {
-                    if (*(src + head) == Packet.PackFlag)
+                    if (*(src + head) == Packet.packFlag)
                     {
                         ++flag;
                         if (flag == 2) return cnt + 1;
                     }
-                    head = (head + 1) % bucket.Capacity;
+                    head = (head + 1) % _bucket.Capacity;
                     ++cnt;
                 }
-                while (cnt <= bucket.Length);
+                while (cnt <= _bucket.Length);
                 cnt = 0;
                 return cnt;
             }
         }
         public void Clear()
         {
-            bucket.Clear();
+            _bucket.Clear();
         }
     }
 

@@ -3,52 +3,64 @@ using System.Collections.Generic;
 
 namespace IFramework
 {
-    public delegate void ObjPoolEventDel<T>(T t, IEventArgs arg, params object[] param);
-
-    public abstract class ObjectPool<T> : IDisposable
+    /// <summary>
+    /// list对象池
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class ListPool<T> : ObjectPool<T>
     {
-        public event ObjPoolEventDel<T> OnClearObject;
-        public event ObjPoolEventDel<T> OnGetObject;
-        public event ObjPoolEventDel<T> OnSetObject;
-        public event ObjPoolEventDel<T> OnCreateObject;
-
-        public Type type { get { return typeof(T); } }
-        protected int capcity;
-        protected List<T> pool;
-        protected LockParam lockParam;
-        public int Capcity { get { return capcity; } set { capcity = value; } }
-        public int Count { get { return pool.Count; } }
-        public ObjectPool() { pool = new List<T>(); lockParam = new LockParam(); }
-        public ObjectPool(int capcity) : this() { this.capcity = capcity; }
-        public void Dispose()
-        {
-
-            OnDispose();
-            Clear();
-            pool = null;
-            lockParam = null;
-            OnClearObject = null;
-            OnGetObject = null;
-            OnSetObject = null;
-            OnCreateObject = null;
-        }
-        protected virtual void OnDispose() { }
-
-
-        public T Peek()
+        protected ListPool() : base() { }
+        /// <summary>
+        /// 获取
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="arg"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public T Get(Predicate<T> p, IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
             {
-                return pool.QueuePeek();
+                var ts = pool.FindAll(p);
+                if (ts.Count < 0)
+                {
+                    T t = ts[0];
+                    pool.Remove(t);
+                    OnGet(t, arg);
+                    return t;
+                }
+                return default(T);
             }
         }
-        public T Peek(Predicate<T> p)
+        /// <summary>
+        /// 清除
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="arg"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public bool Clear(T t, IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
             {
-                return pool.Find(p);
+                if (pool.Contains(t))
+                {
+                    pool.Remove(t);
+                    OnClear(t, arg);
+                    return true;
+                }
+                else
+                {
+                    Log.E("Clear Err: Not Exist " + type);
+                    return false;
+                }
             }
         }
+        /// <summary>
+        /// 是否包含
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public bool Contains(T t)
         {
             using (LockWait wait = new LockWait(ref lockParam))
@@ -56,6 +68,10 @@ namespace IFramework
                 return pool.Contains(t);
             }
         }
+        /// <summary>
+        /// 遍历
+        /// </summary>
+        /// <param name="action"></param>
         public void ForEach(Action<T> action)
         {
             using (LockWait wait = new LockWait(ref lockParam))
@@ -63,6 +79,11 @@ namespace IFramework
                 pool.ForEach(action);
             }
         }
+        /// <summary>
+        /// 是否包含
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public bool Contains(Predicate<T> p)
         {
             using (LockWait wait = new LockWait(ref lockParam))
@@ -71,8 +92,113 @@ namespace IFramework
                 return list != null && list.Count > 0;
             }
         }
+        /// <summary>
+        /// 获取第一个元素
+        /// </summary>
+        /// <returns></returns>
+        public T Peek()
+        {
+            using (LockWait wait = new LockWait(ref lockParam))
+            {
+                return pool.QueuePeek();
+            }
+        }
+    }
+    /// <summary>
+    /// 有容量的对象池
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class CapicityPool<T>: ObjectPool<T>
+    {
+        private int _capcity;
+        /// <summary>
+        /// 存储容量
+        /// </summary>
+        public int capcity { get { return _capcity; } set { _capcity = value; } }
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="capcity"></param>
+        protected CapicityPool(int capcity) : base() { this._capcity = capcity; }
+        /// <summary>
+        /// 回收，当数量超过回收失败
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        protected override bool OnSet(T t, IEventArgs arg)
+        {
+             base.OnSet(t, arg);
+            return count <= capcity;
+        }
+    }
+    /// <summary>
+    /// 基础对象池
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class ObjectPool<T> : IDisposable
+    {
+        /// <summary>
+        /// 清理数据时
+        /// </summary>
+        public event Action<T,IEventArgs> onClearObject;
+        /// <summary>
+        /// 获取数据时
+        /// </summary>
+        public event Action<T, IEventArgs> onGetObject;
+        /// <summary>
+        /// 当回收数据时
+        /// </summary>
+        public event Action<T, IEventArgs> onSetObject;
+        /// <summary>
+        /// 当清理创建数据时
+        /// </summary>
+        public event Action<T, IEventArgs> onCreateObject;
+        /// <summary>
+        /// 数据容器
+        /// </summary>
+        protected List<T> pool;
+        protected LockParam lockParam;
+        /// <summary>
+        /// 存储数据类型
+        /// </summary>
+        public Type type { get { return typeof(T); } }
 
-        public T Get(IEventArgs arg = null, params object[] param)
+        /// <summary>
+        /// 池子数量
+        /// </summary>
+        public int count { get { return pool.Count; } }
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        protected ObjectPool() { pool = new List<T>(); lockParam = new LockParam(); }
+        /// <summary>
+        /// 释放
+        /// </summary>
+        public void Dispose()
+        {
+
+            OnDispose();
+            Clear();
+            pool = null;
+            lockParam = null;
+            onClearObject = null;
+            onGetObject = null;
+            onSetObject = null;
+            onCreateObject = null;
+        }
+        /// <summary>
+        /// 释放时
+        /// </summary>
+        protected virtual void OnDispose() { }
+
+        /// <summary>
+        /// 获取
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public T Get(IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
             {
@@ -83,36 +209,28 @@ namespace IFramework
                 }
                 else
                 {
-                    t = CreatNew(arg, param);
-                    OnCreate(t, arg, param);
+                    t = CreatNew(arg);
+                    OnCreate(t, arg);
                 }
-                OnGet(t, arg, param);
+                OnGet(t, arg);
                 return t;
             }
         }
-        public T Get(Predicate<T> p, IEventArgs arg = null, params object[] param)
-        {
-            using (LockWait wait = new LockWait(ref lockParam))
-            {
-                var ts = pool.FindAll(p);
-                if (ts.Count < 0)
-                {
-                    T t = ts[0];
-                    pool.Remove(t);
-                    OnGet(t, arg, param);
-                    return t;
-                }
-                return default(T);
-            }
-        }
 
-        public bool Set(T t, IEventArgs arg = null, params object[] param)
+        /// <summary>
+        /// 回收
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="arg"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public bool Set(T t, IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
             {
                 if (!pool.Contains(t))
                 {
-                    if (OnSet(t, arg, param))
+                    if (OnSet(t, arg))
                     {
                         pool.Enqueue(t);
                     }
@@ -125,35 +243,30 @@ namespace IFramework
                 }
             }
         }
-        public bool Clear(T t, IEventArgs arg = null, params object[] param)
-        {
-            using (LockWait wait = new LockWait(ref lockParam))
-            {
-                if (pool.Contains(t))
-                {
-                    pool.Remove(t);
-                    OnClear(t, arg, param);
-                    return true;
-                }
-                else
-                {
-                    Log.E("Clear Err: Not Exist " + type);
-                    return false;
-                }
-            }
-        }
-        public void Clear(IEventArgs arg = null, params object[] param)
+
+        /// <summary>
+        /// 清除
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <param name="param"></param>
+        public void Clear(IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
             {
                 while (pool.Count > 0)
                 {
                     var t = pool.Dequeue();
-                    OnClear(t, arg, param);
+                    OnClear(t, arg);
                 }
             }
         }
-        public void Clear(int count, IEventArgs arg = null, params object[] param)
+        /// <summary>
+        /// 清除
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="arg"></param>
+        /// <param name="param"></param>
+        public void Clear(int count, IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
             {
@@ -161,32 +274,190 @@ namespace IFramework
                 while (pool.Count > count)
                 {
                     var t = pool.Dequeue();
-                    OnClear(t, arg, param);
+                    OnClear(t, arg);
                 }
             }
         }
-
-        protected abstract T CreatNew(IEventArgs arg, params object[] param);
-        protected virtual void OnClear(T t, IEventArgs arg, params object[] param)
+        /// <summary>
+        /// 创建一个新对象
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        protected abstract T CreatNew(IEventArgs arg);
+        /// <summary>
+        /// 数据被清除时
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="arg"></param>
+        protected virtual void OnClear(T t, IEventArgs arg)
         {
-            if (OnClearObject != null) OnClearObject(t, arg, param);
+            if (onClearObject != null) onClearObject(t, arg);
 
         }
-        protected virtual bool OnSet(T t, IEventArgs arg, params object[] param)
+        /// <summary>
+        /// 数据被回收时，返回true可以回收
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        protected virtual bool OnSet(T t, IEventArgs arg)
         {
-            if (OnSetObject != null) OnSetObject(t, arg, param);
+            if (onSetObject != null) onSetObject(t, arg);
             return true;
         }
-        protected virtual void OnGet(T t, IEventArgs arg, params object[] param)
+        /// <summary>
+        /// 数据被获取时
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="arg"></param>
+        protected virtual void OnGet(T t, IEventArgs arg)
         {
-            if (OnGetObject != null) OnGetObject(t, arg, param);
+            if (onGetObject != null) onGetObject(t, arg);
 
         }
-        protected virtual void OnCreate(T t, IEventArgs arg, params object[] param)
+        /// <summary>
+        /// 数据被创建时
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="arg"></param>
+        protected virtual void OnCreate(T t, IEventArgs arg)
         {
-            if (OnCreateObject != null) OnCreateObject(t, arg, param);
+            if (onCreateObject != null) onCreateObject(t, arg);
         }
     }
+    /// <summary>
+    /// 统一类型的对象池
+    /// </summary>
+    /// <typeparam name="T">基础类型</typeparam>
+    public abstract class BaseTypePool<T> : IDisposable
+    {
+        interface IBaseTypeInnerPool { }
+        public class BaseTypeInnerPool<Object> : ObjectPool<Object>, IBaseTypeInnerPool where Object : T
+        {
+            public BaseTypeInnerPool(Type objType)
+            {
+                this.objType = objType;
+            }
+            protected Type objType;
+            protected override Object CreatNew(IEventArgs arg)
+            {
+                return (Object)Activator.CreateInstance(objType);
+            }
+            protected override void OnDispose()
+            {
+                base.OnDispose();
 
+
+                for (int i = 0; i < pool.Count; i++)
+                {
+                    IDisposable dispose = pool[i] as IDisposable;
+                    if (dispose != null)
+                        dispose.Dispose();
+                }
+            }
+
+        }
+        private Dictionary<Type, IBaseTypeInnerPool> _poolMap;
+        protected LockParam para = new LockParam();
+
+        public BaseTypeInnerPool<T> this[Type type]
+        {
+            get { return GetPool(type); }
+            set { SetPool(type, value); }
+        }
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        public BaseTypePool()
+        {
+            _poolMap = new Dictionary<Type, IBaseTypeInnerPool>();
+        }
+        /// <summary>
+        /// 设置内部对象池
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="pool"></param>
+        public virtual void SetPool(Type type, BaseTypeInnerPool<T> pool)
+        {
+            if (!_poolMap.ContainsKey(type))
+                _poolMap.Add(type, pool);
+            else
+                _poolMap[type] = pool;
+        }
+        /// <summary>
+        /// 获取内部对象池
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public virtual BaseTypeInnerPool<T> GetPool(Type type)
+        {
+            using (new LockWait(ref para))
+            {
+                if (!_poolMap.ContainsKey(type))
+                    _poolMap.Add(type, new BaseTypeInnerPool<T>(type));
+                return _poolMap[type] as BaseTypeInnerPool<T>;
+            }
+        }
+        /// <summary>
+        /// 获取数据
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public T Get(Type type,IEventArgs arg=null)
+        {
+            T recyclable = GetPool(type).Get(arg);
+            return recyclable;
+        }
+        /// <summary>
+        /// 获取数据
+        /// </summary>
+        /// <typeparam name="Object"></typeparam>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public Object Get<Object>(IEventArgs arg = null) where Object : T
+        {
+            Object t = (Object)GetPool(typeof(Object)).Get(arg);
+            return t;
+        }
+        /// <summary>
+        /// 回收数据
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="t"></param>
+        /// <param name="arg"></param>
+        public void Set(Type type, T t, IEventArgs arg = null)
+        {
+            GetPool(type).Set(t,arg);
+        }
+        /// <summary>
+        /// 回收数据
+        /// </summary>
+        /// <typeparam name="Object"></typeparam>
+        /// <param name="t"></param>
+        /// <param name="arg"></param>
+        public void Set<Object>(Object t, IEventArgs arg = null) where Object : T
+        {
+            Set(t.GetType(), t,arg);
+        }
+
+        /// <summary>
+        /// 释放
+        /// </summary>
+        public void Dispose()
+        {
+            using (new LockWait(ref para))
+            {
+                OnDispose();
+                foreach (var item in _poolMap.Values)
+                    (item as BaseTypeInnerPool<T>).Dispose();
+                _poolMap.Clear();
+            }
+        }
+        /// <summary>
+        /// 释放时
+        /// </summary>
+        protected virtual void OnDispose() { }
+    }
 
 }

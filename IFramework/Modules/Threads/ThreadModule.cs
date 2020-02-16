@@ -87,18 +87,16 @@ namespace IFramework.Modules.Threads
 
         private class Threads : SleepingPool<InnerThread>
         {
-            protected override InnerThread CreatNew(IEventArgs arg, params object[] param)
+            protected override InnerThread CreatNew(IEventArgs arg)
             {
                 return new InnerThread();
             }
         }
 
-        public bool isRunning { get { return enable; } }
         private int maxThreads = 8;
         private int ThreadCount;
         private Semaphore semaphore;
 
-        protected override bool needUpdate { get { return true; } }
 
         private Queue<ThreadArgs> CacheArgs;
         private Queue<ThreadArgs> RunningArgs;
@@ -144,6 +142,11 @@ namespace IFramework.Modules.Threads
             ThreadCache.Set(th);
             Interlocked.Decrement(ref ThreadCount);
         }
+        /// <summary>
+        /// 跑一个线程任务
+        /// </summary>
+        /// <param name="task"></param>
+        /// <param name="callback"></param>
         public void RunTask(Action task, Action callback)
         {
             lock (CacheArgs)

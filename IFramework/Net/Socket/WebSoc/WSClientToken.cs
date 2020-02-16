@@ -118,7 +118,7 @@ namespace IFramework.Net
         {
             if (IsConnected == false)
             {
-                string msg = encoding.GetString(seg.Buffer, seg.Offset, seg.Len);
+                string msg = encoding.GetString(seg.buffer, seg.offset, seg.count);
                 acceptInfo = new WebsocketFrame().ParseAcceptedFrame(msg);
 
                 if ((IsConnected = acceptInfo.IsHandShaked()))
@@ -140,8 +140,8 @@ namespace IFramework.Net
                 if (packet.OpCode == 0x01)
                 {
                     if (onReceivedString != null)
-                        onReceivedString(token, encoding.GetString(packet.Payload.Buffer,
-                        packet.Payload.Offset, packet.Payload.Len));
+                        onReceivedString(token, encoding.GetString(packet.Payload.buffer,
+                        packet.Payload.offset, packet.Payload.count));
 
                     return;
                 }
@@ -159,7 +159,7 @@ namespace IFramework.Net
                     SendPing();
                 }
 
-                if (onReceieve != null && packet.Payload.Len > 0)
+                if (onReceieve != null && packet.Payload.count > 0)
                     onReceieve(token, packet.Payload);
             }
         }

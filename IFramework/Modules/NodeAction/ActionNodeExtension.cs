@@ -7,7 +7,7 @@ namespace IFramework.Modules.NodeAction
     [FrameworkVersion(8)]
     public static class ActionNodeExtension
     {
-        public static IEnumerator IActionEnumerator<T>(this T self) where T : ActionNode
+        public static IEnumerator ActionEnumerator<T>(this T self) where T : ActionNode
         {
             while (self.MoveNext())
             {
@@ -16,12 +16,12 @@ namespace IFramework.Modules.NodeAction
         }
         public static T Run<T>(this T self, CoroutineModule moudle) where T : ActionNode
         {
-            moudle.StartCoroutine(self.IActionEnumerator());
+            moudle.StartCoroutine(self.ActionEnumerator());
             return self;
         }
         public static T Run<T>(this T self) where T : ActionNode
         {
-            self.env.modules.Coroutine.StartCoroutine(self.IActionEnumerator());
+            self.env.modules.Coroutine.StartCoroutine(self.ActionEnumerator());
             return self;
         }
 
@@ -112,6 +112,15 @@ namespace IFramework.Modules.NodeAction
             self.Append(node);
             return self;
         }
+        public static T Condition<T>(this T self, Func<bool> condition, Action callback, bool autoRecyle=false) where T : ContainerNode
+        {
+            ConditionNode node = Allocate<ConditionNode>(self.env);
+            node.Config(condition,callback, autoRecyle);
+            self.Append(node);
+            return self;
+        }
+
+
         public static T Repeat<T>(this T self, Action<RepeatNode> action, int repeat = 1, bool autoRecyle = false) where T : ContainerNode
         {
             RepeatNode node = Allocate<RepeatNode>(self.env);
@@ -121,7 +130,6 @@ namespace IFramework.Modules.NodeAction
             self.Append(node);
             return self;
         }
-
         public static T Sequence<T>(this T self, Action<SequenceNode> action, bool autoRecyle = false) where T : ContainerNode
         {
             SequenceNode node = Allocate<SequenceNode>(self.env);

@@ -73,7 +73,7 @@ namespace IFramework.Net
             try
             {
                 bool isWillEvent = true;
-                ArraySegment<byte>[] segItems = sendBuff.BuffToSegs(segBuff.Buffer, segBuff.Offset, segBuff.Len);
+                ArraySegment<byte>[] segItems = sendBuff.BuffToSegs(segBuff.buffer, segBuff.offset, segBuff.count);
                 foreach (var seg in segItems)
                 {
                     var SendArg = sendArgs.GetFreeArg((retry) => { return true; }, waiting);
@@ -85,7 +85,7 @@ namespace IFramework.Net
                     if (!sendBuff.WriteBuffer(SendArg, seg.Array, seg.Offset, seg.Count))
                     {
                         sendArgs.Set(SendArg);
-                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", sendBuff.BufferSize));
+                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", sendBuff.bufferSize));
                     }
                     if (SendArg.RemoteEndPoint != null)
                     {
@@ -129,7 +129,7 @@ namespace IFramework.Net
 
         public int SendSync(BufferSegment segBuff, IPEndPoint remoteEP)
         {
-            return sock.SendTo(segBuff.Buffer, segBuff.Offset, segBuff.Len, SocketFlags.None, remoteEP);
+            return sock.SendTo(segBuff.buffer, segBuff.offset, segBuff.count, SocketFlags.None, remoteEP);
         }
 
         //private Socket SocketVersion(IPEndPoint ips)

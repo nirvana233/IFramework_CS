@@ -3,20 +3,26 @@ using System.Collections;
 
 namespace IFramework.Modules.Coroutine
 {
+    /// <summary>
+    /// 携程 模拟
+    /// </summary>
     public class Coroutine
     {
-        internal CoroutineModule module;
-        internal IEnumerator routine;
-        private Coroutine innerAction;
-        private bool isDone;
-        public bool IsDone
+        internal CoroutineModule _module;
+        internal IEnumerator _routine;
+        private Coroutine _innerAction;
+        private bool _isDone;
+        /// <summary>
+        /// 是否完成
+        /// </summary>
+        public bool isDone
         {
-            get { return isDone; }
+            get { return _isDone; }
             internal set
             {
-                if (value != isDone)
+                if (value != _isDone)
                 {
-                    isDone = value;
+                    _isDone = value;
                     if (value)
                     {
                         if (onCompelete != null)
@@ -25,56 +31,63 @@ namespace IFramework.Modules.Coroutine
                 }
             }
         }
+        /// <summary>
+        /// 携程完成时候回调
+        /// </summary>
         public event Action onCompelete;
+        /// <summary>
+        /// 手动结束携程
+        /// </summary>
+        public void Stop()
+        {
+            _isDone = true;
+            _innerAction = null;
+            _routine = null;
+            _module.Set(this);
+            _module.update -= Update;
+        }
 
-        internal Coroutine(IEnumerator routine) { isDone = false; this.routine = routine; }
+
+        internal Coroutine(IEnumerator routine) { _isDone = false; this._routine = routine; }
 
         internal void Start()
         {
-            module.update += Update;
+            _module.update += Update;
         }
 
-        public void Stop()
-        {
-            isDone = true;
-            innerAction = null;
-            routine = null;
-            module.Set(this);
-            module.update -= Update;
-        }
 
         private void Update()
         {
-            if (innerAction == null)
+            if (_innerAction == null)
             {
-                if (!routine.MoveNext())
+                if (!_routine.MoveNext())
                 {
                     Stop();
                 }
-                if (isDone) return;
-                if (routine.Current != null)
+                if (_isDone) return;
+                if (_routine.Current != null)
                 {
-                    if (routine.Current is CoroutineInstruction)
-                        innerAction = module.Get(IsFinish(routine.Current as CoroutineInstruction));
-                    else if (routine.Current is IEnumerator)
-                        innerAction = module.Get(routine.Current as IEnumerator);
-                    else if (routine.Current is Coroutine)
-                        innerAction = module.Get(IsFinish(routine.Current as Coroutine));
+                    if (_routine.Current is CoroutineInstruction)
+                        _innerAction = _module.Get(IsFinish(_routine.Current as CoroutineInstruction));
+                    else if (_routine.Current is IEnumerator)
+                        _innerAction = _module.Get(_routine.Current as IEnumerator);
+                    else if (_routine.Current is Coroutine)
+                        _innerAction = _module.Get(IsFinish(_routine.Current as Coroutine));
                 }
             }
-            if (innerAction != null)
+            if (_innerAction != null)
             {
-                if (!innerAction.IsDone)
+                if (!_innerAction.isDone)
                 {
-                    innerAction.Update();
-                    if (innerAction.IsDone)
-                        innerAction = null;
+                    _innerAction.Update();
+                    if (_innerAction.isDone)
+                        _innerAction = null;
                 }
             }
         }
         private IEnumerator IsFinish(Coroutine coroutine)
         {
-            while (!coroutine.IsDone)
+            while (!coroutine.isDone)
             {
                 yield return false;
             }
@@ -83,7 +96,7 @@ namespace IFramework.Modules.Coroutine
 
         private IEnumerator IsFinish(CoroutineInstruction CoroutineActionInstruction)
         {
-            while (!CoroutineActionInstruction.IsDone)
+            while (!CoroutineActionInstruction.isDone)
             {
                 yield return false;
             }

@@ -3,22 +3,40 @@ using System.Collections.Generic;
 
 namespace IFramework.Modules
 {
-    public class FrameworkModuleContainer : IFrameworkModuleContaner
+    /// <summary>
+    /// 模块容器
+    /// </summary>
+    public class FrameworkModuleContainer :  IDisposable
     {
         private string _chunck;
         private bool _binded;
         private FrameworkEnvironment _env;
-
+        /// <summary>
+        /// 代码块
+        /// </summary>
         public string chunck { get { return _chunck; } }
+        /// <summary>
+        /// 环境
+        /// </summary>
         public FrameworkEnvironment env { get { return _env; } }
+        /// <summary>
+        /// 是否绑定环境
+        /// </summary>
         public bool binded { get { return _binded; } }
 
         private Dictionary<Type, List<FrameworkModule>> moudle_dic;
         private List<FrameworkModule> moudle_list;
-
+        /// <summary>
+        /// 查找时候模块不尊在
+        /// </summary>
         public event Action<Type, string> onModuleNotExist;
 
-
+        /// <summary>
+        /// 创建一个模块，创建完了自动绑定
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public FrameworkModule CreateModule(Type type,string name="")
         {
             var mou= FrameworkModule.CreatInstance(type, chunck,name);
@@ -34,6 +52,12 @@ namespace IFramework.Modules
         {
             get { return FindModule(type, name); }
         }
+        /// <summary>
+        /// 查找模块
+        /// </summary>
+        /// <param name="type">模块类型</param>
+        /// <param name="name">模块名称</param>
+        /// <returns></returns>
         public FrameworkModule FindModule(Type type, string name="")
         {
             if (string.IsNullOrEmpty(name))
@@ -65,6 +89,9 @@ namespace IFramework.Modules
             if (bind)
                 BindEnv();
         }
+        /// <summary>
+        /// 绑定环境
+        /// </summary>
         public void BindEnv()
         {
             if (_binded)
@@ -76,6 +103,10 @@ namespace IFramework.Modules
             _env.update += Update;
             _env.onDispose += Dispose;
         }
+        /// <summary>
+        /// 解绑环境
+        /// </summary>
+        /// <param name="dispose"></param>
         public void UnBindEnv(bool dispose=true)
         {
             if (_binded)
@@ -91,11 +122,13 @@ namespace IFramework.Modules
             if (dispose)
                 Dispose();
         }
-
+        /// <summary>
+        /// 释放
+        /// </summary>
         public void Dispose()
         {
             UnBindEnv(false);
-            for (int i = 0; i < moudle_list.Count; i++)
+            for (int i = moudle_list.Count-1; i >=0 ; i--)
             {
                 var m = moudle_list[i];
                 m.Dispose();
@@ -105,12 +138,15 @@ namespace IFramework.Modules
             moudle_list = null;
             moudle_dic = null;
         }
+        /// <summary>
+        /// 刷新
+        /// </summary>
         public void Update()
         {
             moudle_list.ForEach((m) => { m.Update(); });
         }
 
-        internal bool AddModule(FrameworkModule moudle)
+        internal bool SubscribeModule(FrameworkModule moudle)
         {
             Type type = moudle.GetType();
             if (!moudle_dic.ContainsKey(type))
@@ -129,7 +165,7 @@ namespace IFramework.Modules
                 return false;
             }
         }
-        internal bool RemoveBindModule(FrameworkModule moudle)
+        internal bool UnSubscribeBindModule(FrameworkModule moudle)
         {
             Type type = moudle.GetType();
             if (!moudle_dic.ContainsKey(type))

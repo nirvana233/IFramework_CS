@@ -5,46 +5,33 @@ namespace IFramework.Modules.NodeAction
     [FrameworkVersion(3)]
     public class EventNode : ActionNode
     {
-        public void Config(Action func, bool autoRecyle)
+        private Action _callback;
+        public Action callback { get { return _callback; } }
+
+        public void Config(Action callback, bool autoRecyle)
         {
-            this.func = func;
+            this._callback = callback;
             base.Config(autoRecyle);
         }
-       
-        private Action func;
+      
 
-        protected override void OnBegin()
-        {
-
-        }
-
-        protected override void OnCompelete()
-        {
-
-        }
 
         protected override void OnDataReset()
         {
             base.OnDataReset();
-            func = null;
+            _callback = null;
         }
 
         protected override bool OnMoveNext()
         {
-            
-            func.Invoke();
+            _callback.Invoke();
             return false;
         }
 
-        protected override void OnDispose()
-        {
-            
-        }
-
-        public override void OnNodeReset()
-        {
-            
-        }
+        protected override void OnBegin() { }
+        protected override void OnCompelete() { }
+        protected override void OnDispose() { }
+        protected override void OnNodeReset() { }
     }
 
 }

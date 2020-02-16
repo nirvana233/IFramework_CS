@@ -187,8 +187,8 @@ namespace IFramework.Net
                 if (packet.OpCode == 0x01)//text
                 {
                     if (onRecieveString != null)
-                        onRecieveString(token, encoding.GetString(seg.Buffer,
-                        seg.Offset, seg.Len));
+                        onRecieveString(token, encoding.GetString(seg.buffer,
+                        seg.offset, seg.count));
 
                     return;
                 }
@@ -206,7 +206,7 @@ namespace IFramework.Net
                     //  SendPing(session.sToken);
                 }
 
-                if (onReceieve != null && packet.Payload.Len > 0)
+                if (onReceieve != null && packet.Payload.count > 0)
                     onReceieve(token, packet.Payload);
             }
         }

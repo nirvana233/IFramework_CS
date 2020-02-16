@@ -1,5 +1,6 @@
 ﻿namespace IFramework
 {
+
     public interface ILoger
     {
         void Log(LogType logType, object messages ,params object[] paras);

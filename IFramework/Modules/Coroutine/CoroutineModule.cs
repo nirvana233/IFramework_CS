@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace IFramework.Modules.Coroutine
 {
-    internal interface ICoroutineModule
-    {
-        Coroutine StartCoroutine(IEnumerator routine);
-    }
-    public class CoroutineModule : FrameworkModule, ICoroutineModule
+    /// <summary>
+    /// 携程模块
+    /// </summary>
+    [FrameworkVersion(8)]
+    public class CoroutineModule : FrameworkModule
     {
         class CoroutinePool : IDisposable
         {
@@ -35,30 +35,35 @@ namespace IFramework.Modules.Coroutine
         }
 
       
-        private CoroutinePool pool;
+        private CoroutinePool _pool;
 
-        protected override bool needUpdate { get { return true; } }
-
-        internal Coroutine Get(IEnumerator routine)
-        {
-            var coroutine = pool.Get(routine);
-            coroutine.routine = routine;
-            coroutine.IsDone = false;
-            coroutine.module = this;
-            return coroutine;
-        }
-        internal void Set(Coroutine routine)
-        {
-            pool.Set(routine);
-        }
-
-
+        /// <summary>
+        /// 开启一个携程
+        /// </summary>
+        /// <param name="routine"></param>
+        /// <returns></returns>
         public Coroutine StartCoroutine(IEnumerator routine)
         {
             var coroutine = Get(routine);
             coroutine.Start();
             return coroutine;
         }
+
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
+        internal Coroutine Get(IEnumerator routine)
+        {
+            var coroutine = _pool.Get(routine);
+            coroutine._routine = routine;
+            coroutine.isDone = false;
+            coroutine._module = this;
+            return coroutine;
+        }
+        internal void Set(Coroutine routine)
+        {
+            _pool.Set(routine);
+        }
+
         internal event Action update;
         protected override void OnUpdate()
         {
@@ -67,21 +72,30 @@ namespace IFramework.Modules.Coroutine
         }
         protected override void OnDispose()
         {
-            pool.Dispose();
+            _pool.Dispose();
         }
 
         protected override void Awake()
         {
-            pool = new CoroutinePool();
+            _pool = new CoroutinePool();
         }
+
     }
     [FrameworkVersion(3)]
     public static class CoroutineModuleExtension
     {
+        /// <summary>
+        /// 开启一个携程
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="envIndex">环境序号</param>
+        /// <param name="routine">迭代器</param>
+        /// <returns></returns>
         public static Coroutine StartCoroutine(this object obj,int envIndex,IEnumerator routine)
         {
             FrameworkEnvironment _env = Framework.GetEnv(envIndex);
             return _env.modules.Coroutine.StartCoroutine(routine);
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

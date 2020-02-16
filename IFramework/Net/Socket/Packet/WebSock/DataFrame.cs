@@ -59,13 +59,13 @@ namespace IFramework.Net
         public byte[] EncodingToBytes()
         {
             if (Payload == null
-                || Payload.Buffer.LongLength != PayloadLength)
+                || Payload.buffer.LongLength != PayloadLength)
                 throw new Exception("payload buffer error");
 
 
-            if (Payload.Len > 0)
+            if (Payload.count > 0)
             {
-                PayloadLength = Payload.Len;
+                PayloadLength = Payload.count;
             }
 
             long headLen = (Mask ? 6 : 2);
@@ -121,14 +121,14 @@ namespace IFramework.Net
 
                 for (long i = 0; i < PayloadLength; ++i)
                 {
-                    buffer[headLen + i] = (byte)(Payload.Buffer[i + Payload.Offset] ^ MaskKey[i % 4]);
+                    buffer[headLen + i] = (byte)(Payload.buffer[i + Payload.offset] ^ MaskKey[i % 4]);
                 }
             }
             else
             {
                 for (long i = 0; i < PayloadLength; ++i)
                 {
-                    buffer[headLen + i] = Payload.Buffer[i + Payload.Offset];
+                    buffer[headLen + i] = Payload.buffer[i + Payload.offset];
                 }
             }
             return buffer;
@@ -136,18 +136,18 @@ namespace IFramework.Net
 
         public bool DecodingFromBytes(BufferSegment data, bool isMaskResolve = true)
         {
-            if (data.Len < 4) return false;
+            if (data.count < 4) return false;
 
-            int pos = data.Offset;
+            int pos = data.offset;
 
-            IsEof = (data.Buffer[pos] >> 7) == 1;
-            OpCode = (byte)(data.Buffer[pos] & 0xf);
+            IsEof = (data.buffer[pos] >> 7) == 1;
+            OpCode = (byte)(data.buffer[pos] & 0xf);
 
-            Mask = (data.Buffer[++pos] >> 7) == 1;
-            PayloadLength = (data.Buffer[pos] & 0x7f);
+            Mask = (data.buffer[++pos] >> 7) == 1;
+            PayloadLength = (data.buffer[pos] & 0x7f);
 
             //校验截取长度
-            if (PayloadLength >= data.Len) return false;
+            if (PayloadLength >= data.count) return false;
 
             ++pos;
             //数据包长度超过126，需要解析附加数据
@@ -157,20 +157,20 @@ namespace IFramework.Net
             }
             if (PayloadLength == 126)
             {
-                PayloadLength = data.Buffer.ToUInt16(pos);// BitConverter.ToUInt16(segOffset.buffer, pos);
+                PayloadLength = data.buffer.ToUInt16(pos);// BitConverter.ToUInt16(segOffset.buffer, pos);
                 pos += 2;
             }
             else if (PayloadLength == 127)
             {
-                PayloadLength = (long)data.Buffer.ToUInt64(pos);
+                PayloadLength = (long)data.buffer.ToUInt64(pos);
                 pos += 8;
             }
 
             Payload = new BufferSegment()
             {
-                Offset = pos,
-                Buffer = data.Buffer,
-                Len = (int)PayloadLength
+                offset = pos,
+                buffer = data.buffer,
+                count = (int)PayloadLength
             };
 
             //数据体
@@ -178,14 +178,14 @@ namespace IFramework.Net
             {
                 //获取掩码密钥
                 MaskKey = new byte[4];
-                MaskKey[0] = data.Buffer[pos];
-                MaskKey[1] = data.Buffer[pos + 1];
-                MaskKey[2] = data.Buffer[pos + 2];
-                MaskKey[3] = data.Buffer[pos + 3];
+                MaskKey[0] = data.buffer[pos];
+                MaskKey[1] = data.buffer[pos + 1];
+                MaskKey[2] = data.buffer[pos + 2];
+                MaskKey[3] = data.buffer[pos + 3];
                 pos += 4;
 
-                Payload.Buffer = data.Buffer;
-                Payload.Offset = pos;
+                Payload.buffer = data.buffer;
+                Payload.offset = pos;
                 if (isMaskResolve)
                 {
                     long p = 0;
@@ -194,14 +194,14 @@ namespace IFramework.Net
                     {
                         p = (long)pos + i;
 
-                        Payload.Buffer[p] = (byte)(Payload.Buffer[p] ^ MaskKey[i % 4]);
+                        Payload.buffer[p] = (byte)(Payload.buffer[p] ^ MaskKey[i % 4]);
                     }
                 }
             }
             else
             {
-                Payload.Buffer = data.Buffer;
-                Payload.Offset = pos;
+                Payload.buffer = data.buffer;
+                Payload.offset = pos;
             }
 
             return true;
@@ -270,10 +270,10 @@ namespace IFramework.Net
             var buf = encoding.GetBytes(content);
             Payload = new BufferSegment()
             {
-                Buffer = buf
+                buffer = buf
             };
 
-            PayloadLength = Payload.Buffer.LongLength;
+            PayloadLength = Payload.buffer.LongLength;
 
             return new BufferSegment(EncodingToBytes());
         }
@@ -284,9 +284,9 @@ namespace IFramework.Net
 
             Payload = new BufferSegment()
             {
-                Buffer = buf
+                buffer = buf
             };
-            PayloadLength = Payload.Buffer.LongLength;
+            PayloadLength = Payload.buffer.LongLength;
 
             return new BufferSegment(EncodingToBytes());
         }
@@ -296,14 +296,14 @@ namespace IFramework.Net
             OpCode = (byte)code;
 
             Payload = data;
-            PayloadLength = Payload.Buffer.LongLength;
+            PayloadLength = Payload.buffer.LongLength;
 
             return new BufferSegment(EncodingToBytes());
         }
 
         public AccessInfo GetHandshakePackage(BufferSegment segOffset)
         {
-            string msg = encoding.GetString(segOffset.Buffer, segOffset.Offset, segOffset.Len);
+            string msg = encoding.GetString(segOffset.buffer, segOffset.offset, segOffset.count);
 
             string[] items = msg.Split(BaseInfo.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             if (items.Length < 6)

@@ -14,7 +14,7 @@ namespace IFramework.Net
     {
         private PacketQueue packetQueue;
         private LockParam lockParam;
-        public int Count { get { return packetQueue.Count; } }
+        public int count { get { return packetQueue.count; } }
         public PacketReader(int capacity = 128)
         {
             if (capacity < 128) capacity = 128;

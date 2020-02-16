@@ -3,8 +3,18 @@ using System.Reflection;
 
 namespace IFramework.Modules
 {
-    public abstract class FrameworkModule : IFrameworkModule
+    /// <summary>
+    /// 模块
+    /// </summary>
+    public abstract class FrameworkModule : IDisposable
     {
+        /// <summary>
+        /// 创建实例
+        /// </summary>
+        /// <param name="type">模块类型</param>
+        /// <param name="chunck">代码块</param>
+        /// <param name="name">模块名称</param>
+        /// <returns></returns>
         public static FrameworkModule CreatInstance(Type type, string chunck,string name="")
         {
             FrameworkModule moudle = Activator.CreateInstance(type,
@@ -30,12 +40,21 @@ namespace IFramework.Modules
 
             return moudle;
         }
+        /// <summary>
+        /// 创建实例
+        /// </summary>
+        /// <param name="chunck">代码块</param>
+        /// <param name="name">模块名称</param>
+        /// <returns></returns>
         public static T CreatInstance<T>(string chunck ,string name="") where T : FrameworkModule
         {
             return CreatInstance(typeof(T), chunck,name) as T;
         }
 
-
+        /// <summary>
+        /// 绑定模块容器
+        /// </summary>
+        /// <param name="container"></param>
         public void Bind(FrameworkModuleContainer container)
         {
             if (this._container!=null)
@@ -44,7 +63,7 @@ namespace IFramework.Modules
                 return;
             }
 
-            if (container.AddModule(this))
+            if (container.SubscribeModule(this))
             {
                 this._binded = true;
                 this._chunck = container.chunck;
@@ -53,12 +72,16 @@ namespace IFramework.Modules
             }
             
         }
+        /// <summary>
+        /// 解除绑定模块容器
+        /// </summary>
+        /// <param name="dispose"></param>
         public void UnBind(bool dispose=true)
         {
             if (!binded) return;
             if (binded && this._container != null)
             {
-                this._container.RemoveBindModule(this);
+                this._container.UnSubscribeBindModule(this);
                 this._binded = false;
                 this._container = null;
             }
@@ -74,13 +97,37 @@ namespace IFramework.Modules
         private string _chunck;
         private string _moudleType;
         private bool _binded;
+        /// <summary>
+        /// 是否需要不断刷新
+        /// </summary>
         protected virtual bool needUpdate { get { return true; } }
-
+        /// <summary>
+        /// 模块类型
+        /// </summary>
         public string moudeType { get { return _moudleType; } }
+        /// <summary>
+        /// 代码块
+        /// </summary>
         public string chunck { get { return _chunck; } }
+        /// <summary>
+        /// 模块名
+        /// </summary>
         public string name { get { return _name; } set { _name = value; } }
+        /// <summary>
+        /// 是否绑定了
+        /// </summary>
         public bool binded { get { return _binded; } }
+        /// <summary>
+        /// 是否被释放
+        /// </summary>
         public bool disposed { get { return _disposed; } }
+        /// <summary>
+        /// 模块所处的容器
+        /// </summary>
+        public FrameworkModuleContainer container { get { return _container; } }
+        /// <summary>
+        /// 开启关闭 Update
+        /// </summary>
         public bool enable
         {
             get { return _enable; }
@@ -94,12 +141,15 @@ namespace IFramework.Modules
                     OnDisable();
             }
         }
-        public FrameworkModuleContainer container { get { return _container; } }
-
+        /// <summary>
+        /// 改变 enable
+        /// </summary>
+        /// <param name="enable"></param>
         public void SetActive(bool enable) { this.enable = enable; }
 
-        protected FrameworkModule() { }
-
+        /// <summary>
+        /// 释放
+        /// </summary>
         public void Dispose()
         {
             enable = false;
@@ -108,6 +158,9 @@ namespace IFramework.Modules
             _disposed = true;
             _name = string.Empty;
         }
+        /// <summary>
+        /// 刷新
+        /// </summary>
         public void Update()
         {
             if (!needUpdate || !enable || disposed) return;
@@ -116,11 +169,13 @@ namespace IFramework.Modules
 
 
 
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected abstract void Awake();
         protected abstract void OnDispose();
         protected virtual void OnEnable() { }
         protected virtual void OnDisable() { }
         protected abstract void OnUpdate();
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
     }
 

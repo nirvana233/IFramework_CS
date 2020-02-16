@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace IFramework.Modules.NodeAction
 {
-    public abstract class ActionNode :RecyclableObject, IActionNode,IDisposable
+    public abstract class ActionNode :RecyclableObject,IDisposable
     {
         private bool mOnBeginCalled;
 
@@ -53,19 +53,18 @@ namespace IFramework.Modules.NodeAction
             }
             return !_isDone && !recyled && !disposed;
         }
+        public void NodeReset()
+        {
+            mOnBeginCalled = false;
+            _isDone = false;
+            OnNodeReset();
+        }
 
         public void Config(bool autoRecyle)
         {
             this._autoRecyle = autoRecyle;
             SetDataDirty();
         }
-
-
-        protected abstract void OnBegin();
-        protected abstract void OnCompelete();
-
-        protected abstract bool OnMoveNext();
-        protected abstract void OnDispose();
 
         protected override void OnDataReset()
         {
@@ -77,7 +76,6 @@ namespace IFramework.Modules.NodeAction
             onRecyle = null;
            
         }
-        
         protected override void OnRecyle()
         {
             if (onRecyle != null)
@@ -86,14 +84,48 @@ namespace IFramework.Modules.NodeAction
             _isDone = true;
         }
 
-        public abstract void OnNodeReset();
 
-        public void NodeReset()
-        {
-            mOnBeginCalled = false;
-            _isDone = false;
-            OnNodeReset();
-        }
+
+        protected abstract void OnBegin();
+        protected abstract void OnCompelete();
+        protected abstract bool OnMoveNext();
+        protected abstract void OnDispose();
+        protected abstract void OnNodeReset();
     }
+    public class ConditionNode : ActionNode
+    {
+        private Func<bool> _condition;
+        private Action _callback;
+        public Func<bool> condition { get { return _condition; } }
+        public Action callback { get { return _callback; } }
+        public void Config(Func<bool> condition, Action callback, bool autoRecyle)
+        {
+            this._condition = condition;
+            this._callback = callback;
+            base.Config(autoRecyle);
+        }
+        protected override void OnDataReset()
+        {
+            base.OnDataReset();
+            _callback = null;
+            _condition = null;
+        }
 
+        protected override void OnDispose()
+        {
+            _callback = null;
+            _condition = null;
+        }
+
+        protected override bool OnMoveNext()
+        {
+            if (_condition.Invoke())
+                _callback();
+            return false;
+        }
+
+        protected override void OnNodeReset() { }
+        protected override void OnBegin() { }
+        protected override void OnCompelete() { }
+    }
 }

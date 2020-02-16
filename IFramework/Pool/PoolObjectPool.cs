@@ -23,25 +23,25 @@ namespace IFramework
             {
                 CreaterDels.Add(createrDel);
             }
-            protected override void OnClear(IPoolObject t, IEventArgs arg, params object[] param)
+            protected override void OnClear(IPoolObject t, IEventArgs arg)
             {
-                base.OnClear(t, arg, param);
-                t.OnClear(arg, param);
+                base.OnClear(t, arg);
+                t.OnClear(arg);
             }
-            protected override void OnCreate(IPoolObject t, IEventArgs arg, params object[] param)
+            protected override void OnCreate(IPoolObject t, IEventArgs arg)
             {
-                base.OnCreate(t, arg, param);
-                t.OnCreate(arg, param);
+                base.OnCreate(t, arg);
+                t.OnCreate(arg);
             }
-            protected override void OnGet(IPoolObject t, IEventArgs arg, params object[] param)
+            protected override void OnGet(IPoolObject t, IEventArgs arg)
             {
-                base.OnGet(t, arg, param);
-                t.OnGet(arg, param);
+                base.OnGet(t, arg);
+                t.OnGet(arg);
             }
-            protected override bool OnSet(IPoolObject t, IEventArgs arg, params object[] param)
+            protected override bool OnSet(IPoolObject t, IEventArgs arg)
             {
-                base.OnSet(t, arg, param);
-                t.OnSet(arg, param);
+                base.OnSet(t, arg);
+                t.OnSet(arg);
                 return true;
             }
             protected override void OnDispose()
@@ -50,14 +50,14 @@ namespace IFramework
                 CreaterDels = null;
                 base.OnDispose();
             }
-            protected override IPoolObject CreatNew(IEventArgs arg, params object[] param)
+            protected override IPoolObject CreatNew(IEventArgs arg)
             {
                 IPoolObject t = default(IPoolObject);
                 bool have = false;
                 for (int i = 0; i < CreaterDels.Count; i++)
                 {
                     var del = CreaterDels[i];
-                    var o = del.Invoke(type, arg, param);
+                    var o = del.Invoke(type, arg);
                     if (o != null)
                     {
                         t = o;
@@ -91,25 +91,25 @@ namespace IFramework
             {
                 CreaterDels.Add(createrDel);
             }
-            protected override void OnClear(Object t, IEventArgs arg, params object[] param)
+            protected override void OnClear(Object t, IEventArgs arg)
             {
-                base.OnClear(t, arg, param);
-                t.OnClear(arg, param);
+                base.OnClear(t, arg);
+                t.OnClear(arg);
             }
-            protected override void OnCreate(Object t, IEventArgs arg, params object[] param)
+            protected override void OnCreate(Object t, IEventArgs arg)
             {
-                base.OnCreate(t, arg, param);
-                t.OnCreate(arg, param);
+                base.OnCreate(t, arg);
+                t.OnCreate(arg);
             }
-            protected override void OnGet(Object t, IEventArgs arg, params object[] param)
+            protected override void OnGet(Object t, IEventArgs arg)
             {
-                base.OnGet(t, arg, param);
-                t.OnGet(arg, param);
+                base.OnGet(t, arg);
+                t.OnGet(arg);
             }
-            protected override bool OnSet(Object t, IEventArgs arg, params object[] param)
+            protected override bool OnSet(Object t, IEventArgs arg)
             {
-                base.OnSet(t, arg, param);
-                t.OnSet(arg, param);
+                base.OnSet(t, arg);
+                t.OnSet(arg);
                 return true;
             }
             protected override void OnDispose()
@@ -118,13 +118,13 @@ namespace IFramework
                 CreaterDels = null;
                 base.OnDispose();
             }
-            protected override Object CreatNew(IEventArgs arg, params object[] param)
+            protected override Object CreatNew(IEventArgs arg)
             {
                 Object t = default(Object);
                 bool have = false;
                 for (int i = 0; i < CreaterDels.Count; i++)
                 {
-                    var o = CreaterDels[i].Invoke(type, arg, param);
+                    var o = CreaterDels[i].Invoke(type, arg);
                     if (o != null)
                     {
                         t = o;

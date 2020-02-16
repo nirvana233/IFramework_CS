@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IFramework.Modules.ECS
 {
-    [FrameworkVersion(10)]
+    /// <summary>
+    /// 模仿Ecs结构
+    /// </summary>
+    [FrameworkVersion(14)]
     public class ECSModule : FrameworkModule
     {
-        protected override bool needUpdate { get { return true; } }
         private Systems _systems;
         private Enitys _enitys;
         
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override void Awake()
         {
             _systems = new Systems();
@@ -26,29 +30,55 @@ namespace IFramework.Modules.ECS
         {
             _systems.Update();
         }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 
         private IComponent CreateComponent(Type type)
         {
             return Activator.CreateInstance(type) as IComponent;
         }
+        /// <summary>
+        /// 创建实体，创建完，注册
+        /// </summary>
+        /// <typeparam name="TEnity"></typeparam>
+        /// <returns></returns>
         public TEnity CreateEnity<TEnity>()where TEnity :Enity
         {
             TEnity enity = Activator.CreateInstance<TEnity>();
             SubscribeEnity(enity);
             return enity;
         }
+        /// <summary>
+        /// 注册实体
+        /// </summary>
+        /// <typeparam name="TEnity"></typeparam>
+        /// <param name="enity"></param>
         public void SubscribeEnity<TEnity>( TEnity enity) where TEnity : Enity
         {
             _enitys.AddEnity(enity);
-            enity.mou = this;
+            enity._mou = this;
         }
-
-        public void AddSystem(IExcuteSystem system)
+        /// <summary>
+        /// 解除注册实体
+        /// </summary>
+        /// <param name="enity"></param>
+        public void UnSubscribeEnity(Enity enity)
+        {
+            _enitys.UnSubscribeEnity(enity);
+        }
+        /// <summary>
+        /// 注册系统
+        /// </summary>
+        /// <param name="system"></param>
+        public void SubscribeSystem(IExcuteSystem system)
         {
             _systems.AddSystem(system);
         }
-        public void RemoveSystem(IExcuteSystem system)
+        /// <summary>
+        /// 解除注册系统
+        /// </summary>
+        /// <param name="system"></param>
+        public void UnSubscribeSystem(IExcuteSystem system)
         {
             _systems.RemoveSystem(system);
         }
@@ -75,10 +105,6 @@ namespace IFramework.Modules.ECS
         internal void RemoveComponent(Enity enity, Type type)
         {
             _enitys.RemoveComponent(enity, type);
-        }
-        internal void Destory(Enity enity)
-        {
-            _enitys.Destory(enity);
         }
         internal IEnumerable<Enity> GetEnitys()
         {
@@ -152,10 +178,14 @@ namespace IFramework.Modules.ECS
             }
             public void Dispose()
             {
-                foreach (var item in _enitys.Values)
+                var em= _enitys.Keys.ToList();
+             //   Log.E("dispose  " + GetType());
+
+                em.ForEach((e) =>
                 {
-                    item.Dispose();
-                }
+                    e.Destory();
+                });
+
                 _enitys.Clear();
                 _enitys = null;
                 _moudle = null;
@@ -166,7 +196,7 @@ namespace IFramework.Modules.ECS
                 if (!_enitys.ContainsKey(enity))
                     _enitys.Add(enity, new EnityComponents(_moudle));
             }
-            internal void Destory(Enity enity)
+            internal void UnSubscribeEnity(Enity enity)
             {
                 EnityComponents comp = FindComponent(enity);
                 if (comp == null) throw new Exception("Not Exist Enity");
@@ -232,6 +262,7 @@ namespace IFramework.Modules.ECS
 
             public void Dispose()
             {
+                _systems.ForEach((sys) => { sys.OnModuleDispose(); });
                 _systems.Clear();
                 _systems = null;
             }
@@ -251,7 +282,7 @@ namespace IFramework.Modules.ECS
                 if (_systems.Contains(system))
                     _systems.Remove(system);
             }
-        }
+        } 
 
     }
 }

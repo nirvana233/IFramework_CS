@@ -5,6 +5,9 @@ using System.Text;
 
 namespace IFramework.Modules.Timer
 {
+    /// <summary>
+    /// 时间任务状态
+    /// </summary>
     public enum TaskState
     {
         Running, Stoped, Paused, None
@@ -78,9 +81,9 @@ namespace IFramework.Modules.Timer
         }
         private class Timer:IDisposable
         {
-            private class TimeTaskPool : ObjectPool<FrameTask>
+            private class TimeTaskPool : ListPool<FrameTask>
             {
-                protected override FrameTask CreatNew(IEventArgs arg, params object[] param)
+                protected override FrameTask CreatNew(IEventArgs arg)
                 {
                     return new FrameTask();
                 }
@@ -183,27 +186,50 @@ namespace IFramework.Modules.Timer
                 Tasks.Clear();
             }
         }
-        protected override bool needUpdate { get { return true; } }
 
         private Timer timer;
-
+        /// <summary>
+        /// 运行一个时间任务
+        /// </summary>
+        /// <param name="space"></param>
+        /// <param name="action"></param>
+        /// <param name="onCompeleted"></param>
+        /// <param name="delay"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public string RunTask(double space, Action action, Action onCompeleted, double delay, int count)
         {
             return timer.RunTimerTask(space, action, onCompeleted, delay, count);
         }
-
+        /// <summary>
+        /// 结束一个时间任务
+        /// </summary>
+        /// <param name="id"></param>
         public void StopTask(string id)
         {
             timer.StopTimerTask(id);
         }
+        /// <summary>
+        /// 暂停一个时间任务
+        /// </summary>
+        /// <param name="id"></param>
         public void PauseTask(string id)
         {
             timer.PauseTimerTask(id);
         }
+        /// <summary>
+        /// 重启一个任务
+        /// </summary>
+        /// <param name="id"></param>
         public void UnPauseTask(string id)
         {
             timer.UnPauseTimerTask(id);
         }
+        /// <summary>
+        /// 获取任务的状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public TaskState GetTaskState(string id)
         {
             return timer.GetTaskState(id);

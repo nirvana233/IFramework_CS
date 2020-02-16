@@ -2,10 +2,10 @@
 {
     public interface IPoolObject
     {
-        void OnCreate(IEventArgs arg, params object[] param);
-        void OnGet(IEventArgs arg, params object[] param);
-        void OnSet(IEventArgs arg, params object[] param);
-        void OnClear(IEventArgs arg, params object[] param);
+        void OnCreate(IEventArgs arg);
+        void OnGet(IEventArgs arg);
+        void OnSet(IEventArgs arg);
+        void OnClear(IEventArgs arg);
     }
 
 }

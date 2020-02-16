@@ -27,17 +27,14 @@ namespace IFramework.Modules.NodeAction
             setTime = DateTime.Now;
             timeSpan = TimeSpan.Zero;
         }
-        protected override void OnCompelete() { }
 
-        protected override void OnDispose()
-        {
-            
-        }
-
-        public override void OnNodeReset()
+        protected override void OnNodeReset()
         {
             setTime = DateTime.Now;
         }
+
+        protected override void OnCompelete() { }
+        protected override void OnDispose() { }
     }
 
 }
