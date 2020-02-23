@@ -7,12 +7,12 @@ namespace IFramework.Modules.ECS
     /// <summary>
     /// 模仿Ecs结构
     /// </summary>
-    [FrameworkVersion(14)]
+    [FrameworkVersion(26)]
     public class ECSModule : FrameworkModule
     {
         private Systems _systems;
         private Enitys _enitys;
-        
+
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override void Awake()
         {
@@ -42,7 +42,7 @@ namespace IFramework.Modules.ECS
         /// </summary>
         /// <typeparam name="TEnity"></typeparam>
         /// <returns></returns>
-        public TEnity CreateEnity<TEnity>()where TEnity :Enity
+        public TEnity CreateEnity<TEnity>() where TEnity : IEnity
         {
             TEnity enity = Activator.CreateInstance<TEnity>();
             SubscribeEnity(enity);
@@ -53,7 +53,7 @@ namespace IFramework.Modules.ECS
         /// </summary>
         /// <typeparam name="TEnity"></typeparam>
         /// <param name="enity"></param>
-        public void SubscribeEnity<TEnity>( TEnity enity) where TEnity : Enity
+        public void SubscribeEnity<TEnity>(TEnity enity) where TEnity : IEnity
         {
             _enitys.AddEnity(enity);
             enity._mou = this;
@@ -62,7 +62,7 @@ namespace IFramework.Modules.ECS
         /// 解除注册实体
         /// </summary>
         /// <param name="enity"></param>
-        public void UnSubscribeEnity(Enity enity)
+        public void UnSubscribeEnity(IEnity enity)
         {
             _enitys.UnSubscribeEnity(enity);
         }
@@ -84,31 +84,31 @@ namespace IFramework.Modules.ECS
         }
 
 
-        internal IComponent AddComponent(Enity enity, IComponent component)
+        internal IComponent AddComponent(IEnity enity, IComponent component)
         {
             return _enitys.AddComponent(enity, component);
         }
 
-        internal void ReFreshComponent(Enity enity, Type type, IComponent component)
+        internal void ReFreshComponent(IEnity enity, Type type, IComponent component)
         {
             _enitys.ReFreshComponent(enity, type, component);
         }
 
-        internal IComponent AddComponent(Enity enity, Type type)
+        internal IComponent AddComponent(IEnity enity, Type type)
         {
             return _enitys.AddComponent(enity, type);
         }
-        internal IComponent GetComponent(Enity enity, Type type)
+        internal IComponent GetComponent(IEnity enity, Type type)
         {
             return _enitys.GetComponent(enity, type);
         }
-        internal void RemoveComponent(Enity enity, Type type)
+        internal void RemoveComponent(IEnity enity, Type type)
         {
             _enitys.RemoveComponent(enity, type);
         }
-        internal IEnumerable<Enity> GetEnitys()
+        internal IEnumerable<IEnity> GetEnitys()
         {
-           return _enitys.GetEnitys();
+            return _enitys.GetEnitys();
         }
 
         private class Enitys : IDisposable
@@ -137,8 +137,8 @@ namespace IFramework.Modules.ECS
                 }
                 public IComponent AddComponet(Type type)
                 {
-                    IComponent comp= GetComponent(type);
-                    if (comp != null) throw new Exception(string .Format("Have Exist Component Type : {0}",type));
+                    IComponent comp = GetComponent(type);
+                    if (comp != null) throw new Exception(string.Format("Have Exist Component Type : {0}", type));
                     comp = _moudle.CreateComponent(type);
                     _components.Add(type, comp);
                     return comp;
@@ -169,17 +169,17 @@ namespace IFramework.Modules.ECS
             }
 
             private ECSModule _moudle;
-            private Dictionary<Enity, EnityComponents> _enitys;
+            private Dictionary<IEnity, EnityComponents> _enitys;
 
             public Enitys(ECSModule moudle)
             {
                 this._moudle = moudle;
-                _enitys = new Dictionary<Enity, EnityComponents>();
+                _enitys = new Dictionary<IEnity, EnityComponents>();
             }
             public void Dispose()
             {
-                var em= _enitys.Keys.ToList();
-             //   Log.E("dispose  " + GetType());
+                var em = _enitys.Keys.ToList();
+                //   Log.E("dispose  " + GetType());
 
                 em.ForEach((e) =>
                 {
@@ -191,12 +191,12 @@ namespace IFramework.Modules.ECS
                 _moudle = null;
             }
 
-            public void AddEnity(Enity enity)
+            public void AddEnity(IEnity enity)
             {
                 if (!_enitys.ContainsKey(enity))
                     _enitys.Add(enity, new EnityComponents(_moudle));
             }
-            internal void UnSubscribeEnity(Enity enity)
+            internal void UnSubscribeEnity(IEnity enity)
             {
                 EnityComponents comp = FindComponent(enity);
                 if (comp == null) throw new Exception("Not Exist Enity");
@@ -205,26 +205,26 @@ namespace IFramework.Modules.ECS
             }
 
 
-            private EnityComponents FindComponent(Enity enity)
+            private EnityComponents FindComponent(IEnity enity)
             {
                 EnityComponents comp;
                 _enitys.TryGetValue(enity, out comp);
                 return comp;
             }
 
-            internal IComponent GetComponent(Enity enity, Type type)
+            internal IComponent GetComponent(IEnity enity, Type type)
             {
-                EnityComponents comp= FindComponent(enity);
+                EnityComponents comp = FindComponent(enity);
                 if (comp == null) throw new Exception("Not Exist Enity");
                 return comp.GetComponent(type);
             }
-            internal IComponent AddComponent(Enity enity, Type type)
+            internal IComponent AddComponent(IEnity enity, Type type)
             {
                 EnityComponents comp = FindComponent(enity);
                 if (comp == null) throw new Exception("Not Exist Enity");
                 return comp.AddComponet(type);
             }
-            internal IComponent AddComponent(Enity enity, IComponent component)
+            internal IComponent AddComponent(IEnity enity, IComponent component)
             {
                 EnityComponents comp = FindComponent(enity);
                 if (comp == null) throw new Exception("Not Exist Enity");
@@ -232,23 +232,23 @@ namespace IFramework.Modules.ECS
             }
 
 
-            internal void RemoveComponent(Enity enity, Type type)
+            internal void RemoveComponent(IEnity enity, Type type)
             {
                 EnityComponents comp = FindComponent(enity);
                 if (comp == null) throw new Exception("Not Exist Enity");
                 comp.RemoveComponent(type);
             }
 
-            internal IEnumerable<Enity> GetEnitys()
+            internal IEnumerable<IEnity> GetEnitys()
             {
                 return _enitys.Keys;
             }
 
-            internal void ReFreshComponent(Enity enity, Type type, IComponent component)
+            internal void ReFreshComponent(IEnity enity, Type type, IComponent component)
             {
                 EnityComponents comp = FindComponent(enity);
                 if (comp == null) throw new Exception("Not Exist Enity");
-                comp.ReFreshComponent(type,component);
+                comp.ReFreshComponent(type, component);
             }
         }
 
@@ -282,7 +282,7 @@ namespace IFramework.Modules.ECS
                 if (_systems.Contains(system))
                     _systems.Remove(system);
             }
-        } 
+        }
 
     }
 }

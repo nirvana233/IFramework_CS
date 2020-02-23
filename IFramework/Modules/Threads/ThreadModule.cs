@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 namespace IFramework.Modules.Threads
-{
+{/// <summary>
+/// 线程池模块
+/// </summary>
     public class ThreadModule : FrameworkModule
     {
         private class InnerThread : IDisposable
@@ -102,6 +104,7 @@ namespace IFramework.Modules.Threads
         private Queue<ThreadArgs> RunningArgs;
         private CachePool<InnerThread> ThreadCache;
 
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override void Awake()
         {
             ThreadCache = new CachePool<InnerThread>(new RunningPool<InnerThread>(), new Threads());
@@ -134,7 +137,7 @@ namespace IFramework.Modules.Threads
                 ThreadCache.Get().RunTask(RunningArgs.Dequeue());
             }
         }
-
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
         private void Set(ThreadArgs arg, InnerThread th)
         {

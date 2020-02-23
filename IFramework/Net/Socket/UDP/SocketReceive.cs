@@ -22,22 +22,22 @@ namespace IFramework.Net
         public SocketReceive(int port, int bufferSize,bool broadcast=false) : base(bufferSize,broadcast)
         {
             CreateUdpSocket(port, IPAddress.Any);
-            sock.Bind(endPoint);
+            _sock.Bind(_endPoint);
 
             recArgs = new SocketAsyncEventArgs();
-            recArgs.UserToken = sock;
-            recArgs.RemoteEndPoint = sock.LocalEndPoint;
+            recArgs.UserToken = _sock;
+            recArgs.RemoteEndPoint = _sock.LocalEndPoint;
             recArgs.Completed += RecCompleted;
-            recArgs.SetBuffer(recBuffer, 0, bufferSize);
+            recArgs.SetBuffer(_recBuffer, 0, bufferSize);
         }
         public SocketReceive(Socket sock, int bufferSize) : base(bufferSize)
         {
-            this.sock = sock;
+            this._sock = sock;
             recArgs = new SocketAsyncEventArgs();
             recArgs.UserToken = sock;
             recArgs.RemoteEndPoint = sock.LocalEndPoint;
             recArgs.Completed += RecCompleted;
-            recArgs.SetBuffer(recBuffer, 0, bufferSize);
+            recArgs.SetBuffer(_recBuffer, 0, bufferSize);
         }
 
         public void Dispose()
@@ -52,14 +52,14 @@ namespace IFramework.Net
             {
                 isStoped = true;
                 _isDisposed = true;
-                sock.Dispose();
+                _sock.Dispose();
                 recArgs.Dispose();
             }
         }
 
         public void StartReceive()
         {
-            bool rt = sock.ReceiveFromAsync(recArgs);
+            bool rt = _sock.ReceiveFromAsync(recArgs);
             if (rt == false)
             {
                 ReceiveCallBack(recArgs);
@@ -90,7 +90,7 @@ namespace IFramework.Net
         public void StopReceive()
         {
             isStoped = true;
-            sock.Dispose();
+            _sock.Dispose();
             if (recArgs != null)
             {
                 recArgs.Dispose();

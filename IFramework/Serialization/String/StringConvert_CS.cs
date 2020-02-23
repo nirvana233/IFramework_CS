@@ -11,8 +11,9 @@ using System.Text;
 
 namespace IFramework.Serialization
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public static partial class StringConvert_CS
-	{
+    {
         public static string ConvertToString(this int self)
         {
             return self.ToString();
@@ -141,4 +142,6 @@ namespace IFramework.Serialization
         }
 
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

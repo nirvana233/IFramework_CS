@@ -10,69 +10,59 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IFramework.Serialization.Csv
+namespace IFramework.Serialization.DataTable
 {
-    //切割一行字符串
-    public interface ICsvRow
+    /// <summary>
+    /// 数据行
+    /// </summary>
+    public interface IDataRow
     {
-        List<CsvColumn> ReadLine(string val, List<string> headNames);
+        /// <summary>
+        /// 读取一行
+        /// </summary>
+        /// <param name="val">行String</param>
+        /// <param name="headNames">标题行</param>
+        /// <returns></returns>
+        List<DataColumn> ReadLine(string val, List<string> headNames);
+        /// <summary>
+        /// 读取标题行
+        /// </summary>
+        /// <param name="val">行String</param>
+        /// <returns></returns>
         List<string> ReadHeadLine(string val);
-        string WriteLine(List<CsvColumn> cols);
+        /// <summary>
+        /// 写入一行
+        /// </summary>
+        /// <param name="cols">写入的信息</param>
+        /// <returns></returns>
+        string WriteLine(List<DataColumn> cols);
+        /// <summary>
+        /// 写入标题行
+        /// </summary>
+        /// <param name="headNames">写入的标题</param>
+        /// <returns></returns>
         string WriteHeadLine(List<string> headNames);
     }
-    public class CsvRow : ICsvRow
+    /// <summary>
+    /// 数据行
+    /// </summary>
+    public class DataRow : IDataRow
     {
-        //private SortedList<int, string> GetLineItems(string src)
-        //{
-        //    if (string.IsNullOrEmpty(src)) return null;
-        //    SortedList<int, string> sl = new SortedList<int, string>();
-        //    src = src.Replace("\"\"", "'");
-        //    var ie = Regex.Matches(src, "[,]?\"([^\"]+)\",", RegexOptions.ExplicitCapture).GetEnumerator();
-        //    while (ie.MoveNext())
-        //    {
-        //        string patn = ie.Current.ToString();
-        //        int key = src.Substring(0, src.IndexOf(patn)).Split(',').Length;
-        //        if (sl.ContainsKey(key)) continue;
-        //        if (src.IndexOf(patn) == 0 && !patn.StartsWith(","))
-        //        {
-        //            sl.Add(0, patn.Trim(new char[] { ',', '"' }).Replace("'", "\""));
-        //            src = src.Replace(patn, ",");
-        //        }
-        //        else
-        //        {
-        //            sl.Add(key, patn.Trim(new char[] { ',', '"' }).Replace("'", "\""));
-        //            src = src.Replace(patn, ",,");
-        //        }
-        //    }
-        //    src = src.Replace(" ", "");
-        //    src = src.Replace("'", "\"");
-        //    ie = Regex.Matches(src, "\"[\\w]+\":\"[\\w]+\",", RegexOptions.ExplicitCapture).GetEnumerator();
-        //    while (ie.MoveNext())
-        //    {
-        //        string patn = ie.Current.ToString();
-        //        string temp = src.Substring(0, src.IndexOf(patn) + patn.Length - 1);
-        //        src = src.Replace(temp, temp + "\"");
-        //    }
-        //    src = src.Replace("\",", "#");
-        //    src = src.Replace("\"},{\"", "##");
-        //    string[] arr = src.Split(',');
-        //    for (int i = 0; i < arr.Length; i++)
-        //    {
-        //        if (sl.ContainsKey(i)) continue;
-        //        sl.Add(i, arr[i].Trim(new char[] { ',', '"' }).Replace("#", ",").Replace("##", "\"},{\""));
-        //    }
-        //    return sl;
-        //}
-
-        public List<CsvColumn> ReadLine(string val, List<string> headNames)
+        /// <summary>
+        /// 读取一行
+        /// </summary>
+        /// <param name="val">行String</param>
+        /// <param name="headNames">标题行</param>
+        /// <returns></returns>
+        public List<DataColumn> ReadLine(string val, List<string> headNames)
         {
             List<string> strVals = SpilitRow(val);
             if (strVals.Count != headNames.Count) throw new Exception("Read Err Count Is different");
 
-            List<CsvColumn> cols = new List<CsvColumn>();
+            List<DataColumn> cols = new List<DataColumn>();
             for (int i = 0; i < headNames.Count; i++)
             {
-                cols.Add(new CsvColumn()
+                cols.Add(new DataColumn()
                 {
                     StrValue = strVals[i],
                     HeadLineName = headNames[i]
@@ -80,12 +70,22 @@ namespace IFramework.Serialization.Csv
             }
             return cols;
         }
+        /// <summary>
+        /// 切割一行
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
         protected virtual List<string> SpilitRow(string val)
         {
             var list = val.Split(',').ToList();
             list.RemoveAt(list.Count - 1);
             return list;
         }
+        /// <summary>
+        /// 读取标题行
+        /// </summary>
+        /// <param name="val">行String</param>
+        /// <returns></returns>
         public virtual List<string> ReadHeadLine(string val)
         {
             List<string> headNames = val.Split(',').ToList();
@@ -95,8 +95,12 @@ namespace IFramework.Serialization.Csv
             }
             return headNames;
         }
-
-        public string WriteLine(List<CsvColumn> cols)
+        /// <summary>
+        /// 写入一行
+        /// </summary>
+        /// <param name="cols">写入的信息</param>
+        /// <returns></returns>
+        public virtual string WriteLine(List<DataColumn> cols)
         {
             string result = string.Empty;
             cols.ForEach((index, c) => {
@@ -109,7 +113,12 @@ namespace IFramework.Serialization.Csv
             });
             return result;
         }
-        public string WriteHeadLine(List<string> headNames)
+        /// <summary>
+        /// 写入标题行
+        /// </summary>
+        /// <param name="headNames">写入的标题</param>
+        /// <returns></returns>
+        public virtual string WriteHeadLine(List<string> headNames)
         {
             string result = string.Empty;
             headNames.ForEach((index, val) => {

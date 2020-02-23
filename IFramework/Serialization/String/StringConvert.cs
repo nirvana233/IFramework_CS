@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace IFramework.Serialization
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public static partial class StringConvert
     {
         static StringConvert()
@@ -242,4 +243,6 @@ namespace IFramework.Serialization
                 throw new Exception(string.Format("Can't Convert String {0} To Type {1}", self, type));
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

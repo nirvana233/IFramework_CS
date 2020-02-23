@@ -16,7 +16,9 @@ namespace IFramework
         /// </summary>
         public enum FileSizeLev
         {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
             B = 0, KB, MB, GB, TB
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         }
         /// <summary>
         /// 获取文件的 带等级的大小
@@ -77,9 +79,9 @@ namespace IFramework
         public static string ReadText(this string path, Encoding encoding)
         {
             var result = string.Empty;
-            using (var fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read))
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read))
             {
-                using (var sr = new StreamReader(fs, encoding))
+                using (StreamReader sr = new StreamReader(fs, encoding))
                 {
                     result = sr.ReadToEnd();
                     sr.Close();

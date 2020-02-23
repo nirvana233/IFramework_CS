@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 #if !NET_2_0_SUBSET
 namespace IFramework.Utility.Encryption
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class AesEncryption
     {
         private static byte[] iV = { 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF, 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF };
@@ -51,5 +52,7 @@ namespace IFramework.Utility.Encryption
             }
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }
 #endif

@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 namespace IFramework.Net
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class WSServerToken : IDisposable
     {
         private Encoding encoding = Encoding.UTF8;
@@ -136,7 +137,7 @@ namespace IFramework.Net
         {
             foreach (var item in ConnectionPool)
             {
-                if (item.sToken.TokenId == sToken.TokenId)
+                if (item.sToken.tokenId == sToken.tokenId)
                 {
                     item.ConnectedTime = DateTime.Now;
                     break;
@@ -146,7 +147,7 @@ namespace IFramework.Net
 
         private void OnReceieve(SocketToken token, BufferSegment seg)
         {
-            var connection = ConnectionPool.Find(x => x.sToken.TokenId == token.TokenId);
+            var connection = ConnectionPool.Find(x => x.sToken.tokenId == token.tokenId);
             if (connection == null)
             {
                 connection = new ConnectionInfo() { sToken = token };
@@ -238,7 +239,7 @@ namespace IFramework.Net
         private bool Remove(SocketToken sToken)
         {
 
-            return ConnectionPool.RemoveAll(x => x.sToken.TokenId == sToken.TokenId) > 0;
+            return ConnectionPool.RemoveAll(x => x.sToken.tokenId == sToken.tokenId) > 0;
 
         }
 
@@ -253,8 +254,10 @@ namespace IFramework.Net
             public DateTime ConnectedTime { get { return conTime; } set { conTime = value; } }
             public int CompareTo(SocketToken info)
             {
-                return sToken.TokenId - info.TokenId;
+                return sToken.tokenId - info.tokenId;
             }
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace IFramework
 {
+    /// <summary>
+    /// object 静态扩展
+    /// </summary>
     public static partial class ObjectExtension
     {
         /// <summary>

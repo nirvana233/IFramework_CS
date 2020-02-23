@@ -2,6 +2,7 @@
 
 namespace IFramework
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class RunningPool<T> : ListPool<T>
     {
         protected override T CreatNew(IEventArgs arg)
@@ -12,6 +13,7 @@ namespace IFramework
     public abstract class SleepingPool<T> : ListPool<T>
     {
     }
+
     public class CachePool<T> : IDisposable
     {
         public Type Type { get { return typeof(T); } }
@@ -157,4 +159,6 @@ namespace IFramework
             SleepPool.Clear(arg);
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

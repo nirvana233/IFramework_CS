@@ -10,6 +10,7 @@ using System.Text;
 //############################################################################## 
 namespace IFramework.Utility.Encryption
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class RsaEncryption
     {
 
@@ -212,4 +213,6 @@ namespace IFramework.Utility.Encryption
             return false;
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

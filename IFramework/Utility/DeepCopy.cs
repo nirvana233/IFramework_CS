@@ -6,9 +6,17 @@ using System.Xml.Serialization;
 
 namespace IFramework.Utility
 {
+    /// <summary>
+    /// 深拷贝
+    /// </summary>
     public static class DeepCopy
     {
-        //0.9281 
+        /// <summary>
+        /// 0.9281 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static T ReflectionDeepCopy<T>(this T obj)
         {
             if (obj is string || obj.GetType().IsValueType) return obj;
@@ -21,6 +29,11 @@ namespace IFramework.Utility
             }
             return (T)retval;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static object ReflectionDeepCopy(this object obj)
         {
             if (obj is string || obj.GetType().IsValueType) return obj;
@@ -33,7 +46,12 @@ namespace IFramework.Utility
             }
             return retval;
         }
-        //1.6543 public
+        /// <summary>
+        /// 1.6543 public
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static T XmlDeepCopy<T>(this T obj)
         {
             object retval;
@@ -47,7 +65,12 @@ namespace IFramework.Utility
             }
             return (T)retval;
         }
-        //1.7278 [Serializable]
+        /// <summary>
+        /// 1.7278 [Serializable]
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static T BinaryDeepCopy<T>(this T obj)
         {
             object retval;

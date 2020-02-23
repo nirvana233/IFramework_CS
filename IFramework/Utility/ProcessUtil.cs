@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace IFramework.Utility
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public static class ProcessUtil
     {
         public static Process CreateProcess(string cmd, string args, string workingDir = "")
@@ -58,4 +59,6 @@ namespace IFramework.Utility
             }
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

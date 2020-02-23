@@ -3,6 +3,7 @@
 namespace IFramework.Modules.NodeAction
 {
     [FrameworkVersion(3)]
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class RepeatNode : ContainerNode
     {
         private int _curRepeat;
@@ -62,5 +63,6 @@ namespace IFramework.Modules.NodeAction
         protected override void OnBegin() { }
         protected override void OnCompelete() { }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

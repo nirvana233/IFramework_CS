@@ -5,10 +5,13 @@ using System.Reflection;
 
 namespace IFramework
 {
+    /// <summary>
+    /// Type静态扩展
+    /// </summary>
     public static partial class TypeExtension
     {
         /// <summary>
-        /// 获取当前程序集中的类型的子类
+        /// 获取当前程序集中的类型的子类，3.5有问题
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
@@ -23,7 +26,7 @@ namespace IFramework
                            .Where(item => item.IsSubclassOf(self));
         }
         /// <summary>
-        /// 获取所有程序集中的类型的子类
+        /// 获取所有程序集中的类型的子类，3.5有问题
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>

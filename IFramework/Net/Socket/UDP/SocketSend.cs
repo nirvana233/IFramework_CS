@@ -22,15 +22,15 @@ namespace IFramework.Net
 
         public SocketSend(int maxCount, int bufferSize = 4096) : base(bufferSize)
         {
-            sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            sock.ReceiveTimeout = receiveTimeout;
-            sock.SendTimeout = sendTimeout;
+            _sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            _sock.ReceiveTimeout = _receiveTimeout;
+            _sock.SendTimeout = _sendTimeout;
             sendArgs = new SocketEventArgPool(maxCount);
             sendBuff = new SockArgBuffers(maxCount, bufferSize);
             for (int i = 0; i < maxCount; ++i)
             {
                 SocketAsyncEventArgs socketArgs = new SocketAsyncEventArgs();
-                socketArgs.UserToken = sock;
+                socketArgs.UserToken = _sock;
                 socketArgs.Completed += SendCompleted;
                 sendBuff.SetBuffer(socketArgs);
                 sendArgs.Set(socketArgs);
@@ -38,7 +38,7 @@ namespace IFramework.Net
         }
         public SocketSend(Socket sock, int maxCount, int bufferSize = 4096) : base(bufferSize)
         {
-            base.sock = sock;
+            base._sock = sock;
             sendArgs = new SocketEventArgPool(maxCount);
             sendBuff = new SockArgBuffers(maxCount, bufferSize);
             for (int i = 0; i < maxCount; ++i)
@@ -62,7 +62,7 @@ namespace IFramework.Net
             if (dispose)
             {
                 sendArgs.Clear();
-                sock.Dispose();
+                _sock.Dispose();
                 sendBuff.Clear();
                 _isDisposed = true;
             }
@@ -89,7 +89,7 @@ namespace IFramework.Net
                     }
                     if (SendArg.RemoteEndPoint != null)
                     {
-                        isWillEvent &= sock.SendToAsync(SendArg);
+                        isWillEvent &= _sock.SendToAsync(SendArg);
                         if (!isWillEvent)
                         {
                             SendCallBack(SendArg);
@@ -129,7 +129,7 @@ namespace IFramework.Net
 
         public int SendSync(BufferSegment segBuff, IPEndPoint remoteEP)
         {
-            return sock.SendTo(segBuff.buffer, segBuff.offset, segBuff.count, SocketFlags.None, remoteEP);
+            return _sock.SendTo(segBuff.buffer, segBuff.offset, segBuff.count, SocketFlags.None, remoteEP);
         }
 
         //private Socket SocketVersion(IPEndPoint ips)

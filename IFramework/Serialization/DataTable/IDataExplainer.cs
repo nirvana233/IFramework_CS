@@ -10,28 +10,58 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace IFramework.Serialization.Csv
+namespace IFramework.Serialization.DataTable
 {
-    //实例化From字符串
-    //object=》字符串
-    public interface ICsvExplainer
+    /// <summary>
+    /// string 解释器
+    /// </summary>
+    public interface IDataExplainer
     {
-        T CreatInstance<T>(List<CsvColumn> cols, Dictionary<MemberInfo, string> membersDic);
-        List<CsvColumn> GetColumns<T>(T t, Dictionary<MemberInfo, string> membersDic);
+        /// <summary>
+        /// 根据格子反序列化一个实例
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="cols"></param>
+        /// <param name="membersDic">需要反序列化的成员</param>
+        /// <returns></returns>
+        T CreatInstance<T>(List<DataColumn> cols, Dictionary<MemberInfo, string> membersDic);
+        /// <summary>
+        /// 根据 具体类型 获取单个数据格子数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <param name="membersDic">需要序列化的成员</param>
+        /// <returns></returns>
+        List<DataColumn> GetColumns<T>(T t, Dictionary<MemberInfo, string> membersDic);
     }
-    public class CsvExplainer : ICsvExplainer
+    /// <summary>
+    /// string 解释器
+    /// </summary>
+    public class DataExplainer : IDataExplainer
     {
+        /// <summary>
+        /// 创建实例
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         protected T CreatInstance<T>()
         {
             return Activator.CreateInstance<T>();
         }
-        public T CreatInstance<T>(List<CsvColumn> cols, Dictionary<MemberInfo, string> membersDic)
+        /// <summary>
+        /// 根据格子反序列化一个实例
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="cols"></param>
+        /// <param name="membersDic">需要反序列化的成员</param>
+        /// <returns></returns>
+        public T CreatInstance<T>(List<DataColumn> cols, Dictionary<MemberInfo, string> membersDic)
         {
             T t = CreatInstance<T>();
             membersDic.ForEach((pair) => {
                 MemberInfo m = pair.Key;
                 string csvName = pair.Value;
-                CsvColumn column = cols.Find((c) => { return c.HeadLineName == csvName; });
+                DataColumn column = cols.Find((c) => { return c.HeadLineName == csvName; });
                 if (m is PropertyInfo)
                 {
                     PropertyInfo info = m as PropertyInfo;
@@ -53,10 +83,16 @@ namespace IFramework.Serialization.Csv
             });
             return t;
         }
-
-        public List<CsvColumn> GetColumns<T>(T t, Dictionary<MemberInfo, string> membersDic)
+        /// <summary>
+        /// 根据 具体类型 获取单个数据格子数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <param name="membersDic">需要序列化的成员</param>
+        /// <returns></returns>
+        public List<DataColumn> GetColumns<T>(T t, Dictionary<MemberInfo, string> membersDic)
         {
-            List<CsvColumn> columns = new List<CsvColumn>();
+            List<DataColumn> columns = new List<DataColumn>();
             membersDic.ForEach((member) =>
             {
                 string val = string.Empty;
@@ -71,7 +107,7 @@ namespace IFramework.Serialization.Csv
                     FieldInfo info = m as FieldInfo;
                     val = StringConvert.ConvertToString(info.GetValue(t), info.FieldType);
                 }
-                columns.Add(new CsvColumn()
+                columns.Add(new DataColumn()
                 {
                     HeadLineName = member.Value,
                     StrValue = val

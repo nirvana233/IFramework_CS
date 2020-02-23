@@ -3,7 +3,8 @@ using System.Collections;
 
 namespace IFramework.Modules.NodeAction
 {
-    public abstract class ActionNode :RecyclableObject,IDisposable
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    public abstract class ActionNode :RecyclableObject, IDisposable
     {
         private bool mOnBeginCalled;
 
@@ -128,4 +129,6 @@ namespace IFramework.Modules.NodeAction
         protected override void OnBegin() { }
         protected override void OnCompelete() { }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EnvironmentType = IFramework.FrameworkEnvironment.EnvironmentType;
 
 namespace IFramework.Modules.Message
 {
@@ -272,82 +273,86 @@ namespace IFramework.Modules.Message
         }
 
     }
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     [FrameworkVersion(5)]
     public static class MessageMouduleExtension
+
     {
-        public static bool Subscribe(this IMessageListener listener, int envIndex, Type publishType)
+        public static bool Subscribe(this IMessageListener listener, EnvironmentType envType, Type publishType)
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return _env.modules.Message.Subscribe(publishType, listener);
         }
-        public static bool Subscribe<T>(this IMessageListener listener, int envIndex) where T : IMessagePublisher
+        public static bool Subscribe<T>(this IMessageListener listener, EnvironmentType envType) where T : IMessagePublisher
         {
-            return Subscribe(listener, envIndex, typeof(T));
+            return Subscribe(listener,  envType, typeof(T));
         }
-        public static bool Unsubscribe(this IMessageListener listener, int envIndex, Type publishType)
+        public static bool Unsubscribe(this IMessageListener listener, EnvironmentType envType, Type publishType)
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return _env.modules.Message.Unsubscribe(publishType, listener);
         }
-        public static bool Unsubscribe<T>(this IMessageListener listener, int envIndex) where T : IMessagePublisher
+        public static bool Unsubscribe<T>(this IMessageListener listener, EnvironmentType envType) where T : IMessagePublisher
         {
-            return Unsubscribe(listener, envIndex, typeof(T));
+            return Unsubscribe(listener,  envType, typeof(T));
         }
 
 
-        public static bool Subscribe(this object obj, int envIndex, Type publishType, IMessageListener listener)
+        public static bool Subscribe(this object obj, EnvironmentType envType, Type publishType, IMessageListener listener)
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return _env.modules.Message.Subscribe(publishType, listener);
         }
-        public static bool Subscribe<T>(this object obj, int envIndex, IMessageListener listener) where T : IMessagePublisher
+        public static bool Subscribe<T>(this object obj, EnvironmentType envType, IMessageListener listener) where T : IMessagePublisher
         {
-            return Subscribe(obj, envIndex, typeof(T), listener);
+            return Subscribe(obj,  envType, typeof(T), listener);
         }
-        public static bool Unsubscribe(this object obj, int envIndex, Type publishType, IMessageListener listener)
+        public static bool Unsubscribe(this object obj, EnvironmentType envType, Type publishType, IMessageListener listener)
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return _env.modules.Message.Unsubscribe(publishType, listener);
         }
-        public static bool Unsubscribe<T>(this object obj, int envIndex, IMessageListener listener) where T : IMessagePublisher
+        public static bool Unsubscribe<T>(this object obj, EnvironmentType envType, IMessageListener listener) where T : IMessagePublisher
         {
-            return Unsubscribe(obj, envIndex, typeof(T), listener);
+            return Unsubscribe(obj,  envType, typeof(T), listener);
         }
 
 
-        public static bool Subscribe(this object obj, Type publishType, MessageListener listener, int envIndex)
+        public static bool Subscribe(this object obj, Type publishType, MessageListener listener, EnvironmentType envType)
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return _env.modules.Message.Subscribe(publishType, listener);
         }
-        public static bool Subscribe<T>(this object obj, MessageListener listener, int envIndex) where T : IMessagePublisher
+        public static bool Subscribe<T>(this object obj, MessageListener listener, EnvironmentType envType) where T : IMessagePublisher
         {
-            return Subscribe(obj, typeof(T), listener, envIndex);
+            return Subscribe(obj, typeof(T), listener,  envType);
         }
-        public static bool Unsubscribe(this object obj, Type publishType, MessageListener listener, int envIndex)
+        public static bool Unsubscribe(this object obj, Type publishType, MessageListener listener, EnvironmentType envType)
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return _env.modules.Message.Unsubscribe(publishType, listener);
         }
-        public static bool Unsubscribe<T>(this object obj, MessageListener listener, int envIndex) where T : IMessagePublisher
+        public static bool Unsubscribe<T>(this object obj, MessageListener listener, EnvironmentType envType) where T : IMessagePublisher
         {
-            return Unsubscribe(obj, typeof(T), listener, envIndex);
+            return Unsubscribe(obj, typeof(T), listener,  envType);
         }
 
 
-        public static bool Publish(this object obj, int envIndex, Type publishType, int code, IEventArgs args, params object[] param)
+        public static bool Publish(this object obj, EnvironmentType envType, Type publishType, int code, IEventArgs args, params object[] param)
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return _env.modules.Message.Publish(publishType, code, args, param);
         }
-        public static bool Publish<T>(this object obj, int envIndex, int code, IEventArgs args, params object[] param) where T : IMessagePublisher
+        public static bool Publish<T>(this object obj, EnvironmentType envType, int code, IEventArgs args, params object[] param) where T : IMessagePublisher
         {
-            return Publish(obj, envIndex, typeof(T), code, args, param);
+            return Publish(obj,  envType, typeof(T), code, args, param);
         }
-        public static bool Publish<T>(this T obj, int envIndex, int code, IEventArgs args, params object[] param) where T : IMessagePublisher
+        public static bool Publish<T>(this T obj, EnvironmentType envType, int code, IEventArgs args, params object[] param) where T : IMessagePublisher
         {
-            return Publish(obj, envIndex, obj.GetType(), code, args, param);
+            return Publish(obj,  envType, obj.GetType(), code, args, param);
         }
 
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

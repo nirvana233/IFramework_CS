@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace IFramework
 {
     //[OnFrameworkInitClass]
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public static class SingletonPool
     {
         static Dictionary<Type, ISingleton> pairs;
@@ -40,5 +41,6 @@ namespace IFramework
             pairs.Clear();
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

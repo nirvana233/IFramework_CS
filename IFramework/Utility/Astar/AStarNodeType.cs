@@ -5,6 +5,13 @@
     /// </summary>
     public enum AStarNodeType
     {
-        Wall, Walkable
+        /// <summary>
+        /// 不可行走
+        /// </summary>
+        Wall,
+        /// <summary>
+        /// 可行走
+        /// </summary>
+        Walkable
     }
 }

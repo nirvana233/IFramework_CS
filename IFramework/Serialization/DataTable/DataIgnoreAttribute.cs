@@ -6,12 +6,13 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-namespace IFramework.Serialization.Csv
-{
+using System;
 
-    public class CsvColumn
-    {
-        public string HeadLineName;
-        public string StrValue;
-    }
+namespace IFramework.Serialization.DataTable
+{
+    /// <summary>
+    /// 数据表忽略的成员
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    public class DataIgnoreAttribute: Attribute { }
 }

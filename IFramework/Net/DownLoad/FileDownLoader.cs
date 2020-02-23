@@ -10,7 +10,8 @@ using System;
 using System.IO;
 namespace IFramework.Net
 {
-    public abstract class FileDownLoader :IDisposable
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    public abstract class FileDownLoader : IDisposable
     {
         public event Action onCompeleted;
         protected void Compelete()
@@ -59,4 +60,5 @@ namespace IFramework.Net
         }
 
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

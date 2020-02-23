@@ -23,3 +23,4 @@ E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll
 E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.CodeAnalysisLog.xml
 E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.lastcodeanalysissucceeded
 E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.dll
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csprojAssemblyReference.cache

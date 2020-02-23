@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 namespace IFramework.Utility.Encryption
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class HashEncode
     {
 
@@ -32,4 +33,5 @@ namespace IFramework.Utility.Encryption
             return Security;
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

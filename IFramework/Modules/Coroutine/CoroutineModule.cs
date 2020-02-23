@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using EnvironmentType = IFramework.FrameworkEnvironment.EnvironmentType;
 
 namespace IFramework.Modules.Coroutine
 {
@@ -88,12 +89,12 @@ namespace IFramework.Modules.Coroutine
         /// 开启一个携程
         /// </summary>
         /// <param name="obj"></param>
-        /// <param name="envIndex">环境序号</param>
+        /// <param name=" envType"></param>
         /// <param name="routine">迭代器</param>
         /// <returns></returns>
-        public static Coroutine StartCoroutine(this object obj,int envIndex,IEnumerator routine)
+        public static Coroutine StartCoroutine(this object obj, EnvironmentType envType, IEnumerator routine)
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return _env.modules.Coroutine.StartCoroutine(routine);
         }
     }

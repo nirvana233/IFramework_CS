@@ -12,51 +12,52 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
-     public class TcpSocket 
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    public class TcpSocket
     {
-        protected Socket sock = null;
-        protected bool isConnected = false;
-        protected EndPoint endPoint = null;
-        protected byte[] recBuffer = null;
-        protected int recTimeout = 1000 * 60 * 30;
-        protected int sendTimeout = 1000 * 60 * 30;
-        protected int connTimeout = 1000 * 60 * 30;
-        protected int bufferSize = 4096;
+        private Socket _sock = null;
+        private bool _connected = false;
+        private EndPoint _endPoint = null;
+        protected byte[] _recBuffer = null;
+        private int _recTimeout = 1000 * 60 * 30;
+        private int _sendTimeout = 1000 * 60 * 30;
+        private int _connTimeout = 1000 * 60 * 30;
+        private int _bufferSize = 4096;
         public TcpSocket(int bufferSize)
         {
-            this.bufferSize = bufferSize;
+            this._bufferSize = bufferSize;
         }
 
-        public Socket Sock { get { return sock; } }
-        public bool IsConnected { get { return isConnected; } }
-        public int RecTimeout { get { return recTimeout; } }
-        public int SendTimeout { get { return sendTimeout; } }
-        public int ConnTimeout { get { return connTimeout; } }
-        public int BufferSize { get { return bufferSize; } }
-        public EndPoint EndPoint { get { return endPoint; } }
+        public Socket sock { get { return _sock; } }
+        public int recTimeout { get { return _recTimeout; } }
+        public int sendTimeout { get { return _sendTimeout; } }
+        public int connTimeout { get { return _connTimeout; } }
+        public EndPoint endPoint { get { return _endPoint; } }
+        public int bufferSize { get { return _bufferSize; } protected set { _bufferSize = value; } }
+        public bool connected { get { return _connected; } protected set { _connected = value; } }
 
         protected void CreateTcpSocket(int port, string ip)
         {
-            endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
-            sock = new Socket(EndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
+            _endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            _sock = new Socket(_endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
             {
                 LingerState = new LingerOption(true, 0),
                 NoDelay = true,
-                ReceiveTimeout = recTimeout,
-                SendTimeout = sendTimeout
+                ReceiveTimeout = _recTimeout,
+                SendTimeout = _sendTimeout
             };
-            sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            _sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         }
 
         protected void SafeClose()
         {
-            if (sock == null) return;
-            if (sock.Connected)
+            if (_sock == null) return;
+            if (_sock.Connected)
             {
                 try
                 {
-                    sock.Disconnect(true);
-                    sock.Shutdown(SocketShutdown.Send);
+                    _sock.Disconnect(true);
+                    _sock.Shutdown(SocketShutdown.Send);
                 }
                 catch (ObjectDisposedException)
                 {
@@ -64,13 +65,12 @@ namespace IFramework.Net
                 }
                 catch (Exception ex)
                 {
-                    Log.L(ex.Message);
                     throw ex;
                 }
             }
             try
             {
-                sock.Close();
+                _sock.Close();
             }
             catch (Exception)
             {
@@ -108,5 +108,6 @@ namespace IFramework.Net
             }
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

@@ -2,6 +2,7 @@
 
 namespace IFramework.Modules.NodeAction
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class UntilNode : ActionNode
     {
 
@@ -29,5 +30,6 @@ namespace IFramework.Modules.NodeAction
         protected override void OnDispose() { }
         protected override void OnNodeReset() { }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

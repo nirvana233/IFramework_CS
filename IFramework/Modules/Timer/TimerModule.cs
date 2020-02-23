@@ -10,7 +10,9 @@ namespace IFramework.Modules.Timer
     /// </summary>
     public enum TaskState
     {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         Running, Stoped, Paused, None
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
     }
     internal interface ITimerModule
     {
@@ -20,6 +22,9 @@ namespace IFramework.Modules.Timer
         void UnPauseTask(string id);
         TaskState GetTaskState(string id);
     }
+    /// <summary>
+    /// 计时器模块
+    /// </summary>
     public class TimerModule : FrameworkModule, ITimerModule
     {
 
@@ -235,6 +240,7 @@ namespace IFramework.Modules.Timer
             return timer.GetTaskState(id);
         }
 
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override void OnUpdate()
         {
             timer.Tick();
@@ -249,5 +255,6 @@ namespace IFramework.Modules.Timer
         {
             timer = new Timer();
         }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
     }
 }

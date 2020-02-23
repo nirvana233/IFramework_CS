@@ -43,11 +43,22 @@ namespace IFramework.Modules
             mou.Bind(this);
             return mou;
         }
+        /// <summary>
+        /// 创建模块
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public T CreateModule<T>(string name="") where T : FrameworkModule
         {
             return CreateModule(typeof(T),name) as T;
         }
-
+        /// <summary>
+        /// 索引
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public FrameworkModule this[Type type, string name]
         {
             get { return FindModule(type, name); }
@@ -74,12 +85,23 @@ namespace IFramework.Modules
                 }
             return mou;
         }
+        /// <summary>
+        /// 查找模块
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public T FindModule<T>(string name="") where T : FrameworkModule
         {
             return FindModule(typeof(T), name) as T;
         }
 
-
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="chunck"></param>
+        /// <param name="env"></param>
+        /// <param name="bind"></param>
         public FrameworkModuleContainer(string chunck,FrameworkEnvironment env,bool bind=true)
         {
             _chunck = chunck;

@@ -1,10 +1,12 @@
 ﻿using IFramework.Modules.Coroutine;
 using System;
 using System.Collections;
+using EnvironmentType = IFramework.FrameworkEnvironment.EnvironmentType;
 
 namespace IFramework.Modules.NodeAction
 {
     [FrameworkVersion(8)]
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public static class ActionNodeExtension
     {
         public static IEnumerator ActionEnumerator<T>(this T self) where T : ActionNode
@@ -32,17 +34,17 @@ namespace IFramework.Modules.NodeAction
                 t = RecyclableObject.Allocate<T>(env);
             return t;
         }
-        private static T Allocate<T>(int envIndex) where T : ActionNode
+        private static T Allocate<T>(EnvironmentType envType) where T : ActionNode
         {
-            T t = RecyclableObject.Allocate<T>(envIndex);
+            T t = RecyclableObject.Allocate<T>( envType);
             while (t.disposed)
-                t = RecyclableObject.Allocate<T>(envIndex);
+                t = RecyclableObject.Allocate<T>( envType);
             return t;
         }
 
-        public static SequenceNode Sequence(this object self, int envIndex,bool autoRecyle = true)
+        public static SequenceNode Sequence(this object self, EnvironmentType envType, bool autoRecyle = true)
         {
-            SequenceNode node = Allocate<SequenceNode>(envIndex);
+            SequenceNode node = Allocate<SequenceNode>( envType);
             node.Config(autoRecyle);
             return node;
         }
@@ -151,5 +153,6 @@ namespace IFramework.Modules.NodeAction
 
       
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

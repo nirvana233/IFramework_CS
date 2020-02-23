@@ -12,8 +12,9 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
-	public static class NetUtil
-	{
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    public static class NetUtil
+    {
         public static IPAddress[] GetLoacalIpv4()
         {
            IPAddress[] addresses= Dns.GetHostAddresses("localhost");
@@ -33,5 +34,6 @@ namespace IFramework.Net
         }
     }
 
-  
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

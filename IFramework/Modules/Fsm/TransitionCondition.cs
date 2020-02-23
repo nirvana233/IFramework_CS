@@ -3,6 +3,7 @@ using System;
 
 namespace IFramework.Modules.Fsm
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     /// <summary>
     /// 比较方式
     /// </summary>
@@ -17,6 +18,7 @@ namespace IFramework.Modules.Fsm
         ConditionCompareType compareType { get;  }
         bool IsMetCondition();
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
     /// <summary>
     /// 状态机过度条件
     /// </summary>

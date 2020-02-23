@@ -17,9 +17,11 @@
         /// 父节点，用于返回路径
         /// </summary>
         public IAStarNode ParentNode { get { return parentNode; } }
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         public float G { get { return g; } }
         public float H { get { return h; } }
         public float F { get { return g + h; ; } }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         private int m_X;
         private int m_Y;
         private int m_Z;

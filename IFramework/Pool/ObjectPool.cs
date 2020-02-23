@@ -9,13 +9,15 @@ namespace IFramework
     /// <typeparam name="T"></typeparam>
     public abstract class ListPool<T> : ObjectPool<T>
     {
+        /// <summary>
+        /// ctor
+        /// </summary>
         protected ListPool() : base() { }
         /// <summary>
         /// 获取
         /// </summary>
         /// <param name="p"></param>
         /// <param name="arg"></param>
-        /// <param name="param"></param>
         /// <returns></returns>
         public T Get(Predicate<T> p, IEventArgs arg = null)
         {
@@ -37,7 +39,6 @@ namespace IFramework
         /// </summary>
         /// <param name="t"></param>
         /// <param name="arg"></param>
-        /// <param name="param"></param>
         /// <returns></returns>
         public bool Clear(T t, IEventArgs arg = null)
         {
@@ -158,11 +159,14 @@ namespace IFramework
         /// 数据容器
         /// </summary>
         protected List<T> pool;
+        /// <summary>
+        /// 自旋锁
+        /// </summary>
         protected LockParam lockParam;
         /// <summary>
         /// 存储数据类型
         /// </summary>
-        public Type type { get { return typeof(T); } }
+        public virtual Type type { get { return typeof(T); } }
 
         /// <summary>
         /// 池子数量
@@ -222,7 +226,6 @@ namespace IFramework
         /// </summary>
         /// <param name="t"></param>
         /// <param name="arg"></param>
-        /// <param name="param"></param>
         /// <returns></returns>
         public bool Set(T t, IEventArgs arg = null)
         {
@@ -248,7 +251,6 @@ namespace IFramework
         /// 清除
         /// </summary>
         /// <param name="arg"></param>
-        /// <param name="param"></param>
         public void Clear(IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
@@ -265,7 +267,6 @@ namespace IFramework
         /// </summary>
         /// <param name="count"></param>
         /// <param name="arg"></param>
-        /// <param name="param"></param>
         public void Clear(int count, IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
@@ -332,17 +333,38 @@ namespace IFramework
     public abstract class BaseTypePool<T> : IDisposable
     {
         interface IBaseTypeInnerPool { }
+        /// <summary>
+        /// 内部池子
+        /// </summary>
+        /// <typeparam name="Object"></typeparam>
         public class BaseTypeInnerPool<Object> : ObjectPool<Object>, IBaseTypeInnerPool where Object : T
         {
+            /// <summary>
+            /// ctor
+            /// </summary>
+            /// <param name="objType"></param>
             public BaseTypeInnerPool(Type objType)
             {
                 this.objType = objType;
             }
-            protected Type objType;
+
+            private Type objType;
+            /// <summary>
+            /// 池子内部实际对象类型
+            /// </summary>
+            public override Type type { get { return objType; } }
+            /// <summary>
+            /// 创建实例
+            /// </summary>
+            /// <param name="arg"></param>
+            /// <returns></returns>
             protected override Object CreatNew(IEventArgs arg)
             {
                 return (Object)Activator.CreateInstance(objType);
             }
+            /// <summary>
+            /// 释放时
+            /// </summary>
             protected override void OnDispose()
             {
                 base.OnDispose();
@@ -358,8 +380,15 @@ namespace IFramework
 
         }
         private Dictionary<Type, IBaseTypeInnerPool> _poolMap;
+        /// <summary>
+        /// 自旋锁
+        /// </summary>
         protected LockParam para = new LockParam();
-
+        /// <summary>
+        /// 索引
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public BaseTypeInnerPool<T> this[Type type]
         {
             get { return GetPool(type); }

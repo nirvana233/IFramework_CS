@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using EnvironmentType = IFramework.FrameworkEnvironment.EnvironmentType;
 
 [assembly: AssemblyVersion("0.0.0.2")]
 namespace IFramework { }
@@ -53,16 +54,17 @@ namespace IFramework
         /// 默认初始化，其他自行规定，用于区分环境，
         /// 一般某个环境特有的静态类和环境编号一致
         /// </summary>
-        public int type { get; }
+        public EnvironmentType type { get; }
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="type"></param>
-        public OnFrameworkInitClassAttribute(int type=0)
+        public OnFrameworkInitClassAttribute(EnvironmentType type = EnvironmentType.None)
         {
             this.type = type;
         }
     }
+
     /// <summary>
     /// 框架提供的模块
     /// </summary>
@@ -92,15 +94,48 @@ namespace IFramework
     /// <summary>
     /// 框架运行环境
     /// </summary>
-    [FrameworkVersion(10)]
+    [FrameworkVersion(20)]
     public class FrameworkEnvironment : IDisposable
     {
+        /// <summary>
+        /// 环境类型
+        /// </summary>
+        [Flags]
+        public enum EnvironmentType : int
+        {
+            /// <summary>
+            /// 所有，配合环境初始化
+            /// </summary>
+            None = 1,
+            /// <summary>
+            /// 环境0
+            /// </summary>
+            Ev0 = 2,
+            /// <summary>
+            /// 环境1
+            /// </summary>
+            Ev1 = 4,
+            /// <summary>
+            /// 环境2
+            /// </summary>
+            Ev2 = 8,
+            /// <summary>
+            /// 环境3
+            /// </summary>
+            Ev3 = 16,
+            /// <summary>
+            /// 环境4
+            /// </summary>
+            Ev4 = 32
+        }
         private bool _haveInit;
         private bool _disposed;
         private FrameworkModules _modules;
         private string _envName;
         private Stopwatch sw_init;
         private Stopwatch sw_delta;
+        private EnvironmentType _envType;
+
         /// <summary>
         /// Update 方法的回调
         /// </summary>
@@ -134,6 +169,10 @@ namespace IFramework
         /// </summary>
         public FrameworkModules modules { get { return _modules; } }
         /// <summary>
+        /// 环境类型
+        /// </summary>
+        public EnvironmentType envType { get { return _envType; } }
+        /// <summary>
         /// 环境名称
         /// </summary>
         public string envName { get { return _envName; } }
@@ -159,21 +198,23 @@ namespace IFramework
         /// 创建一个 环境
         /// </summary>
         /// <param name="envName">环境名称</param>
+        /// <param name="envType">环境类型</param>
         /// <returns></returns>
-        public static FrameworkEnvironment CreateInstance(string envName)
+        public static FrameworkEnvironment CreateInstance(string envName,EnvironmentType envType)
         {
-            return new FrameworkEnvironment(envName);
+            return new FrameworkEnvironment(envName, envType);
         }
 
-        private FrameworkEnvironment(string envName)
+        private FrameworkEnvironment(string envName, EnvironmentType envType)
         {
             this._envName = envName;
+            this._envType = envType;
         }
         /// <summary>
         /// 初始化环境，3.5 使用
         /// </summary>
         /// <param name="types">需要初始化调用的静态类</param>
-        public void init(IEnumerable<Type> types)
+        public void Init(IEnumerable<Type> types)
         {
             if (_haveInit) return;
 
@@ -200,7 +241,7 @@ namespace IFramework
         /// 初始化环境，4.X 使用
         /// </summary>
         /// <param name="includeTypes">被标记 OnFrameworkInitClassAttribute  静态类 的版本，默认有 0 </param>
-        public void Init(int[] includeTypes = null)
+        public void InitWithAttribute()
         {
             var types = AppDomain.CurrentDomain.GetAssemblies()
                               .SelectMany(item => item.GetTypes())
@@ -208,21 +249,12 @@ namespace IFramework
                               .Select((type) =>
                               {
                                   var attr = type.GetCustomAttributes(typeof(OnFrameworkInitClassAttribute), false).First() as OnFrameworkInitClassAttribute;
-                                  if (attr.type == 0)
+                                  if (attr.type.HasFlag(this.envType) || attr.type.HasFlag(EnvironmentType.None))
                                       return type;
-
-                                  if (includeTypes != null && includeTypes.Length > 0)
-                                  {
-                                      for (int i = 0; i < includeTypes.Length; i++)
-                                      {
-                                          if (includeTypes[i] == attr.type)
-                                              return type;
-                                      }
-                                  }
                                   return null;
                               }).ToList();
             types.RemoveAll((type) => { return type == null; });
-            init(types);
+            Init(types);
         }
 
         /// <summary>
@@ -311,6 +343,8 @@ namespace IFramework
         public static FrameworkEnvironment env1;
         public static FrameworkEnvironment env2;
         public static FrameworkEnvironment env3;
+        public static FrameworkEnvironment env4;
+
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 
@@ -318,44 +352,47 @@ namespace IFramework
         /// 创建一个环境
         /// </summary>
         /// <param name="envName">环境名称</param>
+        /// <param name=" envType">环境类型</param>
         /// <returns>环境</returns>
-        public static FrameworkEnvironment CreateEnv(string envName)
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+        public static FrameworkEnvironment CreateEnv(string envName, EnvironmentType envType)
         {
-            return FrameworkEnvironment.CreateInstance(envName);
+            return FrameworkEnvironment.CreateInstance(envName, envType);
         }
         /// <summary>
         /// 实例化环境
         /// </summary>
         /// <param name="envName">环境名</param>
-        /// <param name="envIndex">环境序号</param>
+        /// <param name=" envType">环境类型</param>
         /// <returns>环境</returns>
-        public static FrameworkEnvironment InitEnv(string envName, int envIndex)
+        public static FrameworkEnvironment InitEnv(string envName, EnvironmentType envType)
         {
-            switch (envIndex)
+            switch ( envType)
             {
-                case 0: env0 = CreateEnv(envName); return env0;
-                case 1: env1 = CreateEnv(envName); return env1;
-                case 2: env2 = CreateEnv(envName); return env3;
-                case 3: env3 = CreateEnv(envName); return env3;
-                default: throw new Exception(string.Format("The Index {0} Error,Please Between [ 0 , 3 ]", envIndex));
+                case EnvironmentType.Ev0: env0 = CreateEnv(envName, envType); return env0;
+                case EnvironmentType.Ev1: env1 = CreateEnv(envName, envType); return env1;
+                case EnvironmentType.Ev2: env2 = CreateEnv(envName, envType); return env2;
+                case EnvironmentType.Ev3: env3 = CreateEnv(envName, envType); return env3;
+                case EnvironmentType.Ev4: env4 = CreateEnv(envName, envType); return env4;
+                default:
+                    throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ",  envType));
             }
-           
         }
         /// <summary>
         /// 根据序号获取环境
         /// </summary>
-        /// <param name="envIndex"></param>
+        /// <param name=" envType">环境类型</param>
         /// <returns></returns>
-        public static FrameworkEnvironment GetEnv(int envIndex)
+        public static FrameworkEnvironment GetEnv(EnvironmentType envType)
         {
-            switch (envIndex)
+            switch ( envType)
             {
-                case 0: return env0;
-                case 1: return env1;
-                case 2: return env3;
-                case 3: return env3;
-                default: throw new Exception(string.Format("The Index {0} Error,Please Between [ 0 , 3 ]", envIndex));
+                case EnvironmentType.Ev0: return env0;
+                case EnvironmentType.Ev1: return env1;
+                case EnvironmentType.Ev2: return env3;
+                case EnvironmentType.Ev3: return env3;
+                case EnvironmentType.Ev4: return env4;
+                default:
+                    throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ",  envType));
             }
         }
         /// <summary>
@@ -399,37 +436,37 @@ namespace IFramework
         /// 绑顶 方法 到一个环境的 Update
         /// </summary>
         /// <param name="action">方法</param>
-        /// <param name="envIndex">环境序号</param>
-        public static void BindEnvUpdate(this Action action, int envIndex)
+        /// <param name=" envType"></param>
+        public static void BindEnvUpdate(this Action action, EnvironmentType envType)
         {
-            action.BindEnvUpdate(GetEnv(envIndex));
+            action.BindEnvUpdate(GetEnv( envType));
         }
         /// <summary>
         /// 解除绑顶 方法 到一个环境的 Update
         /// </summary>
         /// <param name="action">方法</param>
-        /// <param name="envIndex">环境序号</param>
-        public static void UnBindEnvUpdate(this Action action, int envIndex)
+        /// <param name=" envType"></param>
+        public static void UnBindEnvUpdate(this Action action, EnvironmentType envType)
         {
-            action.UnBindEnvUpdate(GetEnv(envIndex));
+            action.UnBindEnvUpdate(GetEnv( envType));
         }
         /// <summary>
         /// 绑顶 方法 到一个环境的 Dispose
         /// </summary>
         /// <param name="action">方法</param>
-        /// <param name="envIndex">环境序号</param>
-        public static void BindEnvDispose(this Action action, int envIndex)
+        /// <param name=" envType"></param>
+        public static void BindEnvDispose(this Action action, EnvironmentType envType)
         {
-            action.BindEnvDispose(GetEnv(envIndex));
+            action.BindEnvDispose(GetEnv( envType));
         }
         /// <summary>
         /// 解除绑顶 方法 到一个环境的 Dispose
         /// </summary>
         /// <param name="action">方法</param>
-        /// <param name="envIndex">环境序号</param>
-        public static void UnBindEnvDispose(this Action action, int envIndex)
+        /// <param name=" envType"></param>
+        public static void UnBindEnvDispose(this Action action, EnvironmentType envType)
         {
-            action.UnBindEnvDispose(GetEnv(envIndex));
+            action.UnBindEnvDispose(GetEnv( envType));
         }
     }
 

@@ -3,6 +3,7 @@
 namespace IFramework.Modules.NodeAction
 {
     [FrameworkVersion(3)]
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public abstract class ContainerNode : ActionNode
     {
         public int count
@@ -50,5 +51,6 @@ namespace IFramework.Modules.NodeAction
         }
        
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

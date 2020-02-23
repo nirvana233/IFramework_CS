@@ -12,6 +12,8 @@ using System.Text;
 
 namespace IFramework.Utility
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
     /// 校验相关的实用函数。
     public class Verifier
     {
@@ -197,5 +199,6 @@ namespace IFramework.Utility
             }
         }
     }
-  
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

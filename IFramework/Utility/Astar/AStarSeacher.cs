@@ -2,6 +2,7 @@
 
 namespace IFramework.Utility.Astar
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class AStarSeacher<Node, Map> : IAStarSearcher<Node, Map> where Node : IAStarNode where Map : IAstarMap<Node>
     {
         private Map map;
@@ -69,5 +70,6 @@ namespace IFramework.Utility.Astar
 
 
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

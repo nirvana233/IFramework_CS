@@ -1,5 +1,6 @@
 ﻿namespace IFramework
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public abstract class SingletonPropertyClass<T> : ISingleton where T : SingletonPropertyClass<T>
     {
         protected static T Instance { get { return SingletonProperty<T>.Instance; } }
@@ -19,5 +20,6 @@
             OnSingletonInit();
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

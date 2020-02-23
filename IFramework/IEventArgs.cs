@@ -1,6 +1,6 @@
 ﻿
 using System;
-using System.Collections.Generic;
+using EnvironmentType = IFramework.FrameworkEnvironment.EnvironmentType;
 
 namespace IFramework
 {
@@ -42,11 +42,11 @@ namespace IFramework
         /// 分配一个实例
         /// </summary>
         /// <param name="type">类型</param>
-        /// <param name="envIndex">环境序号</param>
+        /// <param name=" envType"></param>
         /// <returns></returns>
-        public static RecyclableObject Allocate(Type type, int envIndex) 
+        public static RecyclableObject Allocate(Type type, EnvironmentType envType) 
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return Allocate(type,_env);
         }
         /// <summary>
@@ -66,11 +66,11 @@ namespace IFramework
         /// 分配一个实例
         /// </summary>
         /// <typeparam name="T"> RecyclableObject </typeparam>
-        /// <param name="envIndex">环境序号</param>
+        /// <param name=" envType"></param>
         /// <returns></returns>
-        public static T Allocate<T>(int envIndex) where T : RecyclableObject
+        public static T Allocate<T>(EnvironmentType envType) where T : RecyclableObject
         {
-            FrameworkEnvironment _env = Framework.GetEnv(envIndex);
+            FrameworkEnvironment _env = Framework.GetEnv( envType);
             return Allocate<T>(_env);
         }
         /// <summary>
@@ -138,16 +138,18 @@ namespace IFramework
         /// 消息是否可用
         /// </summary>
         public bool argsDirty { get { return _argsDirty; }set { _argsDirty = value; } }
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override void OnAllocate()
         {
             base.OnAllocate();
             _argsDirty = false;
         }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
     }
-    public class RecyclableObjectPool:BaseTypePool<IRecyclable>
-    {
-
-    }
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    public class RecyclableObjectPool : BaseTypePool<IRecyclable> { }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    
     ///// <summary>
     ///// IRecyclable容器
     ///// </summary>

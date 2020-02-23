@@ -13,18 +13,19 @@ using System.Text;
 
 namespace IFramework.Net
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class UdpServerToken : UdpSocket, IDisposable
     {
-        private SocketReceive socketRecieve = null;
-        private SocketSend socketSend = null;
+        private SocketReceive _socketRecieve = null;
+        private SocketSend _socketSend = null;
         private bool _isDisposed = false;
+        private Encoding _encoding = Encoding.UTF8;
+        private int _recBufferSize = 4096;
+        private int _maxConn = 8;
+
         public OnReceieve onReceive { get; set; }
         public OnSendCallBack onSendCallback { get; set; }
-        //public OnDisConnect onDisconnect { get; set; }
         public OnReceivedString onRecieveString { get; set; }
-        private Encoding encoding = Encoding.UTF8;
-        private int recBufferSize = 4096;
-        private int maxConn = 8;
         public void Dispose()
         {
             Dispose(true);
@@ -35,43 +36,43 @@ namespace IFramework.Net
             if (_isDisposed) return;
             if (isDisposing)
             {
-                socketRecieve.Dispose();
-                socketSend.Dispose();
+                _socketRecieve.Dispose();
+                _socketSend.Dispose();
                 _isDisposed = true;
             }
         }
         public UdpServerToken(int maxConn, int recBufferSize, bool Broadcast = false) : base(recBufferSize, Broadcast)
         {
-            this.recBufferSize = recBufferSize;
-            this.maxConn = maxConn;
+            this._recBufferSize = recBufferSize;
+            this._maxConn = maxConn;
         }
         public void Start(int port)
         {
-            socketRecieve = new SocketReceive(port, maxConn, Broadcast);
-            socketRecieve.OnReceived += ReceiveCallBack;
-            socketRecieve.StartReceive();
-            socketSend = new SocketSend(socketRecieve.sock, maxConn, recBufferSize);
-            socketSend.SendEventHandler += SendCallBack;
+            _socketRecieve = new SocketReceive(port, _maxConn, _broadcast);
+            _socketRecieve.OnReceived += ReceiveCallBack;
+            _socketRecieve.StartReceive();
+            _socketSend = new SocketSend(_socketRecieve._sock, _maxConn, _recBufferSize);
+            _socketSend.SendEventHandler += SendCallBack;
         }
         public void Stop()
         {
-            if (socketSend != null)
+            if (_socketSend != null)
             {
-                socketSend.Dispose();
+                _socketSend.Dispose();
             }
-            if (socketRecieve != null)
+            if (_socketRecieve != null)
             {
-                socketRecieve.StopReceive();
+                _socketRecieve.StopReceive();
             }
         }
 
-        public bool Send(BufferSegment seg, IPEndPoint remoteEP, bool waiting = true)
+        public bool SendAsync(BufferSegment seg, IPEndPoint remoteEP, bool waiting = true)
         {
-            return socketSend.Send(seg, remoteEP, waiting);
+            return _socketSend.Send(seg, remoteEP, waiting);
         }
         public int SendSync(IPEndPoint remoteEP, BufferSegment seg)
         {
-            return socketSend.SendSync(seg, remoteEP);
+            return _socketSend.SendSync(seg, remoteEP);
         }
         private void SendCallBack(object sender, SocketAsyncEventArgs e)
         {
@@ -79,7 +80,7 @@ namespace IFramework.Net
             {
                 onSendCallback(new SocketToken()
                 {
-                    EndPoint = (IPEndPoint)e.RemoteEndPoint
+                    endPoint = (IPEndPoint)e.RemoteEndPoint
                 }, new BufferSegment(e.Buffer, e.Offset, e.BytesTransferred));
             }
         }
@@ -89,7 +90,7 @@ namespace IFramework.Net
             //if (isClientRequest(e)) return;
             SocketToken token = new SocketToken()
             {
-                EndPoint = (IPEndPoint)e.RemoteEndPoint
+                endPoint = (IPEndPoint)e.RemoteEndPoint
             };
             if (onReceive != null)
             {
@@ -100,7 +101,7 @@ namespace IFramework.Net
             }
             if (onRecieveString != null && e.BytesTransferred > 0)
             {
-                onRecieveString(token, encoding.GetString(e.Buffer, e.Offset, e.BytesTransferred));
+                onRecieveString(token, _encoding.GetString(e.Buffer, e.Offset, e.BytesTransferred));
             }
         }
 
@@ -108,7 +109,7 @@ namespace IFramework.Net
         {
             if (e.BytesTransferred == 1 && e.Buffer[0] == 0)
             {
-                socketSend.Send(new BufferSegment(new byte[] { 1 }, 0, 1), (IPEndPoint)e.RemoteEndPoint, true);
+                _socketSend.Send(new BufferSegment(new byte[] { 1 }, 0, 1), (IPEndPoint)e.RemoteEndPoint, true);
                 return true;
             }
             else return false;
@@ -124,5 +125,6 @@ namespace IFramework.Net
         }
 
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

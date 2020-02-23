@@ -13,6 +13,7 @@ using System.Threading;
 
 namespace IFramework.Net
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class NetConnectionTokenPool
     {
         private LinkedList<NetConnectionToken> list = null;
@@ -122,7 +123,7 @@ namespace IFramework.Net
         {
             using (LockWait lwait = new LockWait(ref lockParam))
             {
-                return list.Where(x => x.Token.TokenId == Id).FirstOrDefault();
+                return list.Where(x => x.Token.tokenId == Id).FirstOrDefault();
             }
         }
 
@@ -188,7 +189,9 @@ namespace IFramework.Net
         }
         public override int GetHashCode()
         {
-            return Token.TokenId.GetHashCode() | Token.Sock.GetHashCode();
+            return Token.tokenId.GetHashCode() | Token.sock.GetHashCode();
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

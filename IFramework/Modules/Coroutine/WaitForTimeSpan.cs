@@ -9,11 +9,18 @@ namespace IFramework.Modules.Coroutine
     public class WaitForTimeSpan : CoroutineInstruction
     {
         private DateTime _setTime;
-
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="span"> 等待时间</param>
         public WaitForTimeSpan(TimeSpan span) : base()
         {
             _setTime = DateTime.Now + span;
         }
+        /// <summary>
+        /// override
+        /// </summary>
+        /// <returns></returns>
         protected override IEnumerator InnerLogoc()
         {
             while (DateTime.Now < _setTime)
@@ -29,6 +36,10 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitForSeconds : WaitForTimeSpan
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="seconds">等待秒数</param>
         public WaitForSeconds(double seconds) : base(TimeSpan.FromSeconds(seconds))
         {
         }
@@ -38,6 +49,10 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitForTicks : WaitForTimeSpan
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="ticks">等待帧数</param>
         public WaitForTicks(long ticks) : base(TimeSpan.FromTicks(ticks))
         {
         }
@@ -47,6 +62,10 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitForMinutes : WaitForTimeSpan
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="minutes">等待分钟数</param>
         public WaitForMinutes(double minutes) : base(TimeSpan.FromMinutes(minutes))
         {
         }
@@ -56,6 +75,10 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitForMilliseconds : WaitForTimeSpan
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="milliseconds">毫秒</param>
         public WaitForMilliseconds(double milliseconds) : base(TimeSpan.FromMilliseconds(milliseconds))
         {
         }
@@ -65,6 +88,10 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitForHours : WaitForTimeSpan
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="hours">小时</param>
         public WaitForHours(double hours) : base(TimeSpan.FromHours(hours))
         {
         }
@@ -74,6 +101,10 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitForDays : WaitForTimeSpan
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="days">天数</param>
         public WaitForDays(double days) : base(TimeSpan.FromDays(days))
         {
         }
@@ -83,13 +114,20 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitUtil : CoroutineInstruction
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="condition">等待成立条件</param>
         public WaitUtil(Func<bool> condition)
         {
             Condition = condition;
         }
 
         private Func<bool> Condition { get; }
-
+        /// <summary>
+        /// override
+        /// </summary>
+        /// <returns></returns>
         protected override IEnumerator InnerLogoc()
         {
             while (!Condition.Invoke())
@@ -104,13 +142,20 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitWhile : CoroutineInstruction
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="condition">等待不成立条件</param>
         public WaitWhile(Func<bool> condition)
         {
             Condition = condition;
         }
 
         private Func<bool> Condition { get; }
-
+        /// <summary>
+        /// override
+        /// </summary>
+        /// <returns></returns>
         protected override IEnumerator InnerLogoc()
         {
             while (Condition.Invoke())
@@ -125,13 +170,21 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitForFrames : CoroutineInstruction
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="count">帧数 </param>
         public WaitForFrames(int count)
         {
             curCount = 0;
             Count = count;
         }
         private int curCount;
-        public int Count { get; }
+        private int Count { get; }
+        /// <summary>
+        /// override
+        /// </summary>
+        /// <returns></returns>
         protected override IEnumerator InnerLogoc()
         {
             while (curCount++<Count)
@@ -146,6 +199,9 @@ namespace IFramework.Modules.Coroutine
     /// </summary>
     public class WaitForFrame : WaitForFrames
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public WaitForFrame() : base(1)
         {
         }

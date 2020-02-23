@@ -1,5 +1,8 @@
 ﻿namespace IFramework.Utility.Astar
-{
+{/// <summary>
+/// 地图
+/// </summary>
+/// <typeparam name="T"></typeparam>
     public interface IAstarMap<T> where T : IAStarNode
     {
         /// <summary>

@@ -11,6 +11,7 @@ using System.IO;
 using System.Net;
 namespace IFramework.Net
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class FileDownLoader_Http : FileDownLoader
     {
         private FileStream fileStream;
@@ -96,4 +97,5 @@ namespace IFramework.Net
             if (fileStream!=null) fileStream.Close();
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

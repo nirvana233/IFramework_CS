@@ -6,7 +6,7 @@ namespace IFramework.Modules.ECS
     /// 处理系统
     /// </summary>
     /// <typeparam name="TEnity"></typeparam>
-    public abstract class ExcuteSystem<TEnity> : IExcuteSystem where TEnity : Enity
+    public abstract class ExcuteSystem<TEnity> : IExcuteSystem where TEnity : IEnity
     {
         internal ECSModule _moudule { get; }
         /// <summary>
@@ -22,7 +22,7 @@ namespace IFramework.Modules.ECS
         /// 获取所有实体（模块内）
         /// </summary>
         /// <returns></returns>
-        protected IEnumerable<Enity> GetEnitys()
+        protected IEnumerable<IEnity> GetEnitys()
         {
             return _moudule.GetEnitys();
         }
@@ -52,7 +52,7 @@ namespace IFramework.Modules.ECS
             var _enitys = GetEnitys().GetEnumerator();
             while (_enitys.MoveNext())
             {
-                var current = _enitys.Current as TEnity;
+                var current = (TEnity)_enitys.Current;
                 if (current == null) continue;
                 if (Fitter(current))
                     Excute(current);

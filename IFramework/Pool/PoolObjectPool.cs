@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace IFramework
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     internal interface IPoolObjectPool { }
     public delegate Object PoolObjCreaterDel<Object>(Type type, IEventArgs arg, params object[] param) where Object : IPoolObject;
     public delegate IPoolObject PoolObjCreaterDel(Type type, IEventArgs arg, params object[] param);
@@ -138,4 +139,5 @@ namespace IFramework
             public PoolObjectSleepingPool() { CreaterDels = new List<PoolObjCreaterDel<Object>>(); }
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

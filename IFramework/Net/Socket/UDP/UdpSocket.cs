@@ -12,32 +12,35 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class UdpSocket
     {
-        internal Socket sock;
-        protected bool isConnected;
-        protected EndPoint endPoint;
-        protected byte[] recBuffer;
-        internal bool Broadcast = false;
+        internal Socket _sock;
+        protected bool _isConnected;
+        protected EndPoint _endPoint;
+        protected byte[] _recBuffer;
+        internal bool _broadcast = false;
 
-        protected int bufferSize = 4096;
-        protected int receiveTimeout = 1000 * 60 * 30;
-        protected int sendTimeout = 1000 * 60 * 30;
+        protected int _bufferSize = 4096;
+        protected int _receiveTimeout = 1000 * 60 * 30;
+        protected int _sendTimeout = 1000 * 60 * 30;
+
         public UdpSocket(int bufferSize, bool broadcast = false)
         {
-            Broadcast = broadcast;
-            this.bufferSize = bufferSize;
-            this.recBuffer = new byte[bufferSize];
+            _broadcast = broadcast;
+            this._bufferSize = bufferSize;
+            this._recBuffer = new byte[bufferSize];
         }
+
         protected void SafeClose()
         {
-            if (sock == null) return;
-            if (sock.Connected)
+            if (_sock == null) return;
+            if (_sock.Connected)
             {
                 try
                 {
-                    sock.Disconnect(true);
-                    sock.Shutdown(SocketShutdown.Send);
+                    _sock.Disconnect(true);
+                    _sock.Shutdown(SocketShutdown.Send);
                 }
                 catch (ObjectDisposedException)
                 {
@@ -46,30 +49,30 @@ namespace IFramework.Net
             }
             try
             {
-                sock.Close();
-                sock.Dispose();
+                _sock.Close();
+                _sock.Dispose();
             }
             catch
             { }
         }
         protected void CreateUdpSocket(int port, IPAddress ip)
         {
-            if (Broadcast)
-                endPoint = new IPEndPoint(IPAddress.Broadcast, port);
+            if (_broadcast)
+                _endPoint = new IPEndPoint(IPAddress.Broadcast, port);
             else
-                endPoint = new IPEndPoint(ip, port);
+                _endPoint = new IPEndPoint(ip, port);
 
-            sock = new Socket(endPoint.AddressFamily, SocketType.Dgram, ProtocolType.Udp)
+            _sock = new Socket(_endPoint.AddressFamily, SocketType.Dgram, ProtocolType.Udp)
             {
-                ReceiveTimeout = receiveTimeout,
-                SendTimeout = sendTimeout
+                ReceiveTimeout = _receiveTimeout,
+                SendTimeout = _sendTimeout
             };
             try
             {
-                if (Broadcast)
-                    sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
+                if (_broadcast)
+                    _sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
                 else
-                    sock.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.PacketInformation, true);
+                    _sock.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.PacketInformation, true);
             }
             catch (Exception)
             {
@@ -78,5 +81,6 @@ namespace IFramework.Net
            
         }
     }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

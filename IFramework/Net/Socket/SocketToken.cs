@@ -12,70 +12,114 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
+    /// <summary>
+    /// 链接实例
+    /// </summary>
     public class SocketToken : IDisposable, IComparable<SocketToken>
     {
-        private DateTime connTime;
-        protected int tokenId;
-        protected Socket sock;
-        protected IPEndPoint endPoint;
-        protected SocketAsyncEventArgs arg;
-        public int TokenId { get { return tokenId; } set { tokenId = value; } }
-        public Socket Sock { get { return sock; } set { sock = value; } }
-        public IPEndPoint EndPoint { get { return endPoint; } set { endPoint = value; } }
-        public SocketAsyncEventArgs Arg { get { return arg; } set { arg = value; } }
-        public bool IsDisposed { get { return isDisposed; } }
-        public DateTime ConnTime { get { return connTime; } set { connTime = value; } }
-
-        private bool isDisposed = false;
+        private DateTime _connTime=DateTime.MinValue;
+        private bool _isDisposed = false;
+        private int _tokenId;
+        private Socket _sock;
+        private IPEndPoint _endPoint=null;
+        private SocketAsyncEventArgs _arg=null;
+        /// <summary>
+        /// 序号
+        /// </summary>
+        public int tokenId { get { return _tokenId; } internal set { _tokenId = value; } }
+        /// <summary>
+        /// 套接字
+        /// </summary>
+        public Socket sock { get { return _sock; } internal set { _sock = value; } }
+        /// <summary>
+        /// 端口
+        /// </summary>
+        public IPEndPoint endPoint { get { return _endPoint; } internal set { _endPoint = value; } }
+        /// <summary>
+        /// 异步消息
+        /// </summary>
+        public SocketAsyncEventArgs arg { get { return _arg; }internal set { _arg = value; } }
+        /// <summary>
+        /// 是否释放
+        /// </summary>
+        public bool isDisposed { get { return _isDisposed; } }
+        /// <summary>
+        /// 连接时间
+        /// </summary>
+        public DateTime connTime { get { return _connTime; }internal set { _connTime = value; } }
+        /// <summary>
+        /// 
+        /// </summary>
         ~SocketToken()
         {
             Dispose(false);
         }
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public SocketToken() { }
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="id"></param>
         public SocketToken(int id) : this()
         {
-            this.tokenId = id;
+            this._tokenId = id;
         }
+        /// <summary>
+        /// 关闭
+        /// </summary>
         public void Close()
         {
-            if (sock != null)
+            if (_sock != null)
             {
                 try
                 {
-                    if (arg.ConnectSocket != null)
+                    if (_arg.ConnectSocket != null)
                     {
-                        arg.ConnectSocket.Close();
+                        _arg.ConnectSocket.Close();
                     }
-                    else if (arg.AcceptSocket != null)
+                    else if (_arg.AcceptSocket != null)
                     {
-                        arg.AcceptSocket.Close();
+                        _arg.AcceptSocket.Close();
                     }
-                    sock.Shutdown(SocketShutdown.Send);
+                    _sock.Shutdown(SocketShutdown.Send);
                 }
                 catch (ObjectDisposedException) { return; }
                 catch { }
-                sock.Close();
+                _sock.Close();
             }
         }
-
+        /// <summary>
+        /// 比较==
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public int CompareTo(SocketToken token)
         {
-            return this.tokenId.CompareTo(token.TokenId);
+            return this._tokenId.CompareTo(token.tokenId);
         }
+        /// <summary>
+        /// 释放
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+        /// <summary>
+        /// 释放时
+        /// </summary>
+        /// <param name="dispose"></param>
         protected virtual void Dispose(bool dispose)
         {
-            if (isDisposed) return;
+            if (_isDisposed) return;
             if (dispose)
             {
-                arg.Dispose();
-                sock.Dispose();
-                sock = null;
-                isDisposed = true;
+                _arg.Dispose();
+                _sock.Dispose();
+                _sock = null;
+                _isDisposed = true;
             }
         }
     }

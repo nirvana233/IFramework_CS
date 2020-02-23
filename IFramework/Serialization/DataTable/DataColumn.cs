@@ -6,15 +6,20 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-using System;
-
-namespace IFramework.Serialization.Csv
+namespace IFramework.Serialization.DataTable
 {
-
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class CsvColumnNameAttribute : Attribute
+    /// <summary>
+    /// 每一个格子
+    /// </summary>
+    public struct DataColumn
     {
-        public CsvColumnNameAttribute(string name) { this.Name = name; }
-        public string Name { get; private set; }
+        /// <summary>
+        /// 标题名称
+        /// </summary>
+        public string HeadLineName;
+        /// <summary>
+        /// string 数据
+        /// </summary>
+        public string StrValue;
     }
 }
