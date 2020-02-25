@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\..\..\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml</DocumentationFile>
+    <DocumentationFile>E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <NoWarn>CA1009;</NoWarn>
   </PropertyGroup>
@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrameworkEnvironment.cs" />
+    <Compile Include="FrameworkModules.cs" />
     <Compile Include="Modules\APP\FrameworkAppModule.cs" />
     <Compile Include="Modules\Coroutine\Coroutine.cs" />
     <Compile Include="Modules\Coroutine\CoroutineInstruction.cs" />
@@ -78,6 +80,11 @@
     <Compile Include="Modules\MVP\PolicySystem.cs" />
     <Compile Include="Modules\MVP\SensorSystem.cs" />
     <Compile Include="Modules\MVP\ViewSystem.cs" />
+    <Compile Include="Modules\MVVM\IDataModel.cs" />
+    <Compile Include="Modules\MVVM\MVVMGroup.cs" />
+    <Compile Include="Modules\MVVM\MVVMModule.cs" />
+    <Compile Include="Modules\MVVM\View.cs" />
+    <Compile Include="Modules\MVVM\ViewModel.cs" />
     <Compile Include="Modules\NodeAction\ActionNode.cs" />
     <Compile Include="Modules\Pool\PoolModule.cs" />
     <Compile Include="Modules\Threads\ThreadModule.cs" />

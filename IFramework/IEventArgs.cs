@@ -1,6 +1,6 @@
 ﻿
+using IFramework.Pool;
 using System;
-using EnvironmentType = IFramework.FrameworkEnvironment.EnvironmentType;
 
 namespace IFramework
 {

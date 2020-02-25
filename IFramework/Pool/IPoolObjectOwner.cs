@@ -1,4 +1,4 @@
-﻿namespace IFramework
+﻿namespace IFramework.Pool
 {
     /// <summary>
     /// 

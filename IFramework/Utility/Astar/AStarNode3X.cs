@@ -42,6 +42,7 @@
         /// </summary>
         /// <param name="mapPosX"></param>
         /// <param name="mapPosY"></param>
+        /// <param name="mapPosZ"></param>
         /// <param name="nodeType"></param>
         public AStarNode3X(int mapPosX, int mapPosY, int mapPosZ, AStarNodeType nodeType)
         {

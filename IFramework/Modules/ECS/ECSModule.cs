@@ -64,6 +64,7 @@ namespace IFramework.Modules.ECS
         /// <param name="enity"></param>
         public void UnSubscribeEnity(IEnity enity)
         {
+            enity._mou = null;
             _enitys.UnSubscribeEnity(enity);
         }
         /// <summary>

@@ -15,7 +15,16 @@ namespace IFramework.Modules.MVP
         /// <summary>
         /// 消息转发
         /// </summary>
-        public MessageModule message { get { return _message; } internal set { _message = value; OnSetMessage(value); } }
+        public MessageModule message
+        {
+            get { return _message; }
+            internal set
+            {
+                _message = value;
+                if (value!=null)
+                    OnSetMessage(value);
+            }
+        }
         /// <summary>
         /// 实体
         /// </summary>
@@ -30,8 +39,17 @@ namespace IFramework.Modules.MVP
         void IExcuteSystem.OnModuleDispose()
         {
             _moduleDisposed = true;
-            OnModuleDispose();
         }
+        internal void GroupDispose()
+        {
+            OnGroupDispose();
+            _moduleDisposed = true;
+        }
+        /// <summary>
+        /// 组释放时
+        /// </summary>
+        protected virtual void OnGroupDispose() { }
+
         /// <summary>
         /// 被设置实体
         /// </summary>
@@ -49,9 +67,6 @@ namespace IFramework.Modules.MVP
         /// <summary>
         /// 当模块释放
         /// </summary>
-        protected virtual void OnModuleDispose()
-        {
-        }
 
         internal void SendMessage(Type type, int code, IEventArgs args, params object[] param)
         {

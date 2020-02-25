@@ -19,6 +19,11 @@ E:\Project\IFrameworkDemo\Client\Assets\IFramework\0.1Core\0.1Plugins\IFramework
 E:\Project\IFrameworkDemo\Client\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.CodeAnalysisLog.xml
 E:\Project\IFrameworkDemo\Client\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.lastcodeanalysissucceeded
 E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml
+E:\Project\VS\IFramework\IFramework\IFramework.exe
+E:\Project\VS\IFramework\IFramework\IFramework.pdb
+E:\Project\VS\IFramework\IFramework\IFramework.exe.CodeAnalysisLog.xml
+E:\Project\VS\IFramework\IFramework\IFramework.exe.lastcodeanalysissucceeded
+E:\Project\VS\IFramework\IFramework\Newtonsoft.Json.dll
 E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll
 E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.CodeAnalysisLog.xml
 E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.lastcodeanalysissucceeded

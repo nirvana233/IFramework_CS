@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using EnvironmentType = IFramework.FrameworkEnvironment.EnvironmentType;
 
 namespace IFramework.Modules.Message
 {

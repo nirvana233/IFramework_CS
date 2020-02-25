@@ -1,7 +1,6 @@
 ﻿using IFramework.Modules.Coroutine;
 using System;
 using System.Collections;
-using EnvironmentType = IFramework.FrameworkEnvironment.EnvironmentType;
 
 namespace IFramework.Modules.NodeAction
 {

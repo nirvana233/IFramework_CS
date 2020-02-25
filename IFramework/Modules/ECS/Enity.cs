@@ -213,7 +213,8 @@ namespace IFramework.Modules.ECS
           //  Log.E("dispose  " +GetType());
 
             OnDestory();
-            _mou.UnSubscribeEnity(this);
+            if (_mou != null)
+                _mou.UnSubscribeEnity(this);
         }
         /// <summary>
         /// 解除模块注册时调用

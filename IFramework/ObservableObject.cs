@@ -12,25 +12,45 @@ namespace IFramework
     [FrameworkVersion(10)]
     public class ObservableValue<T> : ObservableObject
     {
+        /// <summary>
+        /// 默认的名字
+        /// </summary>
+        public const string ValuePropertyName = "value";
         private T _value;
         /// <summary>
         /// 具体的数值
         /// </summary>
         public T value
         {
-            get { return GetProperty(ref _value, GetPropertyName(() => this.value)); }
+            get { return GetProperty(ref _value, ValuePropertyName); }
             set
             {
-                SetProperty(ref _value, value, GetPropertyName(() => this.value));
+                SetProperty(ref _value, value, ValuePropertyName);
             }
         }
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="value"></param>
-        public ObservableValue(T value):base()
+        public ObservableValue(T value) : base()
         {
             _value = value;
+        }
+        /// <summary>
+        /// 注册 value 变化监听
+        /// </summary>
+        /// <param name="listener"></param>
+        public void Subscribe(Action listener)
+        {
+            base.Subscribe(ValuePropertyName, listener);
+        }
+        /// <summary>
+        /// 取消注册 value 变化监听
+        /// </summary>
+        /// <param name="listener"></param>
+        public void UnSubscribe(Action listener)
+        {
+            base.UnSubscribe(ValuePropertyName, listener);
         }
         /// <summary>
         /// 方便书写，缩减代码
@@ -44,47 +64,40 @@ namespace IFramework
     /// <summary>
     /// 可观测 Object
     /// </summary>
-    [FrameworkVersion(10)]
-    public class ObservableObject:IDisposable
+    [FrameworkVersion(20)]
+    public class ObservableObject : IDisposable
     {
-        /// <summary>
-        /// 属性发生变化消息
-        /// </summary>
-        public struct PropertyChangedArg:IEventArgs
-        {
-            /// <summary>
-            /// 对应的 Object
-            /// </summary>
-            public ObservableObject observableObject;
-            /// <summary>
-            /// 发生改变的 属性名称
-            /// </summary>
-            public string propertyName;
-        }
-        private PropertyChangedArg _propertyChangedArg;
-        private event Action<PropertyChangedArg> onPropertyChanged;
+        private Dictionary<string, Action> _callmap;
         /// <summary>
         /// Ctor
         /// </summary>
         protected ObservableObject()
         {
-            _propertyChangedArg = new PropertyChangedArg();
+            _callmap = new Dictionary<string, Action>();
         }
         /// <summary>
         /// 注册数值变化监听
         /// </summary>
+        /// <param name="propertyName"></param>
         /// <param name="listener"></param>
-        public void Subscribe(Action<PropertyChangedArg> listener)
+        public void Subscribe(string propertyName, Action listener)
         {
-            onPropertyChanged += listener;
+            if (!_callmap.ContainsKey(propertyName))
+                _callmap.Add(propertyName, null);
+            _callmap[propertyName] += listener;
         }
         /// <summary>
         /// 取消注册数值变化监听
         /// </summary>
+        /// <param name="propertyName"></param>
         /// <param name="listener"></param>
-        public void UnSubscribe(Action<PropertyChangedArg> listener)
+        public void UnSubscribe(string propertyName, Action listener)
         {
-            onPropertyChanged -= listener;
+            if (!_callmap.ContainsKey(propertyName))
+                throw new Exception("Have not Subscribe " + propertyName);
+            _callmap[propertyName] -= listener;
+            if (_callmap[propertyName] == null)
+                _callmap.Remove(propertyName);
         }
         /// <summary>
         /// 获取属性
@@ -112,18 +125,7 @@ namespace IFramework
             }
             throw new Exception(methodName + " not a method of Property");
         }
-        /// <summary>
-        /// 获取属性名称
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="property">属性表达式</param>
-        /// <returns></returns>
-        public static  string GetPropertyName<T>(Expression<Func<T>> property)
-        {
-            MemberExpression memberExpression = property.Body as MemberExpression;
-            if (memberExpression == null) return null;
-            return memberExpression.Member.Name;
-        }
+
         /// <summary>
         /// 设置属性
         /// </summary>
@@ -145,12 +147,10 @@ namespace IFramework
         /// <param name="propertyName">属性名称</param>
         protected void PublishPropertyChange(string propertyName)
         {
-            if (onPropertyChanged != null)
-            {
-                _propertyChangedArg.observableObject = this;
-                _propertyChangedArg.propertyName = propertyName;
-            }
-            onPropertyChanged(_propertyChangedArg);
+            if (!_callmap.ContainsKey(propertyName)) return;
+            if (_callmap[propertyName] == null) return;
+
+            _callmap[propertyName].Invoke();
         }
         /// <summary>
         /// 释放
@@ -158,12 +158,14 @@ namespace IFramework
         public void Dispose()
         {
             OnDispose();
-            onPropertyChanged = null;
+
+            _callmap.Clear();
+            _callmap = null;
         }
         /// <summary>
         /// 释放时
         /// </summary>
-        protected virtual void OnDispose() { } 
+        protected virtual void OnDispose() { }
     }
     /// <summary>
     /// ObservableObject 注册监听Helper
@@ -175,40 +177,34 @@ namespace IFramework
         {
             private string _propertyName;
             private ObservableObject _observableObject;
-            private Action<ObservableObject.PropertyChangedArg> _callback;
+            private Action _listenner;
 
             public string propertyName { get { return _propertyName; } }
             public ObservableObject observableObject { get { return _observableObject; } }
-            public ObserveEnity(ObservableObject obj, string propertyName, Action<ObservableObject.PropertyChangedArg> callback)
+            public ObserveEnity(ObservableObject obj, string propertyName, Action listenner)
             {
                 this._propertyName = propertyName;
                 this._observableObject = obj;
-                this._callback = (eve) =>
-                {
-                    if (propertyName == null || propertyName == eve.propertyName)
-                    {
-                        callback.Invoke(eve);
-                    }
-                };
+                this._listenner = listenner;
             }
 
             public void Bind()
             {
-                observableObject.Subscribe(_callback);
+                observableObject.Subscribe(propertyName, _listenner);
             }
             public void UnBind()
             {
-                observableObject.UnSubscribe(_callback);
+                observableObject.UnSubscribe(propertyName, _listenner);
             }
         }
 
         internal static ObservableObjectHandler recordingHandler { get; private set; }
 
         private List<ObserveEnity> _enitys = new List<ObserveEnity>();
-        internal Action<ObservableObject.PropertyChangedArg> callback;
+        internal Action listenner;
         internal ObservableObjectHandler Subscribe(ObservableObject _object, string propertyName)
         {
-            Subscribe(_object, propertyName, callback);
+            Subscribe(_object, propertyName, listenner);
             return this;
         }
         /// <summary>
@@ -216,11 +212,11 @@ namespace IFramework
         /// </summary>
         /// <param name="_object"> ObservableObject </param>
         /// <param name="propertyName">属性名称</param>
-        /// <param name="callback">回调</param>
+        /// <param name="listenner">回调</param>
         /// <returns></returns>
-        public ObservableObjectHandler Subscribe(ObservableObject _object, string propertyName, Action<ObservableObject.PropertyChangedArg> callback)
+        public ObservableObjectHandler Subscribe(ObservableObject _object, string propertyName, Action listenner)
         {
-            var bindTarget = new ObserveEnity(_object, propertyName, callback);
+            var bindTarget = new ObserveEnity(_object, propertyName, listenner);
             bindTarget.Bind();
             _enitys.Add(bindTarget);
             return this;
@@ -232,10 +228,10 @@ namespace IFramework
         /// <returns></returns>
         public ObservableObjectHandler BindProperty(Action setter)
         {
-            this.callback = (e) => { setter.Invoke(); };
+            this.listenner = setter;
             recordingHandler = this;
             setter.Invoke();
-            callback = null;
+            listenner = null;
             recordingHandler = null;
             return this;
         }
@@ -248,7 +244,7 @@ namespace IFramework
         /// <returns></returns>
         public ObservableObjectHandler BindProperty<T>(Action<T> setter, Func<T> getter)
         {
-            this.callback=(e) => { setter(getter()); };
+            this.listenner = () => { setter(getter()); };
             setter(AddExpressionListener(getter));
             return this;
         }
@@ -257,7 +253,7 @@ namespace IFramework
             recordingHandler = this;
             var result = expression.Invoke();
             recordingHandler = null;
-            callback = null;
+            listenner = null;
             return result;
         }
         /// <summary>

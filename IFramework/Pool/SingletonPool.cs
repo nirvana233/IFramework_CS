@@ -1,4 +1,4 @@
-﻿namespace IFramework
+﻿namespace IFramework.Pool
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public abstract class SingletonPool<Object, Singleton> : ObjectPool<Object>, ISingleton where Singleton : SingletonPool<Object, Singleton>
