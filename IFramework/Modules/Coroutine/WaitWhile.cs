@@ -4,31 +4,31 @@ using System.Collections;
 namespace IFramework.Modules.Coroutine
 {
     /// <summary>
-    /// 等待时间
+    /// 等待条件不成立
     /// </summary>
-    public class WaitForTimeSpan : CoroutineInstruction
+    public class WaitWhile : CoroutineInstruction
     {
-        private DateTime _setTime;
         /// <summary>
         /// Ctor
         /// </summary>
-        /// <param name="span"> 等待时间</param>
-        public WaitForTimeSpan(TimeSpan span) : base()
+        /// <param name="condition">等待不成立条件</param>
+        public WaitWhile(Func<bool> condition)
         {
-            _setTime = DateTime.Now + span;
+            Condition = condition;
         }
+
+        private Func<bool> Condition { get; }
         /// <summary>
         /// override
         /// </summary>
         /// <returns></returns>
         protected override IEnumerator InnerLogoc()
         {
-            while (DateTime.Now < _setTime)
+            while (Condition.Invoke())
             {
                 yield return false;
             }
             yield return true;
         }
-
     }
 }

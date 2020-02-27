@@ -7,7 +7,7 @@ namespace IFramework.Modules.ECS
     /// <summary>
     /// 模仿Ecs结构
     /// </summary>
-    [FrameworkVersion(26)]
+    [FrameworkVersion(30)]
     public class ECSModule : FrameworkModule
     {
         private Systems _systems;

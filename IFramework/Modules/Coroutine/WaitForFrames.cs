@@ -1,34 +1,34 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 
 namespace IFramework.Modules.Coroutine
 {
     /// <summary>
-    /// 等待时间
+    /// 等待帧数
     /// </summary>
-    public class WaitForTimeSpan : CoroutineInstruction
+    public class WaitForFrames : CoroutineInstruction
     {
-        private DateTime _setTime;
         /// <summary>
         /// Ctor
         /// </summary>
-        /// <param name="span"> 等待时间</param>
-        public WaitForTimeSpan(TimeSpan span) : base()
+        /// <param name="count">帧数 </param>
+        public WaitForFrames(int count)
         {
-            _setTime = DateTime.Now + span;
+            curCount = 0;
+            Count = count;
         }
+        private int curCount;
+        private int Count { get; }
         /// <summary>
         /// override
         /// </summary>
         /// <returns></returns>
         protected override IEnumerator InnerLogoc()
         {
-            while (DateTime.Now < _setTime)
+            while (curCount++ < Count)
             {
                 yield return false;
             }
             yield return true;
         }
-
     }
 }

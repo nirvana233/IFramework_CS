@@ -113,19 +113,29 @@ namespace IFramework.Modules.MVVM
             (_viewModel as IViewModel).SubscribeMessage();
         }
         /// <summary>
+        /// 发布model数据发生变化
+        /// </summary>
+        public void PublishModelDirty()
+        {
+            if (viewModel != null)
+            {
+                (_viewModel as IViewModel).SyncModelValue();
+            }
+        }
+        /// <summary>
         /// 释放时
         /// </summary>
         public void Dispose()
         {
             OnDispose();
+            if (_view != null)
+            {
+                _view.Dispose();
+            }
             if (_viewModel != null)
             {
                 (_viewModel as IViewModel).UnSubscribeMessage();
                 _viewModel.Dispose();
-            }
-            if (_view != null)
-            {
-                _view.Dispose();
             }
             if (module != null)
                 module.RemoveGroup(name);

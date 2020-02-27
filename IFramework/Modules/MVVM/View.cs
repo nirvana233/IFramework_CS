@@ -7,7 +7,7 @@ namespace IFramework.Modules.MVVM
     /// 界面
     /// </summary>
     [FrameworkVersion(12)]
-    public abstract class View : IDisposable
+    public abstract class View : IDisposable,IMessagePublisher
     {
         internal MVVMGroup group { get; set; }
         private bool _inited;

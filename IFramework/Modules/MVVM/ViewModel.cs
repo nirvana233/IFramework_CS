@@ -21,7 +21,7 @@ namespace IFramework.Modules.MVVM
         /// <summary>
         /// 数据
         /// </summary>
-        public IDataModel model { get { return group.model; } }
+        protected IDataModel model { get { return group.model; } }
 
         void IViewModel.SubscribeMessage()
         {
@@ -63,7 +63,7 @@ namespace IFramework.Modules.MVVM
         /// <summary>
         /// 方便书写
         /// </summary>
-        public T Tmodel { get { return (T)group.model; } }
+        protected T Tmodel { get { return (T)group.model; } }
 
     }
 

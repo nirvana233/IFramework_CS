@@ -61,7 +61,17 @@
     <Compile Include="Modules\Coroutine\Coroutine.cs" />
     <Compile Include="Modules\Coroutine\CoroutineInstruction.cs" />
     <Compile Include="Modules\Coroutine\CoroutineModule.cs" />
+    <Compile Include="Modules\Coroutine\WaitForDays.cs" />
+    <Compile Include="Modules\Coroutine\WaitForFrame.cs" />
+    <Compile Include="Modules\Coroutine\WaitForFrames.cs" />
+    <Compile Include="Modules\Coroutine\WaitForHours.cs" />
+    <Compile Include="Modules\Coroutine\WaitForMilliseconds.cs" />
+    <Compile Include="Modules\Coroutine\WaitForMinutes.cs" />
+    <Compile Include="Modules\Coroutine\WaitForSeconds.cs" />
+    <Compile Include="Modules\Coroutine\WaitForTicks.cs" />
     <Compile Include="Modules\Coroutine\WaitForTimeSpan.cs" />
+    <Compile Include="Modules\Coroutine\WaitUtil.cs" />
+    <Compile Include="Modules\Coroutine\WaitWhile.cs" />
     <Compile Include="Modules\ECS\ECSModule.cs" />
     <Compile Include="Modules\ECS\Enity.cs" />
     <Compile Include="Modules\ECS\ExcuteSystem.cs" />
@@ -74,6 +84,7 @@
     <Compile Include="Modules\Message\IMessagePublisher.cs" />
     <Compile Include="Modules\Message\MessageMoudle.cs" />
     <Compile Include="Modules\MVP\MVPEnity.cs" />
+    <Compile Include="Modules\MVP\MVPGroup.cs" />
     <Compile Include="Modules\MVP\MVPModule.cs" />
     <Compile Include="Modules\MVP\MVPSystem.cs" />
     <Compile Include="Modules\MVP\PolicyExecutorSystem.cs" />
