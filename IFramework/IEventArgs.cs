@@ -148,111 +148,105 @@ namespace IFramework
     }
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class RecyclableObjectPool : BaseTypePool<IRecyclable> { }
+
+
+    public interface ILifeTimeObject
+    {
+        void Awake();
+        void OnEnable();
+        void OnDisable();
+        void Update();
+        void Destory();
+        bool enable { get; set; }
+        string name { get; set; }
+    }
+    public class LifeTimeObject : RecyclableObject, ILifeTimeObject,IDisposable
+    {
+        private bool _enable;
+        private string _name;
+        public string name { get { return _name; } set { _name = value; } }
+        public bool enable
+        {
+            get { return _enable; }
+            set
+            {
+                if (recyled) return;
+
+                if (_enable != value)
+                    _enable = value;
+                if (_enable)
+                    OnEnable();
+                else
+                    OnDisable();
+            }
+        }
+        private bool _binded;
+        public bool binded { get { return _binded; } }
+        public void BindEnv()
+        {
+            Framework.BindEnvUpdate(Update, this.env);
+            _binded = true;
+        }
+        public void UnBindEnv()
+        {
+            if (_binded)
+            {
+                Framework.UnBindEnvUpdate(Update, this.env);
+                _binded = false;
+            }
+        }
+
+        protected override void OnAllocate()
+        {
+            base.OnAllocate();
+            (this as ILifeTimeObject).Awake();
+            (this as ILifeTimeObject).enable = true; 
+
+        }
+
+        protected override void OnRecyle() { }
+        protected override void OnDataReset() { }
+
+
+        protected virtual void Awake() { }
+        protected virtual void OnEnable() { }
+        protected virtual void OnDisable() { }
+        protected virtual void Update() { }
+        protected virtual void OnDispose() { }
+        protected virtual void OnDestory() { }
+
+
+        public void Destory()
+        {
+            (this as ILifeTimeObject).enable = false;
+            OnDestory();
+            ResetData();
+            UnBindEnv();
+            Recyle();
+        }
+
+        void ILifeTimeObject.Awake()
+        {
+            Awake();
+        }
+        void ILifeTimeObject.OnEnable()
+        {
+            OnEnable();
+        }
+        void ILifeTimeObject.OnDisable()
+        {
+            OnDisable();
+        }
+        void ILifeTimeObject.Update()
+        {
+            if (recyled) return;
+            Update();
+        }
+        void IDisposable.Dispose()
+        {
+            OnDispose();
+        }
+
+    }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    
-    ///// <summary>
-    ///// IRecyclable容器
-    ///// </summary>
-    //public class RecyclableObjectPool : IDisposable
-    //{
-    //    interface IFrameworkObjectInnerPool { }
-    //    class FrameworkObjectInnerPool<Object> : ObjectPool<Object>, IFrameworkObjectInnerPool where Object : IRecyclable
-    //    {
-    //        public  FrameworkObjectInnerPool(Type objType)
-    //        {
-    //            ObjType = objType;
-    //        }
-                
-    //        private Type ObjType;
-    //        protected override Object CreatNew(IEventArgs arg)
-    //        {
-    //            return (Object)Activator.CreateInstance(ObjType);
-    //        }
-    //        protected override void OnDispose()
-    //        {
-    //            base.OnDispose();
-               
-
-    //            for (int i = 0; i < pool.Count; i++)
-    //            {
-    //                IDisposable dispose = pool[i] as IDisposable;
-    //                if (dispose != null)
-    //                    dispose.Dispose();
-    //            }
-    //        }
-
-    //    }
-
-    //    private Dictionary<Type, IFrameworkObjectInnerPool> poolMap;
-    //    private LockParam para = new LockParam();
-
-    //    internal RecyclableObjectPool()
-    //    {
-    //        poolMap = new Dictionary<Type, IFrameworkObjectInnerPool>();
-    //    }
-    //    /// <summary>
-    //    /// 释放
-    //    /// </summary>
-    //    public void Dispose()
-    //    {
-    //        using (new LockWait(ref para))
-    //        {
-    //            foreach (var item in poolMap.Values)
-    //                (item as FrameworkObjectInnerPool<IRecyclable>).Dispose();
-    //            poolMap.Clear();
-    //        }
-           
-    //    }
-
-    //    private FrameworkObjectInnerPool<IRecyclable> GetPool(Type type)
-    //    {
-    //        using (new LockWait(ref para))
-    //        {
-    //            if (!poolMap.ContainsKey(type))
-    //                poolMap.Add(type, new FrameworkObjectInnerPool<IRecyclable>(type));
-    //            return poolMap[type] as FrameworkObjectInnerPool<IRecyclable>;
-    //        }
-    //    }
-    //    /// <summary>
-    //    /// 分配 一个 IRecyclable
-    //    /// </summary>
-    //    /// <param name="type"></param>
-    //    /// <returns></returns>
-    //    public IRecyclable Allocate(Type type)
-    //    {
-    //        IRecyclable recyclable = GetPool(type).Get();
-    //        return recyclable;
-    //    }
-    //    /// <summary>
-    //    /// 分配 一个 IRecyclable
-    //    /// </summary>
-    //    /// <typeparam name="T"></typeparam>
-    //    /// <returns></returns>
-    //    public T Allocate<T>() where T : IRecyclable
-    //    {
-            
-    //        T t = (T)GetPool(typeof(T)).Get();
-           
-    //        return t;
-    //    }
-    //    /// <summary>
-    //    /// 回收一个 IRecyclable
-    //    /// </summary>
-    //    /// <param name="type"></param>
-    //    /// <param name="t"></param>
-    //    public void Recyle(Type type,IRecyclable t)
-    //    {
-    //        GetPool(type).Set(t);
-    //    }
-    //    /// <summary>
-    //    /// 回收一个 IRecyclable
-    //    /// </summary>
-    //    /// <typeparam name="T"></typeparam>
-    //    /// <param name="t"></param>
-    //    public void Recyle<T>(T t) where T : IRecyclable
-    //    {
-    //        Recyle(t.GetType(), t);
-    //    }
-    //}
-
 }

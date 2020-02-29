@@ -20,7 +20,7 @@ namespace IFramework.Modules.NodeAction
 
         protected override bool OnMoveNext()
         {
-            return DateTime.Now - setTime < timeSpan;
+            return (DateTime.Now - setTime).TotalMilliseconds < timeSpan.TotalMilliseconds;
         }
         protected override void OnDataReset()
         {

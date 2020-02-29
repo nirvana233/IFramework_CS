@@ -12,136 +12,154 @@ using System.Text;
 namespace IFramework.Serialization
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public static partial class StringConvert_CS
+
+    public class IntStringConverter : StringConverter<int>
     {
-        public static string ConvertToString(this int self)
+        public override bool TryConvert(string self, out int result)
         {
-            return self.ToString();
+            return int.TryParse(self, out result);
         }
-        public static string ConvertToString(this short self)
+    }
+    public class ShortStringConverter : StringConverter<short>
+    {
+        public override bool TryConvert(string self, out short result)
         {
-            return self.ToString();
+            return short.TryParse(self, out result);
         }
-        public static string ConvertToString(this long self)
+    }
+    public class LongStringConverter : StringConverter<long>
+    {
+        public override bool TryConvert(string self, out long result)
         {
-            return self.ToString();
+            return long.TryParse(self, out result);
         }
-        public static string ConvertToString(this UInt16 self)
+    }
+    public class UInt16StringConverter : StringConverter<UInt16>
+    {
+        public override bool TryConvert(string self, out UInt16 result)
         {
-            return self.ToString();
+            return UInt16.TryParse(self, out result);
         }
-        public static string ConvertToString(this UInt32 self)
+    }
+    public class UInt32StringConverter : StringConverter<UInt32>
+    {
+        public override bool TryConvert(string self, out UInt32 result)
         {
-            return self.ToString();
+            return UInt32.TryParse(self, out result);
         }
-        public static string ConvertToString(this UInt64 self)
+    }
+    public class UInt64StringConverter : StringConverter<UInt64>
+    {
+        public override bool TryConvert(string self, out UInt64 result)
         {
-            return self.ToString();
+            return UInt64.TryParse(self, out result);
         }
-        public static string ConvertToString(this float self)
+    }
+    public class FloatStringConverter : StringConverter<float>
+    {
+        public override bool TryConvert(string self, out float result)
         {
-            return self.ToString();
+            return float.TryParse(self, out result);
         }
-        public static string ConvertToString(this double self)
+    }
+    public class DoubleStringConverter : StringConverter<double>
+    {
+        public override bool TryConvert(string self, out double result)
         {
-            return self.ToString();
+            return double.TryParse(self, out result);
         }
-        public static string ConvertToString(this decimal self)
+    }
+    public class DecimalStringConverter : StringConverter<decimal>
+    {
+        public override bool TryConvert(string self, out decimal result)
         {
-            return self.ToString();
+            return decimal.TryParse(self, out result);
         }
-        public static string ConvertToString(this string self)
+    }
+    public class StringStringConverter : StringConverter<string>
+    {
+        public override bool TryConvert(string self, out string result)
         {
-            return self;
+            result = self;
+            return true;
         }
-        public static string ConvertToString(this bool self)
+    }
+    public class BoolStringConverter : StringConverter<bool>
+    {
+        public override bool TryConvert(string self, out bool result)
         {
-            return self.ToString();
+            return bool.TryParse(self, out result);
         }
-        public static string ConvertToString(this char self)
+    }
+    public class CharStringConverter : StringConverter<char>
+    {
+        public override bool TryConvert(string self, out char result)
         {
-            return self.ToString();
+            return char.TryParse(self, out result);
         }
-        public static string ConvertToString(this byte self)
+    }
+    public class ByteStringConverter : StringConverter<byte>
+    {
+        public override bool TryConvert(string self, out byte result)
         {
-            return self.ToString();
+            return byte.TryParse(self, out result);
         }
-        public static string ConvertToString(this DateTime self)
+    }
+    public class DateTimeStringConverter : StringConverter<DateTime>
+    {
+        public override bool TryConvert(string self, out DateTime result)
         {
-            return self.ToString();
+            return DateTime.TryParse(self, out result);
         }
-        public static string ConvertToString(this byte[] self)
+    }
+    public class ByteArrayStringConverter : StringConverter<byte[]>
+    {
+        public override string ConvertToString(byte[] t)
         {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < self.Length; i++)
-                sb.Append(self[i].ToString("X2"));
+            for (int i = 0; i < t.Length; i++)
+                sb.Append(t[i].ToString("X2"));
             return sb.ToString();
         }
-
-        public static bool TryConvert(this string self, out byte[] result)
+        public override bool TryConvert(string self, out byte[] result)
         {
-            if (self.Length %2!= 0) throw new System.Exception("Parse Err Color");
+            if (self.Length % 2 != 0) throw new System.Exception("Parse Err Color");
             result = new byte[self.Length / 2];
             for (int i = 0; i < result.Length; i++)
                 result[i] = byte.Parse(self.Substring(i * 2, 2), System.Globalization.NumberStyles.HexNumber);
             return true;
         }
-
-
-        public static bool TryConvert(this string self, out DateTime result)
-        {
-            return DateTime.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out UInt16 result)
-        {
-            return UInt16.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out UInt32 result)
-        {
-            return UInt32.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out UInt64 result)
-        {
-            return UInt64.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self,out bool result)
-        {
-           return  bool.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out float result)
-        {
-            return float.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out int result)
-        {
-            return int.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out long result)
-        {
-            return long.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out short result)
-        {
-            return short.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out byte result)
-        {
-            return byte.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out double result)
-        {
-            return double.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out decimal result)
-        {
-            return decimal.TryParse(self, out result);
-        }
-        public static bool TryConvert(this string self, out char result)
-        {
-            return char .TryParse(self, out result);
-        }
-
     }
+
+    public class EnumStringConverter<T> : StringConverter<T> where T : struct
+    {
+        public override string ConvertToString(T t)
+        {
+            if (typeof(T).IsEnum)
+            {
+                ulong ul;
+                try
+                {
+                    ul = Convert.ToUInt64(t as Enum);
+                }
+                catch (OverflowException)
+                {
+                    unchecked
+                    {
+                        ul = (ulong)Convert.ToInt64(t as Enum);
+                    }
+                }
+                return ul.ToString();
+            }
+            else
+                throw new Exception("This Type is Not Enum "+ typeof(T));
+        }
+        public override bool TryConvert(string self, out T result)
+        {
+            return Enum.TryParse(self, out result);
+        }
+    }
+
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

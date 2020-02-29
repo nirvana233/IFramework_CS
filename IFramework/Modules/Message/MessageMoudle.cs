@@ -17,18 +17,18 @@ namespace IFramework.Modules.Message
     [FrameworkVersion(101)]
     public class MessageModule : FrameworkModule
     {
-        private interface IMessageEnity : IDisposable
+        private interface IMessageEntity : IDisposable
         {
             Type listenType { get; }
             bool Publish(Type publishType, int code, IEventArgs args, params object[] param);
         }
-        private class MessageEnity : IMessageEnity
+        private class MessageEntity : IMessageEntity
         {
             private readonly Type _listenType;
             public Type listenType { get { return _listenType; } }
             private List<IMessageListener> _listenners;
 
-            public MessageEnity(Type listenType)
+            public MessageEntity(Type listenType)
             {
                 this._listenType = listenType;
                 _listenners = new List<IMessageListener>();
@@ -65,13 +65,13 @@ namespace IFramework.Modules.Message
                 _listenners = null;
             }
         }
-        private class DelgateMessageEnity : IMessageEnity
+        private class DelgateMessageEntity : IMessageEntity
         {
             private readonly Type _listenType;
             public Type listenType { get { return _listenType; } }
             private List<MessageListener> _listenners;
 
-            public DelgateMessageEnity(Type listenType)
+            public DelgateMessageEntity(Type listenType)
             {
                 this._listenType = listenType;
                 _listenners = new List<MessageListener>();
@@ -109,26 +109,26 @@ namespace IFramework.Modules.Message
             }
         }
 
-        private Dictionary<Type, MessageEnity> _enitys;
-        private Dictionary<Type, DelgateMessageEnity> enitydels;
+        private Dictionary<Type, MessageEntity> _entitys;
+        private Dictionary<Type, DelgateMessageEntity> entitydels;
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override bool needUpdate { get { return false; } }
 
         protected override void OnDispose()
         {
-            foreach (var item in _enitys.Values)
+            foreach (var item in _entitys.Values)
                 item.Dispose();
-            _enitys.Clear();
-            foreach (var item in enitydels.Values)
+            _entitys.Clear();
+            foreach (var item in entitydels.Values)
                 item.Dispose();
-            enitydels.Clear();
-            _enitys = null;
-            enitydels = null;
+            entitydels.Clear();
+            _entitys = null;
+            entitydels = null;
         }
         protected override void Awake()
         {
-            _enitys = new Dictionary<Type, MessageEnity>();
-            enitydels = new Dictionary<Type, DelgateMessageEnity>();
+            _entitys = new Dictionary<Type, MessageEntity>();
+            entitydels = new Dictionary<Type, DelgateMessageEntity>();
         }
         protected override void OnUpdate()
         {
@@ -144,9 +144,9 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool Subscribe(Type publishType, IMessageListener listener)
         {
-            if (!_enitys.ContainsKey(publishType))
-                _enitys.Add(publishType, new MessageEnity(publishType));
-            return _enitys[publishType].Subscribe(listener);
+            if (!_entitys.ContainsKey(publishType))
+                _entitys.Add(publishType, new MessageEntity(publishType));
+            return _entitys[publishType].Subscribe(listener);
         }
         /// <summary>
         /// 注册监听
@@ -166,8 +166,8 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool Unsubscribe(Type publishType, IMessageListener listener)
         {
-            if (!_enitys.ContainsKey(publishType)) return false;
-            return _enitys[publishType].Unsubscribe(listener);
+            if (!_entitys.ContainsKey(publishType)) return false;
+            return _entitys[publishType].Unsubscribe(listener);
         }
         /// <summary>
         /// 解除注册监听
@@ -187,9 +187,9 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool Subscribe(Type publishType, MessageListener listener)
         {
-            if (!enitydels.ContainsKey(publishType))
-                enitydels.Add(publishType, new DelgateMessageEnity(publishType));
-            return enitydels[publishType].Subscribe(listener);
+            if (!entitydels.ContainsKey(publishType))
+                entitydels.Add(publishType, new DelgateMessageEntity(publishType));
+            return entitydels[publishType].Subscribe(listener);
         }
         /// <summary>
         /// 注册监听
@@ -209,8 +209,8 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool Unsubscribe(Type publishType, MessageListener listener)
         {
-            if (!enitydels.ContainsKey(publishType)) return false;
-            return enitydels[publishType].Unsubscribe(listener);
+            if (!entitydels.ContainsKey(publishType)) return false;
+            return entitydels[publishType].Unsubscribe(listener);
         }
         /// <summary>
         /// 解除注册监听
@@ -258,12 +258,12 @@ namespace IFramework.Modules.Message
         public bool Publish(Type publishType, int code, IEventArgs args, params object[] param)
         {
             bool value = false;
-            foreach (var item in _enitys.Values)
+            foreach (var item in _entitys.Values)
             {
                 if (item.Publish(publishType, code, args, param))
                     value = true;
             }
-            foreach (var item in enitydels.Values)
+            foreach (var item in entitydels.Values)
             {
                 if (item.Publish(publishType, code, args, param))
                     value = true;

@@ -172,6 +172,7 @@ namespace IFramework
             _disposed = false;
             _haveInit = true;
             sw_delta = new Stopwatch();
+
             sw_init = new Stopwatch();
             sw_init.Start();
         }

@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace IFramework.Modules.NodeAction
 {
-    [FrameworkVersion(8)]
+    [FrameworkVersion(16)]
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public static class ActionNodeExtension
     {
@@ -71,6 +71,11 @@ namespace IFramework.Modules.NodeAction
         {
             return self.OnRecyle(() => { action(self); });
         }
+        public static T OnFrame<T>(this T self, Action<T> action) where T : ActionNode
+        {
+            return self.OnFrame(() => { action(self); });
+        }
+
         public static T OnCompelete<T>(this T self, Action action) where T : ActionNode
         {
             self.onCompelete += action;
@@ -91,6 +96,12 @@ namespace IFramework.Modules.NodeAction
             self.onRecyle += action;
             return self;
         }
+        public static T OnFrame<T>(this T self, Action action) where T : ActionNode
+        {
+            self.onFrame += action;
+            return self;
+        }
+
 
         public static T TimeSpan<T>(this T self, TimeSpan timeSpan, bool autoRecyle = false) where T : ContainerNode
         {
@@ -103,6 +114,13 @@ namespace IFramework.Modules.NodeAction
         {
             UntilNode node = Allocate<UntilNode>(self.env);
             node.Config(func, autoRecyle);
+            self.Append(node);
+            return self;
+        }
+        public static T While<T>(this T self, Func<bool> func,Action loop, bool autoRecyle = false) where T : ContainerNode
+        {
+            WhileNode node = Allocate<WhileNode>(self.env);
+            node.Config(func,loop, autoRecyle);
             self.Append(node);
             return self;
         }
@@ -151,6 +169,7 @@ namespace IFramework.Modules.NodeAction
         }
 
       
+       
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 

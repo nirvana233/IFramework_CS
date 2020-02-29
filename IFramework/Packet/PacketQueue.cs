@@ -8,7 +8,7 @@
 *********************************************************************************/
 using System.Collections.Generic;
 
-namespace IFramework.Net
+namespace IFramework.Packets
 {
     class PacketQueue
     {
@@ -56,6 +56,7 @@ namespace IFramework.Net
             if (rt)
             {
                 pkgs.Add(_pkg);
+                _pkg = new Packet();
             }
             if (_bucket.Length > 0)
             {

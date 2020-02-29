@@ -5,7 +5,7 @@ namespace IFramework.Modules.ECS
     /// <summary>
     /// 实体
     /// </summary>
-    public interface IEnity
+    public interface IEntity
     {
         /// <summary>
         /// 注册的模块
@@ -39,15 +39,17 @@ namespace IFramework.Modules.ECS
         /// 添加组件
         /// </summary>
         /// <param name="component"></param>
+        /// <param name="useSame"></param>
         /// <returns></returns>
-         IComponent AddComponent(IComponent component);
+        IComponent AddComponent(IComponent component, bool useSame);
         /// <summary>
         /// 添加组件
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
+        /// <param name="useSame"></param>
         /// <returns></returns>
-         T AddComponent<T>(T component) where T : IComponent;
+        T AddComponent<T>(T component, bool useSame) where T : IComponent;
         /// <summary>
         /// 移除组件
         /// </summary>
@@ -91,7 +93,7 @@ namespace IFramework.Modules.ECS
     /// <summary>
     /// 实体
     /// </summary>
-    public abstract class Enity: IEnity
+    public abstract class Entity : IEntity
     {
         /// <summary>
         /// 注册的模块
@@ -137,20 +139,22 @@ namespace IFramework.Modules.ECS
         /// 添加组件
         /// </summary>
         /// <param name="component"></param>
+        /// <param name="useSame"></param>
         /// <returns></returns>
-        public IComponent AddComponent(IComponent component)
+        public IComponent AddComponent(IComponent component, bool useSame)
         {
-            return _mou.AddComponent(this, component);
+            return _mou.AddComponent(this, component,useSame);
         }
         /// <summary>
         /// 添加组件
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
+        /// <param name="useSame"></param>
         /// <returns></returns>
-        public T AddComponent<T>(T component) where T : IComponent
+        public T AddComponent<T>(T component, bool useSame) where T : IComponent
         {
-            return AddComponent(component);
+            return AddComponent(component, useSame);
         }
         /// <summary>
         /// 移除组件
@@ -214,7 +218,7 @@ namespace IFramework.Modules.ECS
 
             OnDestory();
             if (_mou != null)
-                _mou.UnSubscribeEnity(this);
+                _mou.UnSubscribeEntity(this);
         }
         /// <summary>
         /// 解除模块注册时调用

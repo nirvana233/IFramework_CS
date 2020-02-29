@@ -34,7 +34,7 @@ namespace IFramework.Modules.MVP
                 group.executor.message = _message;
                 group.view.message = _message;
 
-                _ecs.SubscribeEnity(group.enity);
+                _ecs.SubscribeEntity(group.entity);
                 _ecs.SubscribeSystem(group.sensor);
                 _ecs.SubscribeSystem(group.policy);
                 _ecs.SubscribeSystem(group.executor);
@@ -53,7 +53,7 @@ namespace IFramework.Modules.MVP
             else
             {
                 _group.module = null;
-                _ecs.UnSubscribeEnity(_group.enity);
+                _ecs.UnSubscribeEntity(_group.entity);
 
                 _ecs.UnSubscribeSystem(_group.sensor);
                 _ecs.UnSubscribeSystem(_group.policy);

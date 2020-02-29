@@ -12,235 +12,139 @@ using System.Collections.Generic;
 namespace IFramework.Serialization
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public static partial class StringConvert
+
+    public abstract class StringConverter
     {
-        static StringConvert()
+        private static Dictionary<Type, Type> _map = new Dictionary<Type, Type>()
         {
-            onTryConverts = new List<OnTryConvert>();
-            onConvertToStrings = new List<OnConvertToString>();
+            { typeof(int),typeof(IntStringConverter)},
+            { typeof(short),typeof(ShortStringConverter)},
+            { typeof(long),typeof(LongStringConverter)},
+            { typeof(UInt16),typeof(UInt16StringConverter)},
+            { typeof(UInt32),typeof(UInt32StringConverter)},
+            { typeof(UInt64),typeof(UInt64StringConverter)},
+            { typeof(float),typeof(FloatStringConverter)},
+            { typeof(double),typeof(DoubleStringConverter)},
+            { typeof(decimal),typeof(DecimalStringConverter)},
+            { typeof(string),typeof(StringStringConverter)},
+            { typeof(bool),typeof(BoolStringConverter)},
+            { typeof(char),typeof(CharStringConverter)},
+            { typeof(byte),typeof(ByteStringConverter)},
+            { typeof(DateTime),typeof(DateTimeStringConverter)},
+            { typeof(byte[]),typeof(ByteArrayStringConverter)},
+            { typeof(object),typeof(ByteArrayStringConverter)},
+
+        };
+        private static Dictionary<Type, StringConverter> _ins = new Dictionary<Type, StringConverter>();
+        public static void SubscribeConverter<T>(StringConverter<T> converter)
+        {
+            if (!_ins.ContainsKey(typeof(T)))
+            {
+                _ins.Add(typeof(T), converter);
+            }
+            else
+            {
+                _ins[typeof(T)] = converter;
+            }
         }
-        public delegate bool OnConvertToString(ref string result, object obj, Type type);
-        public delegate bool OnTryConvert(string str,  Type type,ref object result);
-        public static event OnTryConvert onTryConvert
+        public static void SubscribeConverter<T>(Type converter)
         {
-            add
+            if (!_map.ContainsKey(typeof(T)))
             {
-                if (!onTryConverts.Contains(value))
-                {
-                    onTryConverts.Add(value);
-                }
+                _map.Add(typeof(T), converter);
             }
-            remove
+            else
             {
-                if (onTryConverts.Contains(value))
-                {
-                    onTryConverts.Remove(value);
-                }
-            }
-        }
-        public static event OnConvertToString onConvertToString
-        {
-            add
-            {
-                if (!onConvertToStrings.Contains(value))
-                {
-                    onConvertToStrings.Add(value);
-                }
-            }
-            remove
-            {
-                if (onConvertToStrings.Contains(value))
-                {
-                    onConvertToStrings.Remove(value);
-                }
+                _map[typeof(T)] = converter;
             }
         }
 
-        private static List<OnTryConvert> onTryConverts;
-        private static List<OnConvertToString> onConvertToStrings;
+        public abstract string ConvertToString( object t);
+        public abstract bool TryConvert( string str, out object result);
+
+        public static StringConverter Get(Type type)
+        {
+            if (type.IsEnum)
+            {
+                return  Activator.CreateInstance(typeof(EnumStringConverter<>).MakeGenericType(type)) as StringConverter;
+            }
+            StringConverter c;
+            if (!_ins.TryGetValue(type,out c ))
+            {
+                Type t;
+                if (!_map.TryGetValue(type, out t))
+                {
+                    throw new Exception("Could not Convert Type " + type);
+                }
+                else
+                {
+                    StringConverter sc = Activator.CreateInstance(t) as StringConverter;
+                    _ins.Add(type, sc);
+                    return sc;
+                }
+            }
+            return c;
+        }
+        public static StringConverter<T> Get<T>()
+        {
+            return Get(typeof(T)) as StringConverter<T>;
+        }
+
         public const string dot = ",";
         public const string leftBound = "[ ";
         public const string rightBound = " ]";
         public const char colon = ':';
+    }
+    public abstract class StringConverter<T>: StringConverter
+    {
+        public virtual string ConvertToString(T t)
+        {
+            return t.ToString();
+        }
+        public abstract bool TryConvert(string self, out T result);
+
+        public override bool TryConvert(string str, out object result)
+        {
+      
+            T t;
+            if (TryConvert(str, out t))
+            {
+                result = t;
+                return true;
+            }
+            else
+            {
+                result = default(T);
+                return false;
+            }
+        }
+        public override string ConvertToString(object t)
+        {
+            return ConvertToString((T)t);
+        }
+    }
+
+    public static partial class StringConvert
+    {
         public static string ConvertToString<T>(this T self)
         {
-            return self.ConvertToString(typeof(T));
+           return  StringConverter.Get<T>().ConvertToString(self);
         }
         public static string ConvertToString(this object self, Type type)
         {
             if (self == null) return string.Empty;
-            else if (type == typeof(string)) return ((string)self).ConvertToString();
-            else if (type == typeof(int)) return ((int)self).ConvertToString();
-            else if (type == typeof(float)) return ((float)self).ConvertToString();
-            else if (type == typeof(double)) return ((double)self).ConvertToString();
-            else if (type == typeof(decimal)) return ((decimal)self).ConvertToString();
-            else if (type == typeof(bool)) return ((bool)self).ConvertToString();
-            else if (type == typeof(char)) return ((char)self).ConvertToString();
-            else if (type == typeof(long)) return ((long)self).ConvertToString();
-            else if (type == typeof(short)) return ((short)self).ConvertToString();
-            else if (type == typeof(byte)) return ((byte)self).ConvertToString();
-            else if (type == typeof(ushort)) return ((ushort)self).ConvertToString();
-            else if (type == typeof(uint)) return ((uint)self).ConvertToString();
-            else if (type == typeof(ulong)) return ((ulong)self).ConvertToString();
-            else if (type == typeof(DateTime)) return ((DateTime)self).ConvertToString();
-            else if (type == typeof(byte[])) return ((byte[])self).ConvertToString();
-            else if(onConvertToStrings .Count>0)
-            {
-                string result=string.Empty;
-                for (int i = 0; i < onConvertToStrings.Count; i++)
-                {
-                    if (onConvertToStrings[i].Invoke(ref result, self, type))
-                    {
-                        return result;
-                    }
-                }
-                throw new Exception(string.Format("Can't Convert Type {0} ToString", type));
-            }
-            else
-                throw new Exception(string.Format("Can't Convert Type {0} ToString", type));
+            var s = StringConverter.Get(type);
+            return s.ConvertToString(self);
         }
 
         public static bool TryConvert<T>(this string self, out T t)
         {
-            object obj = default(object);
-            if (self.TryConvert(typeof(T), ref obj))
-            {
-                t = (T)obj;
-                return true;
-            }
-            else
-            {
-                t = default(T);
-                return false;
-            }
+            return StringConverter.Get<T>().TryConvert(self,out t);
         }
         public static bool TryConvert(this string self, Type type, ref object obj)
         {
-
             if (string.IsNullOrEmpty(self)) return false;
-            if (type == typeof(object))
-            {
-                Type t = self.GetType();
-                if (t == typeof(object))
-                    return false;
-                return TryConvert(self, t, ref obj);
-            }
-            else if (type == typeof(string))
-            {
-                obj = self;
-                return true;
-            }
-            else if (type == typeof(int))
-            {
-                int res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(float))
-            {
-                float res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(double))
-            {
-                double res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(decimal))
-            {
-                decimal res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(bool))
-            {
-                bool res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(char))
-            {
-                char res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(long))
-            {
-                long res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(short))
-            {
-                short res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(byte))
-            {
-                byte res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(UInt16))
-            {
-                UInt16 res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(UInt32))
-            {
-                UInt32 res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(UInt64))
-            {
-                UInt64 res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(DateTime))
-            {
-                DateTime res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (type == typeof(byte[]))
-            {
-                byte[] res;
-                if (!self.TryConvert(out res)) return false;
-                obj = res;
-                return true;
-            }
-            else if (onTryConverts.Count >0)
-            {
-                for (int i = 0; i < onTryConverts.Count; i++)
-                {
-                    if (onTryConverts[i].Invoke(self, type,ref obj))
-                    {
-                        return true;
-                    }
-                }
-                throw new Exception(string.Format("Can't Convert String {0} To Type {1}", self, type));
-            }
-            else
-                throw new Exception(string.Format("Can't Convert String {0} To Type {1}", self, type));
+            return StringConverter.Get(type).TryConvert(self, out obj);
         }
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释

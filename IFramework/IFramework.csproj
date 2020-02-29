@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrameworkBitConverter.cs" />
     <Compile Include="FrameworkEnvironment.cs" />
     <Compile Include="FrameworkModules.cs" />
     <Compile Include="Modules\APP\FrameworkAppModule.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Modules\Coroutine\WaitUtil.cs" />
     <Compile Include="Modules\Coroutine\WaitWhile.cs" />
     <Compile Include="Modules\ECS\ECSModule.cs" />
-    <Compile Include="Modules\ECS\Enity.cs" />
+    <Compile Include="Modules\ECS\Entity.cs" />
     <Compile Include="Modules\ECS\ExcuteSystem.cs" />
     <Compile Include="Modules\ECS\IComponent.cs" />
     <Compile Include="Modules\ECS\IExcuteSystem.cs" />
@@ -97,10 +98,19 @@
     <Compile Include="Modules\MVVM\View.cs" />
     <Compile Include="Modules\MVVM\ViewModel.cs" />
     <Compile Include="Modules\NodeAction\ActionNode.cs" />
+    <Compile Include="Modules\NodeAction\ConditionNode.cs" />
+    <Compile Include="Modules\NodeAction\WhileNode.cs" />
     <Compile Include="Modules\Pool\PoolModule.cs" />
     <Compile Include="Modules\Threads\ThreadModule.cs" />
     <Compile Include="Modules\Timer\TimerModule.cs" />
     <Compile Include="ObservableObject.cs" />
+    <Compile Include="Point2.cs" />
+    <Compile Include="Serialization\Simple\CustomSerializer.cs" />
+    <Compile Include="Serialization\Simple\DataWriter.cs" />
+    <Compile Include="Serialization\Simple\NodeType.cs" />
+    <Compile Include="Serialization\Simple\PacketNode.cs" />
+    <Compile Include="Serialization\Simple\Serializer.cs" />
+    <Compile Include="Serialization\Simple\SerializerUtility.cs" />
     <Compile Include="Utility\Astar\AStarMap2X.cs" />
     <Compile Include="Utility\Astar\AStarMap3X.cs" />
     <Compile Include="Utility\Astar\AStarNode2X.cs" />
@@ -143,19 +153,19 @@
     <Compile Include="Net\Socket\Buffer\BufferSegment.cs" />
     <Compile Include="Net\Socket\Buffer\SockArgBuffers.cs" />
     <Compile Include="Net\Socket\Buffer\SocketEventArgPool.cs" />
-    <Compile Include="Net\Socket\CycQueue.cs" />
+    <Compile Include="Packet\CycQueue.cs" />
     <Compile Include="Net\Socket\Extension\ByteExtension.cs" />
     <Compile Include="Net\Socket\Extension\StringExtension.cs" />
     <Compile Include="Net\Socket\Extension\UInt16Extension.cs" />
     <Compile Include="Net\Socket\Extension\UInt32Extension.cs" />
     <Compile Include="Net\Socket\Extension\UInt64Extension.cs" />
     <Compile Include="Net\Socket\NetConnectionTokenPool.cs" />
-    <Compile Include="Net\Socket\Packet\Packet.cs" />
-    <Compile Include="Net\Socket\Packet\PacketHeader.cs" />
-    <Compile Include="Net\Socket\Packet\PacketQueue.cs" />
-    <Compile Include="Net\Socket\Packet\PacketReader.cs" />
-    <Compile Include="Net\Socket\Packet\WebSock\BaseInfo.cs" />
-    <Compile Include="Net\Socket\Packet\WebSock\DataFrame.cs" />
+    <Compile Include="Packet\Packet.cs" />
+    <Compile Include="Packet\PacketHeader.cs" />
+    <Compile Include="Packet\PacketQueue.cs" />
+    <Compile Include="Packet\PacketReader.cs" />
+    <Compile Include="Net\Socket\WebSock\BaseInfo.cs" />
+    <Compile Include="Net\Socket\WebSock\DataFrame.cs" />
     <Compile Include="Net\Socket\SockDel.cs" />
     <Compile Include="Net\Socket\SocketToken.cs" />
     <Compile Include="Net\Socket\TCP\TcpClientToken.cs" />
@@ -211,6 +221,7 @@
     <Compile Include="Singleton\SingletonPropertyClass.cs" />
     <Compile Include="Modules\Fsm\TransitionCondition.cs" />
     <Compile Include="Utility\Verifier.cs" />
+    <Compile Include="ValueCurve.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

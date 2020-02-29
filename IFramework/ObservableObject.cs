@@ -6,62 +6,6 @@ using System.Linq.Expressions;
 namespace IFramework
 {
     /// <summary>
-    /// 可观测树值
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    [FrameworkVersion(10)]
-    public class ObservableValue<T> : ObservableObject
-    {
-        /// <summary>
-        /// 默认的名字
-        /// </summary>
-        public const string ValuePropertyName = "value";
-        private T _value;
-        /// <summary>
-        /// 具体的数值
-        /// </summary>
-        public T value
-        {
-            get { return GetProperty(ref _value, ValuePropertyName); }
-            set
-            {
-                SetProperty(ref _value, value, ValuePropertyName);
-            }
-        }
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="value"></param>
-        public ObservableValue(T value) : base()
-        {
-            _value = value;
-        }
-        /// <summary>
-        /// 注册 value 变化监听
-        /// </summary>
-        /// <param name="listener"></param>
-        public void Subscribe(Action listener)
-        {
-            base.Subscribe(ValuePropertyName, listener);
-        }
-        /// <summary>
-        /// 取消注册 value 变化监听
-        /// </summary>
-        /// <param name="listener"></param>
-        public void UnSubscribe(Action listener)
-        {
-            base.UnSubscribe(ValuePropertyName, listener);
-        }
-        /// <summary>
-        /// 方便书写，缩减代码
-        /// </summary>
-        /// <param name="value"></param>
-        public static implicit operator T(ObservableValue<T> value)
-        {
-            return value.value;
-        }
-    }
-    /// <summary>
     /// 可观测 Object
     /// </summary>
     [FrameworkVersion(20)]
@@ -173,7 +117,7 @@ namespace IFramework
     [FrameworkVersion(10)]
     public class ObservableObjectHandler
     {
-        struct ObserveEnity
+        struct ObserveEntity
         {
             private string _propertyName;
             private ObservableObject _observableObject;
@@ -181,7 +125,7 @@ namespace IFramework
 
             public string propertyName { get { return _propertyName; } }
             public ObservableObject observableObject { get { return _observableObject; } }
-            public ObserveEnity(ObservableObject obj, string propertyName, Action listenner)
+            public ObserveEntity(ObservableObject obj, string propertyName, Action listenner)
             {
                 this._propertyName = propertyName;
                 this._observableObject = obj;
@@ -200,7 +144,7 @@ namespace IFramework
 
         internal static ObservableObjectHandler recordingHandler { get; private set; }
 
-        private List<ObserveEnity> _enitys = new List<ObserveEnity>();
+        private List<ObserveEntity> _entitys = new List<ObserveEntity>();
         internal Action listenner;
         internal ObservableObjectHandler Subscribe(ObservableObject _object, string propertyName)
         {
@@ -216,9 +160,9 @@ namespace IFramework
         /// <returns></returns>
         public ObservableObjectHandler Subscribe(ObservableObject _object, string propertyName, Action listenner)
         {
-            var bindTarget = new ObserveEnity(_object, propertyName, listenner);
+            var bindTarget = new ObserveEntity(_object, propertyName, listenner);
             bindTarget.Bind();
-            _enitys.Add(bindTarget);
+            _entitys.Add(bindTarget);
             return this;
         }
         /// <summary>
@@ -261,11 +205,11 @@ namespace IFramework
         /// </summary>
         public void UnSubscribe()
         {
-            _enitys.ForEach((enity) =>
+            _entitys.ForEach((entity) =>
             {
-                enity.UnBind();
+                entity.UnBind();
             });
-            _enitys.Clear();
+            _entitys.Clear();
         }
         /// <summary>
         /// 取消符合条件的监听
@@ -274,12 +218,73 @@ namespace IFramework
         /// <param name="propertyName"> 属性名称 </param>
         public void UnSubscribe(ObservableObject _object, string propertyName)
         {
-            var result = _enitys.RemoveAll((enity) =>
+            var result = _entitys.RemoveAll((entity) =>
             {
-                if (enity.observableObject != _object || enity.propertyName != propertyName) return false;
-                enity.UnBind();
+                if (entity.observableObject != _object || entity.propertyName != propertyName) return false;
+                entity.UnBind();
                 return true;
             });
         }
     }
+    /// <summary>
+    /// 可观测树值
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    [FrameworkVersion(10)]
+    public class ObservableValue<T> : ObservableObject
+    {
+        /// <summary>
+        /// 默认的名字
+        /// </summary>
+        public const string ValuePropertyName = "value";
+        private T _value;
+        /// <summary>
+        /// 具体的数值
+        /// </summary>
+        public T value
+        {
+            get { return GetProperty(ref _value, ValuePropertyName); }
+            set
+            {
+                SetProperty(ref _value, value, ValuePropertyName);
+            }
+        }
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="value"></param>
+        public ObservableValue(T value) : base()
+        {
+            _value = value;
+        }
+        /// <summary>
+        /// 注册 value 变化监听
+        /// </summary>
+        /// <param name="listener"></param>
+        public void Subscribe(Action listener)
+        {
+            base.Subscribe(ValuePropertyName, listener);
+        }
+        /// <summary>
+        /// 取消注册 value 变化监听
+        /// </summary>
+        /// <param name="listener"></param>
+        public void UnSubscribe(Action listener)
+        {
+            base.UnSubscribe(ValuePropertyName, listener);
+        }
+        /// <summary>
+        /// 方便书写，缩减代码
+        /// </summary>
+        /// <param name="value"></param>
+        public static implicit operator T(ObservableValue<T> value)
+        {
+            return value.value;
+        }
+    }
+
+
+
+
+
 }

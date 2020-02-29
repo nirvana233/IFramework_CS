@@ -20,6 +20,7 @@ namespace IFramework.Modules.NodeAction
         public event Action onCompelete;
         public event Action onRecyle;
         public event Action onDispose;
+        public event Action onFrame;
 
         public void Dispose()
         {
@@ -44,7 +45,11 @@ namespace IFramework.Modules.NodeAction
                     onBegin();
             }
             if (!_isDone)
+            {
+                if (onFrame != null)
+                    onFrame();
                 _isDone = !OnMoveNext();
+            }
             if (_isDone)
             {
                 if (onCompelete != null)
@@ -60,7 +65,12 @@ namespace IFramework.Modules.NodeAction
             _isDone = false;
             OnNodeReset();
         }
+        //protected override void OnAllocate()
+        //{
+        //    SetDataDirty();
 
+        //    base.OnAllocate();
+        //}
         public void Config(bool autoRecyle)
         {
             this._autoRecyle = autoRecyle;
@@ -69,20 +79,20 @@ namespace IFramework.Modules.NodeAction
 
         protected override void OnDataReset()
         {
+
             mOnBeginCalled = false;
             _isDone = false;
-
+            onFrame = null;
             onBegin = null;
             onCompelete = null;
             onRecyle = null;
-           
         }
         protected override void OnRecyle()
         {
             if (onRecyle != null)
                 onRecyle();
             ResetData();
-            _isDone = true;
+            _isDone = false;
         }
 
 
@@ -92,42 +102,6 @@ namespace IFramework.Modules.NodeAction
         protected abstract bool OnMoveNext();
         protected abstract void OnDispose();
         protected abstract void OnNodeReset();
-    }
-    public class ConditionNode : ActionNode
-    {
-        private Func<bool> _condition;
-        private Action _callback;
-        public Func<bool> condition { get { return _condition; } }
-        public Action callback { get { return _callback; } }
-        public void Config(Func<bool> condition, Action callback, bool autoRecyle)
-        {
-            this._condition = condition;
-            this._callback = callback;
-            base.Config(autoRecyle);
-        }
-        protected override void OnDataReset()
-        {
-            base.OnDataReset();
-            _callback = null;
-            _condition = null;
-        }
-
-        protected override void OnDispose()
-        {
-            _callback = null;
-            _condition = null;
-        }
-
-        protected override bool OnMoveNext()
-        {
-            if (_condition.Invoke())
-                _callback();
-            return false;
-        }
-
-        protected override void OnNodeReset() { }
-        protected override void OnBegin() { }
-        protected override void OnCompelete() { }
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 

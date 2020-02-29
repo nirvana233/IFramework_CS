@@ -11,7 +11,7 @@ namespace IFramework.Modules.MVP
     {
         private bool _moduleDisposed;
         private MessageModule _message;
-        private MVPEnity _enity;
+        private MVPEntity _entity;
         /// <summary>
         /// 消息转发
         /// </summary>
@@ -28,7 +28,7 @@ namespace IFramework.Modules.MVP
         /// <summary>
         /// 实体
         /// </summary>
-        public MVPEnity enity { get { return _enity; } internal set { _enity = value; OnSetEnity(value); } }
+        public MVPEntity entity { get { return _entity; } internal set { _entity = value; OnSetEntity(value); } }
 
         internal MVPSystem() { _moduleDisposed = false; }
         void IExcuteSystem.Excute()
@@ -54,7 +54,7 @@ namespace IFramework.Modules.MVP
         /// 被设置实体
         /// </summary>
         /// <param name="value"></param>
-        protected virtual void OnSetEnity(MVPEnity value) { }
+        protected virtual void OnSetEntity(MVPEntity value) { }
         /// <summary>
         /// 被设置消息
         /// </summary>

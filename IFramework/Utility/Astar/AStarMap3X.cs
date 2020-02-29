@@ -15,7 +15,8 @@ namespace IFramework.Utility.Astar
         public bool WalkSideways { get { return walkSideways; } set { walkSideways = value; } }
         private List<AStarNode3X> neighborNodes;
         private AStarNode3X[,,] map;
-        private int len, wid, hei;
+        private Point3 size;
+      //  private int len, wid, hei;
         /// <summary>
         /// Ctor
         /// </summary>
@@ -26,13 +27,10 @@ namespace IFramework.Utility.Astar
         /// <summary>
         /// 便于调用点位
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="z"></param>
         /// <returns></returns>
-        public AStarNode3X this[int x, int y, int z]
+        public AStarNode3X this[Point3 point]
         {
-            get { return map[x, y, z]; }
+            get { return map[(int)point.x, (int)point. y, (int)point.z]; }
         }
         /// <summary>
         /// 加载地图
@@ -47,17 +45,16 @@ namespace IFramework.Utility.Astar
             this.walkSideways = walkSideways;
 
             map = new AStarNode3X[arr.GetLength(0), arr.GetLength(1), arr.GetLength(2)];
-            this.wid = map.GetLength(1);
-            this.len = map.GetLength(0);
-            this.hei = map.GetLength(2);
+            size = new Point3(map.GetLength(1), map.GetLength(0), map.GetLength(2));
 
-            for (int i = 0; i < len; i++)
+
+            for (int i = 0; i < size.x; i++)
             {
-                for (int j = 0; j < wid; j++)
+                for (int j = 0; j < size.y; j++)
                 {
-                    for (int k = 0; k < hei; k++)
+                    for (int k = 0; k < size.z; k++)
                     {
-                        map[i, j, k] = new AStarNode3X(i, j, k, func(arr[i, j, k]));
+                        map[i, j, k] = new AStarNode3X(new Point3(i, j, k), func(arr[i, j, k]));
 
                     }
                 }
@@ -71,7 +68,7 @@ namespace IFramework.Utility.Astar
         /// <returns></returns>
         public float GetHCost(AStarNode3X start, AStarNode3X end)
         {
-            return (float)Math.Sqrt((start.X - end.X) * (start.X - end.X) + (start.Y - end.Y) * (start.Y - end.Y) + (start.Z - end.Z) * (start.Z - end.Z));
+            return Point3.Distance(start.mapPos, end.mapPos);
         }
         /// <summary>
         /// 获取邻居节点
@@ -90,16 +87,16 @@ namespace IFramework.Utility.Astar
                         for (int k = 0; k < 3; k++)
                         {
 
-                            if (node.X - 1 + i >= 0 && node.X - 1 + i < len)
+                            if (node.mapPos.x - 1 + i >= 0 && node.mapPos.x - 1 + i < size.x)
                             {
-                                if (node.Y - 1 + j >= 0 && node.Y - 1 + j < wid)
+                                if (node.mapPos.y - 1 + j >= 0 && node.mapPos.y - 1 + j < size.y)
                                 {
-                                    if (node.Z - 1 + k >= 0 && node.Z - 1 + k < hei)
+                                    if (node.mapPos.z - 1 + k >= 0 && node.mapPos.z - 1 + k < size.z)
                                     {
                                         if (i == 1 && j == 1 && k == 1) continue;
-                                        if (map[node.X - 1 + i, node.Y - 1 + j, node.Z - 1 + k].NodeType == AStarNodeType.Walkable)
+                                        if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k].NodeType == AStarNodeType.Walkable)
                                         {
-                                            neighborNodes.Add(map[node.X - 1 + i, node.Y - 1 + j, node.Z - 1 + k]);
+                                            neighborNodes.Add(map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k]);
                                         }
                                     }
                                 }
@@ -119,17 +116,17 @@ namespace IFramework.Utility.Astar
                         for (int k = 0; k < 3; k++)
                         {
 
-                            if (node.X - 1 + i >= 0 && node.X - 1 + i < len)
+                            if (node.mapPos.x - 1 + i >= 0 && node.mapPos.x - 1 + i < size.x)
                             {
-                                if (node.Y - 1 + j >= 0 && node.Y - 1 + j < wid)
+                                if (node.mapPos.y - 1 + j >= 0 && node.mapPos.y - 1 + j < size.y)
                                 {
-                                    if (node.Z - 1 + k >= 0 && node.Z - 1 + k < hei)
+                                    if (node.mapPos.z - 1 + k >= 0 && node.mapPos.z - 1 + k < size.z)
                                     {
                                         if ((i - 1) * (j - 1) * (k - 1) == 0 && i != j && j != k)
                                         {
-                                            if (map[node.X - 1 + i, node.Y - 1 + j, node.Z - 1 + k].NodeType == AStarNodeType.Walkable)
+                                            if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k].NodeType == AStarNodeType.Walkable)
                                             {
-                                                neighborNodes.Add(map[node.X - 1 + i, node.Y - 1 + j, node.Z - 1 + k]);
+                                                neighborNodes.Add(map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k]);
                                             }
                                         }
                                     }
@@ -148,11 +145,11 @@ namespace IFramework.Utility.Astar
         /// </summary>
         public void Reset()
         {
-            for (int i = 0; i < wid; i++)
+            for (int i = 0; i < size.x; i++)
             {
-                for (int j = 0; j < len; j++)
+                for (int j = 0; j < size.y; j++)
                 {
-                    for (int k = 0; k < hei; k++)
+                    for (int k = 0; k < size.z; k++)
                     {
                         map[i, j, k].Reset();
                     }

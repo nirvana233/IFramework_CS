@@ -35,6 +35,34 @@ namespace IFramework
             other = self ^ other;
             return self ^ other;
         }
+        /// <summary>
+        /// 约束数值大小
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="max"></param>
+        /// <param name="min"></param>
+        /// <returns></returns>
+        public static int Clamp(this int self, int min , int max)
+        {
+            return self < min ? min : self > max ? max : self;
+        }
     }
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    public static class FloatExtension
+    {
+        public static float Clamp(this float self,float min, float max)
+        {
+            return self < min ? min : self > max ? max : self;
+        }
+        public static float Clamp01(this float self)
+        {
+            return Clamp(self,0f,1f);
+        }
+        public static float Repeat(this float self, float length)
+        {
+            return Clamp(self - (float)Math.Floor(self/ length) * length, 0f, length);
+        }
+    }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

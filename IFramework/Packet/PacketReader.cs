@@ -8,7 +8,7 @@
 *********************************************************************************/
 using System.Collections.Generic;
 
-namespace IFramework.Net
+namespace IFramework.Packets
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class PacketReader

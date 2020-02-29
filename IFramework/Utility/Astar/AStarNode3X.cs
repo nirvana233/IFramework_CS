@@ -22,33 +22,18 @@
         public float H { get { return h; } }
         public float F { get { return g + h; ; } }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        private int m_X;
-        private int m_Y;
-        private int m_Z;
+        private Point3 _mappos;
         /// <summary>
-        /// 地图位置 坐标
+        /// 
         /// </summary>
-        public int Z { get { return m_Z; } }
-        /// <summary>
-        /// 地图位置 坐标
-        /// </summary>
-        public int Y { get { return m_Y; } }
-        /// <summary>
-        /// 地图位置 坐标
-        /// </summary>
-        public int X { get { return m_X; } }
+        public Point3 mapPos { get { return _mappos; } }
+
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="mapPosX"></param>
-        /// <param name="mapPosY"></param>
-        /// <param name="mapPosZ"></param>
-        /// <param name="nodeType"></param>
-        public AStarNode3X(int mapPosX, int mapPosY, int mapPosZ, AStarNodeType nodeType)
+        public AStarNode3X(Point3 mapPos, AStarNodeType nodeType)
         {
-            this.m_X = mapPosX;
-            this.m_Y = mapPosY;
-            this.m_Z = mapPosZ;
+            this._mappos = mapPos;
             g = h = float.MaxValue / 2;
             this.nodeType = nodeType;
         }

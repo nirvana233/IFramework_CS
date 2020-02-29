@@ -3,15 +3,17 @@
 namespace IFramework.Modules.NodeAction
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class UntilNode : ActionNode
+    public class WhileNode : ActionNode
     {
 
         private Func<bool> _condition;
-        public Func<bool> condition { get { return _condition; }  }
+        public Func<bool> condition { get { return _condition; } }
+        private Action _loop;
+        public Action loop { get { return _loop; } }
 
-
-        public void Config(Func<bool> condition, bool autoRecyle)
+        public void Config(Func<bool> condition,Action loop, bool autoRecyle)
         {
+            this._loop = loop;
             this._condition = condition;
             base.Config(autoRecyle);
         }
@@ -22,7 +24,12 @@ namespace IFramework.Modules.NodeAction
         }
         protected override bool OnMoveNext()
         {
-            return !condition.Invoke();
+            bool bo = condition.Invoke();
+            if (bo && _loop!=null)
+            {
+                _loop();
+            }
+            return bo;
         }
 
         protected override void OnBegin() { }
@@ -30,8 +37,6 @@ namespace IFramework.Modules.NodeAction
         protected override void OnDispose() { }
         protected override void OnNodeReset() { }
     }
-
-
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

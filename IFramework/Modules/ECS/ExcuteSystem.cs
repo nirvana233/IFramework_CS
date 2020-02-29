@@ -5,8 +5,8 @@ namespace IFramework.Modules.ECS
     /// <summary>
     /// 处理系统
     /// </summary>
-    /// <typeparam name="TEnity"></typeparam>
-    public abstract class ExcuteSystem<TEnity> : IExcuteSystem where TEnity : IEnity
+    /// <typeparam name="TEntity"></typeparam>
+    public abstract class ExcuteSystem<TEntity> : IExcuteSystem where TEntity : IEntity
     {
         internal ECSModule _moudule { get; }
         /// <summary>
@@ -22,25 +22,25 @@ namespace IFramework.Modules.ECS
         /// 获取所有实体（模块内）
         /// </summary>
         /// <returns></returns>
-        protected IEnumerable<IEnity> GetEnitys()
+        protected IEnumerable<IEntity> GetEntitys()
         {
-            return _moudule.GetEnitys();
+            return _moudule.GetEntitys();
         }
         private bool _moduleDispose;
         /// <summary>
         /// 适配
         /// </summary>
-        /// <param name="enity"></param>
+        /// <param name="entity"></param>
         /// <returns></returns>
-        protected virtual bool Fitter(TEnity enity)
+        protected virtual bool Fitter(TEntity entity)
         {
             return true;
         }
         /// <summary>
         /// 操作合法实体
         /// </summary>
-        /// <param name="enity"></param>
-        protected abstract void Excute(TEnity enity);
+        /// <param name="entity"></param>
+        protected abstract void Excute(TEntity entity);
         /// <summary>
         /// 模块释放时
         /// </summary>
@@ -49,10 +49,10 @@ namespace IFramework.Modules.ECS
         void IExcuteSystem.Excute()
         {
             if (_moduleDispose) return;
-            var _enitys = GetEnitys().GetEnumerator();
-            while (_enitys.MoveNext())
+            var _Entitys = GetEntitys().GetEnumerator();
+            while (_Entitys.MoveNext())
             {
-                var current = (TEnity)_enitys.Current;
+                var current = (TEntity)_Entitys.Current;
                 if (current == null) continue;
                 if (Fitter(current))
                     Excute(current);

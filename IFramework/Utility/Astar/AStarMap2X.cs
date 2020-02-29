@@ -13,14 +13,13 @@ namespace IFramework.Utility.Astar
         /// <summary>
         /// 便于调用点位
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
         /// <returns></returns>
-        public AStarNode2X this[int x, int y]
+        public AStarNode2X this[Point2 pos]
         {
-            get { return map[x, y]; }
+            get { return map[(int)pos.x, (int)pos.y]; }
         }
-        private int len, wid;
+        private Point2 size;
+       // private int len, wid;
         private bool walkSideways;
         /// <summary>
         /// 是否可以斜着走
@@ -41,7 +40,7 @@ namespace IFramework.Utility.Astar
         /// <returns></returns>
         public float GetHCost(AStarNode2X start, AStarNode2X end)
         {
-            return (float)Math.Sqrt((start.X - end.X) * (start.X - end.X) + (start.Y - end.Y) * (start.Y - end.Y));
+            return (float)Point2.Distance(start.mapPos, end.mapPos);
         }
         /// <summary>
         /// 获取邻居节点
@@ -57,14 +56,14 @@ namespace IFramework.Utility.Astar
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        if (node.X - 1 + i >= 0 && node.X - 1 + i < len)
+                        if (node.mapPos.x - 1 + i >= 0 && node.mapPos.x - 1 + i < size.x)
                         {
-                            if (node.Y - 1 + j >= 0 && node.Y - 1 + j < wid)
+                            if (node.mapPos.y- 1 + j >= 0 && node.mapPos.y - 1 + j < size.y)
                             {
                                 if (j == 1 && i == 1) continue;
-                                if (map[node.X - 1 + i, node.Y - 1 + j].NodeType == AStarNodeType.Walkable)
+                                if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j].NodeType == AStarNodeType.Walkable)
                                 {
-                                    neighborNodes.Add(map[node.X - 1 + i, node.Y - 1 + j]);
+                                    neighborNodes.Add(map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j]);
                                 }
                             }
                         }
@@ -77,15 +76,15 @@ namespace IFramework.Utility.Astar
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        if (node.X - 1 + i >= 0 && node.X - 1 + i < len)
+                        if (node.mapPos.x - 1 + i >= 0 && node.mapPos.x - 1 + i < size.x)
                         {
-                            if (node.Y - 1 + j >= 0 && node.Y - 1 + j < wid)
+                            if (node.mapPos.y - 1 + j >= 0 && node.mapPos.y - 1 + j < size.y)
                             {
                                 if ((i - 1) * (j - 1) == 0 && i != j)
                                 {
-                                    if (map[node.X - 1 + i, node.Y - 1 + j].NodeType == AStarNodeType.Walkable)
+                                    if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j].NodeType == AStarNodeType.Walkable)
                                     {
-                                        neighborNodes.Add(map[node.X - 1 + i, node.Y - 1 + j]);
+                                        neighborNodes.Add(map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j]);
                                     }
                                 }
                             }
@@ -106,13 +105,12 @@ namespace IFramework.Utility.Astar
         {
             this.walkSideways = walkSideways;
             map = new AStarNode2X[arr.GetLength(0), arr.GetLength(1)];
-            this.wid = map.GetLength(1);
-            this.len = map.GetLength(0);
-            for (int i = 0; i < len; i++)
+            size = new Point2(map.GetLength(1), map.GetLength(0));
+            for (int i = 0; i < size.x; i++)
             {
-                for (int j = 0; j < wid; j++)
+                for (int j = 0; j < size.y; j++)
                 {
-                    map[i, j] = new AStarNode2X(i, j, func(arr[i, j]));
+                    map[i, j] = new AStarNode2X(new Point2(i,j), func(arr[i, j]));
                 }
             }
         }
@@ -121,9 +119,9 @@ namespace IFramework.Utility.Astar
         /// </summary>
         public void Reset()
         {
-            for (int i = 0; i < wid; i++)
+            for (int i = 0; i < size.x; i++)
             {
-                for (int j = 0; j < len; j++)
+                for (int j = 0; j < size.y; j++)
                 {
                     map[i, j].Reset();
                 }

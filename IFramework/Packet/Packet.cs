@@ -8,7 +8,7 @@
 *********************************************************************************/
 using System;
 
-namespace IFramework.Net
+namespace IFramework.Packets
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class Packet
@@ -130,16 +130,22 @@ namespace IFramework.Net
             byte[] dst = Restore(buffer, offset, size);
             if (dst.Length < HelpBuffLen - 2)
                 return false;//throw new Exception("{4DE7D881-0C40-4C09-8337-CE06CC2761FF}:转义还原数组溢出"+dst.Length);
-            uint plen = dst.ToUInt32(7);
+                             //uint plen = dst.ToUInt32(7);
+            uint plen = FrameworkBitConverter.ToUInt32(dst,7);
+
             if (plen > dst.Length - HelpBuffLen + 2)
                 return false;
             if (_Head == null)
                 _Head = new PacketHeader();
-            _Head.pkgID = dst.ToUInt32(0);
+            //_Head.pkgID = dst.ToUInt32(0);
+            _Head.pkgID = FrameworkBitConverter.ToUInt32(dst, 0);
+
             _Head.pkgType = dst[4];
             //if (Head == null)
             //    Head = new PacketAttribute();
-            _Head.pkgCount = dst.ToUInt16(5);
+            //_Head.pkgCount = dst.ToUInt16(5);
+            _Head.pkgCount = FrameworkBitConverter.ToUInt16(dst,5);
+
             _Head.messageLen = plen;// dst.ToUInt32(5);
             message = new byte[_Head.messageLen];
             Buffer.BlockCopy(dst, HelpBuffLen - 2, message, 0, message.Length);

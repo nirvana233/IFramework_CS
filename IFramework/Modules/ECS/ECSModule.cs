@@ -7,24 +7,24 @@ namespace IFramework.Modules.ECS
     /// <summary>
     /// 模仿Ecs结构
     /// </summary>
-    [FrameworkVersion(30)]
+    [FrameworkVersion(621)]
     public class ECSModule : FrameworkModule
     {
         private Systems _systems;
-        private Enitys _enitys;
+        private Entitys _entitys;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override void Awake()
         {
             _systems = new Systems();
-            _enitys = new Enitys(this);
+            _entitys = new Entitys(this);
         }
         protected override void OnDispose()
         {
             _systems.Dispose();
-            _enitys.Dispose();
+            _entitys.Dispose();
             _systems = null;
-            _enitys = null;
+            _entitys = null;
         }
         protected override void OnUpdate()
         {
@@ -40,32 +40,32 @@ namespace IFramework.Modules.ECS
         /// <summary>
         /// 创建实体，创建完，注册
         /// </summary>
-        /// <typeparam name="TEnity"></typeparam>
+        /// <typeparam name="TEntity"></typeparam>
         /// <returns></returns>
-        public TEnity CreateEnity<TEnity>() where TEnity : IEnity
+        public TEntity CreateEntity<TEntity>() where TEntity : IEntity
         {
-            TEnity enity = Activator.CreateInstance<TEnity>();
-            SubscribeEnity(enity);
-            return enity;
+            TEntity entity = Activator.CreateInstance<TEntity>();
+            SubscribeEntity(entity);
+            return entity;
         }
         /// <summary>
         /// 注册实体
         /// </summary>
-        /// <typeparam name="TEnity"></typeparam>
-        /// <param name="enity"></param>
-        public void SubscribeEnity<TEnity>(TEnity enity) where TEnity : IEnity
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        public void SubscribeEntity<TEntity>(TEntity entity) where TEntity : IEntity
         {
-            _enitys.AddEnity(enity);
-            enity._mou = this;
+            _entitys.SubscribeEntity(entity);
+            entity._mou = this;
         }
         /// <summary>
         /// 解除注册实体
         /// </summary>
-        /// <param name="enity"></param>
-        public void UnSubscribeEnity(IEnity enity)
+        /// <param name="entity"></param>
+        public void UnSubscribeEntity(IEntity entity)
         {
-            enity._mou = null;
-            _enitys.UnSubscribeEnity(enity);
+            entity._mou = null;
+            _entitys.UnSubscribeEntity(entity);
         }
         /// <summary>
         /// 注册系统
@@ -85,44 +85,44 @@ namespace IFramework.Modules.ECS
         }
 
 
-        internal IComponent AddComponent(IEnity enity, IComponent component)
+        internal IComponent AddComponent(IEntity entity, IComponent component, bool useSame)
         {
-            return _enitys.AddComponent(enity, component);
+            return _entitys.AddComponent(entity, component, useSame);
         }
 
-        internal void ReFreshComponent(IEnity enity, Type type, IComponent component)
+        internal void ReFreshComponent(IEntity entity, Type type, IComponent component)
         {
-            _enitys.ReFreshComponent(enity, type, component);
+            _entitys.ReFreshComponent(entity, type, component);
         }
 
-        internal IComponent AddComponent(IEnity enity, Type type)
+        internal IComponent AddComponent(IEntity entity, Type type)
         {
-            return _enitys.AddComponent(enity, type);
+            return _entitys.AddComponent(entity, type);
         }
-        internal IComponent GetComponent(IEnity enity, Type type)
+        internal IComponent GetComponent(IEntity entity, Type type)
         {
-            return _enitys.GetComponent(enity, type);
+            return _entitys.GetComponent(entity, type);
         }
-        internal void RemoveComponent(IEnity enity, Type type)
+        internal void RemoveComponent(IEntity entity, Type type)
         {
-            _enitys.RemoveComponent(enity, type);
+            _entitys.RemoveComponent(entity, type);
         }
-        internal IEnumerable<IEnity> GetEnitys()
+        internal IEnumerable<IEntity> GetEntitys()
         {
-            return _enitys.GetEnitys();
+            return _entitys.GetEntitys();
         }
 
-        private class Enitys : IDisposable
+        private class Entitys : IDisposable
         {
-            private class EnityComponents : IDisposable
+            private class EntityContainer : IDisposable
             {
                 private ECSModule _moudle;
-                private Dictionary<Type, IComponent> _components;
-
-                public EnityComponents(ECSModule moudle)
+                private Dictionary<Type, int> _components;
+                public IEnumerator<int> componetIndexs { get { return _components.Values.GetEnumerator(); } }
+                public EntityContainer(ECSModule moudle)
                 {
                     this._moudle = moudle;
-                    _components = new Dictionary<Type, IComponent>();
+                    _components = new Dictionary<Type, int>();
                 }
                 public void Dispose()
                 {
@@ -130,126 +130,292 @@ namespace IFramework.Modules.ECS
                     _components.Clear();
                 }
 
-                public IComponent GetComponent(Type type)
+                public bool GetComponent(Type type, out int index)
                 {
-                    IComponent comp;
-                    _components.TryGetValue(type, out comp);
-                    return comp;
+                    return _components.TryGetValue(type, out index);
                 }
-                public IComponent AddComponet(Type type)
+                public void AddComponet(Type type, int index)
                 {
-                    IComponent comp = GetComponent(type);
-                    if (comp != null) throw new Exception(string.Format("Have Exist Component Type : {0}", type));
-                    comp = _moudle.CreateComponent(type);
-                    _components.Add(type, comp);
-                    return comp;
-                }
-                public IComponent AddComponet(IComponent component)
-                {
-                    Type type = component.GetType();
-                    IComponent comp = GetComponent(type);
-                    if (comp != null) throw new Exception(string.Format("Have Exist Component Type : {0}", type));
-                    comp = component;
-                    _components.Add(type, comp);
-                    return comp;
+                    int _index;
+                    if (GetComponent(type, out _index))
+                    {
+                        throw new Exception(string.Format("Have Exist Component Type : {0}", type));
+                    }
+                    else
+                    {
+                        _components.Add(type, index);
+                    }
                 }
 
-                public void RemoveComponent(Type type)
+                public void RemoveComponent(Type type, out int index)
                 {
-                    IComponent comp = GetComponent(type);
-                    if (comp == null) throw new Exception(string.Format("Not Exist Component Type : {0}", type));
-                    _components.Remove(type);
+                    int _index;
+                    if (GetComponent(type, out _index))
+                    {
+                        _components.Remove(type);
+                        index = _index;
+                    }
+                    else
+                    {
+                        throw new Exception(string.Format("Not Exist Component Type : {0}", type));
+                    }
                 }
 
-                internal void ReFreshComponent(Type type, IComponent component)
+                public void FreshIndex(int old,int _new)
                 {
-                    IComponent comp = GetComponent(type);
-                    if (comp == null) throw new Exception(string.Format("Not Exist Component Type : {0}", type));
-                    _components[type] = component;
+                    Type type=default(Type);
+                    bool find = false;
+                    foreach (var item in _components.Keys)
+                    {
+                        if (_components[item]==old)
+                        {
+                            type = item;
+                            find = true;
+                            break;
+                        }
+                       
+                    }
+                    if (find)
+                    {
+                        _components[type] = _new;
+                    }
                 }
             }
 
             private ECSModule _moudle;
-            private Dictionary<IEnity, EnityComponents> _enitys;
+            private Dictionary<IEntity, EntityContainer> _entitys;
+            private IComponent[] _components;
+            private Dictionary<IComponent, int> _componentUseCount;
 
-            public Enitys(ECSModule moudle)
+            private int count;
+            private int capicity=32;
+
+            public Entitys(ECSModule moudle)
             {
                 this._moudle = moudle;
-                _enitys = new Dictionary<IEnity, EnityComponents>();
+                _entitys = new Dictionary<IEntity, EntityContainer>();
+                _componentUseCount = new Dictionary<IComponent, int>();
+
+                _components = new IComponent[capicity];
+                count = 0;
             }
+
+
             public void Dispose()
             {
-                var em = _enitys.Keys.ToList();
-                //   Log.E("dispose  " + GetType());
-
+                var em = _entitys.Keys.ToList();
                 em.ForEach((e) =>
                 {
                     e.Destory();
                 });
-
-                _enitys.Clear();
-                _enitys = null;
+                _componentUseCount.Clear();
+                _entitys.Clear();
+                _components = null;
+                _entitys = null;
                 _moudle = null;
             }
 
-            public void AddEnity(IEnity enity)
+            private int AddComponent(IComponent component, bool useSame)
             {
-                if (!_enitys.ContainsKey(enity))
-                    _enitys.Add(enity, new EnityComponents(_moudle));
+                if (useSame)
+                {
+                    int _index;
+                    if (FindComponent(component, out _index))
+                    {
+                        int count;
+                        if (_componentUseCount.TryGetValue(component, out count))
+                            _componentUseCount[component]++;
+
+                        else
+                            _componentUseCount.Add(component, 2);
+                        return _index;
+                    }
+                }
+
+
+                if (count==capicity)
+                {
+                    int curLen = capicity;
+                    capicity *= 2;
+                    IComponent[] newArry = new IComponent[capicity];
+                    Array.Copy(_components, newArry, curLen);
+                    Array.Clear(_components, 0, curLen);
+                    _components = newArry;
+                }
+                int index = count;
+                _components[index] = component;
+                count++;
+                return index;
             }
-            internal void UnSubscribeEnity(IEnity enity)
+            private void FreeComponentIndex(int empty)
             {
-                EnityComponents comp = FindComponent(enity);
-                if (comp == null) throw new Exception("Not Exist Enity");
-                comp.Dispose();
-                _enitys.Remove(enity);
+                IComponent component = _components[empty];
+                int cnt;
+                if (_componentUseCount.TryGetValue(component, out cnt))
+                {
+                    _componentUseCount[component] = --cnt;
+                    if (cnt == 0)
+                    {
+                        _componentUseCount.Remove(component);
+                        int last = --count;
+                        _components[empty] = _components[last];
+
+                        _entitys.Values.ForEach((c) =>
+                        {
+                            c.FreshIndex(last, empty);
+                        });
+                    }
+                }
+                else
+                {
+                    int last = --count;
+                    _components[empty] = _components[last];
+
+                    _entitys.Values.ForEach((c) =>
+                    {
+                        c.FreshIndex(last, empty);
+                    });
+
+                }
+
+               
+            }
+
+            private bool FindContainer(IEntity entity, out EntityContainer container)
+            {
+                return _entitys.TryGetValue(entity, out container);
+            }
+            private bool FindComponent(IComponent component, out int index)
+            {
+                for (int i = 0; i < _components.Length; i++)
+                {
+                    var c = _components[i];
+                    if (c == component)
+                    {
+                        index = i;
+                        return true;
+                    }
+                }
+                index = -1;
+                return false;
             }
 
 
-            private EnityComponents FindComponent(IEnity enity)
+            internal void SubscribeEntity(IEntity entity)
             {
-                EnityComponents comp;
-                _enitys.TryGetValue(enity, out comp);
-                return comp;
+                if (!_entitys.ContainsKey(entity))
+                    _entitys.Add(entity, new EntityContainer(_moudle));
+            }
+            internal void UnSubscribeEntity(IEntity entity)
+            {
+                EntityContainer container;
+                if (FindContainer(entity, out container))
+                {
+                    var indexs = container.componetIndexs;
+
+                    while (indexs.MoveNext())
+                    {
+                        FreeComponentIndex(indexs.Current);
+                    }
+                    container.Dispose();
+                    _entitys.Remove(entity);
+                }
+                else
+                {
+                    throw new Exception("Not Exist Entity");
+                }
             }
 
-            internal IComponent GetComponent(IEnity enity, Type type)
-            {
-                EnityComponents comp = FindComponent(enity);
-                if (comp == null) throw new Exception("Not Exist Enity");
-                return comp.GetComponent(type);
-            }
-            internal IComponent AddComponent(IEnity enity, Type type)
-            {
-                EnityComponents comp = FindComponent(enity);
-                if (comp == null) throw new Exception("Not Exist Enity");
-                return comp.AddComponet(type);
-            }
-            internal IComponent AddComponent(IEnity enity, IComponent component)
-            {
-                EnityComponents comp = FindComponent(enity);
-                if (comp == null) throw new Exception("Not Exist Enity");
-                return comp.AddComponet(component);
-            }
 
 
-            internal void RemoveComponent(IEnity enity, Type type)
+
+
+            internal IComponent AddComponent(IEntity entity, Type type)
             {
-                EnityComponents comp = FindComponent(enity);
-                if (comp == null) throw new Exception("Not Exist Enity");
-                comp.RemoveComponent(type);
+                EntityContainer container;
+                if (FindContainer(entity, out container))
+                {
+                    IComponent ic = _moudle.CreateComponent(type);
+                    int index = AddComponent(ic,false);
+                    
+                    container.AddComponet(type, index);
+                    return ic;
+                }
+                else
+                    throw new Exception("Not Exist Entity");
+            }
+            internal IComponent AddComponent(IEntity entity, IComponent component, bool useSame)
+            {
+                EntityContainer container;
+                if (FindContainer(entity, out container))
+                {
+                    Type type = component.GetType();
+                    int index = AddComponent(component,useSame);
+                    container.AddComponet(type, index);
+                    return component;
+                }
+                else
+                {
+                    throw new Exception("Not Exist Entity");
+                }
             }
 
-            internal IEnumerable<IEnity> GetEnitys()
+            internal IComponent GetComponent(IEntity entity, Type type)
             {
-                return _enitys.Keys;
+                EntityContainer container;
+                if (FindContainer(entity, out container))
+                {
+                    int index;
+                    if (container.GetComponent(type, out index))
+                    {
+                        return _components[index];
+                    }
+                    else
+                        return default(IComponent);
+                }
+                else
+                {
+                    throw new Exception("Not Exist Entity");
+                }
+            }
+            internal void RemoveComponent(IEntity entity, Type type)
+            {
+                EntityContainer container;
+                if (FindContainer(entity, out container))
+                {
+                    int index;
+                    container.RemoveComponent(type, out index);
+                    FreeComponentIndex(index);
+                }
+                else
+                {
+                    throw new Exception("Not Exist Entity");
+                }
             }
 
-            internal void ReFreshComponent(IEnity enity, Type type, IComponent component)
+            internal IEnumerable<IEntity> GetEntitys()
             {
-                EnityComponents comp = FindComponent(enity);
-                if (comp == null) throw new Exception("Not Exist Enity");
-                comp.ReFreshComponent(type, component);
+                return _entitys.Keys;
+            }
+            internal void ReFreshComponent(IEntity entity, Type type, IComponent component)
+            {
+                EntityContainer container;
+                if (FindContainer(entity, out container))
+                {
+                    int index;
+                    if (container.GetComponent(type, out index))
+                    {
+                        _components[index] = component;
+                    }
+                    else
+                    {
+                        throw new Exception(string.Format("The Entity {2} Componet {0} of Type {1} Not Exist", component, type, entity));
+                    }
+                }
+                else
+                {
+                    throw new Exception("Not Exist Entity");
+                }
             }
         }
 
@@ -260,9 +426,10 @@ namespace IFramework.Modules.ECS
             {
                 _systems = new List<IExcuteSystem>();
             }
-
+            private bool _dispose;
             public void Dispose()
             {
+                _dispose = true;
                 _systems.ForEach((sys) => { sys.OnModuleDispose(); });
                 _systems.Clear();
                 _systems = null;
@@ -270,6 +437,7 @@ namespace IFramework.Modules.ECS
 
             internal void Update()
             {
+                if (_dispose) return;
                 _systems.ForEach((sys) => { sys.Excute(); });
             }
 

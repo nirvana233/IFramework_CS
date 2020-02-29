@@ -11,7 +11,7 @@ namespace IFramework.Modules.MVP
     public class MVPGroup : IDisposable
     {
 
-        private MVPEnity _enity;
+        private MVPEntity _entity;
 
         private SensorSystem _sensor;
         private PolicySystem _policy;
@@ -22,27 +22,27 @@ namespace IFramework.Modules.MVP
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="enity"></param>
+        /// <param name="entity"></param>
         /// <param name="sensor"></param>
         /// <param name="policy"></param>
         /// <param name="executor"></param>
         /// <param name="view"></param>
         /// <param name="name"></param>
-        public MVPGroup(MVPEnity enity, SensorSystem sensor, PolicySystem policy, PolicyExecutorSystem executor, ViewSystem view, string name)
+        public MVPGroup(MVPEntity entity, SensorSystem sensor, PolicySystem policy, PolicyExecutorSystem executor, ViewSystem view, string name)
         {
-            this._enity = enity;
+            this._entity = entity;
             this._sensor = sensor;
             this._policy = policy;
             this._executor = executor;
             this._view = view;
             this._name = name;
 
-            if (_enity != null)
+            if (_entity != null)
             {
-                _sensor.enity = _enity;
-                _policy.enity = _enity;
-                _policy.enity = _enity;
-                _view.enity = _enity;
+                _sensor.entity = _entity;
+                _policy.entity = _entity;
+                _policy.entity = _entity;
+                _view.entity = _entity;
             }
         }
         /// <summary>
@@ -53,7 +53,7 @@ namespace IFramework.Modules.MVP
         /// <summary>
         /// 实体
         /// </summary>
-        public MVPEnity enity { get { return _enity; } }
+        public MVPEntity entity { get { return _entity; } }
         /// <summary>
         /// 消息监听系统
         /// </summary>
@@ -83,7 +83,7 @@ namespace IFramework.Modules.MVP
             if (_policy != null) _policy.GroupDispose();
             if (_executor != null) _executor.GroupDispose();
             if (_view != null) _view.GroupDispose();
-            if (_enity != null) _enity.Destory();
+            if (_entity != null) _entity.Destory();
         }
         /// <summary>
         /// 释放时

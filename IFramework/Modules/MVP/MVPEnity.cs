@@ -5,7 +5,7 @@ namespace IFramework.Modules.MVP
     /// <summary>
     /// MVP结构的实体
     /// </summary>
-    public class MVPEnity : Enity
+    public class MVPEntity : Entity 
     {
 
     }
