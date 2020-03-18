@@ -27,8 +27,9 @@ namespace IFramework.Modules.NodeAction
 
         protected override void OnBegin() { }
         protected override void OnCompelete() { }
-        protected override void OnDispose() { }
         protected override void OnNodeReset() { }
+
+        protected override void OnNodeDispose() { }
     }
 
 

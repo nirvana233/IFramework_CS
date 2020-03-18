@@ -58,7 +58,8 @@
     <Compile Include="FrameworkBitConverter.cs" />
     <Compile Include="FrameworkEnvironment.cs" />
     <Compile Include="FrameworkModules.cs" />
-    <Compile Include="Modules\APP\FrameworkAppModule.cs" />
+    <Compile Include="LifeTimeObject.cs" />
+    <Compile Include="Modules\FrameworkAppModule.cs" />
     <Compile Include="Modules\Coroutine\Coroutine.cs" />
     <Compile Include="Modules\Coroutine\CoroutineInstruction.cs" />
     <Compile Include="Modules\Coroutine\CoroutineModule.cs" />
@@ -80,7 +81,7 @@
     <Compile Include="Modules\ECS\IExcuteSystem.cs" />
     <Compile Include="Modules\FrameworkModule.cs" />
     <Compile Include="Modules\FrameworkModuleContainer.cs" />
-    <Compile Include="Modules\Loom\LoomModule.cs" />
+    <Compile Include="Modules\LoomModule.cs" />
     <Compile Include="Modules\Message\IMessageListener.cs" />
     <Compile Include="Modules\Message\IMessagePublisher.cs" />
     <Compile Include="Modules\Message\MessageMoudle.cs" />
@@ -100,11 +101,13 @@
     <Compile Include="Modules\NodeAction\ActionNode.cs" />
     <Compile Include="Modules\NodeAction\ConditionNode.cs" />
     <Compile Include="Modules\NodeAction\WhileNode.cs" />
-    <Compile Include="Modules\Pool\PoolModule.cs" />
-    <Compile Include="Modules\Threads\ThreadModule.cs" />
-    <Compile Include="Modules\Timer\TimerModule.cs" />
+    <Compile Include="Modules\PoolModule.cs" />
+    <Compile Include="Modules\ThreadModule.cs" />
+    <Compile Include="Modules\TimerModule.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Point2.cs" />
+    <Compile Include="Point3.cs" />
+    <Compile Include="RecyclableObject.cs" />
     <Compile Include="Serialization\Simple\CustomSerializer.cs" />
     <Compile Include="Serialization\Simple\DataWriter.cs" />
     <Compile Include="Serialization\Simple\NodeType.cs" />

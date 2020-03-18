@@ -12,7 +12,7 @@ namespace IFramework
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     [FrameworkVersion(2)]
-    public class OnFrameworkInitClassAttribute : Attribute
+    public class OnEnvironmentInitAttribute : Attribute
     {
         /// <summary>
         /// 配合初始化的版本 0，
@@ -24,7 +24,7 @@ namespace IFramework
         /// Ctor
         /// </summary>
         /// <param name="type"></param>
-        public OnFrameworkInitClassAttribute(EnvironmentType type = EnvironmentType.None)
+        public OnEnvironmentInitAttribute(EnvironmentType type = EnvironmentType.None)
         {
             this.type = type;
         }
@@ -64,12 +64,10 @@ namespace IFramework
     /// 框架运行环境
     /// </summary>
     [FrameworkVersion(20)]
-    public class FrameworkEnvironment : IDisposable
+    public class FrameworkEnvironment : FrameworkObject
     {
         private bool _haveInit;
-        private bool _disposed;
         private FrameworkModules _modules;
-        private string _envName;
         private Stopwatch sw_init;
         private Stopwatch sw_delta;
         private EnvironmentType _envType;
@@ -90,10 +88,7 @@ namespace IFramework
         /// 环境是否已经初始化
         /// </summary>
         public bool haveInit { get { return _haveInit; } }
-        /// <summary>
-        /// 环境是否被释放
-        /// </summary>
-        public bool disposed { get { return _disposed; } }
+
         /// <summary>
         /// IRecyclable 实例的环境容器
         /// </summary>
@@ -113,7 +108,7 @@ namespace IFramework
         /// <summary>
         /// 环境名称
         /// </summary>
-        public string envName { get { return _envName; } }
+        public string envName { get { return name; }set { name = value; } }
         /// <summary>
         /// 最近一次 Update 方法用时
         /// </summary>
@@ -145,7 +140,7 @@ namespace IFramework
 
         private FrameworkEnvironment(string envName, EnvironmentType envType)
         {
-            this._envName = envName;
+            this.envName = envName;
             this._envType = envType;
         }
         /// <summary>
@@ -169,7 +164,6 @@ namespace IFramework
 
             if (onInit != null) onInit();
             deltaTime = TimeSpan.Zero;
-            _disposed = false;
             _haveInit = true;
             sw_delta = new Stopwatch();
 
@@ -183,10 +177,10 @@ namespace IFramework
         {
             var types = AppDomain.CurrentDomain.GetAssemblies()
                               .SelectMany(item => item.GetTypes())
-                              .Where(item => item.IsDefined(typeof(OnFrameworkInitClassAttribute), false))
+                              .Where(item => item.IsDefined(typeof(OnEnvironmentInitAttribute), false))
                               .Select((type) =>
                               {
-                                  var attr = type.GetCustomAttributes(typeof(OnFrameworkInitClassAttribute), false).First() as OnFrameworkInitClassAttribute;
+                                  var attr = type.GetCustomAttributes(typeof(OnEnvironmentInitAttribute), false).First() as OnEnvironmentInitAttribute;
                                   if (attr.type.HasFlag(this.envType) || attr.type.HasFlag(EnvironmentType.None))
                                       return type;
                                   return null;
@@ -198,9 +192,10 @@ namespace IFramework
         /// <summary>
         /// 释放
         /// </summary>
-        public void Dispose()
+        protected override void OnDispose()
         {
-            if (_disposed || !haveInit) return;
+            base.OnDispose();
+            if (disposed || !haveInit) return;
             if (onDispose != null) onDispose();
             sw_init.Stop();
             sw_delta.Stop();
@@ -208,7 +203,6 @@ namespace IFramework
             container.Dispose();
             cyclePool.Dispose();
 
-            _disposed = true;
             container = null;
             sw_delta = null;
             sw_init = null;
@@ -217,16 +211,23 @@ namespace IFramework
             update = null;
             onDispose = null;
         }
+       
         /// <summary>
         /// 刷新环境
         /// </summary>
         public void Update()
         {
-            if (_disposed) return;
+            if (disposed) return;
             sw_delta.Restart();
             if (update != null) update();
             sw_delta.Stop();
             deltaTime = sw_delta.Elapsed;
         }
+    }
+
+
+    class EnvironmentLog
+    {
+
     }
 }

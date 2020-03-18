@@ -31,8 +31,9 @@ namespace IFramework.Modules.NodeAction
 
         protected override void OnBegin() { }
         protected override void OnCompelete() { }
-        protected override void OnDispose() { }
         protected override void OnNodeReset() { }
+
+        protected override void OnNodeDispose() { }
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-namespace IFramework.Modules.Threads
+namespace IFramework.Modules
 {/// <summary>
 /// 线程池模块
 /// </summary>
@@ -62,17 +62,17 @@ namespace IFramework.Modules.Threads
                 thread = null;
             }
         }
-        private class ThreadArgs : FrameworkArgs, IDisposable
+        private class ThreadArgs : FrameworkArgs
         {
             public Action task;
             public Action callback;
             public ThreadModule mou;
 
-            public void Dispose()
+            protected override void OnDispose()
             {
                 ResetData();
             }
-
+          
             public ThreadArgs Config(Action task, Action callback, ThreadModule mou)
             {
                 this.task = task;

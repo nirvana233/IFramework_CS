@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace IFramework.Modules.APP
+﻿namespace IFramework.Modules
 {
     /// <summary>
     /// 一个app的总管理，需要自己写

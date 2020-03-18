@@ -26,6 +26,7 @@ namespace IFramework.Modules.MVVM
         void IViewModel.SubscribeMessage()
         {
             SyncModelValue();
+            Initialize();
             SubscribeMessage();
         }
         void IViewModel.UnSubscribeMessage()
@@ -36,6 +37,11 @@ namespace IFramework.Modules.MVVM
         {
             SyncModelValue();
         }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        protected virtual void Initialize() { }
         /// <summary>
         /// 同步model数据
         /// </summary>

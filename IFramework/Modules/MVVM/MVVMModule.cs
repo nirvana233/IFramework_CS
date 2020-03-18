@@ -8,7 +8,7 @@ namespace IFramework.Modules.MVVM
     /// <summary>
     /// MVVM 模块
     /// </summary>
-    [FrameworkVersion(16)]
+    [FrameworkVersion(56)]
     public class MVVMModule : FrameworkModule
     {
 

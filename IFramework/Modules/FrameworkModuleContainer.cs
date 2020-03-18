@@ -6,7 +6,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块容器
     /// </summary>
-    public class FrameworkModuleContainer :  IDisposable
+    public class FrameworkModuleContainer : FrameworkObject
     {
         private string _chunck;
         private bool _binded;
@@ -147,10 +147,11 @@ namespace IFramework.Modules
         /// <summary>
         /// 释放
         /// </summary>
-        public void Dispose()
+        protected override void OnDispose()
         {
+            base.OnDispose();
             UnBindEnv(false);
-            for (int i = moudle_list.Count-1; i >=0 ; i--)
+            for (int i = moudle_list.Count - 1; i >= 0; i--)
             {
                 var m = moudle_list[i];
                 m.Dispose();

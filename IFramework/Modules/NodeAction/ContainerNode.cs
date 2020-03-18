@@ -31,13 +31,14 @@ namespace IFramework.Modules.NodeAction
                 nodeList[i].Recyle();
             nodeList.Clear();
         }
-        protected override void OnDispose()
+        protected override void OnNodeDispose()
         {
             for (int i = 0; i < nodeList.Count; i++)
                 nodeList[i].Dispose();
             nodeList.Clear();
             nodeList = null;
         }
+       
         protected override void OnDataReset()
         {
             base.OnDataReset();

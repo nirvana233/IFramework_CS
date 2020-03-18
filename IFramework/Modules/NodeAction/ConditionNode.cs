@@ -22,11 +22,7 @@ namespace IFramework.Modules.NodeAction
             _condition = null;
         }
 
-        protected override void OnDispose()
-        {
-            _callback = null;
-            _condition = null;
-        }
+       
 
         protected override bool OnMoveNext()
         {
@@ -38,6 +34,12 @@ namespace IFramework.Modules.NodeAction
         protected override void OnNodeReset() { }
         protected override void OnBegin() { }
         protected override void OnCompelete() { }
+
+        protected override void OnNodeDispose()
+        {
+            _callback = null;
+            _condition = null;
+        }
     }
 
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释

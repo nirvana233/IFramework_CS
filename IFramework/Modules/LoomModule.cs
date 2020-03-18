@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace IFramework.Modules.Loom
+namespace IFramework.Modules
 {
     /// <summary>
     /// 线程反馈模块

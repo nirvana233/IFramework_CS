@@ -9,7 +9,7 @@ namespace IFramework
     /// 可观测 Object
     /// </summary>
     [FrameworkVersion(20)]
-    public class ObservableObject : IDisposable
+    public class ObservableObject : FrameworkObject
     {
         private Dictionary<string, Action> _callmap;
         /// <summary>
@@ -97,19 +97,13 @@ namespace IFramework
             _callmap[propertyName].Invoke();
         }
         /// <summary>
-        /// 释放
+        /// 释放时
         /// </summary>
-        public void Dispose()
+        protected override void OnDispose()
         {
-            OnDispose();
-
             _callmap.Clear();
             _callmap = null;
         }
-        /// <summary>
-        /// 释放时
-        /// </summary>
-        protected virtual void OnDispose() { }
     }
     /// <summary>
     /// ObservableObject 注册监听Helper

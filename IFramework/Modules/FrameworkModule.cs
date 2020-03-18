@@ -6,7 +6,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块
     /// </summary>
-    public abstract class FrameworkModule : IDisposable
+    public abstract class FrameworkModule : FrameworkObject
     {
         /// <summary>
         /// 创建实例
@@ -24,13 +24,13 @@ namespace IFramework.Modules
             if (moudle != null)
             {
                 moudle._binded = false;
-                moudle._disposed = false;
+                //moudle._disposed = false;
                 moudle._chunck = chunck;
                 moudle._moudleType = moudle.GetType().Name;
                 if (string.IsNullOrEmpty(name))
-                    moudle._name = string.Format("{0}.{1}", moudle._chunck, moudle._moudleType);
+                    moudle.name = string.Format("{0}.{1}", moudle._chunck, moudle._moudleType);
                 else
-                    moudle._name = name;
+                    moudle.name = name;
 
                 moudle.Awake();
                 moudle.enable = true;
@@ -90,8 +90,7 @@ namespace IFramework.Modules
         }
 
         private FrameworkModuleContainer _container;
-        private string _name;
-        private bool _disposed;
+
        
         private bool _enable;
         private string _chunck;
@@ -110,17 +109,9 @@ namespace IFramework.Modules
         /// </summary>
         public string chunck { get { return _chunck; } }
         /// <summary>
-        /// 模块名
-        /// </summary>
-        public string name { get { return _name; } set { _name = value; } }
-        /// <summary>
         /// 是否绑定了
         /// </summary>
         public bool binded { get { return _binded; } }
-        /// <summary>
-        /// 是否被释放
-        /// </summary>
-        public bool disposed { get { return _disposed; } }
         /// <summary>
         /// 模块所处的容器
         /// </summary>
@@ -150,14 +141,17 @@ namespace IFramework.Modules
         /// <summary>
         /// 释放
         /// </summary>
-        public void Dispose()
+        public override void Dispose()
         {
-            enable = false;
-            OnDispose();
-            UnBind(false);
-            _disposed = true;
-            _name = string.Empty;
+            Dispose(() => {
+                enable = false;
+                OnDispose();
+            }, ()=> {
+                UnBind(false);
+            });
         }
+
+
         /// <summary>
         /// 刷新
         /// </summary>
@@ -171,7 +165,7 @@ namespace IFramework.Modules
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected abstract void Awake();
-        protected abstract void OnDispose();
+        protected abstract new void OnDispose();
         protected virtual void OnEnable() { }
         protected virtual void OnDisable() { }
         protected abstract void OnUpdate();

@@ -1,10 +1,8 @@
 ﻿using IFramework.Pool;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace IFramework.Modules.Timer
+namespace IFramework.Modules
 {
     /// <summary>
     /// 时间任务状态

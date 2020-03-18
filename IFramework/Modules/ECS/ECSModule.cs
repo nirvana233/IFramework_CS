@@ -118,7 +118,7 @@ namespace IFramework.Modules.ECS
             {
                 private ECSModule _moudle;
                 private Dictionary<Type, int> _components;
-                public IEnumerator<int> componetIndexs { get { return _components.Values.GetEnumerator(); } }
+                public List<int> componetIndexs { get { return _components.Values.ToList(); } }
                 public EntityContainer(ECSModule moudle)
                 {
                     this._moudle = moudle;
@@ -204,7 +204,8 @@ namespace IFramework.Modules.ECS
             public void Dispose()
             {
                 var em = _entitys.Keys.ToList();
-                em.ForEach((e) =>
+               
+                em.ForEach((i,e) =>
                 {
                     e.Destory();
                 });
@@ -258,6 +259,9 @@ namespace IFramework.Modules.ECS
                     {
                         _componentUseCount.Remove(component);
                         int last = --count;
+                        //
+                        if (last == empty) return;
+
                         _components[empty] = _components[last];
 
                         _entitys.Values.ForEach((c) =>
@@ -312,11 +316,12 @@ namespace IFramework.Modules.ECS
                 if (FindContainer(entity, out container))
                 {
                     var indexs = container.componetIndexs;
+                    indexs.ForEach((i, index) => {
+                        FreeComponentIndex(index);
 
-                    while (indexs.MoveNext())
-                    {
-                        FreeComponentIndex(indexs.Current);
-                    }
+
+                    });
+
                     container.Dispose();
                     _entitys.Remove(entity);
                 }

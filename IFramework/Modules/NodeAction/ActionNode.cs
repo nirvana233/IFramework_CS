@@ -4,15 +4,13 @@ using System.Collections;
 namespace IFramework.Modules.NodeAction
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public abstract class ActionNode :RecyclableObject, IDisposable
+    public abstract class ActionNode : RecyclableObject
     {
         private bool mOnBeginCalled;
 
-        private bool _disposed;
         private bool _isDone;
         private bool _autoRecyle;
 
-        public bool disposed { get { return _disposed; } }
         public bool isDone { get { return _isDone; } }
         public bool autoRecyle { get { return _autoRecyle; } set { _autoRecyle = value; } }
 
@@ -22,18 +20,18 @@ namespace IFramework.Modules.NodeAction
         public event Action onDispose;
         public event Action onFrame;
 
-        public void Dispose()
+        protected override void OnDispose()
         {
+            base.OnDispose();
             if (!recyled)
                 Recyle();
-            if (_disposed) return;
-            OnDispose();
+            OnNodeDispose();
             if (onDispose != null)
                 onDispose();
             onDispose = null;
-            _disposed = true;
         }
-       
+
+
         public bool MoveNext()
         {
             if (recyled || disposed) return false;
@@ -65,12 +63,7 @@ namespace IFramework.Modules.NodeAction
             _isDone = false;
             OnNodeReset();
         }
-        //protected override void OnAllocate()
-        //{
-        //    SetDataDirty();
 
-        //    base.OnAllocate();
-        //}
         public void Config(bool autoRecyle)
         {
             this._autoRecyle = autoRecyle;
@@ -100,7 +93,7 @@ namespace IFramework.Modules.NodeAction
         protected abstract void OnBegin();
         protected abstract void OnCompelete();
         protected abstract bool OnMoveNext();
-        protected abstract void OnDispose();
+        protected abstract void OnNodeDispose();
         protected abstract void OnNodeReset();
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
