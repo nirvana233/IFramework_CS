@@ -8,7 +8,7 @@
 *********************************************************************************/
 using System;
 
-namespace IFramework.Net
+namespace IFramework.Packets
 {
 	 static class UInt32Extension
 	{

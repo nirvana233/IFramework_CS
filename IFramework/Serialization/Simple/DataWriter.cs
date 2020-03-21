@@ -90,8 +90,10 @@ namespace IFramework.Serialization.Simple
             var node = _doc.CreateNode();
             _cur.Append(node);
 
-            node.context.type = Framework.Assembly.GetTypeName(type);
-            node.context.realType = Framework.Assembly.GetTypeName(type);
+            string typ= Framework.Assembly.GetTypeName(type);
+
+            node.context.type = typ;
+            node.context.realType = typ;
             node.context.name = name;
             node.context.valueType = valueType;
 
@@ -234,6 +236,7 @@ namespace IFramework.Serialization.Simple
         private PacketDocument _doc;
         public DataReader(byte[] buffer, int offset, int length)
         {
+            refContext = new RefrenceCollection();
             _doc = new PacketDocument();
             _doc.Load(buffer, offset, length);
             _cur = _doc;

@@ -18,15 +18,17 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\</OutputPath>
+    <OutputPath>..\..\..\IFrameworkDemo\FormSever\FormSever\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <NoWarn>CA1009;</NoWarn>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -157,11 +159,11 @@
     <Compile Include="Net\Socket\Buffer\SockArgBuffers.cs" />
     <Compile Include="Net\Socket\Buffer\SocketEventArgPool.cs" />
     <Compile Include="Packet\CycQueue.cs" />
-    <Compile Include="Net\Socket\Extension\ByteExtension.cs" />
-    <Compile Include="Net\Socket\Extension\StringExtension.cs" />
-    <Compile Include="Net\Socket\Extension\UInt16Extension.cs" />
-    <Compile Include="Net\Socket\Extension\UInt32Extension.cs" />
-    <Compile Include="Net\Socket\Extension\UInt64Extension.cs" />
+    <Compile Include="Packet\Extension\ByteExtension.cs" />
+    <Compile Include="Net\Socket\StringExtension.cs" />
+    <Compile Include="Packet\Extension\UInt16Extension.cs" />
+    <Compile Include="Packet\Extension\UInt32Extension.cs" />
+    <Compile Include="Packet\Extension\UInt64Extension.cs" />
     <Compile Include="Net\Socket\NetConnectionTokenPool.cs" />
     <Compile Include="Packet\Packet.cs" />
     <Compile Include="Packet\PacketHeader.cs" />

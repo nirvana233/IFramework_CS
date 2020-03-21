@@ -13,6 +13,9 @@ namespace IFramework.Serialization.Simple
         public NodeValueType valueType;
         public string name;
         public Guid guid = Guid.NewGuid();
+
+
+        public const int SerializeFieldCount = 5;
         public int innerCount
         {
             get
@@ -78,11 +81,14 @@ namespace IFramework.Serialization.Simple
 
         internal PacketNode(PacketDocument doc)
         {
-            this.doc = doc;
-            this.nodeType = NodeType.Node;
-            this.context.valueType = NodeValueType.None;
+            if (this is PacketDocument)
+                this.doc = this as PacketDocument;
+            else
+                this.doc = doc;
             _packet = new Packet();
             _context = new PackectContext(this);
+            this.nodeType = NodeType.Node;
+            this.context.valueType = NodeValueType.None;
         }
 
         public virtual void ReadPacket(Packet node_pkg)
@@ -99,9 +105,9 @@ namespace IFramework.Serialization.Simple
                 PacketReader pr = new PacketReader(nodePacket.message.Length);
                 pr.Set(nodePacket.message, 0, nodePacket.message.Length);
                 var pkgs = pr.Get();
-                if (nodePacket.pkgCount != 3 || pkgs.Count != 3)
+                if (nodePacket.pkgCount != PackectContext.SerializeFieldCount || pkgs.Count != PackectContext.SerializeFieldCount)
                     throw new Exception("Value not Err");
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < nodePacket.pkgCount; i++)
                 {
                     var pkg = pkgs[i];
                     switch ((PacketType)pkg.pkgType)
@@ -138,7 +144,7 @@ namespace IFramework.Serialization.Simple
 
             buffer.AddRange(valuePacket.Pack());
 
-            nodePacket = new Packet(3, (ushort)context.valueType, (byte)PacketType.Node, buffer.ToArray());
+            nodePacket = new Packet(PackectContext.SerializeFieldCount, (ushort)context.valueType, (byte)PacketType.Node, buffer.ToArray());
             return nodePacket.Pack();
         }
 
@@ -185,6 +191,7 @@ namespace IFramework.Serialization.Simple
         {
             Packet pkg = new Packet(0, (ushort)NodeValueType.String, (byte)PacketType.RealType, _en.GetBytes(context.realType));
             return pkg;
+
         }
 
     }
@@ -285,7 +292,7 @@ namespace IFramework.Serialization.Simple
                     buffer.AddRange(child.WritePacket());
                 }
 
-                nodePacket = new Packet((ushort)(children.Count + 2), (ushort)context.valueType, (byte)PacketType.Element, buffer.ToArray());
+                nodePacket = new Packet((ushort)(children.Count + PackectContext.SerializeFieldCount-1), (ushort)context.valueType, (byte)PacketType.Element, buffer.ToArray());
                 return nodePacket.Pack();
             }
         }
@@ -295,12 +302,14 @@ namespace IFramework.Serialization.Simple
     {
         public PacketDocument() : base(null)
         {
+            doc = this;
             this.context.valueType = NodeValueType.ComplexType;
             this.nodeType = NodeType.Document;
             _nodes = new List<PacketNode>();
             context.name = "root";
             context.type = "root";
-            doc = this;
+            context.realType = "root";
+
         }
         public List<PacketNode> _nodes;
         public void Load(byte[] buffer, int offset, int length)
@@ -329,7 +338,6 @@ namespace IFramework.Serialization.Simple
 
                 pr.Set(buff, 0, buff.Length);
                 var pkgs = pr.Get();
-
                 if (pkgs.Count != nodePacket.pkgCount)
                     throw new Exception("Inner Packets Count Err");
                 else
@@ -390,7 +398,7 @@ namespace IFramework.Serialization.Simple
                     buffer.AddRange(child.WritePacket());
                 }
 
-                nodePacket = new Packet((ushort)(children.Count + 2), (ushort)context.valueType, (byte)PacketType.Document, buffer.ToArray());
+                nodePacket = new Packet((ushort)(children.Count + PackectContext.SerializeFieldCount-1), (ushort)context.valueType, (byte)PacketType.Document, buffer.ToArray());
                 return nodePacket.Pack();
             }
         }

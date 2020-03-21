@@ -123,9 +123,9 @@ namespace IFramework.Serialization.Simple
                 if (type.IsEnum)
                     resultType = typeof(EnumSerializer<>).MakeGenericType(type);
 
-                if (type .IsArray)
+                else if (type .IsArray)
                     resultType = typeof(ArraySerializer<>).MakeGenericType(type);
-                if (type.IsSubclassOfGeneric(typeof(List<>)) )
+                else if (type.IsSubclassOfGeneric(typeof(List<>)) )
                     resultType = typeof(ListSerializer<>).MakeGenericType(type);
 
                 else if (_map.ContainsKey(type))
@@ -415,6 +415,7 @@ namespace IFramework.Serialization.Simple
         }
         public override void WriteValue(string name, T value, DataWriter writer)
         {
+            Console.WriteLine(value);
             ulong ul;
             try
             {
@@ -427,7 +428,6 @@ namespace IFramework.Serialization.Simple
                     ul = (ulong)Convert.ToInt64(value as Enum);
                 }
             }
-            Console.WriteLine(ul);
             ul = Convert.ToUInt64(value as Enum);
             writer.WriteUInt64(name, ul);
         }
@@ -534,6 +534,7 @@ namespace IFramework.Serialization.Simple
                             Type ft = fi.FieldType;
                             var fiobj = fi.GetValue(value);
                             var innerSer = Get(ft);
+                            Console.WriteLine(innerSer+"             "+ft);
                             innerSer.WriteValueWeak(fn, fiobj, writer);
                         }
                     }
@@ -717,25 +718,19 @@ namespace IFramework.Serialization.Simple
         static Func<int, int> func;
         static void Main(string[] args)
         {
-            func += (int a) => {
-                if (a==1)
-                {
-                    return 1;
-                }
-                return 0;
-            };
-            func += (int a) => {
-                if (a == 2)
-                {
-                    return 2;
-                }
-                return 0;
+          var  bytes = Encoding.Default.GetBytes("777");
+            Packet pac = new Packet(1,1, 1, bytes);
+            var buffer = pac.Pack();
 
-            };
+            PacketReader r = new PacketReader(buffer.Length);
 
-            Console.WriteLine(func.Invoke(1));
-            Console.WriteLine(func.Invoke(2));
+            r.Set(buffer, 0, buffer.Length);
+            var get = r.Get();
+            E e = new E() { e = EEE.c };
+          var bts=  SerializerUtility.Serialize(e,"e");
+            E e1 = SerializerUtility.DeSerialize<E>("e", bts, 0, bts.Length);
 
+            Console.WriteLine(e1.e);
             while (true)
             {
 

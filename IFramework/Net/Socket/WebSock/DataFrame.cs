@@ -6,6 +6,7 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
+using IFramework.Packets;
 using System;
 using System.Text;
 
