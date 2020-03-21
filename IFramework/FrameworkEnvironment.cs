@@ -226,8 +226,4 @@ namespace IFramework
     }
 
 
-    class EnvironmentLog
-    {
-
-    }
 }

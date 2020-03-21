@@ -18,14 +18,13 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\IFrameworkDemo\FormSever\FormSever\Plugins\</OutputPath>
+    <OutputPath>..\..\..\Unity\IF_Git\Assets\IFramework\0.1Core\0.1Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\..\..\Unity\IF_Git\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <NoWarn>
     </NoWarn>

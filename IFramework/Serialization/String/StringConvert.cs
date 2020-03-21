@@ -90,9 +90,9 @@ namespace IFramework.Serialization
             return Get(typeof(T)) as StringConverter<T>;
         }
 
-        public const string dot = ",";
-        public const string leftBound = "[ ";
-        public const string rightBound = " ]";
+        public const char dot = ',';
+        public const char leftBound = '[';
+        public const char rightBound = ']';
         public const char colon = ':';
     }
     public abstract class StringConverter<T>: StringConverter

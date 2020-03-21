@@ -38,7 +38,7 @@ namespace IFramework.Modules.Message
                 if (_listenners.Contains(listener)) return false;
                 else _listenners.Add(listener); return true;
             }
-            public bool Unsubscribe(IMessageListener listener)
+            public bool UnSubscribe(IMessageListener listener)
             {
                 if (!_listenners.Contains(listener)) return false;
                 else _listenners.Remove(listener); return true;
@@ -51,8 +51,8 @@ namespace IFramework.Modules.Message
                 if (!publishType.IsSubClassOfInterface(_listenType) &&
                     !publishType.IsSubclassOf(_listenType) &&
                     publishType != _listenType) return false;
-
-                _listenners.ForEach((listener) => {
+                
+                _listenners.ForEach((index,listener) => {
                     if (listener != null) listener.Listen(publishType, code, args, param);
                     else _listenners.Remove(listener);
                 });
@@ -81,7 +81,7 @@ namespace IFramework.Modules.Message
                 if (_listenners.Contains(listener)) return false;
                 else _listenners.Add(listener); return true;
             }
-            public bool Unsubscribe(MessageListener listener)
+            public bool UnSubscribe(MessageListener listener)
             {
                 if (!_listenners.Contains(listener)) return false;
                 else _listenners.Remove(listener); return true;
@@ -95,7 +95,7 @@ namespace IFramework.Modules.Message
                     !publishType.IsSubclassOf(_listenType) &&
                     publishType != _listenType) return false;
 
-                _listenners.ForEach((listener) => {
+                _listenners.ForEach((index,listener) => {
                     if (listener != null) listener.Invoke(publishType, code, args, param);
                     else _listenners.Remove(listener);
                 });
@@ -109,26 +109,26 @@ namespace IFramework.Modules.Message
             }
         }
 
-        private Dictionary<Type, MessageEntity> _entitys;
-        private Dictionary<Type, DelgateMessageEntity> entitydels;
+        private List</*Type,*/ MessageEntity> _entitys;
+        private List</*Type,*/ DelgateMessageEntity> _entitydels;
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override bool needUpdate { get { return false; } }
 
         protected override void OnDispose()
         {
-            foreach (var item in _entitys.Values)
+            foreach (var item in _entitys)
                 item.Dispose();
             _entitys.Clear();
-            foreach (var item in entitydels.Values)
+            foreach (var item in _entitydels)
                 item.Dispose();
-            entitydels.Clear();
+            _entitydels.Clear();
             _entitys = null;
-            entitydels = null;
+            _entitydels = null;
         }
         protected override void Awake()
         {
-            _entitys = new Dictionary<Type, MessageEntity>();
-            entitydels = new Dictionary<Type, DelgateMessageEntity>();
+            _entitys = new List<MessageEntity>();
+            _entitydels = new List<DelgateMessageEntity>();
         }
         protected override void OnUpdate()
         {
@@ -144,9 +144,14 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool Subscribe(Type publishType, IMessageListener listener)
         {
-            if (!_entitys.ContainsKey(publishType))
-                _entitys.Add(publishType, new MessageEntity(publishType));
-            return _entitys[publishType].Subscribe(listener);
+            MessageEntity en = _entitys.Find((e) => { return e.listenType == publishType; });
+            if (en == null)
+            {
+                en = new MessageEntity(publishType);
+                _entitys.Add(en);
+            }
+
+            return en.Subscribe(listener);
         }
         /// <summary>
         /// 注册监听
@@ -164,19 +169,24 @@ namespace IFramework.Modules.Message
         /// <param name="publishType"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Unsubscribe(Type publishType, IMessageListener listener)
+        public bool UnSubscribe(Type publishType, IMessageListener listener)
         {
-            if (!_entitys.ContainsKey(publishType)) return false;
-            return _entitys[publishType].Unsubscribe(listener);
+            MessageEntity en = _entitys.Find((e) => { return e.listenType == publishType; });
+            if (en == null)
+            {
+                return false;
+            }
+            return en.UnSubscribe(listener);
+          
         }
         /// <summary>
         /// 解除注册监听
         /// </summary>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Unsubscribe<T>(IMessageListener listener) where T : IMessagePublisher
+        public bool UnSubscribe<T>(IMessageListener listener) where T : IMessagePublisher
         {
-            return Unsubscribe(typeof(T), listener);
+            return UnSubscribe(typeof(T), listener);
         }
 
         /// <summary>
@@ -187,9 +197,14 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool Subscribe(Type publishType, MessageListener listener)
         {
-            if (!entitydels.ContainsKey(publishType))
-                entitydels.Add(publishType, new DelgateMessageEntity(publishType));
-            return entitydels[publishType].Subscribe(listener);
+            DelgateMessageEntity en = _entitydels.Find((e) => { return e.listenType == publishType; });
+            if (en == null)
+            {
+                en = new DelgateMessageEntity(publishType);
+                _entitydels.Add(en);
+            }
+
+            return en.Subscribe(listener);
         }
         /// <summary>
         /// 注册监听
@@ -207,21 +222,24 @@ namespace IFramework.Modules.Message
         /// <param name="publishType"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Unsubscribe(Type publishType, MessageListener listener)
+        public bool UnSubscribe(Type publishType, MessageListener listener)
         {
-            if (!entitydels.ContainsKey(publishType)) return false;
-            return entitydels[publishType].Unsubscribe(listener);
+            DelgateMessageEntity en = _entitydels.Find((e) => { return e.listenType == publishType; });
+            if (en == null)
+            {
+                return false;
+            }
+            return en.UnSubscribe(listener);
         }
         /// <summary>
         /// 解除注册监听
         /// </summary>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Unsubscribe<T>(MessageListener listener) where T : IMessagePublisher
+        public bool UnSubscribe<T>(MessageListener listener) where T : IMessagePublisher
         {
-            return Unsubscribe(typeof(T), listener);
+            return UnSubscribe(typeof(T), listener);
         }
-
         /// <summary>
         /// 发布消息
         /// </summary>
@@ -258,16 +276,18 @@ namespace IFramework.Modules.Message
         public bool Publish(Type publishType, int code, IEventArgs args, params object[] param)
         {
             bool value = false;
-            foreach (var item in _entitys.Values)
+            _entitys.ForEach((index, en) =>
             {
-                if (item.Publish(publishType, code, args, param))
+
+                if (en.Publish(publishType, code, args, param))
                     value = true;
-            }
-            foreach (var item in entitydels.Values)
+            });
+            _entitydels.ForEach((index, en) =>
             {
-                if (item.Publish(publishType, code, args, param))
+
+                if (en.Publish(publishType, code, args, param))
                     value = true;
-            }
+            });
             return value;
         }
 
@@ -286,36 +306,15 @@ namespace IFramework.Modules.Message
         {
             return Subscribe(listener,  envType, typeof(T));
         }
-        public static bool Unsubscribe(this IMessageListener listener, EnvironmentType envType, Type publishType)
+        public static bool UnSubscribe(this IMessageListener listener, EnvironmentType envType, Type publishType)
         {
             FrameworkEnvironment _env = Framework.GetEnv( envType);
-            return _env.modules.Message.Unsubscribe(publishType, listener);
+            return _env.modules.Message.UnSubscribe(publishType, listener);
         }
-        public static bool Unsubscribe<T>(this IMessageListener listener, EnvironmentType envType) where T : IMessagePublisher
+        public static bool UnSubscribe<T>(this IMessageListener listener, EnvironmentType envType) where T : IMessagePublisher
         {
-            return Unsubscribe(listener,  envType, typeof(T));
+            return UnSubscribe(listener,  envType, typeof(T));
         }
-
-
-        public static bool Subscribe(this object obj, EnvironmentType envType, Type publishType, IMessageListener listener)
-        {
-            FrameworkEnvironment _env = Framework.GetEnv( envType);
-            return _env.modules.Message.Subscribe(publishType, listener);
-        }
-        public static bool Subscribe<T>(this object obj, EnvironmentType envType, IMessageListener listener) where T : IMessagePublisher
-        {
-            return Subscribe(obj,  envType, typeof(T), listener);
-        }
-        public static bool Unsubscribe(this object obj, EnvironmentType envType, Type publishType, IMessageListener listener)
-        {
-            FrameworkEnvironment _env = Framework.GetEnv( envType);
-            return _env.modules.Message.Unsubscribe(publishType, listener);
-        }
-        public static bool Unsubscribe<T>(this object obj, EnvironmentType envType, IMessageListener listener) where T : IMessagePublisher
-        {
-            return Unsubscribe(obj,  envType, typeof(T), listener);
-        }
-
 
         public static bool Subscribe(this object obj, Type publishType, MessageListener listener, EnvironmentType envType)
         {
@@ -326,14 +325,14 @@ namespace IFramework.Modules.Message
         {
             return Subscribe(obj, typeof(T), listener,  envType);
         }
-        public static bool Unsubscribe(this object obj, Type publishType, MessageListener listener, EnvironmentType envType)
+        public static bool UnSubscribe(this object obj, Type publishType, MessageListener listener, EnvironmentType envType)
         {
             FrameworkEnvironment _env = Framework.GetEnv( envType);
-            return _env.modules.Message.Unsubscribe(publishType, listener);
+            return _env.modules.Message.UnSubscribe(publishType, listener);
         }
-        public static bool Unsubscribe<T>(this object obj, MessageListener listener, EnvironmentType envType) where T : IMessagePublisher
+        public static bool UnSubscribe<T>(this object obj, MessageListener listener, EnvironmentType envType) where T : IMessagePublisher
         {
-            return Unsubscribe(obj, typeof(T), listener,  envType);
+            return UnSubscribe(obj, typeof(T), listener,  envType);
         }
 
 
@@ -348,9 +347,27 @@ namespace IFramework.Modules.Message
         }
         public static bool Publish<T>(this T obj, EnvironmentType envType, int code, IEventArgs args, params object[] param) where T : IMessagePublisher
         {
-            return Publish(obj,  envType, obj.GetType(), code, args, param);
+            return Publish(obj,  envType, typeof(T), code, args, param);
         }
 
+        //public static bool Subscribe(this object obj, EnvironmentType envType, Type publishType, IMessageListener listener)
+        //{
+        //    FrameworkEnvironment _env = Framework.GetEnv( envType);
+        //    return _env.modules.Message.Subscribe(publishType, listener);
+        //}
+        //public static bool Subscribe<T>(this object obj, EnvironmentType envType, IMessageListener listener) where T : IMessagePublisher
+        //{
+        //    return Subscribe(obj,  envType, typeof(T), listener);
+        //}
+        //public static bool UnSubscribe(this object obj, EnvironmentType envType, Type publishType, IMessageListener listener)
+        //{
+        //    FrameworkEnvironment _env = Framework.GetEnv( envType);
+        //    return _env.modules.Message.UnSubscribe(publishType, listener);
+        //}
+        //public static bool UnSubscribe<T>(this object obj, EnvironmentType envType, IMessageListener listener) where T : IMessagePublisher
+        //{
+        //    return UnSubscribe(obj,  envType, typeof(T), listener);
+        //}
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 

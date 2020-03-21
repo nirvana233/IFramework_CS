@@ -117,11 +117,11 @@ namespace IFramework
         }
         public static string RemoveNumbers(this string self, int minLen, int maxLen)
         {
-            return Regex.Replace(self, string.Format("[0,9]{{0},{1}}", minLen, maxLen), "", RegexOptions.IgnoreCase);
+            return Regex.Replace(self, string.Format("[0,9]{2}{0},{1}{3}", minLen, maxLen,"{","}"), "", RegexOptions.IgnoreCase);
         }
         public static string RemoveNumbers(this string self, int minLen)
         {
-            return Regex.Replace(self, string.Format("[0,9]{{0},}", minLen), "", RegexOptions.IgnoreCase);
+            return Regex.Replace(self, string.Format("[0,9]{1}{0},{2}", minLen, "{", "}"), "", RegexOptions.IgnoreCase);
         }
 
         public static string RemoveNotNumber(this string self)
