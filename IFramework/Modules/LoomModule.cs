@@ -8,7 +8,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 线程反馈模块
     /// </summary>
-    public class LoomModule : FrameworkModule
+    public class LoomModule : UpdateFrameworkModule
     {
         private struct DelayedTask
         {

@@ -7,7 +7,7 @@ namespace IFramework.Modules.Fsm
     /// 状态机
     /// </summary>
     [FrameworkVersion(66)]
-    public class FsmModule : FrameworkModule
+    public class FsmModule : UpdateFrameworkModule
     {
         private class StateInfo
         {

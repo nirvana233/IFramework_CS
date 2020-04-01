@@ -8,7 +8,7 @@ namespace IFramework.Modules.Coroutine
     /// 携程模块
     /// </summary>
     [FrameworkVersion(8)]
-    public class CoroutineModule : FrameworkModule
+    public class CoroutineModule : UpdateFrameworkModule
     {
         class CoroutinePool : IDisposable
         {

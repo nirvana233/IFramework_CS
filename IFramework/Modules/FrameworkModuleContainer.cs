@@ -25,7 +25,7 @@ namespace IFramework.Modules
         public bool binded { get { return _binded; } }
 
         private Dictionary<Type, List<FrameworkModule>> moudle_dic;
-        private List<FrameworkModule> moudle_list;
+        private List<UpdateFrameworkModule> update_list;
         /// <summary>
         /// 查找时候模块不尊在
         /// </summary>
@@ -106,7 +106,7 @@ namespace IFramework.Modules
         {
             _chunck = chunck;
             this._env = env;
-            moudle_list = new List<FrameworkModule>();
+            update_list = new List<UpdateFrameworkModule>();
             moudle_dic = new Dictionary<Type, List<FrameworkModule>>();
             if (bind)
                 BindEnv();
@@ -151,14 +151,14 @@ namespace IFramework.Modules
         {
             base.OnDispose();
             UnBindEnv(false);
-            for (int i = moudle_list.Count - 1; i >= 0; i--)
+            for (int i = update_list.Count - 1; i >= 0; i--)
             {
-                var m = moudle_list[i];
+                var m = update_list[i];
                 m.Dispose();
             }
-            moudle_list.Clear();
+            update_list.Clear();
             moudle_dic.Clear();
-            moudle_list = null;
+            update_list = null;
             moudle_dic = null;
         }
         /// <summary>
@@ -166,7 +166,7 @@ namespace IFramework.Modules
         /// </summary>
         public void Update()
         {
-            moudle_list.ForEach((m) => { m.Update(); });
+            update_list.ForEach((m) => { m.Update(); });
         }
 
         internal bool SubscribeModule(FrameworkModule moudle)
@@ -179,7 +179,10 @@ namespace IFramework.Modules
             if (tmpModule == null)
             {
                 list.Add(moudle);
-                moudle_list.Add(moudle);
+                if (moudle is UpdateFrameworkModule)
+                {
+                    update_list.Add(moudle as UpdateFrameworkModule);
+                }
                 return true;
             }
             else
@@ -206,7 +209,11 @@ namespace IFramework.Modules
                 }
                 else
                 {
-                    moudle_list.Remove(moudle);
+                    if (moudle is UpdateFrameworkModule)
+                    {
+                        update_list.Remove(moudle as UpdateFrameworkModule);
+                    }
+
                     moudle_dic[type].Remove(moudle);
                     return true;
                 }

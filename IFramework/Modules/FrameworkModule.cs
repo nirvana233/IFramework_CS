@@ -33,7 +33,10 @@ namespace IFramework.Modules
                     moudle.name = name;
 
                 moudle.Awake();
-                moudle.enable = true;
+                if (moudle is UpdateFrameworkModule)
+                {
+                    (moudle as UpdateFrameworkModule).enable = true;
+                }
             }
             else
                 Log.E(string.Format("Type: {0} Non Public Ctor With 0 para Not Find", type));
@@ -90,16 +93,10 @@ namespace IFramework.Modules
         }
 
         private FrameworkModuleContainer _container;
-
-       
-        private bool _enable;
         private string _chunck;
         private string _moudleType;
         private bool _binded;
-        /// <summary>
-        /// 是否需要不断刷新
-        /// </summary>
-        protected virtual bool needUpdate { get { return true; } }
+
         /// <summary>
         /// 模块类型
         /// </summary>
@@ -116,6 +113,31 @@ namespace IFramework.Modules
         /// 模块所处的容器
         /// </summary>
         public FrameworkModuleContainer container { get { return _container; } }
+       
+        /// <summary>
+        /// 释放
+        /// </summary>
+        public override void Dispose()
+        {
+            Dispose(() => {
+                OnDispose();
+            }, ()=> {
+                UnBind(false);
+            });
+        }
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+        protected abstract void Awake();
+        protected abstract new void OnDispose();
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
+    }
+
+    /// <summary>
+    /// OnUpdate OnEnable OnDisable
+    /// </summary>
+    public abstract class UpdateFrameworkModule: FrameworkModule
+    {
+        private bool _enable;
         /// <summary>
         /// 开启关闭 Update
         /// </summary>
@@ -137,7 +159,6 @@ namespace IFramework.Modules
         /// </summary>
         /// <param name="enable"></param>
         public void SetActive(bool enable) { this.enable = enable; }
-
         /// <summary>
         /// 释放
         /// </summary>
@@ -146,31 +167,23 @@ namespace IFramework.Modules
             Dispose(() => {
                 enable = false;
                 OnDispose();
-            }, ()=> {
+            }, () => {
                 UnBind(false);
             });
         }
-
-
         /// <summary>
         /// 刷新
         /// </summary>
         public void Update()
         {
-            if (!needUpdate || !enable || disposed) return;
+            if (!enable || disposed) return;
             OnUpdate();
         }
-
-
-
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        protected abstract void Awake();
-        protected abstract new void OnDispose();
+        protected abstract void OnUpdate();
         protected virtual void OnEnable() { }
         protected virtual void OnDisable() { }
-        protected abstract void OnUpdate();
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
     }
-
 }

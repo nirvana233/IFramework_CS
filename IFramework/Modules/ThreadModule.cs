@@ -6,7 +6,7 @@ namespace IFramework.Modules
 {/// <summary>
 /// 线程池模块
 /// </summary>
-    public class ThreadModule : FrameworkModule
+    public class ThreadModule : UpdateFrameworkModule
     {
         private class InnerThread : IDisposable
         {

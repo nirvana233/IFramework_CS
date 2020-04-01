@@ -24,7 +24,6 @@ namespace IFramework.Modules
         private List<PoolObjInfo> infos;
         private Dictionary<Type, PoolObjectPool> dic = new Dictionary<Type, PoolObjectPool>();
 
-        protected override bool needUpdate { get { return false; } }
         protected override void Awake()
         {
             infoCreater = new PoolObjInfoPool();
@@ -37,11 +36,7 @@ namespace IFramework.Modules
             infoCreater.Dispose();
         }
 
-        protected override void OnUpdate()
-        {
-            
-        }
-       
+      
         public PoolObjectPool this[Type type]
         {
             get

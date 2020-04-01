@@ -10,7 +10,7 @@ namespace IFramework.Modules.MVP
     /// MVP
     /// </summary>
     [FrameworkVersion(46)]
-    public class MVPModule : FrameworkModule
+    public class MVPModule : UpdateFrameworkModule
     {
         private MessageModule _message;
         private ECSModule _ecs;

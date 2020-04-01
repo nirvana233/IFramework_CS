@@ -8,7 +8,7 @@ namespace IFramework
     public class ValueCurve
     {
         private List<Point2> _points;
-        private float _step = 0.02f;
+        private float _step = 0.002f;
         private List<Point2> _steps;
         /// <summary>
         /// 点的总个数
@@ -23,7 +23,7 @@ namespace IFramework
         /// </summary>
         /// <param name="points"></param>
         /// <param name="step"></param>
-        public ValueCurve(List<Point2> points, float step = 0.02f)
+        public ValueCurve(List<Point2> points, float step = 0.002f)
         {
             this._points = points;
             this._step = step;
@@ -57,7 +57,7 @@ namespace IFramework
         /// <returns></returns>
         public Point2 GetStep(int step)
         {
-            step = step.Clamp(0, count);
+            step = step.Clamp(0, count-1);
             return _steps[step];
         }
         /// <summary>
@@ -81,11 +81,12 @@ namespace IFramework
             for (int i = 0; i < _steps.Count; i++)
             {
                 Point2 v = _steps[i];
-                if (v.x > x + step && v.x < x + step)
+                if (v.x >= x - step && v.x <= x + step)
                 {
                     return v.y;
                 }
             }
+            Log.E(x);
             return -1;
         }
         /// <summary>
@@ -144,6 +145,55 @@ namespace IFramework
                     new Point2(0.7f,0.3f),
                     new Point2(1,1)
                 });
+
+        /// <summary>
+        ///  0，0 -- 1，1 直线
+        /// </summary>
+        public static ValueCurve linecurve { get { return _linecuve; } }
+        private static ValueCurve _linecuve = new ValueCurve(new List<Point2>()
+        {
+            new  Point2(0,0),
+            new Point2(0.5f,0.5f),
+            new Point2(1,1)
+        });
+
+
+        /// <summary>
+        /// 0，0 -- 1，1 对称往上拱起(粗糙)
+        /// </summary>
+        public static ValueCurve ccurve_rough { get { return _ccurve_rough; } }
+        private static ValueCurve _ccurve_rough = new ValueCurve(new List<Point2>()
+                {
+                    new  Point2(0,0),
+                    new  Point2(0.3f,0.6f),
+
+                    new Point2(0.5f,0.7f),
+                    new Point2(0.7f,0.9f),
+                    new Point2(1,1)
+                },0.02f);
+        /// <summary>
+        ///  0，0 -- 1，1 s形状(粗糙)
+        /// </summary>
+        public static ValueCurve scurve_rough { get { return _scurve_rough; } }
+        private static ValueCurve _scurve_rough = new ValueCurve(new List<Point2>()
+                {
+                    new  Point2(0,0),
+                    new  Point2(0.3f,0.7f),
+
+                    new Point2(0.5f,0.5f),
+                    new Point2(0.7f,0.3f),
+                    new Point2(1,1)
+                },0.02f);
+        /// <summary>
+        ///  0，0 -- 1，1 直线(粗糙)
+        /// </summary>
+        public static ValueCurve linecurve_rough { get { return _linecuve_rough; } }
+        private static ValueCurve _linecuve_rough = new ValueCurve(new List<Point2>()
+        {
+            new  Point2(0,0),
+            new Point2(0.5f,0.5f),
+            new Point2(1,1)
+        },0.02f);
     }
 
 }

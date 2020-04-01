@@ -112,7 +112,6 @@ namespace IFramework.Modules.Message
         private List</*Type,*/ MessageEntity> _entitys;
         private List</*Type,*/ DelgateMessageEntity> _entitydels;
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        protected override bool needUpdate { get { return false; } }
 
         protected override void OnDispose()
         {
@@ -130,10 +129,7 @@ namespace IFramework.Modules.Message
             _entitys = new List<MessageEntity>();
             _entitydels = new List<DelgateMessageEntity>();
         }
-        protected override void OnUpdate()
-        {
 
-        }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
         /// <summary>

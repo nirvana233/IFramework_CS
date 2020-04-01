@@ -24,7 +24,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 计时器模块
     /// </summary>
-    public class TimerModule : FrameworkModule, ITimerModule
+    public class TimerModule : UpdateFrameworkModule, ITimerModule
     {
 
         private class FrameTask

@@ -13,7 +13,6 @@ namespace IFramework.Modules.MVVM
     {
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        protected override bool needUpdate { get { return false; } }
         protected override void Awake()
         {
             _message = CreatInstance<MessageModule>(chunck, "");
@@ -30,10 +29,7 @@ namespace IFramework.Modules.MVVM
             _message.Dispose();
             _message = null;
         }
-        protected override void OnUpdate()
-        {
-           // _message.Update();
-        }
+
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
         internal MessageModule _message;

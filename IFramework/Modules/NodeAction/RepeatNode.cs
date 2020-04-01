@@ -9,7 +9,7 @@ namespace IFramework.Modules.NodeAction
         private int _curRepeat;
         private int _repeat;
         private int curRepeat { get { return _curRepeat; } }
-        private int repeat { get { return _repeat; } }
+        public int repeat { get { return _repeat; } set { _repeat = value; } }
         public ActionNode node { get { return nodeList[0]; }set { nodeList[0] = value; } }
 
         public RepeatNode() : base() { }
