@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extension\FloatExtension.cs" />
     <Compile Include="FrameworkBitConverter.cs" />
     <Compile Include="FrameworkEnvironment.cs" />
     <Compile Include="FrameworkModules.cs" />
@@ -99,9 +100,9 @@
     <Compile Include="Modules\MVVM\MVVMModule.cs" />
     <Compile Include="Modules\MVVM\View.cs" />
     <Compile Include="Modules\MVVM\ViewModel.cs" />
-    <Compile Include="Modules\NodeAction\ActionNode.cs" />
-    <Compile Include="Modules\NodeAction\ConditionNode.cs" />
-    <Compile Include="Modules\NodeAction\WhileNode.cs" />
+    <Compile Include="NodeAction\ActionNode.cs" />
+    <Compile Include="NodeAction\ConditionNode.cs" />
+    <Compile Include="NodeAction\WhileNode.cs" />
     <Compile Include="Modules\PoolModule.cs" />
     <Compile Include="Modules\ThreadModule.cs" />
     <Compile Include="Modules\TimerModule.cs" />
@@ -124,14 +125,14 @@
     <Compile Include="Utility\Astar\IAstarMap.cs" />
     <Compile Include="Utility\Astar\IAStarNode.cs" />
     <Compile Include="Utility\Astar\IAStarSearcher.cs" />
-    <Compile Include="Modules\NodeAction\ContainerNode.cs" />
+    <Compile Include="NodeAction\ContainerNode.cs" />
     <Compile Include="Utility\Encryption\AesEncryption.cs" />
     <Compile Include="Utility\Encryption\DesEncryption.cs" />
     <Compile Include="Utility\Encryption\HashEncode.cs" />
     <Compile Include="Utility\Encryption\RsaEncryption.cs" />
     <Compile Include="Utility\Encryption\TripleEncryption.cs" />
     <Compile Include="Utility\Encryption\XorEncryption.cs" />
-    <Compile Include="Modules\NodeAction\EventNode.cs" />
+    <Compile Include="NodeAction\EventNode.cs" />
     <Compile Include="Utility\Explanation\Explanation.cs" />
     <Compile Include="Utility\Explanation\IExplainer.cs" />
     <Compile Include="Framework.cs" />
@@ -139,14 +140,14 @@
     <Compile Include="Modules\Fsm\FsmConditionValue.cs" />
     <Compile Include="Modules\Fsm\FsmTransition.cs" />
     <Compile Include="Modules\Fsm\IFsmState.cs" />
-    <Compile Include="Modules\NodeAction\ActionNodeExtension.cs" />
+    <Compile Include="NodeAction\ActionNodeExtension.cs" />
     <Compile Include="IFrameworkContainer.cs" />
     <Compile Include="Pool\SingletonPool.cs" />
-    <Compile Include="Modules\NodeAction\RepeatNode.cs" />
-    <Compile Include="Modules\NodeAction\SequenceNode.cs" />
-    <Compile Include="Modules\NodeAction\SpawnNode.cs" />
-    <Compile Include="Modules\NodeAction\TimeSpanNode.cs" />
-    <Compile Include="Modules\NodeAction\UntilNode.cs" />
+    <Compile Include="NodeAction\RepeatNode.cs" />
+    <Compile Include="NodeAction\SequenceNode.cs" />
+    <Compile Include="NodeAction\SpawnNode.cs" />
+    <Compile Include="NodeAction\TimeSpanNode.cs" />
+    <Compile Include="NodeAction\UntilNode.cs" />
     <Compile Include="Utility\DeepCopy.cs" />
     <Compile Include="Utility\ThreadPool.cs" />
     <Compile Include="Utility\IReference.cs" />

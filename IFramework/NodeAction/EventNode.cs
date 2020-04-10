@@ -1,35 +1,32 @@
 ﻿using System;
 
-namespace IFramework.Modules.NodeAction
+namespace IFramework.NodeAction
 {
+    [FrameworkVersion(3)]
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class WhileNode : ActionNode
+    public class EventNode : ActionNode
     {
+        private Action _callback;
+        public Action callback { get { return _callback; } }
 
-        private Func<bool> _condition;
-        public Func<bool> condition { get { return _condition; } }
-        private Action _loop;
-        public Action loop { get { return _loop; } }
-
-        public void Config(Func<bool> condition,Action loop, bool autoRecyle)
+        public void Config(Action callback, bool autoRecyle)
         {
-            this._loop = loop;
-            this._condition = condition;
+            this._callback = callback;
             base.Config(autoRecyle);
         }
+      
+
+
         protected override void OnDataReset()
         {
             base.OnDataReset();
-            _condition = null;
+            _callback = null;
         }
+
         protected override bool OnMoveNext()
         {
-            bool bo = condition.Invoke();
-            if (bo && _loop!=null)
-            {
-                _loop();
-            }
-            return bo;
+            _callback.Invoke();
+            return false;
         }
 
         protected override void OnBegin() { }

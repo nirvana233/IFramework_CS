@@ -1,46 +1,43 @@
 ﻿using System;
 
-namespace IFramework.Modules.NodeAction
+namespace IFramework.NodeAction
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class ConditionNode : ActionNode
+    public class WhileNode : ActionNode
     {
+
         private Func<bool> _condition;
-        private Action _callback;
         public Func<bool> condition { get { return _condition; } }
-        public Action callback { get { return _callback; } }
-        public void Config(Func<bool> condition, Action callback, bool autoRecyle)
+        private Action _loop;
+        public Action loop { get { return _loop; } }
+
+        public void Config(Func<bool> condition,Action loop, bool autoRecyle)
         {
+            this._loop = loop;
             this._condition = condition;
-            this._callback = callback;
             base.Config(autoRecyle);
         }
         protected override void OnDataReset()
         {
             base.OnDataReset();
-            _callback = null;
             _condition = null;
         }
-
-       
-
         protected override bool OnMoveNext()
         {
-            if (_condition.Invoke())
-                _callback();
-            return false;
+            bool bo = condition.Invoke();
+            if (bo && _loop!=null)
+            {
+                _loop();
+            }
+            return bo;
         }
 
-        protected override void OnNodeReset() { }
         protected override void OnBegin() { }
         protected override void OnCompelete() { }
+        protected override void OnNodeReset() { }
 
-        protected override void OnNodeDispose()
-        {
-            _callback = null;
-            _condition = null;
-        }
+        protected override void OnNodeDispose() { }
     }
-
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 }

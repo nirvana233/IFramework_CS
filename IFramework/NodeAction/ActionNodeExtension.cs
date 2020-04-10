@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-namespace IFramework.Modules.NodeAction
+namespace IFramework.NodeAction
 {
     [FrameworkVersion(16)]
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释

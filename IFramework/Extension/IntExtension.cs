@@ -46,23 +46,18 @@ namespace IFramework
         {
             return self < min ? min : self > max ? max : self;
         }
-    }
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public static class FloatExtension
-    {
-        public static float Clamp(this float self,float min, float max)
+        /// <summary>
+        /// 线性插值  self  +（end-self）* percent
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="end"></param>
+        /// <param name="pecent"></param>
+        /// <returns></returns>
+        public static int Lerp(this int self, float end, float pecent)
         {
-            return self < min ? min : self > max ? max : self;
-        }
-        public static float Clamp01(this float self)
-        {
-            return Clamp(self,0f,1f);
-        }
-        public static float Repeat(this float self, float length)
-        {
-            return Clamp(self - (float)Math.Floor(self/ length) * length, 0f, length);
+            float _tem = self;
+            return _tem.Lerp(end, pecent).RoundToInt();
         }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }
