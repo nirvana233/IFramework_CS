@@ -13,18 +13,10 @@ namespace IFramework.Modules
         Running, Stoped, Paused, None
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
     }
-    internal interface ITimerModule
-    {
-        string RunTask(double space, Action action, Action onCompeleted, double delay, int count);
-        void StopTask(string id);
-        void PauseTask(string id);
-        void UnPauseTask(string id);
-        TaskState GetTaskState(string id);
-    }
     /// <summary>
     /// 计时器模块
     /// </summary>
-    public class TimerModule : UpdateFrameworkModule, ITimerModule
+    public class TimerModule : UpdateFrameworkModule
     {
 
         private class FrameTask

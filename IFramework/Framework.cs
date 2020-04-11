@@ -9,11 +9,11 @@ namespace IFramework { }
 namespace IFramework
 {
     /// <summary>
-    /// 框架代码版本默认有 1
+    ///  框架代码版本默认有 1
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = false)]
     [FrameworkVersion(2)]
-    public class FrameworkVersionAttribute:Attribute
+    public class FrameworkVersionAttribute : Attribute
     {
         /// <summary>
         /// 版本
@@ -23,12 +23,86 @@ namespace IFramework
         /// Ctor
         /// </summary>
         /// <param name="version"></param>
-        public FrameworkVersionAttribute(int version=1)
+        public FrameworkVersionAttribute(int version = 1)
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         {
             this.version = version;
         }
     }
+
+    /// <summary>
+    /// 描述
+    /// </summary>
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = false)]
+    [FrameworkVersion(2)]
+    public class DescriptionAttribute : Attribute
+    {
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string description;
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public DescriptionAttribute(string description)
+        {
+            this.description = description;
+        }
+    }
+
+
+    /// <summary>
+    /// 依赖描述
+    /// </summary>
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
+    [FrameworkVersion(6)]
+    public class DependenceAttribute : DescriptionAttribute
+    {
+        /// <summary>
+        /// types
+        /// </summary>
+        public readonly Type type;
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="type"></param>
+        public DependenceAttribute(Type type) : base("")
+        {
+            this.type = type;
+        }
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="description"></param>
+        public DependenceAttribute(Type type, string description) : base(description)
+        {
+            this.type = type;
+        }
+    }
+
+    /// <summary>
+    /// 代码升级说明
+    /// </summary>
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
+    [FrameworkVersion(2)]
+    public class ScriptVersionUpdateAttribute : FrameworkVersionAttribute
+    {
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string description;
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="description"></param>
+        public ScriptVersionUpdateAttribute(int version, string description) : base(version)
+        {
+            this.description = description;
+        }
+    }
+
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class Assemblies
@@ -249,13 +323,15 @@ namespace IFramework
     /// <summary>
     /// 框架入口
     /// </summary>
+    [Dependence(typeof(FrameworkEnvironment))]
+    [Dependence(typeof(Assemblies))]
     public static class Framework
     {
         static Framework()
         {
             CalcVersion();
         }
-            
+
         private static string CalcVersion()
         {
             int sum = 0;
@@ -282,7 +358,7 @@ namespace IFramework
                 sum = sum / mul;
             } while (sum > 0);
             Version = Version.Substring(1);
-            int tmp=4-  Version.Split('.').Length;
+            int tmp = 4 - Version.Split('.').Length;
             for (int i = 0; i < tmp; i++)
                 Version = Version.AppendHead("0.");
             return Version;
@@ -293,7 +369,7 @@ namespace IFramework
         public static string Version;
         public const string Description = FrameworkName;
 
-        public static Assemblies Assembly=new Assemblies();
+        public static Assemblies Assembly = new Assemblies();
 
         public static FrameworkEnvironment env0;
         public static FrameworkEnvironment env1;
@@ -322,7 +398,7 @@ namespace IFramework
         /// <returns>环境</returns>
         public static FrameworkEnvironment InitEnv(string envName, EnvironmentType envType)
         {
-            switch ( envType)
+            switch (envType)
             {
                 case EnvironmentType.Ev0: env0 = CreateEnv(envName, envType); return env0;
                 case EnvironmentType.Ev1: env1 = CreateEnv(envName, envType); return env1;
@@ -330,7 +406,7 @@ namespace IFramework
                 case EnvironmentType.Ev3: env3 = CreateEnv(envName, envType); return env3;
                 case EnvironmentType.Ev4: env4 = CreateEnv(envName, envType); return env4;
                 default:
-                    throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ",  envType));
+                    throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ", envType));
             }
         }
         /// <summary>
@@ -340,7 +416,7 @@ namespace IFramework
         /// <returns></returns>
         public static FrameworkEnvironment GetEnv(EnvironmentType envType)
         {
-            switch ( envType)
+            switch (envType)
             {
                 case EnvironmentType.Ev0: return env0;
                 case EnvironmentType.Ev1: return env1;
@@ -348,7 +424,7 @@ namespace IFramework
                 case EnvironmentType.Ev3: return env3;
                 case EnvironmentType.Ev4: return env4;
                 default:
-                    throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ",  envType));
+                    throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ", envType));
             }
         }
         /// <summary>
@@ -395,7 +471,7 @@ namespace IFramework
         /// <param name=" envType"></param>
         public static void BindEnvUpdate(this Action action, EnvironmentType envType)
         {
-            action.BindEnvUpdate(GetEnv( envType));
+            action.BindEnvUpdate(GetEnv(envType));
         }
         /// <summary>
         /// 解除绑顶 方法 到一个环境的 Update
@@ -404,7 +480,7 @@ namespace IFramework
         /// <param name=" envType"></param>
         public static void UnBindEnvUpdate(this Action action, EnvironmentType envType)
         {
-            action.UnBindEnvUpdate(GetEnv( envType));
+            action.UnBindEnvUpdate(GetEnv(envType));
         }
         /// <summary>
         /// 绑顶 方法 到一个环境的 Dispose
@@ -413,7 +489,7 @@ namespace IFramework
         /// <param name=" envType"></param>
         public static void BindEnvDispose(this Action action, EnvironmentType envType)
         {
-            action.BindEnvDispose(GetEnv( envType));
+            action.BindEnvDispose(GetEnv(envType));
         }
         /// <summary>
         /// 解除绑顶 方法 到一个环境的 Dispose
@@ -422,7 +498,7 @@ namespace IFramework
         /// <param name=" envType"></param>
         public static void UnBindEnvDispose(this Action action, EnvironmentType envType)
         {
-            action.UnBindEnvDispose(GetEnv( envType));
+            action.UnBindEnvDispose(GetEnv(envType));
         }
     }
 
@@ -431,17 +507,17 @@ namespace IFramework
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class FrameworkObject : IDisposable
     {
-        private string _name ;
+        private string _name;
         private bool _disposed;
-        private Guid _guid=Guid.NewGuid();
+        private Guid _guid = Guid.NewGuid();
         public Guid guid { get { return _guid; } }
         public bool disposed { get { return _disposed; } }
-        public string name { get { return _name; }set { _name = value; } }
+        public string name { get { return _name; } set { _name = value; } }
 
         protected virtual void OnDispose() { }
         public virtual void Dispose()
         {
-            Dispose(null,null);
+            Dispose(null, null);
         }
         protected void Dispose(Action frontofonDispose, Action frontof_disposed)
         {

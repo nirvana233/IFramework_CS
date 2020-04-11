@@ -10,6 +10,8 @@ namespace IFramework.Modules.MVP
     /// MVP
     /// </summary>
     [FrameworkVersion(46)]
+    [Dependence(typeof(MessageModule))]
+    [Dependence(typeof(ECSModule))]
     public class MVPModule : UpdateFrameworkModule
     {
         private MessageModule _message;

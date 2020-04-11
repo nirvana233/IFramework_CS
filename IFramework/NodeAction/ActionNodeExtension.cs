@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace IFramework.NodeAction
 {
-    [FrameworkVersion(16)]
+    [FrameworkVersion(16)] 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public static class ActionNodeExtension
     {
@@ -15,11 +15,13 @@ namespace IFramework.NodeAction
                 yield return null;
             }
         }
+        [Dependence(typeof(CoroutineModule))]
         public static T Run<T>(this T self, CoroutineModule moudle) where T : ActionNode
         {
             moudle.StartCoroutine(self.ActionEnumerator());
             return self;
         }
+        [Dependence(typeof(CoroutineModule))]
         public static T Run<T>(this T self) where T : ActionNode
         {
             self.env.modules.Coroutine.StartCoroutine(self.ActionEnumerator());
@@ -41,12 +43,15 @@ namespace IFramework.NodeAction
             return t;
         }
 
+
+        [Dependence(typeof(FrameworkEnvironment))]
         public static SequenceNode Sequence(this object self, EnvironmentType envType, bool autoRecyle = true)
         {
             SequenceNode node = Allocate<SequenceNode>( envType);
             node.Config(autoRecyle);
             return node;
         }
+        [Dependence(typeof(FrameworkEnvironment))]
         public static SequenceNode Sequence(this object self, FrameworkEnvironment env, bool autoRecyle = true)
         {
             SequenceNode node = Allocate<SequenceNode>(env);
@@ -62,10 +67,6 @@ namespace IFramework.NodeAction
         public static T OnBegin<T>(this T self, Action<T> action) where T : ActionNode
         {
             return self.OnBegin(() => { action(self); });
-        }
-        public static T OnDispose<T>(this T self, Action<T> action) where T : ActionNode
-        {
-            return self.OnDispose(() => { action(self); });
         }
         public static T OnRecyle<T>(this T self, Action<T> action) where T : ActionNode
         {
@@ -86,11 +87,6 @@ namespace IFramework.NodeAction
             self.onBegin += action;
             return self;
         }
-        public static T OnDispose<T>(this T self, Action action) where T : ActionNode
-        {
-            self.onDispose += action;
-            return self;
-        }
         public static T OnRecyle<T>(this T self, Action action) where T : ActionNode
         {
             self.onRecyle += action;
@@ -101,6 +97,19 @@ namespace IFramework.NodeAction
             self.onFrame += action;
             return self;
         }
+
+        [Description("Normally, Disposed When Environment Dispose ,Be Carefull")]
+        public static T OnDispose<T>(this T self, Action<T> action) where T : ActionNode
+        {
+            return self.OnDispose(() => { action(self); });
+        }
+        [Description("Normally, Disposed When Environment Dispose ,Be Carefull")]
+        public static T OnDispose<T>(this T self, Action action) where T : ActionNode
+        {
+            self.onDispose += action;
+            return self;
+        }
+
 
 
         public static T TimeSpan<T>(this T self, TimeSpan timeSpan, bool autoRecyle = false) where T : ContainerNode
@@ -169,7 +178,6 @@ namespace IFramework.NodeAction
         }
 
       
-       
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
