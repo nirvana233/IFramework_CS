@@ -16,6 +16,7 @@ namespace IFramework.Serialization.DataTable
     /// <summary>
     /// 数据写入者
     /// </summary>
+    [Dependence(typeof(StringConvert))]
     public class DataWriter : IDisposable
     {
         private IDataExplainer _explainer;

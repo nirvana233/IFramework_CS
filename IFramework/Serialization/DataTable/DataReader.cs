@@ -16,6 +16,7 @@ namespace IFramework.Serialization.DataTable
     /// <summary>
     /// 数据表读者
     /// </summary>
+    [Dependence(typeof(StringConvert))]
     public class DataReader : IDisposable
     {
         private List<List<DataColumn>> _rows;
