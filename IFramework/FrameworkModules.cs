@@ -5,7 +5,7 @@ using IFramework.Modules.Fsm;
 using IFramework.Modules.Message;
 using IFramework.Modules.MVP;
 using IFramework.Modules.MVVM;
-
+using IFramework.Modules.Resouses;
 namespace IFramework
 {
     /// <summary>
@@ -26,6 +26,7 @@ namespace IFramework
         public ECSModule ECS { get; set; }
         public MVPModule MVP { get; set; }
         public MVVMModule MVVM { get; set; }
+        public ResourceModule Resources { get; set; }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
         internal FrameworkModules(FrameworkEnvironment env) : base("Framework", env, true)

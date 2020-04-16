@@ -705,36 +705,4 @@ namespace IFramework.Serialization.Simple
 
 
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
-
-    class E
-    {
-        public EEE e;
-    }
-    enum EEE
-    { a, b, c }
-    class Test
-    {
-        static Func<int, int> func;
-        static void Main(string[] args)
-        {
-          var  bytes = Encoding.Default.GetBytes("777");
-            Packet pac = new Packet(1,1, 1, bytes);
-            var buffer = pac.Pack();
-
-            PacketReader r = new PacketReader(buffer.Length);
-
-            r.Set(buffer, 0, buffer.Length);
-            var get = r.Get();
-            E e = new E() { e = EEE.c };
-          var bts=  SerializerUtility.Serialize(e,"e");
-            E e1 = SerializerUtility.DeSerialize<E>("e", bts, 0, bts.Length);
-
-            Console.WriteLine(e1.e);
-            while (true)
-            {
-
-            }
-        }
-    }
 }
