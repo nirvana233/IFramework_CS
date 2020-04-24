@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IFramework.Singleton;
+using System;
 using System.Collections.Generic;
 
 namespace IFramework.Pool

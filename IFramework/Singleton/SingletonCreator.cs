@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace IFramework
+namespace IFramework.Singleton
 {
     static class SingletonCreator
     {

@@ -65,6 +65,7 @@ namespace IFramework.Utility
             }
             public void Dispose()
             {
+                eve.Dispose();
                 thread.Abort();
                 thread.Join();
                 thread = null;

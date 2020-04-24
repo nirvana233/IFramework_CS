@@ -51,7 +51,6 @@ namespace IFramework.Modules.Resources
                 int bytesRead = _fs.EndRead(ar);
                 if (bytesRead > 0)
                 {
-                    var datastr = Encoding.UTF8.GetString(_buffer, 0, _buffer.Length);
                     Array.Copy(_buffer, 0, Tresource.value, _fs.Position, _blockSize);
                     _fs.BeginRead(_buffer, 0, _buffer.Length, EndRead, null);
                 }

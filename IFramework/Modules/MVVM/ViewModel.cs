@@ -64,7 +64,7 @@ namespace IFramework.Modules.MVVM
     /// <summary>
     /// 方便书写
     /// </summary>
-    public abstract class TViewModel<T> : ViewModel where T : IDataModel
+    public abstract class ViewModel<T> : ViewModel where T : IDataModel
     {
         /// <summary>
         /// 方便书写

@@ -146,9 +146,9 @@ namespace IFramework.Serialization.Simple
 
                 return (Serializer)Activator.CreateInstance(resultType);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                throw ex;
+                throw ;
             }
         }
     }

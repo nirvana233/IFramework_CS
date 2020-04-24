@@ -79,16 +79,15 @@ namespace IFramework
         public static string ReadText(this string path, Encoding encoding)
         {
             var result = string.Empty;
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read))
-            {
-                using (StreamReader sr = new StreamReader(fs, encoding))
-                {
-                    result = sr.ReadToEnd();
-                    sr.Close();
-                    //fs.Flush();  
-                    //fs.Close();
-                }
-            }
+            FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
+            StreamReader sr = new StreamReader(fs, encoding);
+            result = sr.ReadToEnd();
+
+            //sr.Close();
+            //sr.Dispose();
+            fs.Flush();
+            //fs.Close();
+            fs.Dispose();
             return result;
         }
         /// <summary>
@@ -99,23 +98,15 @@ namespace IFramework
         /// <param name="encoding">文件编码</param>
         public static void WriteText(this string path, string content, Encoding encoding)
         {
-            using (var fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                using (StreamWriter sw = new StreamWriter(fs, encoding))
-                {
-                    fs.Lock(0, fs.Length);
-                    sw.Write(content);
-                    fs.Unlock(0, fs.Length);
+            var fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs, encoding);
+            fs.Lock(0, fs.Length);
+            sw.Write(content);
+            fs.Unlock(0, fs.Length);
 
-                    sw.Flush();
-                    sw.Close();
-                    //sw.Dispose();
-
-                    fs.Close();
-                    //  fs.Flush();
-                    fs.Dispose();
-                }
-            }
+            fs.Flush();
+            //fs.Close();
+            fs.Dispose();
         }
         /// <summary>
         /// 读取字节流

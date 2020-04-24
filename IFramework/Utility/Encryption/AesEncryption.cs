@@ -32,7 +32,7 @@ namespace IFramework.Utility.Encryption
                 cStream.FlushFinalBlock();
                 byte[] result = mStream.ToArray();
                 mStream.Flush();
-                mStream.Close();
+                //mStream.Close();
                 return result;
             }
         }
@@ -47,7 +47,7 @@ namespace IFramework.Utility.Encryption
                 cStream.FlushFinalBlock();
                 byte[] result = mStream.ToArray();
                 mStream.Flush();
-                mStream.Close();
+                //mStream.Close();
                 return result;
             }
         }

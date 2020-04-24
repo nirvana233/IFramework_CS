@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IFramework</RootNamespace>
     <AssemblyName>IFramework</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -18,16 +18,17 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Unity\IF_Git\Assets\IFramework\0.1Core\0.1Plugins\</OutputPath>
+    <OutputPath>..\..\..\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\..\..\Unity\IF_Git\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml</DocumentationFile>
+    <DocumentationFile>..\..\..\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <NoWarn>
     </NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,6 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -87,14 +89,6 @@
     <Compile Include="Modules\Message\IMessageListener.cs" />
     <Compile Include="Modules\Message\IMessagePublisher.cs" />
     <Compile Include="Modules\Message\MessageMoudle.cs" />
-    <Compile Include="Modules\MVP\MVPEnity.cs" />
-    <Compile Include="Modules\MVP\MVPGroup.cs" />
-    <Compile Include="Modules\MVP\MVPModule.cs" />
-    <Compile Include="Modules\MVP\MVPSystem.cs" />
-    <Compile Include="Modules\MVP\PolicyExecutorSystem.cs" />
-    <Compile Include="Modules\MVP\PolicySystem.cs" />
-    <Compile Include="Modules\MVP\SensorSystem.cs" />
-    <Compile Include="Modules\MVP\ViewSystem.cs" />
     <Compile Include="Modules\MVVM\IDataModel.cs" />
     <Compile Include="Modules\MVVM\MVVMGroup.cs" />
     <Compile Include="Modules\MVVM\MVVMModule.cs" />
@@ -103,6 +97,8 @@
     <Compile Include="Modules\Resources\Loader\AsyncFileByteArrayLoader.cs" />
     <Compile Include="Modules\Resources\Loader\AsyncFileTextLoader.cs" />
     <Compile Include="Modules\Resources\AsyncResourceLoader.cs" />
+    <Compile Include="Modules\Resources\Loader\AsyncHttpByteArrayLoader.cs" />
+    <Compile Include="Modules\Resources\Loader\AsyncHttpTextLoader.cs" />
     <Compile Include="Modules\Resources\Loader\HttpByteArrayLoader.cs" />
     <Compile Include="Modules\Resources\Loader\HttpTextLoader.cs" />
     <Compile Include="Modules\Resources\Res\ByteArryResource.cs" />
@@ -187,7 +183,6 @@
     <Compile Include="Utility\IReference.cs" />
     <Compile Include="Net\DownLoad\FileDownLoader.cs" />
     <Compile Include="Net\DownLoad\FileDownLoader_Http.cs" />
-    <Compile Include="Net\Email.cs" />
     <Compile Include="Net\NetUtil.cs" />
     <Compile Include="Net\Socket\Buffer\BufferSegment.cs" />
     <Compile Include="Net\Socket\Buffer\SockArgBuffers.cs" />
@@ -254,7 +249,7 @@
     <Compile Include="Extension\TypeExtension.cs" />
     <Compile Include="Singleton\Singleton.cs" />
     <Compile Include="Singleton\SingletonCreator.cs" />
-    <Compile Include="Singleton\SingletonPool.cs" />
+    <Compile Include="Singleton\SingletonCollection.cs" />
     <Compile Include="Singleton\SingletonProperty.cs" />
     <Compile Include="Singleton\SingletonPropertyClass.cs" />
     <Compile Include="Modules\Fsm\TransitionCondition.cs" />

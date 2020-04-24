@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IFramework
+namespace IFramework.Singleton
 {
     //[OnFrameworkInitClass]
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public static class SingletonPool
+    public static class SingletonCollection
     {
         static Dictionary<Type, ISingleton> pairs;
-        static SingletonPool()
+        static SingletonCollection()
         {
             pairs = new Dictionary<Type, ISingleton>();
            // Framework.onDispose += Dispose;

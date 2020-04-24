@@ -3,7 +3,6 @@ using IFramework.Modules.Coroutine;
 using IFramework.Modules.ECS;
 using IFramework.Modules.Fsm;
 using IFramework.Modules.Message;
-using IFramework.Modules.MVP;
 using IFramework.Modules.MVVM;
 using IFramework.Modules.Resources;
 namespace IFramework
@@ -24,7 +23,6 @@ namespace IFramework
         public PoolModule Pool { get; set; }
         public ThreadModule ThreadPool { get; set; }
         public ECSModule ECS { get; set; }
-        public MVPModule MVP { get; set; }
         public MVVMModule MVVM { get; set; }
         public ResourceModule Resources { get; set; }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释

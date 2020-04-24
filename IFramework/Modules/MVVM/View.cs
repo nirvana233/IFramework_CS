@@ -53,6 +53,7 @@ namespace IFramework.Modules.MVVM
         public void Dispose()
         {
             OnDispose();
+            _context.Dispose();
             handler.UnSubscribe();
         }
         /// <summary>
@@ -64,7 +65,7 @@ namespace IFramework.Modules.MVVM
     /// 方便书写
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class TView<T> : View where T : ViewModel
+    public abstract class View<T> : View where T : ViewModel
     {
         /// <summary>
         /// 方便书写

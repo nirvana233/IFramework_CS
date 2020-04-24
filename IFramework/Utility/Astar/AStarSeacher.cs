@@ -54,7 +54,7 @@ namespace IFramework.Utility.Astar
                 }
                 if (openList.Count == 0)
                 {
-                    return null;
+                    break;
                 }
                 closeList.Add(curNode);
                 openList.Remove(curNode);

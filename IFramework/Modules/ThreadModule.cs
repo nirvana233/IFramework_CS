@@ -57,6 +57,7 @@ namespace IFramework.Modules
             }
             public void Dispose()
             {
+                eve.Dispose();
                 thread.Abort();
                 thread.Join();
                 thread = null;

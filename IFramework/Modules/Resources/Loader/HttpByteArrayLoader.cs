@@ -26,7 +26,7 @@ namespace IFramework.Modules.Resources
                     if (!_stream.CanRead) break;
                     _progress = _stream.Position / _stream.Length;
                 }
-                _stream.Close();
+                //_stream.Close();
                 _response.Close();
                 _stream.Dispose();
             }
