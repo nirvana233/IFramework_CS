@@ -17,6 +17,7 @@ Simple  C# Tools
         * PoolModule（对象池）
         * MVVMModule（mvvm管理器）
         * ECSModule
+        * ResourceModule （资源模块）
   * NodeAction（节点事件【依赖高仿携程】）
   * Packet（自定义数据协议）
   * Net（TCP，UDP，WS）
