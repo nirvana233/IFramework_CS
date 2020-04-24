@@ -2,12 +2,13 @@
 using System.IO;
 using System.Text;
 
-namespace IFramework.Modules.Resouses
+namespace IFramework.Modules.Resources
 {
     /// <summary>
-    /// 异步文件流加载器
+    /// 异步文本加载器
     /// </summary>
-    public class AsyncFileByteArrayLoader : AsyncResourceLoader<byte[], ByteArryResource>
+    /// <typeparam name="Encod"></typeparam>
+    public class AsyncFileTextLoader<Encod> : AsyncResourceLoader<string, TextResource> where Encod : Encoding, new()
     {
         /// <summary>
         /// 进度
@@ -23,9 +24,12 @@ namespace IFramework.Modules.Resouses
                 return 0;
             }
         }
+        private Encod _en { get { return new Encod(); } }
+
+        private StringBuilder _sb;
         private byte[] _buffer;
         private FileStream _fs;
-        private int _blockSize = 2048;
+        private int _blockSize=2048;
         /// <summary>
         /// 加载
         /// </summary>
@@ -33,30 +37,31 @@ namespace IFramework.Modules.Resouses
         {
             try
             {
-                _fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, _blockSize, true);
-                Tresource.value = new byte[_fs.Length];
+                _sb = new StringBuilder();
                 _buffer = new byte[_blockSize];
+                _fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, _blockSize, true);
                 _fs.BeginRead(_buffer, 0, _buffer.Length, EndRead, _fs);
             }
             catch (Exception e)
             {
                 ThrowErr(e.Message);
             }
-        }
 
-        private void EndRead(IAsyncResult ar)
+        }
+        private void EndRead(IAsyncResult asyncResult)
         {
             try
             {
-                int bytesRead = _fs.EndRead(ar);
+                int bytesRead = _fs.EndRead(asyncResult);
                 if (bytesRead > 0)
                 {
-                    var datastr = Encoding.UTF8.GetString(_buffer, 0, _buffer.Length);
-                    Array.Copy(_buffer, 0, Tresource.value, _fs.Position, _blockSize);
+                    var datastr = _en.GetString(_buffer, 0, _buffer.Length);
+                    _sb.Append(datastr);
                     _fs.BeginRead(_buffer, 0, _buffer.Length, EndRead, null);
                 }
                 else
                 {
+                    Tresource.value = _sb.ToString();
                     _fs.Dispose();
                     _isdone = true;
                 }
@@ -65,7 +70,7 @@ namespace IFramework.Modules.Resouses
             {
                 ThrowErr(e.Message);
             }
+           
         }
-
     }
 }

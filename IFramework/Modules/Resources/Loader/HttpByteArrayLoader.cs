@@ -2,13 +2,14 @@
 using System.IO;
 using System.Net;
 
-namespace IFramework.Modules.Resouses
+namespace IFramework.Modules.Resources
 {
     /// <summary>
     /// http流加载器
     /// </summary>
-    public class HttpTextLoader : ResourceLoader<string, TextResource>
+    public class HttpByteArrayLoader : ResourceLoader<byte[], ByteArryResource>
     {
+        private int _blockSize=2048;
         /// <summary>
         /// 加载
         /// </summary>
@@ -18,11 +19,16 @@ namespace IFramework.Modules.Resouses
             {
                 HttpWebRequest _request = (HttpWebRequest)WebRequest.Create(path);
                 HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
-                StreamReader _reader = new StreamReader(_response.GetResponseStream(), System.Text.Encoding.GetEncoding(_response.ContentEncoding));
-                Tresource.value = _reader.ReadToEnd();
-                _reader.Close();
+                Stream _stream = _response.GetResponseStream();
+                Tresource.value = new byte[_stream.Length];
+                while (_stream.Read(Tresource.value, (int)_stream.Position, _blockSize) > 0)
+                {
+                    if (!_stream.CanRead) break;
+                    _progress = _stream.Position / _stream.Length;
+                }
+                _stream.Close();
                 _response.Close();
-                _reader.Dispose();
+                _stream.Dispose();
             }
             catch (Exception e)
             {
@@ -33,6 +39,7 @@ namespace IFramework.Modules.Resouses
                 _progress = 1;
                 _isdone = true;
             }
+           
         }
     }
 }

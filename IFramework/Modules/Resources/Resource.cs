@@ -1,4 +1,4 @@
-﻿namespace IFramework.Modules.Resouses
+﻿namespace IFramework.Modules.Resources
 {
     /// <summary>
     /// 资源

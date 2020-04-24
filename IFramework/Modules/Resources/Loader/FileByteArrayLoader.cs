@@ -1,16 +1,13 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 
-namespace IFramework.Modules.Resouses
+namespace IFramework.Modules.Resources
 {
     /// <summary>
-    /// 文本加载器
+    /// 文件流加载器
     /// </summary>
-    /// <typeparam name="Encod"></typeparam>
-    public class FileTextLoader<Encod> : ResourceLoader<string, TextResource> where Encod: Encoding,new()
+    public class FileByteArrayLoader : ResourceLoader<byte[], ByteArryResource>
     {
-        private Encod _en { get { return new Encod(); } }
         /// <summary>
         /// 加载
         /// </summary>
@@ -18,7 +15,7 @@ namespace IFramework.Modules.Resouses
         {
             try
             {
-                Tresource.value = File.ReadAllText(path,_en);
+                Tresource.value = File.ReadAllBytes(path);
             }
             catch (Exception e)
             {
@@ -29,7 +26,6 @@ namespace IFramework.Modules.Resouses
                 _isdone = true;
                 _progress = 1;
             }
-
         }
     }
 }

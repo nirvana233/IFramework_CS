@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IFramework.Modules.Resouses
+namespace IFramework.Modules.Resources
 {
     class ResourceGroup :IDisposable
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using IFramework.Pool;
 
-namespace IFramework.Modules.Resouses
+namespace IFramework.Modules.Resources
 {
     /// <summary>
     /// 资源模块

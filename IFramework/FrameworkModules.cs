@@ -5,7 +5,7 @@ using IFramework.Modules.Fsm;
 using IFramework.Modules.Message;
 using IFramework.Modules.MVP;
 using IFramework.Modules.MVVM;
-using IFramework.Modules.Resouses;
+using IFramework.Modules.Resources;
 namespace IFramework
 {
     /// <summary>
