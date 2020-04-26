@@ -15,7 +15,6 @@ namespace IFramework
     {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         public FsmModule Fsm { get; set; }
-        public TimerModule Timer { get; set; }
         public LoomModule Loom { get; set; }
         public CoroutineModule Coroutine { get; set; }
         public MessageModule Message { get; set; }

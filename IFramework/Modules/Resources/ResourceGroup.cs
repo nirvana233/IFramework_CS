@@ -17,7 +17,10 @@ namespace IFramework.Modules.Resources
 
         private T AllocateLoader<T>() where T : ResourceLoader
         {
-            return moudule.AllocateLoader<T>(this);
+            var loader= moudule.AllocateLoader<T>();
+            loader.group = this;
+            return loader;
+
         }
         private void RecyleLoader<T>(T loader) where T : ResourceLoader
         {
@@ -64,27 +67,12 @@ namespace IFramework.Modules.Resources
         }
         public ResourceLoader LoadAsync<T>(string name, string path, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader) where T : AsyncResourceLoader
         {
-            using (new LockWait(ref _lock))
-            {
-                ResourceLoader _loader;
-                if (!_loaderMap.TryGetValue(name, out _loader))
-                {
-                    List<ResourceLoader> _loaders = LoadDependences(dependences, dependenceLoader);
-                    _loader = AllocateLoader<T>();
-                    _loader.Config(name, path, _loaders);
-                    _loaderMap.Add(_loader.name, _loader);
-                    _loader.Load();
-                }
-                _loader.Retain();
-                return _loader;
-            }
-
+            return Load<T>(name, path, dependences, dependenceLoader);
         }
         public ResourceLoader LoadDependence(ResourceLoader loader, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader)
         {
             using (new LockWait(ref _lock))
             {
-
                 if (!_loaderMap.ContainsKey(loader.name))
                     throw new Exception(string.Format("Not Exist Loader Type: {0} Name: {1} Path:{2} ", loader.GetType(), loader.name, loader.path));
                 else
@@ -95,6 +83,8 @@ namespace IFramework.Modules.Resources
                 return loader;
             }
         }
+
+
         private Queue<ResourceLoader> _remove = new Queue<ResourceLoader>();
         internal void ClearUnuseRes()
         {

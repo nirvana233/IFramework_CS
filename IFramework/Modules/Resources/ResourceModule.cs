@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using IFramework.Pool;
 
 namespace IFramework.Modules.Resources
@@ -111,12 +110,11 @@ namespace IFramework.Modules.Resources
                 }
             }
         }
-        internal T AllocateLoader<T>(ResourceGroup group) where T : ResourceLoader
+        internal T AllocateLoader<T>() where T : ResourceLoader
         {
             T loader = _loaderPool.Get<T>();
 
             loader.Reset();
-            loader.group = group;
             return loader;
         }
         internal void RecyleLoader<T>(T loader) where T : ResourceLoader

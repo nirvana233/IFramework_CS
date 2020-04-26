@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IFramework</RootNamespace>
     <AssemblyName>IFramework</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -116,7 +116,6 @@
     <Compile Include="NodeAction\WhileNode.cs" />
     <Compile Include="Modules\PoolModule.cs" />
     <Compile Include="Modules\ThreadModule.cs" />
-    <Compile Include="Modules\TimerModule.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Point2.cs" />
     <Compile Include="Point3.cs" />

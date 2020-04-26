@@ -7,7 +7,7 @@ namespace IFramework.Modules.Resources
     /// <summary>
     /// 资源加载器
     /// </summary>
-    public abstract class ResourceLoader :IDisposable
+    public abstract class ResourceLoader : IDisposable
     {
         private Resource _res;
         private List<ResourceLoader> _dependences;
@@ -65,8 +65,8 @@ namespace IFramework.Modules.Resources
         /// <summary>
         /// 资源
         /// </summary>
-        public Resource resource { get { /*_res.loader = this;*/ return _res; } protected set { _res = value; } }
-        
+        public Resource resource { get { return _res; } protected set { _res = value; } }
+
         /// <summary>
         /// ctor
         /// </summary>
@@ -96,13 +96,7 @@ namespace IFramework.Modules.Resources
         {
             this.name = name;
             this.path = path;
-            if (loaders != null && loaders.Count > 0)
-            {
-                for (int i = 0; i < loaders.Count; i++)
-                {
-                    _dependences.Add(loaders[i]);
-                }
-            }
+            Config(loaders);
         }
         internal void Config(List<ResourceLoader> loaders)
         {
@@ -134,10 +128,10 @@ namespace IFramework.Modules.Resources
         internal void Reset()
         {
             OnReset();
-            group = null;
             _progress = 0;
             _isdone = false;
-          error=  name = path = string.Empty;
+            error = name = path = string.Empty;
+            group = null;
         }
 
         /// <summary>
