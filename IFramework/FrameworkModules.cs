@@ -19,8 +19,6 @@ namespace IFramework
         public CoroutineModule Coroutine { get; set; }
         public MessageModule Message { get; set; }
         public FrameworkAppModule App { get; set; }
-        public PoolModule Pool { get; set; }
-        public ThreadModule ThreadPool { get; set; }
         public ECSModule ECS { get; set; }
         public MVVMModule MVVM { get; set; }
         public ResourceModule Resources { get; set; }

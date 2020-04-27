@@ -114,8 +114,6 @@
     <Compile Include="NodeAction\ActionNode.cs" />
     <Compile Include="NodeAction\ConditionNode.cs" />
     <Compile Include="NodeAction\WhileNode.cs" />
-    <Compile Include="Modules\PoolModule.cs" />
-    <Compile Include="Modules\ThreadModule.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Point2.cs" />
     <Compile Include="Point3.cs" />

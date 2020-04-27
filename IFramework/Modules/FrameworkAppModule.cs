@@ -3,7 +3,7 @@
     /// <summary>
     /// 一个app的总管理，需要自己写
     /// </summary>
-    public abstract class FrameworkAppModule:FrameworkModule
+    public abstract class FrameworkAppModule:UpdateFrameworkModule
     {
         /// <summary>
         /// app 版本
