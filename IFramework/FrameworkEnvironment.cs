@@ -63,7 +63,9 @@ namespace IFramework
     /// <summary>
     /// 框架运行环境
     /// </summary>
-    [FrameworkVersion(20)]
+    [FrameworkVersion(22)]
+    [ScriptVersionUpdate(21, "替换可回收对象池子类型")]
+    [ScriptVersionUpdate(22, "调整释放时候的成员顺序")]
     public class FrameworkEnvironment : FrameworkObject
     {
         private bool _haveInit;
@@ -92,7 +94,7 @@ namespace IFramework
         /// <summary>
         /// IRecyclable 实例的环境容器
         /// </summary>
-        public RecyclableObjectPool cyclePool { get; private set; }
+        public RecyclableObjectCollection cycleCollection { get; private set; }
         /// <summary>
         /// IOC容器
         /// </summary>
@@ -153,7 +155,7 @@ namespace IFramework
 
             container = new FrameworkContainer();
             _modules = new FrameworkModules(this);
-            cyclePool = new RecyclableObjectPool();
+            cycleCollection = new  RecyclableObjectCollection();
             if (types != null)
                 types.ForEach((type) =>
                 {
@@ -196,12 +198,12 @@ namespace IFramework
         {
             base.OnDispose();
             if (disposed || !haveInit) return;
+
+            cycleCollection.Dispose();
+            container.Dispose();
             if (onDispose != null) onDispose();
             sw_init.Stop();
             sw_delta.Stop();
-
-            container.Dispose();
-            cyclePool.Dispose();
 
             container = null;
             sw_delta = null;
