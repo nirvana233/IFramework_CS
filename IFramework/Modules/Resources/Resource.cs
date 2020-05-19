@@ -5,6 +5,7 @@
     /// </summary>
     public class Resource
     {
+
         internal ResourceLoader loader;
         /// <summary>
         /// 进度
@@ -38,17 +39,28 @@
         /// 错误
         /// </summary>
         public string error { get { return loader.error; } }
+        /// <summary>
+        /// 释放资源 
+        /// </summary>
+        public void Release()
+        {
+            this.loader.Release();
+        }
+        /// <summary>
+        /// 资源
+        /// </summary>
+        public object o_value { get; set; }
     }
     /// <summary>
     /// 泛型资源
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class Resource<T> : Resource
+    public class Resource<T> : Resource
     {
-        private T _value;
+        //private T _value;
         /// <summary>
         /// 资源值
         /// </summary>
-        public T value { get { return _value; } set { _value = value; } }
+        public T value { get { return (T)o_value; } set { o_value = value; } }
     }
 }

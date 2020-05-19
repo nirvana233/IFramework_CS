@@ -7,6 +7,8 @@ namespace IFramework.Modules.Resources
     /// <summary>
     /// 资源模块
     /// </summary>
+    [FrameworkVersion(54)]
+    [ScriptVersionUpdate(54,"缩短泛型方法")]
     public class ResourceModule : UpdateFrameworkModule
     {
         class ResourceLoaderPool : BaseTypePool<ResourceLoader> { }
@@ -38,6 +40,35 @@ namespace IFramework.Modules.Resources
                 return _group;
             }
 
+
+
+            public Resource Load(Type loaderType,string groupName, string name, string path, Dependence[] dependences, Func<Dependence, Resource> dependenceLoader)
+            {
+                using (new LockWait(ref _lock))
+                {
+                    ResourceGroup _group = FinGroup(groupName);
+                    if (dependences == null || dependences.Length == 0 || dependenceLoader == null)
+                        return _group.Load(loaderType,name, path, null, null).resource;
+                    return _group.Load(loaderType,name, path, dependences,
+                        (dp) => {
+                            return dependenceLoader.Invoke(dp).loader;
+                        }).resource;
+                }
+            }
+            public Resource LoadAsync(Type loaderType, string groupName, string name, string path, Dependence[] dependences, Func<Dependence, Resource> dependenceLoader)
+            {
+                using (new LockWait(ref _lock))
+                {
+                    ResourceGroup _group = FinGroup(groupName);
+
+                    if (dependences == null || dependences.Length == 0 || dependenceLoader == null)
+                        return _group.Load(loaderType,name, path, null, null).resource;
+                    return _group.Load(loaderType,name, path, dependences, (dp) => {
+                        return dependenceLoader.Invoke(dp).loader;
+                    }).resource;
+
+                }
+            }
             public Resource Load<LoaderType>(string groupName, string name, string path, Dependence[] dependences, Func<Dependence, Resource> dependenceLoader)
                 where LoaderType : ResourceLoader
             {
@@ -60,8 +91,8 @@ namespace IFramework.Modules.Resources
                     ResourceGroup _group = FinGroup(groupName);
 
                     if (dependences == null || dependences.Length == 0 || dependenceLoader == null)
-                        return _group.LoadAsync<LoaderType>(name, path, null, null).resource;
-                    return _group.LoadAsync<LoaderType>(name, path, dependences, (dp) => {
+                        return _group.Load<LoaderType>(name, path, null, null).resource;
+                    return _group.Load<LoaderType>(name, path, dependences, (dp) => {
                         return dependenceLoader.Invoke(dp).loader;
                     }).resource;
 
@@ -110,9 +141,9 @@ namespace IFramework.Modules.Resources
                 }
             }
         }
-        internal T AllocateLoader<T>() where T : ResourceLoader
+        internal ResourceLoader AllocateLoader(Type type)
         {
-            T loader = _loaderPool.Get<T>();
+            ResourceLoader loader = _loaderPool.Get(type);
 
             loader.Reset();
             return loader;
@@ -131,6 +162,62 @@ namespace IFramework.Modules.Resources
         /// gc
         /// </summary>
         public int trick { get { return _groups.trick; } set { _groups.trick = value; } }
+
+
+
+        /// <summary>
+        /// 加载资源
+        /// </summary>
+        /// <typeparam name="LoaderType"></typeparam>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Resource Load<LoaderType>(string groupName, string name, string path) where LoaderType : ResourceLoader
+        {
+            return _groups.Load<LoaderType>(groupName, name, path, null, null);
+        }
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        /// <typeparam name="LoaderType"></typeparam>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Resource LoadAsync<LoaderType>(string groupName, string name, string path) where LoaderType : AsyncResourceLoader
+        {
+            return _groups.LoadAsync<LoaderType>(groupName, name, path, null, null);
+        }
+        /// <summary>
+        /// 加载资源(泛型)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="LoaderType"></typeparam>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Resource<T> Load<T, LoaderType>(string groupName, string name, string path)
+            where LoaderType : ResourceLoader<T>
+        {
+            return _groups.Load<LoaderType>(groupName, name, path,null,null) as Resource<T>;
+        }
+        /// <summary>
+        /// 异步加载资源(泛型)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="LoaderType"></typeparam>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Resource<T> LoadAsync<T, LoaderType>(string groupName, string name, string path)
+            where LoaderType : AsyncResourceLoader<T>
+        {
+            return _groups.LoadAsync<LoaderType>(groupName, name, path, null, null) as Resource<T>;
+        }
+
         /// <summary>
         /// 加载资源
         /// </summary>
@@ -159,7 +246,6 @@ namespace IFramework.Modules.Resources
         {
             return _groups.LoadAsync<LoaderType>(groupName, name, path, dependences, dependenceLoader);
         }
-
         /// <summary>
         /// 加载资源(泛型)
         /// </summary>
@@ -172,7 +258,7 @@ namespace IFramework.Modules.Resources
         /// <param name="dependenceLoader"></param>
         /// <returns></returns>
         public Resource<T> Load<T, LoaderType>(string groupName, string name, string path, Dependence[] dependences, Func<Dependence, Resource> dependenceLoader)
-            where LoaderType : ResourceLoader<T, Resource<T>>
+            where LoaderType : ResourceLoader<T>
         {
             return _groups.Load<LoaderType>(groupName, name, path, dependences, dependenceLoader) as Resource<T>;
         }
@@ -188,10 +274,125 @@ namespace IFramework.Modules.Resources
         /// <param name="dependenceLoader"></param>
         /// <returns></returns>
         public Resource<T> LoadAsync<T, LoaderType>(string groupName, string name, string path, Dependence[] dependences, Func<Dependence, Resource> dependenceLoader)
-            where LoaderType : AsyncResourceLoader<T, Resource<T>>
+            where LoaderType : AsyncResourceLoader<T>
         {
             return _groups.LoadAsync<LoaderType>(groupName, name, path, dependences, dependenceLoader) as Resource<T>;
         }
+
+
+
+
+        /// <summary>
+        /// 加载资源
+        /// </summary>
+        /// <param name="loaderType"></param>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Resource Load(Type loaderType, string groupName, string name, string path) 
+        {
+            return _groups.Load(loaderType, groupName, name, path, null, null);
+        }
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        /// <param name="loaderType"></param>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Resource LoadAsync(Type loaderType, string groupName, string name, string path) 
+        {
+            return _groups.LoadAsync(loaderType,groupName, name, path, null, null);
+        }
+        /// <summary>
+        /// 加载资源(泛型)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="loaderType"></param>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Resource<T> Load<T>(Type loaderType, string groupName, string name, string path)
+        {
+            return _groups.Load(loaderType,groupName, name, path, null, null) as Resource<T>;
+        }
+        /// <summary>
+        /// 异步加载资源(泛型)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="loaderType"></param>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Resource<T> LoadAsync<T>(Type loaderType, string groupName, string name, string path)
+        {
+            return _groups.LoadAsync(loaderType,groupName, name, path, null, null) as Resource<T>;
+        }
+
+        /// <summary>
+        /// 加载资源
+        /// </summary>
+        /// <param name="loaderType"></param>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <param name="dependences"></param>
+        /// <param name="dependenceLoader"></param>
+        /// <returns></returns>
+        public Resource Load(Type loaderType, string groupName, string name, string path, Dependence[] dependences, Func<Dependence, Resource> dependenceLoader)
+        {
+            return _groups.Load(loaderType,groupName, name, path, dependences, dependenceLoader);
+        }
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        /// <param name="loaderType"></param>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <param name="dependences"></param>
+        /// <param name="dependenceLoader"></param>
+        /// <returns></returns>
+        public Resource LoadAsync(Type loaderType, string groupName, string name, string path, Dependence[] dependences, Func<Dependence, Resource> dependenceLoader) 
+        {
+            return _groups.LoadAsync(loaderType,groupName, name, path, dependences, dependenceLoader);
+        }
+        /// <summary>
+        /// 加载资源(泛型)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="loaderType"></param>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <param name="dependences"></param>
+        /// <param name="dependenceLoader"></param>
+        /// <returns></returns>
+        public Resource<T> Load<T>(Type loaderType, string groupName, string name, string path, Dependence[] dependences, Func<Dependence, Resource> dependenceLoader)
+        {
+            return _groups.Load(loaderType,groupName, name, path, dependences, dependenceLoader) as Resource<T>;
+        }
+        /// <summary>
+        /// 异步加载资源(泛型)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="loaderType"></param>
+        /// <param name="groupName"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <param name="dependences"></param>
+        /// <param name="dependenceLoader"></param>
+        /// <returns></returns>
+        public Resource<T> LoadAsync<T>(Type loaderType, string groupName, string name, string path, Dependence[] dependences, Func<Dependence, Resource> dependenceLoader)
+        {
+            return _groups.LoadAsync(loaderType,groupName, name, path, dependences, dependenceLoader) as Resource<T>;
+        }
+
+
 
 
 

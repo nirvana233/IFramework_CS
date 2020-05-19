@@ -10,8 +10,7 @@ namespace IFramework.Modules.Resources
     /// 泛型异步资源加载器
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <typeparam name="V"></typeparam>
-    public abstract class AsyncResourceLoader<T,V> : AsyncResourceLoader where V : Resource<T>
+    public abstract class AsyncResourceLoader<T> : AsyncResourceLoader 
     {
         /// <summary>
         /// 泛型资源
@@ -23,7 +22,7 @@ namespace IFramework.Modules.Resources
         /// <returns></returns>
         protected override Resource CreateResource()
         {
-            return Activator.CreateInstance<V>();
+            return new Resource<T>();
         }
         /// <summary>
         /// 卸载

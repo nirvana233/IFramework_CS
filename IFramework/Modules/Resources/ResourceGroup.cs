@@ -12,12 +12,13 @@ namespace IFramework.Modules.Resources
 
         internal ResourceGroup(string name)
         {
+            this.name = name;
             _loaderMap = new Dictionary<string, ResourceLoader>();
         }
 
-        private T AllocateLoader<T>() where T : ResourceLoader
+        private ResourceLoader AllocateLoader(Type type) 
         {
-            var loader= moudule.AllocateLoader<T>();
+            var loader= moudule.AllocateLoader(type);
             loader.group = this;
             return loader;
 
@@ -49,6 +50,10 @@ namespace IFramework.Modules.Resources
 
         public ResourceLoader Load<T>(string name, string path, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader) where T : ResourceLoader
         {
+            return Load(typeof(T), name, path, dependences, dependenceLoader);
+        }
+        public ResourceLoader Load(Type loaderType,string name, string path, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader) 
+        {
             using (new LockWait(ref _lock))
             {
                 ResourceLoader _loader;
@@ -56,7 +61,7 @@ namespace IFramework.Modules.Resources
                 {
                     List<ResourceLoader> _loaders = LoadDependences(dependences, dependenceLoader);
 
-                    _loader = AllocateLoader<T>();
+                    _loader = AllocateLoader(loaderType);
                     _loader.Config(name, path, _loaders);
                     _loader.Load();
                     _loaderMap.Add(_loader.name, _loader);
@@ -64,10 +69,6 @@ namespace IFramework.Modules.Resources
                 _loader.Retain();
                 return _loader;
             }
-        }
-        public ResourceLoader LoadAsync<T>(string name, string path, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader) where T : AsyncResourceLoader
-        {
-            return Load<T>(name, path, dependences, dependenceLoader);
         }
         public ResourceLoader LoadDependence(ResourceLoader loader, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader)
         {

@@ -7,7 +7,7 @@ namespace IFramework.Modules.Resources
     /// <summary>
     /// http流加载器
     /// </summary>
-    public class HttpTextLoader : ResourceLoader<string, TextResource>
+    public class HttpTextLoader : ResourceLoader<string>
     {
         /// <summary>
         /// 加载

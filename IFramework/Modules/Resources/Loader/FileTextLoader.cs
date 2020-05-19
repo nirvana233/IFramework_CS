@@ -8,7 +8,7 @@ namespace IFramework.Modules.Resources
     /// 文本加载器
     /// </summary>
     /// <typeparam name="Encod"></typeparam>
-    public class FileTextLoader<Encod> : ResourceLoader<string, TextResource> where Encod: Encoding,new()
+    public class FileTextLoader<Encod> : ResourceLoader<string> where Encod: Encoding,new()
     {
         private Encod _en { get { return new Encod(); } }
         /// <summary>

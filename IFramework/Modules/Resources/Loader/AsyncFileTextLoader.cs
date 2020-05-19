@@ -8,7 +8,7 @@ namespace IFramework.Modules.Resources
     /// 异步文本加载器
     /// </summary>
     /// <typeparam name="Encod"></typeparam>
-    public class AsyncFileTextLoader<Encod> : AsyncResourceLoader<string, TextResource> where Encod : Encoding, new()
+    public class AsyncFileTextLoader<Encod> : AsyncResourceLoader<string> where Encod : Encoding, new()
     {
         /// <summary>
         /// 进度

@@ -101,7 +101,6 @@
     <Compile Include="Modules\Resources\Loader\AsyncHttpTextLoader.cs" />
     <Compile Include="Modules\Resources\Loader\HttpByteArrayLoader.cs" />
     <Compile Include="Modules\Resources\Loader\HttpTextLoader.cs" />
-    <Compile Include="Modules\Resources\Res\ByteArryResource.cs" />
     <Compile Include="Modules\Resources\Dependence.cs" />
     <Compile Include="Modules\Resources\Loader\FileByteArrayLoader.cs" />
     <Compile Include="Modules\Resources\Loader\FileTextLoader.cs" />
@@ -109,7 +108,6 @@
     <Compile Include="Modules\Resources\ResourceGroup.cs" />
     <Compile Include="Modules\Resources\ResourceLoader.cs" />
     <Compile Include="Modules\Resources\ResourceModule.cs" />
-    <Compile Include="Modules\Resources\Res\TextResource.cs" />
     <Compile Include="Modules\UpdateFrameworkModule.cs" />
     <Compile Include="NodeAction\ActionNode.cs" />
     <Compile Include="NodeAction\ConditionNode.cs" />

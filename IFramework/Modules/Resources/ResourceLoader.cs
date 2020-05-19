@@ -171,7 +171,7 @@ namespace IFramework.Modules.Resources
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="V"></typeparam>
-    public abstract class ResourceLoader<T, V> : ResourceLoader where V : Resource<T>
+    public abstract class ResourceLoader<T> : ResourceLoader 
     {
         /// <summary>
         /// 泛型资源
@@ -183,7 +183,7 @@ namespace IFramework.Modules.Resources
         /// <returns></returns>
         protected override Resource CreateResource()
         {
-            return Activator.CreateInstance<V>();
+            return new Resource<T>();
         }
         /// <summary>
         /// 卸载时

@@ -6,7 +6,7 @@ namespace IFramework.Modules.Resources
     /// <summary>
     /// 文件流加载器
     /// </summary>
-    public class FileByteArrayLoader : ResourceLoader<byte[], ByteArryResource>
+    public class FileByteArrayLoader : ResourceLoader<byte[]>
     {
         /// <summary>
         /// 加载
