@@ -162,9 +162,9 @@
     <Compile Include="Utility\Explanation\IExplainer.cs" />
     <Compile Include="Framework.cs" />
     <Compile Include="Modules\Fsm\FsmModule.cs" />
-    <Compile Include="Modules\Fsm\FsmConditionValue.cs" />
-    <Compile Include="Modules\Fsm\FsmTransition.cs" />
-    <Compile Include="Modules\Fsm\IFsmState.cs" />
+    <Compile Include="Modules\Fsm\ConditionValue.cs" />
+    <Compile Include="Modules\Fsm\Transition.cs" />
+    <Compile Include="Modules\Fsm\IState.cs" />
     <Compile Include="NodeAction\ActionNodeExtension.cs" />
     <Compile Include="IFrameworkContainer.cs" />
     <Compile Include="Pool\SingletonPool.cs" />
@@ -247,7 +247,7 @@
     <Compile Include="Singleton\SingletonCollection.cs" />
     <Compile Include="Singleton\SingletonProperty.cs" />
     <Compile Include="Singleton\SingletonPropertyClass.cs" />
-    <Compile Include="Modules\Fsm\TransitionCondition.cs" />
+    <Compile Include="Modules\Fsm\Condition.cs" />
     <Compile Include="Utility\Verifier.cs" />
     <Compile Include="ValueCurve.cs" />
   </ItemGroup>

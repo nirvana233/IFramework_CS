@@ -170,7 +170,6 @@ namespace IFramework.Modules.Resources
     ///  泛型资源加载器
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <typeparam name="V"></typeparam>
     public abstract class ResourceLoader<T> : ResourceLoader 
     {
         /// <summary>

@@ -12,6 +12,8 @@ namespace IFramework.Serialization.Simple
 
       
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class Point2Serializer : CustomSerializer<Point2>
     {
         protected override Point2 CreateDefault()
@@ -41,6 +43,8 @@ namespace IFramework.Serialization.Simple
             writer.EndComplexType();
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class Point3Serializer : CustomSerializer<Point3>
     {
         protected override Point3 CreateDefault()

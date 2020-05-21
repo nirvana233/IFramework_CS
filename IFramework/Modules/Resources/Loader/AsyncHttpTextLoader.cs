@@ -8,6 +8,7 @@ namespace IFramework.Modules.Resources
     /// <summary>
     /// 异步Http文本加载
     /// </summary>
+    [System.Runtime.InteropServices.ComVisible(false)]
     public class AsyncHttpTextLoader : ResourceLoader<string>
     {
         private int _blockSize = 2048;

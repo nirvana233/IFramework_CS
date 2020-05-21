@@ -7,6 +7,7 @@ namespace IFramework.Modules.Resources
     /// <summary>
     /// 异步文件流加载器
     /// </summary>
+    [System.Runtime.InteropServices.ComVisible(false)]
     public class AsyncFileByteArrayLoader : AsyncResourceLoader<byte[]>
     {
         /// <summary>

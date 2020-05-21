@@ -3,7 +3,7 @@
     /// <summary>
     /// 状态机状态
     /// </summary>
-    public interface IFsmState
+    public interface IState
     {
         /// <summary>
         /// 切入状态执行一次

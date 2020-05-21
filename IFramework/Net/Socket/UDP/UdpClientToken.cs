@@ -137,10 +137,10 @@ namespace IFramework.Net
                 }
                 return isWillEvent;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 Close();
-                throw ex;
+                throw ;
             }
         }
         public int SendSync(BufferSegment segSend, BufferSegment segRecieve)
@@ -175,9 +175,9 @@ namespace IFramework.Net
                 if (onReceive != null) onReceive(token, new BufferSegment(e.Buffer, e.Offset, e.BytesTransferred));
                 if (onRecieveString != null) onRecieveString(token, _encoding.GetString(e.Buffer, e.Offset, e.BytesTransferred));
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                throw ex;
+                throw ;
             }
             finally
             {
@@ -208,9 +208,9 @@ namespace IFramework.Net
                     onSendCallback(token,new BufferSegment( e.Buffer, e.Offset, e.BytesTransferred));
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw ;
             }
             finally
             {

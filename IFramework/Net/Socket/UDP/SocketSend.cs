@@ -99,9 +99,9 @@ namespace IFramework.Net
                 }
                 return isWillEvent;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                throw ex;
+                throw ;
             }
         }
         private void SendCallBack(SocketAsyncEventArgs e)

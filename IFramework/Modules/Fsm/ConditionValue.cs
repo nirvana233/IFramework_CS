@@ -2,7 +2,7 @@
 
 namespace IFramework.Modules.Fsm
 {
-    internal interface IFsmConditionValue
+    internal interface IConditionValue
     {
         string name { get; set; }
         Type valueType { get; }
@@ -12,7 +12,7 @@ namespace IFramework.Modules.Fsm
     /// 状态机条件值
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class FsmConditionValue<T> : IFsmConditionValue
+    public class ConditionValue<T> : IConditionValue
     {
         /// <summary>
         /// 名字
@@ -31,7 +31,7 @@ namespace IFramework.Modules.Fsm
         /// </summary>
         /// <param name="name">数值名称</param>
         /// <param name="value">数值</param>
-        public FsmConditionValue(string name,object value)
+        public ConditionValue(string name,object value)
         {
             this.name = name;
             this.value = value;

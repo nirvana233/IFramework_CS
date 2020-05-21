@@ -5,22 +5,22 @@ namespace IFramework.Modules.Fsm
     /// <summary>
     /// 状态机过度线
     /// </summary>
-    public class FsmTransition
+    public class Transition
     {
         private Func<bool> conditions;
         /// <summary>
         /// 头状态
         /// </summary>
-        public IFsmState head { get; set; }
+        public IState head { get; set; }
         /// <summary>
         /// 指向状态
         /// </summary>
-        public IFsmState trail { get; set; }
+        public IState trail { get; set; }
         /// <summary>
         /// 绑定条件
         /// </summary>
         /// <param name="condtion"></param>
-        public void BindCondition(ITransitionCondition condtion)
+        public void BindCondition(ICondition condtion)
         {
             if (condtion == null) throw new Exception("Func is" + condtion);
             conditions += condtion.IsMetCondition;
@@ -38,7 +38,7 @@ namespace IFramework.Modules.Fsm
         /// 解绑条件
         /// </summary>
         /// <param name="condtion"></param>
-        public void UnBindCondition(ITransitionCondition condtion)
+        public void UnBindCondition(ICondition condtion)
         {
             if (condtion == null) throw new Exception("Func is" + condtion);
             conditions -= condtion.IsMetCondition;
@@ -64,7 +64,7 @@ namespace IFramework.Modules.Fsm
             return finalReslt;
         }
         internal bool IsMetCondition { get { return RunConditions(); } }
-        internal IFsmState GoToNextState()
+        internal IState GoToNextState()
         {
             head.OnExit();
             if (trail != null)

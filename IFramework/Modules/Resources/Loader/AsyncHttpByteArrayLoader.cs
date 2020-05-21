@@ -7,6 +7,7 @@ namespace IFramework.Modules.Resources
     /// <summary>
     /// 异步Http加载器
     /// </summary>
+    [System.Runtime.InteropServices.ComVisible(false)]
     public class AsyncHttpByteArrayLoader : ResourceLoader<byte[]>
     {
         private int _blockSize = 2048;

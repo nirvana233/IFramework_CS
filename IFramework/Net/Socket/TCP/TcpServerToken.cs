@@ -137,10 +137,10 @@ namespace IFramework.Net
                 }
                 return isWillEvent;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 Close(token);
-                throw ex;
+                throw ;
             }
         }
         public void Close(SocketToken token)

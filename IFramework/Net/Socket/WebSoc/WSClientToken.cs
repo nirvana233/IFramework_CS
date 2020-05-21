@@ -39,8 +39,8 @@ namespace IFramework.Net
 
         public void Dispose()
         {
-            //resetEvent.Dispose();
-            resetEvent.Close();
+            resetEvent.Dispose();
+            //resetEvent.Close();
         }
 
         public static WSClientToken CreateProvider(int bufferSize = 4096, int blocks = 8)

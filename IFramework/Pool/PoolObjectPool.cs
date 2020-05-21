@@ -7,6 +7,7 @@ namespace IFramework.Pool
     internal interface IPoolObjectPool { }
     public delegate Object PoolObjCreaterDel<Object>(Type type, IEventArgs arg, params object[] param) where Object : IPoolObject;
     public delegate IPoolObject PoolObjCreaterDel(Type type, IEventArgs arg, params object[] param);
+    [System.Runtime.InteropServices.ComVisible(false)]
     public class PoolObjectPool: CachePool<IPoolObject>, IPoolObjectPool, IDisposable 
     {
         public PoolObjectPool() : this(new RunningPool<IPoolObject>(), new PoolObjectSleepingPool(), true, 16) { }
@@ -17,6 +18,7 @@ namespace IFramework.Pool
         }
 
         public void AddCreater(PoolObjCreaterDel del) { (sleepPool as PoolObjectSleepingPool).AddCreaterDel(del); }
+        [System.Runtime.InteropServices.ComVisible(false)]
         public class PoolObjectSleepingPool : SleepingPool<IPoolObject> 
         {
             private List<PoolObjCreaterDel> CreaterDels;

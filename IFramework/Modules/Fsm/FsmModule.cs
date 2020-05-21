@@ -11,15 +11,15 @@ namespace IFramework.Modules.Fsm
     {
         private class StateInfo
         {
-            private IFsmState _state { get; }
-            private List<FsmTransition> _transitions { get; }
-            public StateInfo(IFsmState state)
+            private IState _state { get; }
+            private List<Transition> _transitions { get; }
+            public StateInfo(IState state)
             {
                 this._state = state;
-                _transitions = new List<FsmTransition>();
+                _transitions = new List<Transition>();
             }
 
-            public void CreateTransition(FsmTransition stateTransition)
+            public void CreateTransition(Transition stateTransition)
             {
                 var sameOne = _transitions.Find((t) => { return t.trail == stateTransition.trail; });
                 if (sameOne == null)
@@ -27,7 +27,7 @@ namespace IFramework.Modules.Fsm
                 else
                     throw new Exception("The Trastion Same");
             }
-            public void DestoryTransition(IFsmState trail)
+            public void DestoryTransition(IState trail)
             {
                 var sameOne = _transitions.Find((t) => { return t.trail == trail; });
                 if (sameOne != null)
@@ -35,13 +35,13 @@ namespace IFramework.Modules.Fsm
                 else
                     throw new Exception("The Trastion not Exist");
             }
-            public IFsmState TryGoNext()
+            public IState TryGoNext()
             {
                 for (int i = 0; i < _transitions.Count; i++)
                 {
                     if (_transitions[i].IsMetCondition)
                     {
-                        FsmTransition transition = _transitions[i];
+                        Transition transition = _transitions[i];
                         return transition.GoToNextState();
                     }
                 }
@@ -51,20 +51,20 @@ namespace IFramework.Modules.Fsm
         /// <summary>
         /// 退出状态
         /// </summary>
-        public IFsmState ExitState { get; set; }
+        public IState ExitState { get; set; }
         /// <summary>
         /// 第一个状态
         /// </summary>
-        public IFsmState EnterState { get; set; }
+        public IState EnterState { get; set; }
         /// <summary>
         /// 当状态改变
         /// </summary>
-        public event Action<IFsmState> onStateChange;
-        private IFsmState _CurrentState;
+        public event Action<IState> onStateChange;
+        private IState _CurrentState;
         /// <summary>
         /// 当前状态
         /// </summary>
-        public IFsmState CurrentState { get { return _CurrentState; }
+        public IState CurrentState { get { return _CurrentState; }
            private set {
                 if (value!= _CurrentState)
                 {
@@ -79,15 +79,15 @@ namespace IFramework.Modules.Fsm
         /// </summary>
         public bool IsRuning { get { return enable; } }
 
-        private Dictionary<IFsmState, StateInfo> _stateInfo;
-        private Dictionary<Type, Dictionary<string, IFsmConditionValue>> _conditionValues;
+        private Dictionary<IState, StateInfo> _stateInfo;
+        private Dictionary<Type, Dictionary<string, IConditionValue>> _conditionValues;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override void Awake()
         {
             enable = false;
-            _stateInfo = new Dictionary<IFsmState, StateInfo>();
-            _conditionValues = new Dictionary<Type, Dictionary<string, IFsmConditionValue>>();
+            _stateInfo = new Dictionary<IState, StateInfo>();
+            _conditionValues = new Dictionary<Type, Dictionary<string, IConditionValue>>();
         }
         protected override void OnDispose()
         {
@@ -148,7 +148,7 @@ namespace IFramework.Modules.Fsm
         /// 注册状态
         /// </summary>
         /// <param name="state"></param>
-        public void SubscribeState(IFsmState state)
+        public void SubscribeState(IState state)
         {
             if (!_stateInfo.ContainsKey(state))
                 _stateInfo.Add(state, new StateInfo(state));
@@ -159,7 +159,7 @@ namespace IFramework.Modules.Fsm
         /// 解除注册状态
         /// </summary>
         /// <param name="state"></param>
-        public void UnSubscribeState(IFsmState state)
+        public void UnSubscribeState(IState state)
         {
             if (_stateInfo.ContainsKey(state))
                 _stateInfo.Remove(state);
@@ -173,7 +173,7 @@ namespace IFramework.Modules.Fsm
         /// <param name="head"></param>
         /// <param name="trail"></param>
         /// <returns></returns>
-        public FsmTransition CreateTransition(IFsmState head, IFsmState trail)
+        public Transition CreateTransition(IState head, IState trail)
         {
             if (!_stateInfo.ContainsKey(head))
             {
@@ -185,7 +185,7 @@ namespace IFramework.Modules.Fsm
                 Log.E("Subscribe Trail State  Fist");
                 return null;
             }
-            FsmTransition transition = new FsmTransition();
+            Transition transition = new Transition();
             transition.head = head;
             transition.trail = trail;
             _stateInfo[head].CreateTransition(transition);
@@ -197,7 +197,7 @@ namespace IFramework.Modules.Fsm
         /// <param name="head"></param>
         /// <param name="trail"></param>
         /// <returns></returns>
-        public void DestoryTransition(IFsmState head, IFsmState trail)
+        public void DestoryTransition(IState head, IState trail)
         {
             if (!_stateInfo.ContainsKey(head))
             {
@@ -219,15 +219,15 @@ namespace IFramework.Modules.Fsm
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public FsmConditionValue<T> CreateConditionValue<T>(string name, T value)
+        public ConditionValue<T> CreateConditionValue<T>(string name, T value)
         {
             if (!_conditionValues.ContainsKey(typeof(T)))
-                _conditionValues.Add(typeof(T), new Dictionary<string, IFsmConditionValue>());
+                _conditionValues.Add(typeof(T), new Dictionary<string, IConditionValue>());
             if (!_conditionValues[typeof(T)].ContainsKey(name))
-                _conditionValues[typeof(T)].Add(name, new FsmConditionValue<T>(name, value));
+                _conditionValues[typeof(T)].Add(name, new ConditionValue<T>(name, value));
             else
                 Log.E("ConditionValue Exsit " + name);
-            return _conditionValues[typeof(T)][name] as FsmConditionValue<T>;
+            return _conditionValues[typeof(T)][name] as ConditionValue<T>;
         }
         /// <summary>
         /// 删除过渡条件值
@@ -251,14 +251,14 @@ namespace IFramework.Modules.Fsm
         /// <param name="CompareValue"></param>
         /// <param name="CompareType"></param>
         /// <returns></returns>
-        public TransitionCondition<T> CreateCondition<T>(string conditionValName, T CompareValue, ConditionCompareType CompareType)
+        public Condition<T> CreateCondition<T>(string conditionValName, T CompareValue, CompareType CompareType)
         {
             if (!_conditionValues.ContainsKey(typeof(T)) || !_conditionValues[typeof(T)].ContainsKey(conditionValName))
             {
                 Log.E("Please Create ConditionVal First Type " + typeof(T) + "  Name  " + conditionValName);
-                return default(TransitionCondition<T>);
+                return default(Condition<T>);
             }
-            return CreateCondition(_conditionValues[typeof(T)][conditionValName] as FsmConditionValue<T>, CompareValue, CompareType);
+            return CreateCondition(_conditionValues[typeof(T)][conditionValName] as ConditionValue<T>, CompareValue, CompareType);
         }
         /// <summary>
         /// 创建过度条件
@@ -268,20 +268,18 @@ namespace IFramework.Modules.Fsm
         /// <param name="CompareValue"></param>
         /// <param name="CompareType"></param>
         /// <returns></returns>
-        public TransitionCondition<T> CreateCondition<T>(FsmConditionValue<T> value, T CompareValue, ConditionCompareType CompareType)
+        public Condition<T> CreateCondition<T>(ConditionValue<T> value, T CompareValue, CompareType CompareType)
         {
-            ITransitionCondition condtion;
+            ICondition condtion;
             if (typeof(T) == typeof(bool))
-                condtion = new BoolTransitionCondition(value as FsmConditionValue<bool>, CompareValue, CompareType);
-            else if (typeof(T) == typeof(string))
-                condtion = new StringTransitionCondition(value as FsmConditionValue<string>, CompareValue, CompareType);
+                condtion = new BoolCondition(value as ConditionValue<bool>, CompareValue, CompareType);
             else if (typeof(T) == typeof(float))
-                condtion = new FloatTransitionCondition(value as FsmConditionValue<float>, CompareValue, CompareType);
+                condtion = new FloatCondition(value as ConditionValue<float>, CompareValue, CompareType);
             else if (typeof(T) == typeof(int))
-                condtion = new IntTransitionCondition(value as FsmConditionValue<int>, CompareValue, CompareType);
+                condtion = new IntCondition(value as ConditionValue<int>, CompareValue, CompareType);
             else
                 throw new Exception("Fault Type Of T   " + typeof(T));
-            return condtion as TransitionCondition<T>;
+            return condtion as Condition<T>;
         }
 
 
@@ -330,16 +328,6 @@ namespace IFramework.Modules.Fsm
         public bool SetFloat(string valName, float value)
         {
             return TrySetConditionValue(typeof(float), valName, value);
-        }
-        /// <summary>
-        /// 设置string
-        /// </summary>
-        /// <param name="valName"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public bool SetString(string valName, string value)
-        {
-            return TrySetConditionValue(typeof(string), valName, value);
         }
 
 

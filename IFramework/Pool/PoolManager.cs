@@ -5,6 +5,8 @@ using System.Collections.Generic;
 namespace IFramework.Pool
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class PoolManager : SingletonPropertyClass<PoolManager>
     {
         private class PoolObjInfo

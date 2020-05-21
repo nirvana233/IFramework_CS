@@ -102,10 +102,10 @@ namespace IFramework.Net
                 connected = sock.Connected;
                 return connected;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 Close();
-                throw ex;
+                throw ;
             }
         }
         public bool ConnectSync(int port, string ip)
@@ -130,10 +130,10 @@ namespace IFramework.Net
                     connected = true;
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     Close();
-                    if (retry <= 0) throw ex;
+                    if (retry <= 0) throw ;
                     Thread.Sleep(1000);
                 }
             }
@@ -337,9 +337,9 @@ namespace IFramework.Net
                     DisconnectAsync(e);
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                throw ex;
+                throw ;
             }
             finally
             {
@@ -365,9 +365,9 @@ namespace IFramework.Net
                     Close();
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                throw ex;
+                throw;
             }
         }
         private void DisconnectCallback(SocketAsyncEventArgs e)
@@ -386,9 +386,9 @@ namespace IFramework.Net
                     onDisConnect(token);
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                throw ex;
+                throw ;
             }
         }
         private void ReceiveCallback(SocketAsyncEventArgs e)

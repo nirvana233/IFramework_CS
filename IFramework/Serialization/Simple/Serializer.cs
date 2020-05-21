@@ -176,6 +176,8 @@ namespace IFramework.Serialization.Simple
 
 
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class StringSerializer : Serializer<string>
     {
         public override string ReadValue(string name, DataReader reader)
@@ -188,6 +190,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteString(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class UInt16Serializer : Serializer<ushort>
     {
         public override ushort ReadValue(string name, DataReader reader)
@@ -200,6 +204,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteUInt16(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class UInt32Serializer : Serializer<uint>
     {
         public override uint ReadValue(string name, DataReader reader)
@@ -212,6 +218,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteUInt32(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class UInt64Serializer : Serializer<ulong>
     {
         public override ulong ReadValue(string name, DataReader reader)
@@ -224,6 +232,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteUInt64(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class Int16Serializer : Serializer<short>
     {
         public override short ReadValue(string name, DataReader reader)
@@ -236,6 +246,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteInt16(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class Int32Serializer : Serializer<int>
     {
         public override int ReadValue(string name, DataReader reader)
@@ -248,6 +260,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteInt32(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class Int64Serializer : Serializer<long>
     {
         public override long ReadValue(string name, DataReader reader)
@@ -260,6 +274,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteInt64(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class FloatSerializer : Serializer<float>
     {
         public override float ReadValue(string name, DataReader reader)
@@ -272,6 +288,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteFloat(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class DoubleSerializer : Serializer<double>
     {
         public override double ReadValue(string name, DataReader reader)
@@ -284,6 +302,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteDouble(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class DecimalSerializer : Serializer<decimal>
     {
         public override decimal ReadValue(string name, DataReader reader)
@@ -296,6 +316,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteDecimal(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class ByteSerializer : Serializer<byte>
     {
         public override byte ReadValue(string name, DataReader reader)
@@ -308,6 +330,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteByte(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class BooleanSerializer : Serializer<bool>
     {
         public override bool ReadValue(string name, DataReader reader)
@@ -320,6 +344,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteBool(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class CharSerializer : Serializer<char>
     {
         public override char ReadValue(string name, DataReader reader)
@@ -332,6 +358,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteChar(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class GuidSerializer : Serializer<Guid>
     {
         public override Guid ReadValue(string name, DataReader reader)
@@ -344,6 +372,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteGuid(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class SByteSerializer : Serializer<sbyte>
     {
         public override sbyte ReadValue(string name, DataReader reader)
@@ -356,6 +386,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteSbyte(name, value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class IntPtrSerializer : Serializer<IntPtr>
     {
         public override IntPtr ReadValue(string name, DataReader reader)
@@ -369,6 +401,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteInt64(name, (long)value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class UIntPtrSerializer : Serializer<UIntPtr>
     {
         public override UIntPtr ReadValue(string name, DataReader reader)
@@ -382,6 +416,8 @@ namespace IFramework.Serialization.Simple
             writer.WriteUInt64(name, (ulong)value);
         }
     }
+    [System.Runtime.InteropServices.ComVisible(false)]
+
     public class DateTimeSerializer : Serializer<DateTime>
     {
         public override DateTime ReadValue(string name, DataReader reader)

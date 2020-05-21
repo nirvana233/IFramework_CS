@@ -7,6 +7,7 @@ namespace IFramework.Modules.Resources
     /// <summary>
     /// http流加载器
     /// </summary>
+    [System.Runtime.InteropServices.ComVisible(false)]
     public class HttpByteArrayLoader : ResourceLoader<byte[]>
     {
         private int _blockSize=2048;

@@ -63,9 +63,9 @@ namespace IFramework.Net
                 {
                     return;
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
-                    throw ex;
+                    throw ;
                 }
             }
             try
