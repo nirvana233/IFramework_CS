@@ -85,6 +85,11 @@
     <Compile Include="Modules\ECS\IExcuteSystem.cs" />
     <Compile Include="Modules\FrameworkModule.cs" />
     <Compile Include="Modules\FrameworkModuleContainer.cs" />
+    <Compile Include="Modules\Fsm\Condition\BoolCondition.cs" />
+    <Compile Include="Modules\Fsm\Condition\CompareType.cs" />
+    <Compile Include="Modules\Fsm\Condition\FloatCondition.cs" />
+    <Compile Include="Modules\Fsm\Condition\ICondition.cs" />
+    <Compile Include="Modules\Fsm\Condition\IntCondition.cs" />
     <Compile Include="Modules\LoomModule.cs" />
     <Compile Include="Modules\Message\IMessageListener.cs" />
     <Compile Include="Modules\Message\IMessagePublisher.cs" />
@@ -94,15 +99,15 @@
     <Compile Include="Modules\MVVM\MVVMModule.cs" />
     <Compile Include="Modules\MVVM\View.cs" />
     <Compile Include="Modules\MVVM\ViewModel.cs" />
-    <Compile Include="Modules\Resources\Loader\AsyncFileByteArrayLoader.cs" />
+    <Compile Include="Modules\Resources\Loader\AsyncFileBytesLoader.cs" />
     <Compile Include="Modules\Resources\Loader\AsyncFileTextLoader.cs" />
     <Compile Include="Modules\Resources\AsyncResourceLoader.cs" />
-    <Compile Include="Modules\Resources\Loader\AsyncHttpByteArrayLoader.cs" />
+    <Compile Include="Modules\Resources\Loader\AsyncHttpBytesLoader.cs" />
     <Compile Include="Modules\Resources\Loader\AsyncHttpTextLoader.cs" />
-    <Compile Include="Modules\Resources\Loader\HttpByteArrayLoader.cs" />
+    <Compile Include="Modules\Resources\Loader\HttpBytesLoader.cs" />
     <Compile Include="Modules\Resources\Loader\HttpTextLoader.cs" />
     <Compile Include="Modules\Resources\Dependence.cs" />
-    <Compile Include="Modules\Resources\Loader\FileByteArrayLoader.cs" />
+    <Compile Include="Modules\Resources\Loader\FileBytesLoader.cs" />
     <Compile Include="Modules\Resources\Loader\FileTextLoader.cs" />
     <Compile Include="Modules\Resources\Resource.cs" />
     <Compile Include="Modules\Resources\ResourceGroup.cs" />
@@ -247,7 +252,7 @@
     <Compile Include="Singleton\SingletonCollection.cs" />
     <Compile Include="Singleton\SingletonProperty.cs" />
     <Compile Include="Singleton\SingletonPropertyClass.cs" />
-    <Compile Include="Modules\Fsm\Condition.cs" />
+    <Compile Include="Modules\Fsm\Condition\Condition.cs" />
     <Compile Include="Utility\Verifier.cs" />
     <Compile Include="ValueCurve.cs" />
   </ItemGroup>

@@ -7,7 +7,7 @@ namespace IFramework.Modules.Resources
     /// 文件流加载器
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
-    public class FileByteArrayLoader : ResourceLoader<byte[]>
+    public class FileBytesLoader : ResourceLoader<byte[]>
     {
         /// <summary>
         /// 加载
