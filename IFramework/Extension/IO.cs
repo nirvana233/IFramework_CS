@@ -79,15 +79,18 @@ namespace IFramework
         public static string ReadText(this string path, Encoding encoding)
         {
             var result = string.Empty;
-            FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs, encoding);
-            result = sr.ReadToEnd();
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read))
+            {
+                using (StreamReader sr = new StreamReader(fs, encoding))
+                {
+                    result = sr.ReadToEnd();
 
-            //sr.Close();
-            //sr.Dispose();
-            fs.Flush();
-            //fs.Close();
-            fs.Dispose();
+                    //sr.Close();
+                    //fs.Flush();
+                    //fs.Close();
+                }
+            }
+
             return result;
         }
         /// <summary>
@@ -98,15 +101,20 @@ namespace IFramework
         /// <param name="encoding">文件编码</param>
         public static void WriteText(this string path, string content, Encoding encoding)
         {
-            var fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(fs, encoding);
-            fs.Lock(0, fs.Length);
-            sw.Write(content);
-            fs.Unlock(0, fs.Length);
+            using (var fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs, encoding))
+                {
+                    fs.Lock(0, fs.Length);
+                    sw.Write(content);
+                    fs.Unlock(0, fs.Length);
 
-            fs.Flush();
-            //fs.Close();
-            fs.Dispose();
+                    //fs.Flush();
+                    //fs.Close();
+                }
+
+            }                
+
         }
         /// <summary>
         /// 读取字节流

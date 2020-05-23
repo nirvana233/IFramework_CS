@@ -1,6 +1,7 @@
 ﻿namespace IFramework.Modules.Fsm
 {
     [System.Runtime.InteropServices.ComVisible(false)]
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class BoolCondition : Condition<bool>
     {
         public BoolCondition(ConditionValue<bool> conditionValue, object compareValue, CompareType compareType) : base(conditionValue, compareValue, compareType) { }
@@ -30,6 +31,6 @@
             }
         }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }
