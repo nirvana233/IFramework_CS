@@ -49,7 +49,7 @@
         /// <summary>
         /// 资源
         /// </summary>
-        public object o_value { get; set; }
+        public object value { get; set; }
     }
     /// <summary>
     /// 泛型资源
@@ -61,6 +61,6 @@
         /// <summary>
         /// 资源值
         /// </summary>
-        public T value { get { return (T)o_value; } set { o_value = value; } }
+        public T Tvalue { get { return (T)value; } set { base.value = value; } }
     }
 }

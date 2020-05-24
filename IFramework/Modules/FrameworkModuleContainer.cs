@@ -151,10 +151,14 @@ namespace IFramework.Modules
         {
             base.OnDispose();
             UnBindEnv(false);
-            for (int i = update_list.Count - 1; i >= 0; i--)
+            //for (int i = update_list.Count - 1; i >= 0; i--)
+            //{
+            //    var m = update_list[i];
+            //    m.Dispose();
+            //}
+            foreach (var item in moudle_dic.Values)
             {
-                var m = update_list[i];
-                m.Dispose();
+                item.ForEach((index,m) => { m.Dispose(); });
             }
             update_list.Clear();
             moudle_dic.Clear();

@@ -20,7 +20,7 @@ namespace IFramework.Modules.Resources
                 HttpWebRequest _request = (HttpWebRequest)WebRequest.Create(path);
                 HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
                 StreamReader _reader = new StreamReader(_response.GetResponseStream(), System.Text.Encoding.GetEncoding(_response.ContentEncoding));
-                Tresource.value = _reader.ReadToEnd();
+                Tresource.Tvalue = _reader.ReadToEnd();
                 //_reader.Close();
                 _response.Close();
                 _reader.Dispose();

@@ -16,7 +16,7 @@ namespace IFramework.Modules.Resources
         {
             try
             {
-                Tresource.value = File.ReadAllBytes(path);
+                Tresource.Tvalue = File.ReadAllBytes(path);
             }
             catch (Exception e)
             {

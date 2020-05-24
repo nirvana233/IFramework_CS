@@ -29,9 +29,9 @@ namespace IFramework.Modules.Resources
         /// </summary>
         protected override void OnUnLoad()
         {
-            if (Tresource.value != null)
+            if (Tresource.Tvalue != null)
             {
-                Tresource.value = default(T);
+                Tresource.Tvalue = default(T);
             }
         }
 

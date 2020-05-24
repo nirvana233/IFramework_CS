@@ -57,7 +57,7 @@ namespace IFramework.Modules.Resources
                 HttpWebResponse _response = _request.EndGetResponse(ar) as HttpWebResponse;
                 _stream = _response.GetResponseStream();
                 _buffer = new byte[_blockSize];
-                Tresource.value = new byte[_stream.Length];
+                Tresource.Tvalue = new byte[_stream.Length];
 
                 _stream.BeginRead(_buffer, 0, _blockSize, EndRead, _stream);
             }
@@ -75,7 +75,7 @@ namespace IFramework.Modules.Resources
                 int bytesRead = _stream.EndRead(ar);
                 if (bytesRead > 0)
                 {
-                    Array.Copy(_buffer, 0, Tresource.value, _stream.Position, _blockSize);
+                    Array.Copy(_buffer, 0, Tresource.Tvalue, _stream.Position, _blockSize);
                     _stream.BeginRead(_buffer, 0, _buffer.Length, EndRead, null);
                 }
                 else
