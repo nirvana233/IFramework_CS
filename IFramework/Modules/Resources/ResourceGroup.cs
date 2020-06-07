@@ -94,7 +94,7 @@ namespace IFramework.Modules.Resources
                 _remove.Clear();
                 foreach (var item in _loaderMap.Values)
                 {
-                    if ((item.isdone && item.RefCount == 0 ) || !string.IsNullOrEmpty(item.error))
+                    if ((item.isdone && item.refCount == 0 ) || !string.IsNullOrEmpty(item.error))
                     {
                         _remove.Enqueue(item);
                     }

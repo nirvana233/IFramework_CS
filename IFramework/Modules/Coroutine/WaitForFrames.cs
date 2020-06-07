@@ -13,18 +13,18 @@ namespace IFramework.Modules.Coroutine
         /// <param name="count">帧数 </param>
         public WaitForFrames(int count)
         {
-            curCount = 0;
-            Count = count;
+            _curCount = 0;
+            this._count = count;
         }
-        private int curCount;
-        private int Count { get; }
+        private int _curCount;
+        private int _count { get; }
         /// <summary>
         /// override
         /// </summary>
         /// <returns></returns>
         protected override IEnumerator InnerLogoc()
         {
-            while (curCount++ < Count)
+            while (_curCount++ < _count)
             {
                 yield return false;
             }

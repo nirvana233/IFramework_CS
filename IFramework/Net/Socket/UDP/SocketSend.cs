@@ -15,39 +15,39 @@ namespace IFramework.Net
 {
      class SocketSend : UdpSocket, IDisposable
     {
-        private SocketEventArgPool sendArgs;
-        private SockArgBuffers sendBuff;
+        private SocketEventArgPool _sendArgs;
+        private SockArgBuffers _sendBuff;
         private bool _isDisposed;
-        public event EventHandler<SocketAsyncEventArgs> SendEventHandler;
+        public event EventHandler<SocketAsyncEventArgs> sendEventHandler;
 
         public SocketSend(int maxCount, int bufferSize = 4096) : base(bufferSize)
         {
             _sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             _sock.ReceiveTimeout = _receiveTimeout;
             _sock.SendTimeout = _sendTimeout;
-            sendArgs = new SocketEventArgPool(maxCount);
-            sendBuff = new SockArgBuffers(maxCount, bufferSize);
+            _sendArgs = new SocketEventArgPool(maxCount);
+            _sendBuff = new SockArgBuffers(maxCount, bufferSize);
             for (int i = 0; i < maxCount; ++i)
             {
                 SocketAsyncEventArgs socketArgs = new SocketAsyncEventArgs();
                 socketArgs.UserToken = _sock;
                 socketArgs.Completed += SendCompleted;
-                sendBuff.SetBuffer(socketArgs);
-                sendArgs.Set(socketArgs);
+                _sendBuff.SetBuffer(socketArgs);
+                _sendArgs.Set(socketArgs);
             }
         }
         public SocketSend(Socket sock, int maxCount, int bufferSize = 4096) : base(bufferSize)
         {
             base._sock = sock;
-            sendArgs = new SocketEventArgPool(maxCount);
-            sendBuff = new SockArgBuffers(maxCount, bufferSize);
+            _sendArgs = new SocketEventArgPool(maxCount);
+            _sendBuff = new SockArgBuffers(maxCount, bufferSize);
             for (int i = 0; i < maxCount; ++i)
             {
                 SocketAsyncEventArgs socketArgs = new SocketAsyncEventArgs();
                 socketArgs.UserToken = sock;
                 socketArgs.Completed += SendCompleted;
-                sendBuff.SetBuffer(socketArgs);
-                sendArgs.Set(socketArgs);
+                _sendBuff.SetBuffer(socketArgs);
+                _sendArgs.Set(socketArgs);
             }
         }
 
@@ -61,9 +61,9 @@ namespace IFramework.Net
             if (_isDisposed) return;
             if (dispose)
             {
-                sendArgs.Clear();
+                _sendArgs.Clear();
                 _sock.Dispose();
-                sendBuff.Clear();
+                _sendBuff.Clear();
                 _isDisposed = true;
             }
         }
@@ -73,19 +73,19 @@ namespace IFramework.Net
             try
             {
                 bool isWillEvent = true;
-                ArraySegment<byte>[] segItems = sendBuff.BuffToSegs(segBuff.buffer, segBuff.offset, segBuff.count);
+                ArraySegment<byte>[] segItems = _sendBuff.BuffToSegs(segBuff.buffer, segBuff.offset, segBuff.count);
                 foreach (var seg in segItems)
                 {
-                    var SendArg = sendArgs.GetFreeArg((retry) => { return true; }, waiting);
+                    var SendArg = _sendArgs.GetFreeArg((retry) => { return true; }, waiting);
                     if (SendArg == null)
                         throw new Exception("发送缓冲池已用完,等待回收超时...");
                     SendArg.RemoteEndPoint = remoteEP;
                     //Socket s = SocketVersion(remoteEP);
                     //SendArg.UserToken = s;
-                    if (!sendBuff.WriteBuffer(SendArg, seg.Array, seg.Offset, seg.Count))
+                    if (!_sendBuff.WriteBuffer(SendArg, seg.Array, seg.Offset, seg.Count))
                     {
-                        sendArgs.Set(SendArg);
-                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", sendBuff.bufferSize));
+                        _sendArgs.Set(SendArg);
+                        throw new Exception(string.Format("发送缓冲区溢出...buffer block max size:{0}", _sendBuff.bufferSize));
                     }
                     if (SendArg.RemoteEndPoint != null)
                     {
@@ -106,12 +106,12 @@ namespace IFramework.Net
         }
         private void SendCallBack(SocketAsyncEventArgs e)
         {
-            sendArgs.Set(e);
+            _sendArgs.Set(e);
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
-                if (SendEventHandler != null)
+                if (sendEventHandler != null)
                 {
-                    SendEventHandler(e.UserToken as Socket, e);
+                    sendEventHandler(e.UserToken as Socket, e);
                 }
             }
         }

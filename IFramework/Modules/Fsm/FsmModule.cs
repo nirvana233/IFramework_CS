@@ -51,24 +51,24 @@ namespace IFramework.Modules.Fsm
         /// <summary>
         /// 退出状态
         /// </summary>
-        public IState ExitState { get; set; }
+        public IState exitState { get; set; }
         /// <summary>
         /// 第一个状态
         /// </summary>
-        public IState EnterState { get; set; }
+        public IState enterState { get; set; }
         /// <summary>
         /// 当状态改变
         /// </summary>
         public event Action<IState> onStateChange;
-        private IState _CurrentState;
+        private IState _currentState;
         /// <summary>
         /// 当前状态
         /// </summary>
-        public IState CurrentState { get { return _CurrentState; }
+        public IState currentState { get { return _currentState; }
            private set {
-                if (value!= _CurrentState)
+                if (value!= _currentState)
                 {
-                    _CurrentState = value;
+                    _currentState = value;
                     if (onStateChange != null)
                         onStateChange(value);
                 }
@@ -77,7 +77,7 @@ namespace IFramework.Modules.Fsm
         /// <summary>
         /// 是否在运行
         /// </summary>
-        public bool IsRuning { get { return enable; } }
+        public bool runing { get { return enable; } }
 
         private Dictionary<IState, StateInfo> _stateInfo;
         private Dictionary<Type, Dictionary<string, IConditionValue>> _conditionValues;
@@ -91,7 +91,7 @@ namespace IFramework.Modules.Fsm
         }
         protected override void OnDispose()
         {
-            CurrentState = EnterState = ExitState = null;
+            currentState = enterState = exitState = null;
             _stateInfo.Clear();
             _conditionValues.Clear();
         }
@@ -99,9 +99,9 @@ namespace IFramework.Modules.Fsm
         {
             //if (disposed) return;
             //if (!IsRuning) return;
-            CurrentState.Update();
+            currentState.Update();
             TryGoNext();
-            if (CurrentState == ExitState)
+            if (currentState == exitState)
                 enable = false;
         }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
@@ -112,10 +112,10 @@ namespace IFramework.Modules.Fsm
         public void Start()
         {
             if (disposed) return;
-            if (EnterState == null) throw new Exception("EnterState Is Null");
+            if (enterState == null) throw new Exception("EnterState Is Null");
             enable = true;
-            EnterState.OnEnter();
-            CurrentState = EnterState;
+            enterState.OnEnter();
+            currentState = enterState;
         }
         /// <summary>
         /// 暂停
@@ -136,10 +136,10 @@ namespace IFramework.Modules.Fsm
 
         private void TryGoNext()
         {
-            if (CurrentState == null) return;
-            var state = _stateInfo[CurrentState].TryGoNext();
+            if (currentState == null) return;
+            var state = _stateInfo[currentState].TryGoNext();
             if (state == null) return;
-            CurrentState = state;
+            currentState = state;
         }
 
 

@@ -22,32 +22,32 @@ namespace IFramework.Net
             }
         }
 
-        public abstract float Progress { get; }
-        public virtual long CurrentLength { get; }
+        public abstract float progress { get; }
+        public virtual long currentLength { get; }
 
-        public string Url { get; private set; }
-        public string SaveDir { get; private set; }
-        public string FileExt { get; private set; }
+        public string url { get; private set; }
+        public string saveDir { get; private set; }
+        public string fileExt { get; private set; }
 
 
-        public bool IsDownLoading { get; protected set; }
-        public string FileNameWithoutExt { get; protected set; }
-        public string SaveFilePath { get; protected set; }
+        public bool downLoading { get; protected set; }
+        public string fileNameWithoutExt { get; protected set; }
+        public string saveFilePath { get; protected set; }
 
         public FileDownLoader(string url, string SaveDir)
         {
-            this.Url = url;
-            this.SaveDir = SaveDir;
-            IsDownLoading = false;
-            FileExt = Path.GetExtension(url);
-            FileNameWithoutExt = Path.GetFileNameWithoutExtension(url)
+            this.url = url;
+            this.saveDir = SaveDir;
+            downLoading = false;
+            fileExt = Path.GetExtension(url);
+            fileNameWithoutExt = Path.GetFileNameWithoutExtension(url)
                                                     .Replace(".", "")
                                                     .Replace("=", "")
                                                     .Replace("%", "")
                                                     .Replace("&", "")
                                                     .Replace("?", "");
-            SaveFilePath = string.Format("{0}/{1}{2}", SaveDir, FileNameWithoutExt, FileExt);
-            if (string.IsNullOrEmpty(Url) || string.IsNullOrEmpty(SaveDir) || string.IsNullOrEmpty(SaveFilePath))
+            saveFilePath = string.Format("{0}/{1}{2}", SaveDir, fileNameWithoutExt, fileExt);
+            if (string.IsNullOrEmpty(this.url) || string.IsNullOrEmpty(SaveDir) || string.IsNullOrEmpty(saveFilePath))
                 throw new Exception(GetType().Name + " Ctor  Err");
         }
 
@@ -56,7 +56,7 @@ namespace IFramework.Net
         public virtual void Dispose()
         {
             onCompeleted = null;
-            IsDownLoading = false;
+            downLoading = false;
         }
 
     }

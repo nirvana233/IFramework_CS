@@ -13,45 +13,45 @@ namespace IFramework.Net
         /// <summary>
         /// 连接主机
         /// </summary>
-        public string Host { get; set; }
+        public string host { get; set; }
         /// <summary>
         /// 连接源
         /// </summary>
-        public string Origin { get; set; }
+        public string origin { get; set; }
         /// <summary>
         /// 安全扩展
         /// </summary>
-        public string SecWebSocketExtensions { get; set; }
+        public string secWebSocketExtensions { get; set; }
         /// <summary>
         /// 安全密钥
         /// </summary>
-        public string SecWebSocketKey { get; set; }
+        public string secWebSocketKey { get; set; }
         /// <summary>
         /// 安全版本
         /// </summary>
-        public string SecWebSocketVersion { get; set; }
+        public string secWebSocketVersion { get; set; }
 
         public override string ToString()
         {
-            if (string.IsNullOrEmpty(HttpProto))
-                HttpProto = "GET / HTTP/1.1";
+            if (string.IsNullOrEmpty(httpProto))
+                httpProto = "GET / HTTP/1.1";
 
-            if (string.IsNullOrEmpty(SecWebSocketVersion))
-                SecWebSocketVersion = "13";
+            if (string.IsNullOrEmpty(secWebSocketVersion))
+                secWebSocketVersion = "13";
 
             return string.Format("{0}{1}{2}{3}{4}{5}{6}",
-                HttpProto + NewLine,
-                "Host" + SplitChars + Host + NewLine,
-                "Connection" + SplitChars + Connection + NewLine,
-                "Upgrade" + SplitChars + Upgrade + NewLine,
-                "Origin" + SplitChars + Origin + NewLine,
-                "Sec-WebSocket-Version" + SplitChars + SecWebSocketVersion + NewLine,
-                "Sec-WebSocket-Key" + SplitChars + SecWebSocketKey + NewLine + NewLine);
+                httpProto + NewLine,
+                "Host" + SplitChars + host + NewLine,
+                "Connection" + SplitChars + connection + NewLine,
+                "Upgrade" + SplitChars + upgrade + NewLine,
+                "Origin" + SplitChars + origin + NewLine,
+                "Sec-WebSocket-Version" + SplitChars + secWebSocketVersion + NewLine,
+                "Sec-WebSocket-Key" + SplitChars + secWebSocketKey + NewLine + NewLine);
         }
 
         public bool IsHandShaked()
         {
-            return string.IsNullOrEmpty(SecWebSocketKey) == false;
+            return string.IsNullOrEmpty(secWebSocketKey) == false;
         }
     }
 
@@ -60,15 +60,15 @@ namespace IFramework.Net
         /// <summary>
         /// http连接协议
         /// </summary>
-        public string HttpProto { get; set; }
+        public string httpProto { get; set; }
         /// <summary>
         /// 连接类型
         /// </summary>
-        public string Connection { get; set; }
+        public string connection { get; set; }
         /// <summary>
         /// 连接方式
         /// </summary>
-        public string Upgrade { get; set; }
+        public string upgrade { get; set; }
 
         internal const string NewLine = "\r\n";
         internal const string SplitChars = ": ";
@@ -76,8 +76,8 @@ namespace IFramework.Net
 
         public BaseInfo()
         {
-            Upgrade = "websocket";
-            Connection = "Upgrade";
+            upgrade = "websocket";
+            connection = "Upgrade";
         }
     }
      class AcceptInfo : BaseInfo
@@ -85,33 +85,33 @@ namespace IFramework.Net
         /// <summary>
         /// 接入访问验证码
         /// </summary>
-        public string SecWebSocketAccept { get; set; }
+        public string secWebSocketAccept { get; set; }
         /// <summary>
         /// 客户端来源
         /// </summary>
-        public string SecWebSocketLocation { get; set; }
+        public string secWebSocketLocation { get; set; }
         /// <summary>
         /// 服务端来源
         /// </summary>
-        public string SecWebSocketOrigin { get; set; }
+        public string secWebSocketOrigin { get; set; }
 
 
         public override string ToString()
         {
-            if (string.IsNullOrEmpty(HttpProto))
-                HttpProto = "HTTP/1.1 101 Switching Protocols";
+            if (string.IsNullOrEmpty(httpProto))
+                httpProto = "HTTP/1.1 101 Switching Protocols";
 
             return string.Format("{0}{1}{2}{3}",
-                HttpProto + NewLine,
-                "Connection" + SplitChars + Connection + NewLine,
-                "Upgrade" + SplitChars + Upgrade + NewLine,
-                 "Sec-WebSocket-Accept" + SplitChars + SecWebSocketAccept + NewLine + NewLine//很重要，需要两个newline
+                httpProto + NewLine,
+                "Connection" + SplitChars + connection + NewLine,
+                "Upgrade" + SplitChars + upgrade + NewLine,
+                 "Sec-WebSocket-Accept" + SplitChars + secWebSocketAccept + NewLine + NewLine//很重要，需要两个newline
                 );
         }
 
         public bool IsHandShaked()
         {
-            return string.IsNullOrEmpty(SecWebSocketAccept) == false;
+            return string.IsNullOrEmpty(secWebSocketAccept) == false;
         }
     }
 }

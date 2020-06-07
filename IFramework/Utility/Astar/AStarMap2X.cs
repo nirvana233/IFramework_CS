@@ -20,11 +20,11 @@ namespace IFramework.Utility.Astar
         }
         private Point2 size;
        // private int len, wid;
-        private bool walkSideways;
+        private bool _walkSideways;
         /// <summary>
         /// 是否可以斜着走
         /// </summary>
-        public bool WalkSideways { get { return walkSideways; } set { walkSideways = value; } }
+        public bool walkSideways { get { return _walkSideways; } set { _walkSideways = value; } }
         /// <summary>
         /// Ctor
         /// </summary>
@@ -61,7 +61,7 @@ namespace IFramework.Utility.Astar
                             if (node.mapPos.y- 1 + j >= 0 && node.mapPos.y - 1 + j < size.y)
                             {
                                 if (j == 1 && i == 1) continue;
-                                if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j].NodeType == AStarNodeType.Walkable)
+                                if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j].nodeType == AStarNodeType.Walkable)
                                 {
                                     neighborNodes.Add(map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j]);
                                 }
@@ -82,7 +82,7 @@ namespace IFramework.Utility.Astar
                             {
                                 if ((i - 1) * (j - 1) == 0 && i != j)
                                 {
-                                    if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j].NodeType == AStarNodeType.Walkable)
+                                    if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j].nodeType == AStarNodeType.Walkable)
                                     {
                                         neighborNodes.Add(map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j]);
                                     }

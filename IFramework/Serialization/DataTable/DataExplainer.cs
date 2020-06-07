@@ -43,8 +43,8 @@ namespace IFramework.Serialization.DataTable
             membersDic.ForEach((pair) => {
                 MemberInfo m = pair.Key;
                 string csvName = pair.Value;
-                DataColumn column = cols.Find((c) => { return c.HeadLineName == csvName; });
-                string str = FitterCsv_CreatInstance(column.StrValue);
+                DataColumn column = cols.Find((c) => { return c.headLineName == csvName; });
+                string str = FitterCsv_CreatInstance(column.strValue);
                 if (m is PropertyInfo)
                 {
                     PropertyInfo info = m as PropertyInfo;
@@ -52,7 +52,7 @@ namespace IFramework.Serialization.DataTable
                     if (StringConvert.TryConvert(str, info.PropertyType, ref obj))
                         info.SetValue(t, obj, null);
                     else
-                        throw new Exception(string.Format("Convert Err Type {0} Name {1} Value {2}", typeof(T), csvName, column.StrValue));
+                        throw new Exception(string.Format("Convert Err Type {0} Name {1} Value {2}", typeof(T), csvName, column.strValue));
                 }
                 else
                 {
@@ -61,7 +61,7 @@ namespace IFramework.Serialization.DataTable
                     if (StringConvert.TryConvert(str, info.FieldType, ref obj))
                         info.SetValue(t, obj);
                     else
-                        throw new Exception(string.Format("Convert Err Type {0} Name {1} Value {2}", typeof(T), csvName, column.StrValue));
+                        throw new Exception(string.Format("Convert Err Type {0} Name {1} Value {2}", typeof(T), csvName, column.strValue));
                 }
             });
             return t;
@@ -92,9 +92,9 @@ namespace IFramework.Serialization.DataTable
                 }
                 columns.Add(new DataColumn()
                 {
-                    HeadLineName = member.Value,
+                    headLineName = member.Value,
                     //StrValue = val
-                    StrValue = FitterCsv_GetColum( val)
+                    strValue = FitterCsv_GetColum( val)
 
                 });
             });

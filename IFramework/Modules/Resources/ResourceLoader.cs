@@ -13,7 +13,7 @@ namespace IFramework.Modules.Resources
         private List<ResourceLoader> _dependences;
         internal string error;
 
-        internal int RefCount { get; private set; }
+        internal int refCount { get; private set; }
         internal ResourceGroup group { get; set; }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace IFramework.Modules.Resources
         /// </summary>
         public ResourceLoader()
         {
-            RefCount = 0;
+            refCount = 0;
             _dependences = new List<ResourceLoader>();
             _isdone = false;
             _progress = 0;
@@ -113,8 +113,8 @@ namespace IFramework.Modules.Resources
         {
             return _dependences.Select((dp) => { return dp.resource; }).ToArray();
         }
-        internal void Retain() { ++RefCount; }
-        internal void Release() { --RefCount; }
+        internal void Retain() { ++refCount; }
+        internal void Release() { --refCount; }
         internal void Load() { OnLoad(); }
         internal void UnLoad()
         {

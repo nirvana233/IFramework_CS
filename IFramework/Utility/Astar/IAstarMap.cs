@@ -8,7 +8,7 @@
         /// <summary>
         /// 是否可以斜着走
         /// </summary>
-        bool WalkSideways { get; set; }
+        bool walkSideways { get; set; }
         /// <summary>
         /// 获取邻居节点
         /// </summary>

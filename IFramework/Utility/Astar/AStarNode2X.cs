@@ -5,22 +5,22 @@
     /// </summary>
     public class AStarNode2X : IAStarNode
     {
-        private AStarNodeType nodeType;
-        private IAStarNode parentNode;
-        private float g;
-        private float h;
+        private AStarNodeType _nodeType;
+        private IAStarNode _parentNode;
+        private float _g;
+        private float _h;
         /// <summary>
         /// 节点类型（是否可以行走）
         /// </summary>
-        public AStarNodeType NodeType { get { return nodeType; } }
+        public AStarNodeType nodeType { get { return _nodeType; } }
         /// <summary>
         /// 父节点，用于返回路径
         /// </summary>
-        public IAStarNode ParentNode { get { return parentNode; } }
+        public IAStarNode parentNode { get { return _parentNode; } }
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        public float G { get { return g; } }
-        public float H { get { return h; } }
-        public float F { get { return g + h; ; } }
+        public float g { get { return _g; } }
+        public float h { get { return _h; } }
+        public float f { get { return _g + _h; ; } }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
         private Point2 _mappos;
@@ -37,8 +37,8 @@
         public AStarNode2X(Point2 mapPos, AStarNodeType nodeType)
         {
             this._mappos = mapPos;
-            this.nodeType = nodeType;
-            g = h = float.MaxValue / 2;
+            this._nodeType = nodeType;
+            _g = _h = float.MaxValue / 2;
         }
         /// <summary>
         /// 设置默认父节点
@@ -46,7 +46,7 @@
         /// <param name="node"></param>
         public void SetDefaultParent(IAStarNode node)
         {
-            this.parentNode = node;
+            this._parentNode = node;
         }
         /// <summary>
         /// 尝试更新最短距离
@@ -57,21 +57,21 @@
         /// <returns></returns>
         public float TryUpdateFCost(float g, float h, IAStarNode trySetNode)
         {
-            if (g + h < F)
+            if (g + h < f)
             {
-                this.g = g;
-                this.h = h;
-                this.parentNode = trySetNode;
+                this._g = g;
+                this._h = h;
+                this._parentNode = trySetNode;
             }
-            return F;
+            return f;
         }
         /// <summary>
         /// 重置节点数据
         /// </summary>
         public void Reset()
         {
-            g = h = float.MaxValue / 2;
-            parentNode = null;
+            _g = _h = float.MaxValue / 2;
+            _parentNode = null;
         }
 
 

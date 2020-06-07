@@ -21,10 +21,10 @@ namespace IFramework.Net
         /// 临时文件全路径
         private string tempSaveFilePath;
 
-        private long currentLength;
-        public override long CurrentLength { get { return currentLength; } }
+        private long _currentLength;
+        public override long currentLength { get { return _currentLength; } }
         public virtual long FileLength { get; private set; }
-        public override float Progress
+        public override float progress
         {
             get
             {
@@ -37,17 +37,17 @@ namespace IFramework.Net
 
         public FileDownLoader_Http(string url, string SaveDir) : base(url, SaveDir)
         {
-            tempSaveFilePath = string.Format("{0}/{1}{2}", SaveDir, FileNameWithoutExt, tempFileExt);
+            tempSaveFilePath = string.Format("{0}/{1}{2}", SaveDir, fileNameWithoutExt, tempFileExt);
         }
         public override void DownLoad()
         {
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(Url);
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
             request.Method = "GET";
             if (File.Exists(tempSaveFilePath))
             {
                 //若之前已下载了一部分，继续下载
                 fileStream = File.OpenWrite(tempSaveFilePath);
-                currentLength = fileStream.Length;
+                _currentLength = fileStream.Length;
                 fileStream.Seek(currentLength, SeekOrigin.Current);
                 //设置下载的文件读取的起始位置
                 request.AddRange((int)currentLength);
@@ -56,7 +56,7 @@ namespace IFramework.Net
             {
                 //第一次下载
                 fileStream = new FileStream(tempSaveFilePath, FileMode.Create, FileAccess.Write);
-                currentLength = 0;
+                _currentLength = 0;
             }
 
             response = (HttpWebResponse)request.GetResponse();
@@ -65,7 +65,7 @@ namespace IFramework.Net
             //总的文件大小=当前需要下载的+已下载的
             FileLength = response.ContentLength + currentLength;
 
-            IsDownLoading = true;
+            downLoading = true;
             int lengthOnce;
             int bufferMaxLength = 1024 * 20;
 
@@ -75,17 +75,17 @@ namespace IFramework.Net
                 if (!stream.CanRead) break;
                 //读写操作
                 lengthOnce = stream.Read(buffer, 0, buffer.Length);
-                currentLength += lengthOnce;
+                _currentLength += lengthOnce;
                 fileStream.Write(buffer, 0, lengthOnce);
             }
-            IsDownLoading = false;
+            downLoading = false;
             response.Close();
             stream.Close();
             fileStream.Close();
             //临时文件转为最终的下载文件
-            if (File.Exists(SaveFilePath))
-                File.Delete(SaveFilePath);
-            File.Move(tempSaveFilePath, SaveFilePath);
+            if (File.Exists(saveFilePath))
+                File.Delete(saveFilePath);
+            File.Move(tempSaveFilePath, saveFilePath);
             Compelete();
         }
 

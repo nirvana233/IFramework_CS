@@ -17,16 +17,16 @@ namespace IFramework.Net
         /// <summary>
         /// 如果为true则该消息为消息尾部,如果false为零则还有后续数据包;
         /// </summary>
-        private bool isEof = true;
-        public bool IsEof { get { return isEof; } set { isEof = value; } }
+        private bool _isEof = true;
+        public bool isEof { get { return _isEof; } set { _isEof = value; } }
         /// <summary>
         /// RSV1,RSV2,RSV3,各1位，用于扩展定义的,如果没有扩展约定的情况则必须为0
         /// </summary>
-        public bool Rsv1 { get; set; }
+        public bool rsv1 { get; set; }
 
-        public bool Rsv2 { get; set; }
+        public bool rsv2 { get; set; }
 
-        public bool Rsv3 { get; set; }
+        public bool rsv3 { get; set; }
         /// <summary>
         ///0x0表示附加数据帧
         ///0x1表示文本数据帧
@@ -37,62 +37,62 @@ namespace IFramework.Net
         ///0xA表示pong
         ///0xB-F暂时无定义，为以后的控制帧保留
         /// </summary>
-        private byte opCode = 0x01;
+        private byte _opCode = 0x01;
 
-        public byte OpCode { get { return opCode; } set { opCode = value; } }
+        public byte opCode { get { return _opCode; } set { _opCode = value; } }
         /// <summary>
         /// true使用掩码解析消息
         /// </summary>
-        private bool mask = false;
+        private bool _mask = false;
 
-        public bool Mask { get { return mask; } set { mask = value; } }
+        public bool mask { get { return _mask; } set { _mask = value; } }
 
-        public long PayloadLength { get; set; }
+        public long payloadLength { get; set; }
 
         //public int Continued { get; set; }
 
-        public byte[] MaskKey { get; set; }
+        public byte[] maskKey { get; set; }
 
         //public UInt16 MaskKeyContinued { get; set; }
 
-        public BufferSegment Payload { get; set; }
+        public BufferSegment payload { get; set; }
 
         public byte[] EncodingToBytes()
         {
-            if (Payload == null
-                || Payload.buffer.LongLength != PayloadLength)
+            if (payload == null
+                || payload.buffer.LongLength != payloadLength)
                 throw new Exception("payload buffer error");
 
 
-            if (Payload.count > 0)
+            if (payload.count > 0)
             {
-                PayloadLength = Payload.count;
+                payloadLength = payload.count;
             }
 
-            long headLen = (Mask ? 6 : 2);
-            if (PayloadLength < 126)
+            long headLen = (mask ? 6 : 2);
+            if (payloadLength < 126)
             { }
-            else if (PayloadLength >= 126 && PayloadLength < 127)
+            else if (payloadLength >= 126 && payloadLength < 127)
             {
                 headLen += 2;
             }
-            else if (PayloadLength >= 127)
+            else if (payloadLength >= 127)
             {
                 headLen += 8;
             }
 
-            byte[] buffer = new byte[headLen + PayloadLength];
+            byte[] buffer = new byte[headLen + payloadLength];
             int pos = 0;
 
-            buffer[pos] = (byte)(IsEof ? 128 : 0);
-            buffer[pos] += OpCode;
+            buffer[pos] = (byte)(isEof ? 128 : 0);
+            buffer[pos] += opCode;
 
-            buffer[++pos] = (byte)(Mask ? 128 : 0);
-            if (PayloadLength < 0x7e)//126
+            buffer[++pos] = (byte)(mask ? 128 : 0);
+            if (payloadLength < 0x7e)//126
             {
-                buffer[pos] += (byte)PayloadLength;
+                buffer[pos] += (byte)payloadLength;
             }
-            else if (PayloadLength < 0xffff)//65535
+            else if (payloadLength < 0xffff)//65535
             {
                 buffer[++pos] = 126;
                 buffer[++pos] = (byte)(buffer.Length >> 8);
@@ -100,7 +100,7 @@ namespace IFramework.Net
             }
             else
             {
-                var payLengthBytes = ((ulong)PayloadLength).ToBytes();
+                var payLengthBytes = ((ulong)payloadLength).ToBytes();
                 buffer[++pos] = 127;
 
                 buffer[++pos] = payLengthBytes[0];
@@ -113,23 +113,23 @@ namespace IFramework.Net
                 buffer[++pos] = payLengthBytes[7];
             }
 
-            if (Mask)
+            if (mask)
             {
-                buffer[++pos] = MaskKey[0];
-                buffer[++pos] = MaskKey[1];
-                buffer[++pos] = MaskKey[2];
-                buffer[++pos] = MaskKey[3];
+                buffer[++pos] = maskKey[0];
+                buffer[++pos] = maskKey[1];
+                buffer[++pos] = maskKey[2];
+                buffer[++pos] = maskKey[3];
 
-                for (long i = 0; i < PayloadLength; ++i)
+                for (long i = 0; i < payloadLength; ++i)
                 {
-                    buffer[headLen + i] = (byte)(Payload.buffer[i + Payload.offset] ^ MaskKey[i % 4]);
+                    buffer[headLen + i] = (byte)(payload.buffer[i + payload.offset] ^ maskKey[i % 4]);
                 }
             }
             else
             {
-                for (long i = 0; i < PayloadLength; ++i)
+                for (long i = 0; i < payloadLength; ++i)
                 {
-                    buffer[headLen + i] = Payload.buffer[i + Payload.offset];
+                    buffer[headLen + i] = payload.buffer[i + payload.offset];
                 }
             }
             return buffer;
@@ -141,68 +141,68 @@ namespace IFramework.Net
 
             int pos = data.offset;
 
-            IsEof = (data.buffer[pos] >> 7) == 1;
-            OpCode = (byte)(data.buffer[pos] & 0xf);
+            isEof = (data.buffer[pos] >> 7) == 1;
+            opCode = (byte)(data.buffer[pos] & 0xf);
 
-            Mask = (data.buffer[++pos] >> 7) == 1;
-            PayloadLength = (data.buffer[pos] & 0x7f);
+            mask = (data.buffer[++pos] >> 7) == 1;
+            payloadLength = (data.buffer[pos] & 0x7f);
 
             //校验截取长度
-            if (PayloadLength >= data.count) return false;
+            if (payloadLength >= data.count) return false;
 
             ++pos;
             //数据包长度超过126，需要解析附加数据
-            if (PayloadLength < 126)
+            if (payloadLength < 126)
             {
                 //直接等于消息长度
             }
-            if (PayloadLength == 126)
+            if (payloadLength == 126)
             {
-                PayloadLength = data.buffer.ToUInt16(pos);// BitConverter.ToUInt16(segOffset.buffer, pos);
+                payloadLength = data.buffer.ToUInt16(pos);// BitConverter.ToUInt16(segOffset.buffer, pos);
                 pos += 2;
             }
-            else if (PayloadLength == 127)
+            else if (payloadLength == 127)
             {
-                PayloadLength = (long)data.buffer.ToUInt64(pos);
+                payloadLength = (long)data.buffer.ToUInt64(pos);
                 pos += 8;
             }
 
-            Payload = new BufferSegment()
+            payload = new BufferSegment()
             {
                 offset = pos,
                 buffer = data.buffer,
-                count = (int)PayloadLength
+                count = (int)payloadLength
             };
 
             //数据体
-            if (Mask)
+            if (mask)
             {
                 //获取掩码密钥
-                MaskKey = new byte[4];
-                MaskKey[0] = data.buffer[pos];
-                MaskKey[1] = data.buffer[pos + 1];
-                MaskKey[2] = data.buffer[pos + 2];
-                MaskKey[3] = data.buffer[pos + 3];
+                maskKey = new byte[4];
+                maskKey[0] = data.buffer[pos];
+                maskKey[1] = data.buffer[pos + 1];
+                maskKey[2] = data.buffer[pos + 2];
+                maskKey[3] = data.buffer[pos + 3];
                 pos += 4;
 
-                Payload.buffer = data.buffer;
-                Payload.offset = pos;
+                payload.buffer = data.buffer;
+                payload.offset = pos;
                 if (isMaskResolve)
                 {
                     long p = 0;
 
-                    for (long i = 0; i < PayloadLength; ++i)
+                    for (long i = 0; i < payloadLength; ++i)
                     {
                         p = (long)pos + i;
 
-                        Payload.buffer[p] = (byte)(Payload.buffer[p] ^ MaskKey[i % 4]);
+                        payload.buffer[p] = (byte)(payload.buffer[p] ^ maskKey[i % 4]);
                     }
                 }
             }
             else
             {
-                Payload.buffer = data.buffer;
-                Payload.offset = pos;
+                payload.buffer = data.buffer;
+                payload.offset = pos;
             }
 
             return true;
@@ -210,27 +210,27 @@ namespace IFramework.Net
     }
      class WebsocketFrame : DataFrame
     {
-        private Encoding encoding = Encoding.UTF8;
-        private const string acceptMask = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";//固定字符串
-        private readonly char[] splitChars = null;
+        private Encoding _encoding = Encoding.UTF8;
+        private const string _acceptMask = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";//固定字符串
+        private readonly char[] _splitChars = null;
 
         public WebsocketFrame()
         {
-            splitChars = BaseInfo.SplitChars.ToCharArray();
+            _splitChars = BaseInfo.SplitChars.ToCharArray();
         }
 
         public BufferSegment RspAcceptedFrame(AccessInfo access)
         {
             var accept = new AcceptInfo()
             {
-                Connection = access.Connection,
-                Upgrade = access.Upgrade,
-                SecWebSocketLocation = access.Host,
-                SecWebSocketOrigin = access.Origin,
-                SecWebSocketAccept = (access.SecWebSocketKey + acceptMask).ToSha1Base64(encoding)
+                connection = access.connection,
+                upgrade = access.upgrade,
+                secWebSocketLocation = access.host,
+                secWebSocketOrigin = access.origin,
+                secWebSocketAccept = (access.secWebSocketKey + _acceptMask).ToSha1Base64(_encoding)
             };
 
-            return new BufferSegment(encoding.GetBytes(accept.ToString()));
+            return new BufferSegment(_encoding.GetBytes(accept.ToString()));
         }
 
         public AcceptInfo ParseAcceptedFrame(string msg)
@@ -238,28 +238,28 @@ namespace IFramework.Net
             string[] msgs = msg.Split(BaseInfo.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             var acceptInfo = new AcceptInfo
             {
-                HttpProto = msgs[0]
+                httpProto = msgs[0]
             };
 
             foreach (var item in msgs)
             {
-                string[] kv = item.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
+                string[] kv = item.Split(_splitChars, StringSplitOptions.RemoveEmptyEntries);
                 switch (kv[0])
                 {
                     case "Upgrade":
-                        acceptInfo.Upgrade = kv[1];
+                        acceptInfo.upgrade = kv[1];
                         break;
                     case "Connection":
-                        acceptInfo.Connection = kv[1];
+                        acceptInfo.connection = kv[1];
                         break;
                     case "Sec-WebSocket-Accept":
-                        acceptInfo.SecWebSocketAccept = kv[1];
+                        acceptInfo.secWebSocketAccept = kv[1];
                         break;
                     case "Sec-WebSocket-Location":
-                        acceptInfo.SecWebSocketLocation = kv[1];
+                        acceptInfo.secWebSocketLocation = kv[1];
                         break;
                     case "Sec-WebSocket-Origin":
-                        acceptInfo.SecWebSocketOrigin = kv[1];
+                        acceptInfo.secWebSocketOrigin = kv[1];
                         break;
                 }
             }
@@ -268,43 +268,43 @@ namespace IFramework.Net
 
         public BufferSegment ToSegmentFrame(string content)
         {
-            var buf = encoding.GetBytes(content);
-            Payload = new BufferSegment()
+            var buf = _encoding.GetBytes(content);
+            payload = new BufferSegment()
             {
                 buffer = buf
             };
 
-            PayloadLength = Payload.buffer.LongLength;
+            payloadLength = payload.buffer.LongLength;
 
             return new BufferSegment(EncodingToBytes());
         }
 
         public BufferSegment ToSegmentFrame(byte[] buf, OpCodeType code = OpCodeType.Text)
         {
-            OpCode = (byte)code;
+            opCode = (byte)code;
 
-            Payload = new BufferSegment()
+            payload = new BufferSegment()
             {
                 buffer = buf
             };
-            PayloadLength = Payload.buffer.LongLength;
+            payloadLength = payload.buffer.LongLength;
 
             return new BufferSegment(EncodingToBytes());
         }
 
         public BufferSegment ToSegmentFrame(BufferSegment data, OpCodeType code = OpCodeType.Text)
         {
-            OpCode = (byte)code;
+            opCode = (byte)code;
 
-            Payload = data;
-            PayloadLength = Payload.buffer.LongLength;
+            payload = data;
+            payloadLength = payload.buffer.LongLength;
 
             return new BufferSegment(EncodingToBytes());
         }
 
         public AccessInfo GetHandshakePackage(BufferSegment segOffset)
         {
-            string msg = encoding.GetString(segOffset.buffer, segOffset.offset, segOffset.count);
+            string msg = _encoding.GetString(segOffset.buffer, segOffset.offset, segOffset.count);
 
             string[] items = msg.Split(BaseInfo.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             if (items.Length < 6)
@@ -312,34 +312,34 @@ namespace IFramework.Net
 
             AccessInfo access = new AccessInfo()
             {
-                HttpProto = items[0]
+                httpProto = items[0]
             };
 
             foreach (var item in items)
             {
-                string[] kv = item.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
+                string[] kv = item.Split(_splitChars, StringSplitOptions.RemoveEmptyEntries);
                 switch (kv[0])
                 {
                     case "Connection":
-                        access.Connection = kv[1];
+                        access.connection = kv[1];
                         break;
                     case "Host":
-                        access.Host = kv[1];
+                        access.host = kv[1];
                         break;
                     case "Origin":
-                        access.Origin = kv[1];
+                        access.origin = kv[1];
                         break;
                     case "Upgrade":
-                        access.Upgrade = kv[1];
+                        access.upgrade = kv[1];
                         break;
                     case "Sec-WebSocket-Key":
-                        access.SecWebSocketKey = kv[1];
+                        access.secWebSocketKey = kv[1];
                         break;
                     case "Sec-WebSocket-Version":
-                        access.SecWebSocketVersion = kv[1];
+                        access.secWebSocketVersion = kv[1];
                         break;
                     case "Sec-WebSocket-Extensions":
-                        access.SecWebSocketExtensions = kv[1];
+                        access.secWebSocketExtensions = kv[1];
                         break;
                 }
             }

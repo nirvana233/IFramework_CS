@@ -22,21 +22,21 @@ namespace IFramework.Net
             if (urlParams.Length < 3)
                 throw new Exception("wsUrl is error format.for example as ws://localhost:80");
 
-            Proto = urlParams[0];
-            Domain = urlParams[1].Replace("//", "");
-            Port = int.Parse(urlParams[2]);
+            proto = urlParams[0];
+            domain = urlParams[1].Replace("//", "");
+            port = int.Parse(urlParams[2]);
 
-            Host = Domain + ":" + Port;
+            host = domain + ":" + port;
         }
-        private string proto = "ws";
-        public string Proto { get { return proto; } set { proto = value; } }
+        private string _proto = "ws";
+        public string proto { get { return _proto; } set { _proto = value; } }
 
-        public string Domain { get; set; }
-        private int port = 65531;
+        public string domain { get; set; }
+        private int _port = 65531;
 
-        public int Port { get { return port; } set { port = value; } }
+        public int port { get { return _port; } set { _port = value; } }
 
-        public string Host { get; private set; }
+        public string host { get; private set; }
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 

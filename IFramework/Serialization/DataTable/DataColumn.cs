@@ -16,10 +16,10 @@ namespace IFramework.Serialization.DataTable
         /// <summary>
         /// 标题名称
         /// </summary>
-        public string HeadLineName;
+        public string headLineName;
         /// <summary>
         /// string 数据
         /// </summary>
-        public string StrValue;
+        public string strValue;
     }
 }

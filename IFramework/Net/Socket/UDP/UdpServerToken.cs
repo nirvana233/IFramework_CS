@@ -52,7 +52,7 @@ namespace IFramework.Net
             _socketRecieve.OnReceived += ReceiveCallBack;
             _socketRecieve.StartReceive();
             _socketSend = new SocketSend(_socketRecieve._sock, _maxConn, _recBufferSize);
-            _socketSend.SendEventHandler += SendCallBack;
+            _socketSend.sendEventHandler += SendCallBack;
         }
         public void Stop()
         {

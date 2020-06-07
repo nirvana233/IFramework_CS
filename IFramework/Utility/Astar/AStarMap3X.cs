@@ -8,11 +8,11 @@ namespace IFramework.Utility.Astar
     /// </summary>
     public class AStarMap3X : IAstarMap<AStarNode3X>
     {
-        private bool walkSideways;
+        private bool _walkSideways;
         /// <summary>
         /// 是否可以斜着走
         /// </summary>
-        public bool WalkSideways { get { return walkSideways; } set { walkSideways = value; } }
+        public bool walkSideways { get { return _walkSideways; } set { _walkSideways = value; } }
         private List<AStarNode3X> neighborNodes;
         private AStarNode3X[,,] map;
         private Point3 size;
@@ -94,7 +94,7 @@ namespace IFramework.Utility.Astar
                                     if (node.mapPos.z - 1 + k >= 0 && node.mapPos.z - 1 + k < size.z)
                                     {
                                         if (i == 1 && j == 1 && k == 1) continue;
-                                        if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k].NodeType == AStarNodeType.Walkable)
+                                        if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k].nodeType == AStarNodeType.Walkable)
                                         {
                                             neighborNodes.Add(map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k]);
                                         }
@@ -124,7 +124,7 @@ namespace IFramework.Utility.Astar
                                     {
                                         if ((i - 1) * (j - 1) * (k - 1) == 0 && i != j && j != k)
                                         {
-                                            if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k].NodeType == AStarNodeType.Walkable)
+                                            if (map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k].nodeType == AStarNodeType.Walkable)
                                             {
                                                 neighborNodes.Add(map[(int)node.mapPos.x - 1 + i, (int)node.mapPos.y - 1 + j, (int)node.mapPos.z - 1 + k]);
                                             }

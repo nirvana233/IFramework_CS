@@ -16,38 +16,38 @@ namespace IFramework.Net
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class NetConnectionTokenPool
     {
-        private LinkedList<NetConnectionToken> list = null;
-        private int timerSpace = 60;//s
-        private Timer timer;
-        private LockParam lockParam;
+        private LinkedList<NetConnectionToken> _list = null;
+        private int _timerSpace = 60;//s
+        private Timer _timer;
+        private LockParam _lockParam;
 
-        public int ConnectionTimeout = 60;//s
+        public int connectionTimeout = 60;//s
 
-        public int Count { get { return list.Count; } }
+        public int count { get { return _list.Count; } }
 
         public NetConnectionTokenPool(int timerSpace)
         {
-            this.timerSpace = timerSpace < 2 ? 2 : timerSpace;
-            lockParam = new LockParam();
+            this._timerSpace = timerSpace < 2 ? 2 : timerSpace;
+            _lockParam = new LockParam();
             int _period = TimerSpaceToSeconds();
-            list = new LinkedList<NetConnectionToken>();
-            timer = new Timer(new TimerCallback(TimerLoop), null, _period, _period);
+            _list = new LinkedList<NetConnectionToken>();
+            _timer = new Timer(new TimerCallback(TimerLoop), null, _period, _period);
         }
         private int TimerSpaceToSeconds()
         {
-            return (timerSpace * 1000) >> 1;
+            return (_timerSpace * 1000) >> 1;
         }
         private void TimerLoop(object obj)
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                var items = list.Where(x => x.Verification == false ||
-                                        DateTime.Now.Subtract(x.ConnectionTime).TotalSeconds >= ConnectionTimeout)
+                var items = _list.Where(x => x.verification == false ||
+                                        DateTime.Now.Subtract(x.connectionTime).TotalSeconds >= connectionTimeout)
                                         .ToArray();
                 for (int i = 0; i < items.Length; ++i)
                 {
-                    items[i].Token.Close();
-                    list.Remove(items[i]);
+                    items[i].token.Close();
+                    _list.Remove(items[i]);
                 }
             }
         }
@@ -57,32 +57,32 @@ namespace IFramework.Net
             if (enable)
             {
                 int space = TimerSpaceToSeconds();
-                timer.Change(space, space);
+                _timer.Change(space, space);
             }
-            else timer.Change(-1, -1);
+            else _timer.Change(-1, -1);
         }
         public void ChangeTimerSpace(int space)
         {
-            this.timerSpace = space < 2 ? 2 : space;
+            this._timerSpace = space < 2 ? 2 : space;
             int _p = TimerSpaceToSeconds();
-            timer.Change(_p, _p);
+            _timer.Change(_p, _p);
         }
 
         public NetConnectionToken GetTop()
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                if (list.Count > 0)
-                    return list.First();
+                if (_list.Count > 0)
+                    return _list.First();
                 return null;
             }
         }
 
         public IEnumerable<NetConnectionToken> ReadNext()
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                foreach (var l in list)
+                foreach (var l in _list)
                 {
                     yield return l;
                 }
@@ -91,29 +91,29 @@ namespace IFramework.Net
 
         public void AddToken(NetConnectionToken ncToken)
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                list.AddLast(ncToken);
+                _list.AddLast(ncToken);
             }
         }
 
         public bool RemoveToken(NetConnectionToken ncToken, bool isClose)
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                if (isClose) ncToken.Token.Close();
-                return list.Remove(ncToken);
+                if (isClose) ncToken.token.Close();
+                return _list.Remove(ncToken);
             }
         }
 
         public bool RemoveToken(SocketToken sToken)
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                var item = list.Where(x => x.Token.CompareTo(sToken) == 0).FirstOrDefault();
+                var item = _list.Where(x => x.token.CompareTo(sToken) == 0).FirstOrDefault();
                 if (item != null)
                 {
-                    return list.Remove(item);
+                    return _list.Remove(item);
                 }
             }
             return false;
@@ -121,33 +121,33 @@ namespace IFramework.Net
 
         public NetConnectionToken GetTokenById(int Id)
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                return list.Where(x => x.Token.tokenId == Id).FirstOrDefault();
+                return _list.Where(x => x.token.tokenId == Id).FirstOrDefault();
             }
         }
 
         public NetConnectionToken GetTokenBySocketToken(SocketToken sToken)
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                return list.Where(x => x.Token.CompareTo(sToken) == 0).FirstOrDefault();
+                return _list.Where(x => x.token.CompareTo(sToken) == 0).FirstOrDefault();
             }
         }
 
         public void Clear(bool isClose)
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                while (list.Count > 0)
+                while (_list.Count > 0)
                 {
-                    var item = list.First();
-                    list.RemoveFirst();
+                    var item = _list.First();
+                    _list.RemoveFirst();
 
                     if (isClose)
                     {
-                        if (item.Token != null)
-                            item.Token.Close();
+                        if (item.token != null)
+                            item.token.Close();
                     }
                 }
             }
@@ -155,11 +155,11 @@ namespace IFramework.Net
 
         public bool RefreshConnectionToken(SocketToken sToken)
         {
-            using (LockWait lwait = new LockWait(ref lockParam))
+            using (LockWait lwait = new LockWait(ref _lockParam))
             {
-                var rt = list.Find(new NetConnectionToken(sToken));
+                var rt = _list.Find(new NetConnectionToken(sToken));
                 if (rt == null) return false;
-                rt.Value.ConnectionTime = DateTime.Now;
+                rt.Value.connectionTime = DateTime.Now;
                 return true;
             }
         }
@@ -170,16 +170,16 @@ namespace IFramework.Net
         public NetConnectionToken() { }
         public NetConnectionToken(SocketToken sToken)
         {
-            this.Token = sToken;
-            Verification = true;
-            ConnectionTime = DateTime.Now;
+            this.token = sToken;
+            verification = true;
+            connectionTime = DateTime.Now;
         }
-        public SocketToken Token { get; set; }
-        public DateTime ConnectionTime { get; set; }
-        public bool Verification { get; set; }
+        public SocketToken token { get; set; }
+        public DateTime connectionTime { get; set; }
+        public bool verification { get; set; }
         public int CompareTo(NetConnectionToken item)
         {
-            return Token.CompareTo(item.Token);
+            return token.CompareTo(item.token);
         }
         public override bool Equals(object obj)
         {
@@ -189,7 +189,7 @@ namespace IFramework.Net
         }
         public override int GetHashCode()
         {
-            return Token.tokenId.GetHashCode() | Token.sock.GetHashCode();
+            return token.tokenId.GetHashCode() | token.sock.GetHashCode();
         }
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释

@@ -33,8 +33,8 @@ namespace IFramework.Serialization.DataTable
             {
                 cols.Add(new DataColumn()
                 {
-                    StrValue = strVals[i],
-                    HeadLineName = headNames[i]
+                    strValue = strVals[i],
+                    headLineName = headNames[i]
                 });
             }
             return cols;
@@ -73,7 +73,7 @@ namespace IFramework.Serialization.DataTable
         {
             string result = string.Empty;
             cols.ForEach((index, c) => {
-                string val = c.StrValue;
+                string val = c.strValue;
                 val = val.Replace("\"", "\"\"");
                 if (val.Contains(",") || val.Contains("\"") || val.Contains('\r') || val.Contains('\n'))
                     val = string.Format("\"{0}\"", val);

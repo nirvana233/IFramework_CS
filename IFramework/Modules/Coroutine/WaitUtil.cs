@@ -14,17 +14,17 @@ namespace IFramework.Modules.Coroutine
         /// <param name="condition">等待成立条件</param>
         public WaitUtil(Func<bool> condition)
         {
-            Condition = condition;
+            _condition = condition;
         }
 
-        private Func<bool> Condition { get; }
+        private Func<bool> _condition { get; }
         /// <summary>
         /// override
         /// </summary>
         /// <returns></returns>
         protected override IEnumerator InnerLogoc()
         {
-            while (!Condition.Invoke())
+            while (!_condition.Invoke())
             {
                 yield return false;
             }

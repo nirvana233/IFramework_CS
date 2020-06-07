@@ -15,12 +15,12 @@ namespace IFramework.Net
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class WSClientToken : IDisposable
     {
-        TcpClientToken token = null;
-        private Encoding encoding = Encoding.UTF8;
-        ManualResetEvent resetEvent = new ManualResetEvent(false);
-        int waitingTimeout = 1000 * 60 * 30;
+       private TcpClientToken _token = null;
+        private Encoding _encoding = Encoding.UTF8;
+      private  ManualResetEvent _resetEvent = new ManualResetEvent(false);
+       private int _waitingTimeout = 1000 * 60 * 30;
         public bool IsConnected { get; private set; }
-        AcceptInfo acceptInfo = null;
+       private AcceptInfo _acceptInfo = null;
 
         public OnDisConnect onDisConnect { get; set; }
 
@@ -31,15 +31,15 @@ namespace IFramework.Net
         public OnSendCallBack onSendCallBack { get; set; }
         public WSClientToken(int bufferSize = 4096, int blocks = 8)
         {
-            token = new TcpClientToken(bufferSize, blocks);
-            token.onDisConnect = new OnDisConnect(DisconnectedHandler);
-            token.onReceive = new OnReceieve(ReceivedHanlder);
-            token.onSendCallBack = new OnSendCallBack(SentHandler);
+            _token = new TcpClientToken(bufferSize, blocks);
+            _token.onDisConnect = new OnDisConnect(DisconnectedHandler);
+            _token.onReceive = new OnReceieve(ReceivedHanlder);
+            _token.onSendCallBack = new OnSendCallBack(SentHandler);
         }
 
         public void Dispose()
         {
-            resetEvent.Dispose();
+            _resetEvent.Dispose();
             //resetEvent.Close();
         }
 
@@ -58,19 +58,19 @@ namespace IFramework.Net
             Random rand = new Random(DateTime.Now.Millisecond);
             WSConnectionItem wsItem = new WSConnectionItem(wsUrl);
 
-            bool isOk = token.ConnectTo(wsItem.Port, wsItem.Domain);
+            bool isOk = _token.ConnectTo(wsItem.port, wsItem.domain);
             if (isOk == false) throw new Exception("连接失败...");
 
             string req = new AccessInfo()
             {
-                Host = wsItem.Host,
-                Origin = "http://" + wsItem.Host,
-                SecWebSocketKey = Convert.ToBase64String(encoding.GetBytes(wsUrl + rand.Next(100, 100000).ToString()))
+                host = wsItem.host,
+                origin = "http://" + wsItem.host,
+                secWebSocketKey = Convert.ToBase64String(_encoding.GetBytes(wsUrl + rand.Next(100, 100000).ToString()))
             }.ToString();
 
-            isOk = token.SendAsync(new BufferSegment(encoding.GetBytes(req)));
+            isOk = _token.SendAsync(new BufferSegment(_encoding.GetBytes(req)));
 
-            resetEvent.WaitOne(waitingTimeout);
+            _resetEvent.WaitOne(_waitingTimeout);
 
             return IsConnected;
         }
@@ -85,7 +85,7 @@ namespace IFramework.Net
             if (IsConnected == false) return false;
 
             var buf = new WebsocketFrame().ToSegmentFrame(msg);
-            token.SendAsync(buf, waiting);
+            _token.SendAsync(buf, waiting);
             return true;
         }
 
@@ -93,20 +93,20 @@ namespace IFramework.Net
         {
             if (IsConnected == false) return false;
 
-            token.SendAsync(data, waiting);
+            _token.SendAsync(data, waiting);
             return true;
         }
 
         public void SendPong(BufferSegment buf)
         {
             var seg = new WebsocketFrame().ToSegmentFrame(buf, OpCodeType.Bong);
-            token.SendAsync(seg, true);
+            _token.SendAsync(seg, true);
         }
 
         public void SendPing()
         {
             var buf = new WebsocketFrame().ToSegmentFrame(new byte[] { }, OpCodeType.Bing);
-            token.SendAsync(buf, true);
+            _token.SendAsync(buf, true);
         }
 
         private void DisconnectedHandler(SocketToken sToken)
@@ -119,17 +119,17 @@ namespace IFramework.Net
         {
             if (IsConnected == false)
             {
-                string msg = encoding.GetString(seg.buffer, seg.offset, seg.count);
-                acceptInfo = new WebsocketFrame().ParseAcceptedFrame(msg);
+                string msg = _encoding.GetString(seg.buffer, seg.offset, seg.count);
+                _acceptInfo = new WebsocketFrame().ParseAcceptedFrame(msg);
 
-                if ((IsConnected = acceptInfo.IsHandShaked()))
+                if ((IsConnected = _acceptInfo.IsHandShaked()))
                 {
-                    resetEvent.Set();
+                    _resetEvent.Set();
                     if (onConnect != null) onConnect(token, IsConnected);
                 }
                 else
                 {
-                    this.token.DisConnect();
+                    this._token.DisConnect();
                 }
             }
             else
@@ -138,30 +138,30 @@ namespace IFramework.Net
                 bool isOk = packet.DecodingFromBytes(seg, true);
                 if (isOk == false) return;
 
-                if (packet.OpCode == 0x01)
+                if (packet.opCode == 0x01)
                 {
                     if (onReceivedString != null)
-                        onReceivedString(token, encoding.GetString(packet.Payload.buffer,
-                        packet.Payload.offset, packet.Payload.count));
+                        onReceivedString(token, _encoding.GetString(packet.payload.buffer,
+                        packet.payload.offset, packet.payload.count));
 
                     return;
                 }
-                else if (packet.OpCode == 0x08)//close
+                else if (packet.opCode == 0x08)//close
                 {
                     IsConnected = false;
-                    this.token.DisConnect();
+                    this._token.DisConnect();
                 }
-                else if (packet.OpCode == 0x09)//ping
+                else if (packet.opCode == 0x09)//ping
                 {
                     SendPong(seg);
                 }
-                else if (packet.OpCode == 0x0A)//pong
+                else if (packet.opCode == 0x0A)//pong
                 {
                     SendPing();
                 }
 
-                if (onReceieve != null && packet.Payload.count > 0)
-                    onReceieve(token, packet.Payload);
+                if (onReceieve != null && packet.payload.count > 0)
+                    onReceieve(token, packet.payload);
             }
         }
         private void SentHandler(SocketToken token, BufferSegment seg)

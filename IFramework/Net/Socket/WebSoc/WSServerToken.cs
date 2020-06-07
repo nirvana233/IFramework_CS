@@ -15,12 +15,12 @@ namespace IFramework.Net
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class WSServerToken : IDisposable
     {
-        private Encoding encoding = Encoding.UTF8;
-        TcpServerToken token = null;
-        List<ConnectionInfo> ConnectionPool = null;
-        Timer threadingTimer = null;
-        int timeout = 1000 * 60 * 6;
-        object lockobject = new object();
+        private Encoding _encoding = Encoding.UTF8;
+       private TcpServerToken _token = null;
+       private List<ConnectionInfo> _connectionPool = null;
+       private Timer _threadingTimer = null;
+       private int _timeout = 1000 * 60 * 6;
+       private object _lockobject = new object();
 
         public OnReceivedString onRecieveString { get; set; }
         public OnReceieve onReceieve { get; set; }
@@ -30,15 +30,15 @@ namespace IFramework.Net
 
         public WSServerToken(int maxCon = 32, int bufferSize = 4096)
         {
-            ConnectionPool = new List<ConnectionInfo>(maxCon);
+            _connectionPool = new List<ConnectionInfo>(maxCon);
 
-            token = new TcpServerToken(maxCon, bufferSize);
+            _token = new TcpServerToken(maxCon, bufferSize);
             //serverProvider.AcceptedCallback = new OnAcceptedHandler(AcceptedHandler);
-            token.onDisConnect = new OnDisConnect(OnDisConnect);
-            token.onReceive = new OnReceieve(OnReceieve);
-            token.onSendCallBack = new OnSendCallBack(OnSendCallBack);
+            _token.onDisConnect = new OnDisConnect(OnDisConnect);
+            _token.onReceive = new OnReceieve(OnReceieve);
+            _token.onSendCallBack = new OnSendCallBack(OnSendCallBack);
 
-            threadingTimer = new Timer(new TimerCallback(TimingEvent), null, -1, -1);
+            _threadingTimer = new Timer(new TimerCallback(TimingEvent), null, -1, -1);
         }
 
         public static WSServerToken CreateProvider(int maxConnections = 32, int bufferSize = 4096)
@@ -48,18 +48,18 @@ namespace IFramework.Net
 
         public void Dispose()
         {
-            threadingTimer.Dispose();
+            _threadingTimer.Dispose();
         }
 
         private void TimingEvent(object obj)
         {
-            lock (lockobject)
+            lock (_lockobject)
             {
-                var items = ConnectionPool.FindAll(x => DateTime.Now.Subtract(x.ConnectedTime).TotalMilliseconds >= (timeout >> 1));
+                var items = _connectionPool.FindAll(x => DateTime.Now.Subtract(x.ConnectedTime).TotalMilliseconds >= (_timeout >> 1));
 
                 foreach (var node in items)
                 {
-                    if (DateTime.Now.Subtract(node.ConnectedTime).TotalMilliseconds >= timeout)
+                    if (DateTime.Now.Subtract(node.ConnectedTime).TotalMilliseconds >= _timeout)
                     {
                         CloseAndRemove(node);
                         continue;
@@ -71,20 +71,20 @@ namespace IFramework.Net
 
         public bool Start(int port, string ip = "0.0.0.0")
         {
-            bool isOk = token.Start(port, ip);
+            bool isOk = _token.Start(port, ip);
             if (isOk)
             {
-                threadingTimer.Change(timeout >> 1, timeout);
+                _threadingTimer.Change(_timeout >> 1, _timeout);
             }
             return isOk;
         }
 
         public void Stop()
         {
-            threadingTimer.Change(-1, -1);
-            lock (lockobject)
+            _threadingTimer.Change(-1, -1);
+            lock (_lockobject)
             {
-                foreach (var node in ConnectionPool)
+                foreach (var node in _connectionPool)
                 {
                     CloseAndRemove(node);
                 }
@@ -93,31 +93,31 @@ namespace IFramework.Net
 
         public void Close(SocketToken sToken)
         {
-            token.Close(sToken);
+            _token.Close(sToken);
         }
 
         public bool Send(SocketToken sToken, string content, bool waiting = true)
         {
             var buffer = new WebsocketFrame().ToSegmentFrame(content);
 
-            return token.SendAsync(sToken,buffer, waiting);
+            return _token.SendAsync(sToken,buffer, waiting);
         }
 
         public bool Send(SocketToken token, BufferSegment seg, bool waiting = true)
         {
-            return this.token.SendAsync(token, seg, waiting);
+            return this._token.SendAsync(token, seg, waiting);
         }
 
         private void SendPing(SocketToken sToken)
         {
-            token.SendAsync(sToken,new BufferSegment( new byte[] { 0x89, 0x00 }));
+            _token.SendAsync(sToken,new BufferSegment( new byte[] { 0x89, 0x00 }));
         }
 
         private void SendPong(SocketToken token, BufferSegment seg)
         {
             var buffer = new WebsocketFrame().ToSegmentFrame(seg, OpCodeType.Bong);
 
-            this.token.SendAsync(token, buffer);
+            this._token.SendAsync(token, buffer);
         }
 
         //private void AcceptedHandler(SocketToken sToken)
@@ -135,7 +135,7 @@ namespace IFramework.Net
 
         private void RefreshTimeout(SocketToken sToken)
         {
-            foreach (var item in ConnectionPool)
+            foreach (var item in _connectionPool)
             {
                 if (item.sToken.tokenId == sToken.tokenId)
                 {
@@ -147,12 +147,12 @@ namespace IFramework.Net
 
         private void OnReceieve(SocketToken token, BufferSegment seg)
         {
-            var connection = ConnectionPool.Find(x => x.sToken.tokenId == token.tokenId);
+            var connection = _connectionPool.Find(x => x.sToken.tokenId == token.tokenId);
             if (connection == null)
             {
                 connection = new ConnectionInfo() { sToken = token };
 
-                ConnectionPool.Add(connection);
+                _connectionPool.Add(connection);
             }
 
             if (connection.IsHandShaked == false)
@@ -171,7 +171,7 @@ namespace IFramework.Net
 
                 var rsp = serverFrame.RspAcceptedFrame(access);
 
-                this.token.SendAsync(token, rsp);
+                this._token.SendAsync(token, rsp);
 
                 connection.accessInfo = access;
 
@@ -185,30 +185,30 @@ namespace IFramework.Net
                 bool isOk = packet.DecodingFromBytes(seg, true);
                 if (isOk == false) return;
 
-                if (packet.OpCode == 0x01)//text
+                if (packet.opCode == 0x01)//text
                 {
                     if (onRecieveString != null)
-                        onRecieveString(token, encoding.GetString(seg.buffer,
+                        onRecieveString(token, _encoding.GetString(seg.buffer,
                         seg.offset, seg.count));
 
                     return;
                 }
-                else if (packet.OpCode == 0x08)//close
+                else if (packet.opCode == 0x08)//close
                 {
                     CloseAndRemove(connection);
                     return;
                 }
-                else if (packet.OpCode == 0x09)//ping
+                else if (packet.opCode == 0x09)//ping
                 {
                     SendPong(token,seg);
                 }
-                else if (packet.OpCode == 0x0A)//pong
+                else if (packet.opCode == 0x0A)//pong
                 {
                     //  SendPing(session.sToken);
                 }
 
-                if (onReceieve != null && packet.Payload.count > 0)
-                    onReceieve(token, packet.Payload);
+                if (onReceieve != null && packet.payload.count > 0)
+                    onReceieve(token, packet.payload);
             }
         }
 
@@ -225,21 +225,21 @@ namespace IFramework.Net
             bool isOk = Remove(connection);
             if (isOk)
             {
-                token.Close(connection.sToken);
+                _token.Close(connection.sToken);
             }
         }
 
         private bool Remove(ConnectionInfo info)
         {
 
-            return ConnectionPool.Remove(info);
+            return _connectionPool.Remove(info);
 
         }
 
         private bool Remove(SocketToken sToken)
         {
 
-            return ConnectionPool.RemoveAll(x => x.sToken.tokenId == sToken.tokenId) > 0;
+            return _connectionPool.RemoveAll(x => x.sToken.tokenId == sToken.tokenId) > 0;
 
         }
 

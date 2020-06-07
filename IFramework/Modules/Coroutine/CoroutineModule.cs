@@ -12,25 +12,25 @@ namespace IFramework.Modules.Coroutine
     {
         class CoroutinePool : IDisposable
         {
-            public CoroutinePool() { coroutines = new Queue<Coroutine>(); }
-            private Queue<Coroutine> coroutines;
+            public CoroutinePool() { _coroutines = new Queue<Coroutine>(); }
+            private Queue<Coroutine> _coroutines;
             public Coroutine Get(IEnumerator routine)
             {
                 Coroutine coroutine;
-                if (coroutines.Count <= 0)
+                if (_coroutines.Count <= 0)
                     coroutine = new Coroutine(routine);
                 else
-                    coroutine = coroutines.Dequeue();
+                    coroutine = _coroutines.Dequeue();
                 return coroutine;
             }
             public void Set(Coroutine action)
             {
-                coroutines.Enqueue(action);
+                _coroutines.Enqueue(action);
             }
 
             public void Dispose()
             {
-                coroutines.Clear();
+                _coroutines.Clear();
             }
         }
 
