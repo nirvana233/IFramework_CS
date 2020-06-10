@@ -25,14 +25,14 @@ namespace IFramework
             if (lev_L > lev) return;
             loger.Log(LogType.Log, message, paras);
         }
-        public static void W(object message, int lev = 50, params object[] paras)
+        public static void W(object message, int lev = 0, params object[] paras)
         {
             if (!enable) return;
             if (!enable_W) return;
             if (lev_W > lev) return;
             loger.Log(LogType.Warning, message, paras);
         }
-        public static void E(object message, int lev = 100, params object[] paras)
+        public static void E(object message, int lev = 0, params object[] paras)
         {
             if (!enable) return;
             if (!enable_E) return;
@@ -48,14 +48,14 @@ namespace IFramework
             if (lev_L > lev) return;
             loger.LogFormat(LogType.Log, format, message, paras);
         }
-        public static void WF(object message, string format, int lev = 50, params object[] paras)
+        public static void WF(object message, string format, int lev = 0, params object[] paras)
         {
             if (!enable) return;
             if (!enable_W) return;
             if (lev_W > lev) return;
             loger.LogFormat(LogType.Warning, format, message, paras);
         }
-        public static void EF(object message, string format, int lev = 100, params object[] paras)
+        public static void EF(object message, string format, int lev = 0, params object[] paras)
         {
             if (!enable) return;
             if (!enable_E) return;

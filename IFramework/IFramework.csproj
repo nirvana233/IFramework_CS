@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\..\..\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.xml</DocumentationFile>
+    <DocumentationFile>E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <NoWarn>
     </NoWarn>
@@ -58,11 +58,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assemblies.cs" />
+    <Compile Include="DependenceAttribute.cs" />
+    <Compile Include="DescriptionAttribute.cs" />
     <Compile Include="Extension\FloatExtension.cs" />
+    <Compile Include="FrameworkArgs.cs" />
     <Compile Include="FrameworkBitConverter.cs" />
     <Compile Include="FrameworkEnvironment.cs" />
     <Compile Include="FrameworkModules.cs" />
+    <Compile Include="FrameworkObject.cs" />
+    <Compile Include="FrameworkVersionAttribute.cs" />
+    <Compile Include="Inject\FrameworkContainer.cs" />
+    <Compile Include="Inject\InjectAttribute.cs" />
     <Compile Include="LifeTimeObject.cs" />
+    <Compile Include="Modules\ECS\IEntity.cs" />
     <Compile Include="Modules\FrameworkAppModule.cs" />
     <Compile Include="Modules\Coroutine\Coroutine.cs" />
     <Compile Include="Modules\Coroutine\CoroutineInstruction.cs" />
@@ -118,9 +127,11 @@
     <Compile Include="NodeAction\ConditionNode.cs" />
     <Compile Include="NodeAction\WhileNode.cs" />
     <Compile Include="ObservableObject.cs" />
+    <Compile Include="OnEnvironmentInitAttribute.cs" />
     <Compile Include="Point2.cs" />
     <Compile Include="Point3.cs" />
     <Compile Include="RecyclableObject.cs" />
+    <Compile Include="ScriptVersionUpdateAttribute.cs" />
     <Compile Include="Serialization\DataTable\DataExplainer.cs" />
     <Compile Include="Serialization\DataTable\DataRow.cs" />
     <Compile Include="Serialization\Simple\CustomSerializer.cs" />
@@ -171,7 +182,7 @@
     <Compile Include="Modules\Fsm\Transition.cs" />
     <Compile Include="Modules\Fsm\IState.cs" />
     <Compile Include="NodeAction\ActionNodeExtension.cs" />
-    <Compile Include="IFrameworkContainer.cs" />
+    <Compile Include="Inject\IFrameworkContainer.cs" />
     <Compile Include="Pool\SingletonPool.cs" />
     <Compile Include="NodeAction\RepeatNode.cs" />
     <Compile Include="NodeAction\SequenceNode.cs" />

@@ -5,58 +5,43 @@ namespace IFramework.Modules.ECS
     /// <summary>
     /// 实体
     /// </summary>
-    public abstract class Entity : IEntity
+    public interface IEntity
     {
         /// <summary>
         /// 注册的模块
         /// </summary>
-        public ECSModule _mou { get; set; }
+         ECSModule _mou { get; set; }
         /// <summary>
         /// 获取组件
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IComponent GetComponent(Type type)
-        {
-            return _mou.GetComponent(this, type);
-        }
+        IComponent GetComponent(Type type);
         /// <summary>
         /// 湖区组件
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetComponent<T>() where T : IComponent
-        {
-            return (T)GetComponent(typeof(T));
-        }
+        T GetComponent<T>() where T : IComponent;
         /// <summary>
         /// 添加组件
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IComponent AddComponent(Type type)
-        {
-            return _mou.AddComponent(this, type);
-        }
+         IComponent AddComponent(Type type);
         /// <summary>
         /// 添加组件
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T AddComponent<T>() where T : IComponent
-        {
-            return (T)AddComponent(typeof(T));
-        }
+         T AddComponent<T>() where T : IComponent;
         /// <summary>
         /// 添加组件
         /// </summary>
         /// <param name="component"></param>
         /// <param name="useSame"></param>
         /// <returns></returns>
-        public IComponent AddComponent(IComponent component, bool useSame)
-        {
-            return _mou.AddComponent(this, component,useSame);
-        }
+        IComponent AddComponent(IComponent component, bool useSame);
         /// <summary>
         /// 添加组件
         /// </summary>
@@ -64,78 +49,46 @@ namespace IFramework.Modules.ECS
         /// <param name="component"></param>
         /// <param name="useSame"></param>
         /// <returns></returns>
-        public T AddComponent<T>(T component, bool useSame) where T : IComponent
-        {
-            return AddComponent(component, useSame);
-        }
+        T AddComponent<T>(T component, bool useSame) where T : IComponent;
         /// <summary>
         /// 移除组件
         /// </summary>
         /// <param name="type"></param>
-        public void RemoveComponent(Type type)
-        {
-            _mou.RemoveComponent(this, type);
-        }
+         void RemoveComponent(Type type);
 
         /// <summary>
         /// 移除组件
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public void RemoveComponent<T>() where T : IComponent
-        {
-            RemoveComponent(typeof(T));
-        }
+         void RemoveComponent<T>() where T : IComponent;
         /// <summary>
         /// 是否包含组件
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public bool ContainsComponent(Type type)
-        {
-            return _mou.GetComponent(this, type) != null;
-        }
+         bool ContainsComponent(Type type);
         /// <summary>
         /// 是否包含组件
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public bool ContainsComponent<T>() where T : IComponent
-        {
-            return ContainsComponent(typeof(T));
-        }
+        bool ContainsComponent<T>() where T : IComponent;
         /// <summary>
         /// 直接替换原组件，结构体必须使用这个方法刷新数据
         /// </summary>
         /// <param name="type"></param>
         /// <param name="component"></param>
-        public void ReFreshComponent(Type type ,IComponent component)
-        {
-            _mou.ReFreshComponent(this, type, component);
-        }
+         void ReFreshComponent(Type type, IComponent component);
         /// <summary>
         /// 直接替换原组件，结构体必须使用这个方法刷新数据
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
-        public void ReFreshComponent<T>(T component)where T:IComponent
-        {
-            ReFreshComponent(typeof(T), component);
-        }
+         void ReFreshComponent<T>(T component) where T : IComponent;
         /// <summary>
         /// 解除模块注册
         /// </summary>
-        public void Destory()
-        {
-          //  Log.E("dispose  " +GetType());
-
-            OnDestory();
-            if (_mou != null)
-                _mou.UnSubscribeEntity(this);
-        }
-        /// <summary>
-        /// 解除模块注册时调用
-        /// </summary>
-        protected virtual void OnDestory() { }
+         void Destory();
     }
 
 }

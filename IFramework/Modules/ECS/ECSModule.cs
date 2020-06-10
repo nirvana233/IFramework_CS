@@ -186,8 +186,8 @@ namespace IFramework.Modules.ECS
             private IComponent[] _components;
             private Dictionary<IComponent, int> _componentUseCount;
 
-            private int count;
-            private int capicity=32;
+            private int _count;
+            private int _capicity=32;
 
             private int AddComponent(IComponent component, bool useSame)
             {
@@ -207,18 +207,18 @@ namespace IFramework.Modules.ECS
                 }
 
 
-                if (count==capicity)
+                if (_count==_capicity)
                 {
-                    int curLen = capicity;
-                    capicity *= 2;
-                    IComponent[] newArry = new IComponent[capicity];
+                    int curLen = _capicity;
+                    _capicity *= 2;
+                    IComponent[] newArry = new IComponent[_capicity];
                     Array.Copy(_components, newArry, curLen);
                     Array.Clear(_components, 0, curLen);
                     _components = newArry;
                 }
-                int index = count;
+                int index = _count;
                 _components[index] = component;
-                count++;
+                _count++;
                 return index;
             }
             private void FreeComponentIndex(int empty)
@@ -231,7 +231,7 @@ namespace IFramework.Modules.ECS
                     if (cnt == 0)
                     {
                         _componentUseCount.Remove(component);
-                        int last = --count;
+                        int last = --_count;
                         //
                         if (last == empty) return;
 
@@ -245,7 +245,7 @@ namespace IFramework.Modules.ECS
                 }
                 else
                 {
-                    int last = --count;
+                    int last = --_count;
                     _components[empty] = _components[last];
 
                     _entitys.Values.ForEach((c) =>
@@ -287,8 +287,8 @@ namespace IFramework.Modules.ECS
                     _entitys = new Dictionary<IEntity, EntityContainer>();
                     _componentUseCount = new Dictionary<IComponent, int>();
 
-                    _components = new IComponent[capicity];
-                    count = 0;
+                    _components = new IComponent[_capicity];
+                    _count = 0;
                 }
 
             }
