@@ -112,7 +112,7 @@ namespace IFramework.Modules.Message
         private List</*Type,*/ MessageEntity> _entitys;
         private List</*Type,*/ DelgateMessageEntity> _entitydels;
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
+        public override int priority { get { return 20; } }
         protected override void OnDispose()
         {
             foreach (var item in _entitys)

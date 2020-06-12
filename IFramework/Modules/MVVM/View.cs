@@ -53,8 +53,8 @@ namespace IFramework.Modules.MVVM
         public void Dispose()
         {
             OnDispose();
-            _context.Dispose();
             handler.UnSubscribe();
+            _context.Dispose();
         }
         /// <summary>
         /// 释放时

@@ -156,10 +156,14 @@ namespace IFramework.Modules
             //    var m = update_list[i];
             //    m.Dispose();
             //}
+            List<FrameworkModule> list = new List<FrameworkModule>();
             foreach (var item in moudle_dic.Values)
             {
-                item.ForEach((index,m) => { m.Dispose(); });
+                item.ForEach((index,m) => { list.Add(m); });
             }
+
+            list.Sort((x, y) => { return y.priority.CompareTo(x.priority); });
+            list.ForEach((index, m) => { m.Dispose(); });
             update_list.Clear();
             moudle_dic.Clear();
             update_list = null;

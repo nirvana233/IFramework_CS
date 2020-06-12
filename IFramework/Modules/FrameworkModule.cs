@@ -98,6 +98,10 @@ namespace IFramework.Modules
         private bool _binded;
 
         /// <summary>
+        /// 优先级（越大释放越早释放）
+        /// </summary>
+        public abstract int priority { get; }
+        /// <summary>
         /// 模块类型
         /// </summary>
         public string moudeType { get { return _moudleType; } }
