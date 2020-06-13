@@ -89,7 +89,7 @@ namespace IFramework
         /// <summary>
         /// 环境名称
         /// </summary>
-        public string envName { get { return name; }set { name = value; } }
+        public string envName { get { return name; } set { name = value; } }
         /// <summary>
         /// 最近一次 Update 方法用时
         /// </summary>
@@ -134,12 +134,12 @@ namespace IFramework
 
             container = new FrameworkContainer();
             _modules = new FrameworkModules(this);
-            cycleCollection = new  RecyclableObjectCollection();
+            cycleCollection = new RecyclableObjectCollection();
             if (types != null)
                 types.ForEach((type) =>
                 {
                     TypeAttributes ta = type.Attributes;
-                    if (ta.HasFlag(TypeAttributes.Abstract) && ta.HasFlag(TypeAttributes.Sealed))
+                    if ((ta & TypeAttributes.Abstract) != 0 && ((ta & TypeAttributes.Sealed) != 0))
                         RuntimeHelpers.RunClassConstructor(type.TypeHandle);
                 });
 
@@ -162,7 +162,8 @@ namespace IFramework
                               .Select((type) =>
                               {
                                   var attr = type.GetCustomAttributes(typeof(OnEnvironmentInitAttribute), false).First() as OnEnvironmentInitAttribute;
-                                  if (attr.type.HasFlag(this.envType) || attr.type.HasFlag(EnvironmentType.None))
+                                  var _type = attr.type;
+                                  if ((_type & this.envType) != 0 || (_type & EnvironmentType.None) != 0)
                                       return type;
                                   return null;
                               }).ToList();
@@ -192,19 +193,18 @@ namespace IFramework
             update = null;
             onDispose = null;
         }
-       
+
         /// <summary>
         /// 刷新环境
         /// </summary>
         public void Update()
         {
             if (disposed) return;
-            sw_delta.Restart();
+            sw_delta.Reset();
+            sw_delta.Start();
             if (update != null) update();
             sw_delta.Stop();
             deltaTime = sw_delta.Elapsed;
         }
     }
-
-
 }

@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{516080A9-080F-4DA8-8C2C-E314B76F1E64}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IFramework.Serialization</RootNamespace>
+    <AssemblyName>IFramework.Serialization</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Plugins\IFramework.Serialization.xml</DocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IFramework">
+      <HintPath>..\Plugins\IFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="IFramework.Packets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Plugins\IFramework.Packets.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\DataTable\DataColumn.cs" />
+    <Compile Include="Serialization\DataTable\DataColumnNameAttribute.cs" />
+    <Compile Include="Serialization\DataTable\DataExplainer.cs" />
+    <Compile Include="Serialization\DataTable\DataIgnoreAttribute.cs" />
+    <Compile Include="Serialization\DataTable\DataReader.cs" />
+    <Compile Include="Serialization\DataTable\DataRow.cs" />
+    <Compile Include="Serialization\DataTable\DataTool.cs" />
+    <Compile Include="Serialization\DataTable\DataWriter.cs" />
+    <Compile Include="Serialization\DataTable\IDataExplainer.cs" />
+    <Compile Include="Serialization\DataTable\IDataRow.cs" />
+    <Compile Include="Serialization\Simple\CustomSerializer.cs" />
+    <Compile Include="Serialization\Simple\DataWriter.cs" />
+    <Compile Include="Serialization\Simple\NodeType.cs" />
+    <Compile Include="Serialization\Simple\PacketNode.cs" />
+    <Compile Include="Serialization\Simple\Serializer.cs" />
+    <Compile Include="Serialization\Simple\SerializerUtility.cs" />
+    <Compile Include="Serialization\String\BoolStringConverter.cs" />
+    <Compile Include="Serialization\String\ByteArrayStringConverter.cs" />
+    <Compile Include="Serialization\String\ByteStringConverter.cs" />
+    <Compile Include="Serialization\String\CharStringConverter.cs" />
+    <Compile Include="Serialization\String\DateTimeStringConverter.cs" />
+    <Compile Include="Serialization\String\DecimalStringConverter.cs" />
+    <Compile Include="Serialization\String\DoubleStringConverter.cs" />
+    <Compile Include="Serialization\String\EnumStringConverter.cs" />
+    <Compile Include="Serialization\String\FloatStringConverter.cs" />
+    <Compile Include="Serialization\String\IntStringConverter.cs" />
+    <Compile Include="Serialization\String\LongStringConverter.cs" />
+    <Compile Include="Serialization\String\ShortStringConverter.cs" />
+    <Compile Include="Serialization\String\StringConvert.cs" />
+    <Compile Include="Serialization\String\StringConverter.cs" />
+    <Compile Include="Serialization\String\StringStringConverter.cs" />
+    <Compile Include="Serialization\String\UInt16StringConverter.cs" />
+    <Compile Include="Serialization\String\UInt32StringConverter.cs" />
+    <Compile Include="Serialization\String\UInt64StringConverter.cs" />
+    <Compile Include="Serialization\Xml.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

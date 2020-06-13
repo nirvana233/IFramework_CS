@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4C54289C-AAE7-49F6-A1C0-467F3CA41CB2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IFramework.Net</RootNamespace>
+    <AssemblyName>IFramework.Net</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Plugins\IFramework.Net.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IFramework, Version=0.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Plugins\IFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="IFramework.Packets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Plugins\IFramework.Packets.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Net\DownLoad\FileDownLoader.cs" />
+    <Compile Include="Net\DownLoad\FileDownLoader_Http.cs" />
+    <Compile Include="Net\NetUtil.cs" />
+    <Compile Include="Net\Socket\Buffer\BufferSegment.cs" />
+    <Compile Include="Net\Socket\Buffer\SockArgBuffers.cs" />
+    <Compile Include="Net\Socket\Buffer\SocketEventArgPool.cs" />
+    <Compile Include="Net\Socket\NetConnectionTokenPool.cs" />
+    <Compile Include="Net\Socket\SockDel.cs" />
+    <Compile Include="Net\Socket\SocketToken.cs" />
+    <Compile Include="Net\Socket\StringExtension.cs" />
+    <Compile Include="Net\Socket\TCP\TcpClientToken.cs" />
+    <Compile Include="Net\Socket\TCP\TcpServerToken.cs" />
+    <Compile Include="Net\Socket\TCP\TcpSocket.cs" />
+    <Compile Include="Net\Socket\UDP\SocketReceive.cs" />
+    <Compile Include="Net\Socket\UDP\SocketSend.cs" />
+    <Compile Include="Net\Socket\UDP\UdpClientToken.cs" />
+    <Compile Include="Net\Socket\UDP\UdpServerToken.cs" />
+    <Compile Include="Net\Socket\UDP\UdpSocket.cs" />
+    <Compile Include="Net\Socket\WebSock\BaseInfo.cs" />
+    <Compile Include="Net\Socket\WebSock\DataFrame.cs" />
+    <Compile Include="Net\Socket\WebSoc\SslHelper.cs" />
+    <Compile Include="Net\Socket\WebSoc\WSClientToken.cs" />
+    <Compile Include="Net\Socket\WebSoc\WSConnectionItem.cs" />
+    <Compile Include="Net\Socket\WebSoc\WSServerToken.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

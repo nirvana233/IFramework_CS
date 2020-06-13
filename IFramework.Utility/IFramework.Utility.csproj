@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6712A3A9-EC70-4BCE-9DD9-4E97DDF2948E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IFramework.Utility</RootNamespace>
+    <AssemblyName>IFramework.Utility</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Plugins\IFramework.Utility.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IFramework, Version=0.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Plugins\IFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Astar\AStarMap2X.cs" />
+    <Compile Include="Utility\Astar\AStarMap3X.cs" />
+    <Compile Include="Utility\Astar\AStarNode2X.cs" />
+    <Compile Include="Utility\Astar\AStarNode3X.cs" />
+    <Compile Include="Utility\Astar\AStarNodeType.cs" />
+    <Compile Include="Utility\Astar\AStarSeacher.cs" />
+    <Compile Include="Utility\Astar\IAstarMap.cs" />
+    <Compile Include="Utility\Astar\IAStarNode.cs" />
+    <Compile Include="Utility\Astar\IAStarSearcher.cs" />
+    <Compile Include="Utility\DeepCopy.cs" />
+    <Compile Include="Utility\Encryption\AesEncryption.cs" />
+    <Compile Include="Utility\Encryption\DesEncryption.cs" />
+    <Compile Include="Utility\Encryption\HashEncode.cs" />
+    <Compile Include="Utility\Encryption\RsaEncryption.cs" />
+    <Compile Include="Utility\Encryption\TripleEncryption.cs" />
+    <Compile Include="Utility\Encryption\XorEncryption.cs" />
+    <Compile Include="Utility\Explanation\Explanation.cs" />
+    <Compile Include="Utility\Explanation\IExplainer.cs" />
+    <Compile Include="Utility\IReference.cs" />
+    <Compile Include="Utility\ProcessUtil.cs" />
+    <Compile Include="Utility\ThreadPool.cs" />
+    <Compile Include="Utility\Verifier.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
