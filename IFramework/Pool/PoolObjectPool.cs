@@ -4,11 +4,10 @@ using System.Collections.Generic;
 namespace IFramework.Pool
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    internal interface IPoolObjectPool { }
     public delegate Object PoolObjCreaterDel<Object>(Type type, IEventArgs arg, params object[] param) where Object : IPoolObject;
     public delegate IPoolObject PoolObjCreaterDel(Type type, IEventArgs arg, params object[] param);
     [System.Runtime.InteropServices.ComVisible(false)]
-    public class PoolObjectPool: CachePool<IPoolObject>, IPoolObjectPool, IDisposable 
+    public class PoolObjectPool: CachePool<IPoolObject>, IDisposable 
     {
         public PoolObjectPool() : this(new RunningPool<IPoolObject>(), new PoolObjectSleepingPool(), true, 16) { }
         public PoolObjectPool(PoolObjectSleepingPool sleepPool) : this(new RunningPool<IPoolObject>(), sleepPool, true, 16) { }
@@ -74,7 +73,7 @@ namespace IFramework.Pool
             public PoolObjectSleepingPool() { CreaterDels = new List<PoolObjCreaterDel>(); }
         }
     }
-    public class PoolObjectPool<T> : CachePool<T>, IPoolObjectPool, IDisposable where T : IPoolObject
+    public class PoolObjectPool<T> : CachePool<T>, IDisposable where T : IPoolObject
     {
         public PoolObjectPool() : this(new RunningPool<T>(), new PoolObjectSleepingPool<T>(), true, 16) { }
         public PoolObjectPool(PoolObjectSleepingPool<T> sleepPool) : this(new RunningPool<T>(), sleepPool, true, 16) { }

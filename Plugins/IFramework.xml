@@ -42,19 +42,6 @@
             ctor
             </summary>
         </member>
-        <member name="T:IFramework.FrameworkArgs">
-            <summary>
-            可回收接口
-            </summary>
-            <summary>
-            可回收消息基类
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkArgs.argsDirty">
-            <summary>
-            消息是否可用
-            </summary>
-        </member>
         <member name="T:IFramework.EnvironmentType">
             <summary>
             环境类型
@@ -88,6 +75,104 @@
         <member name="F:IFramework.EnvironmentType.Ev4">
             <summary>
             环境4
+            </summary>
+        </member>
+        <member name="T:IFramework.IRecyclable">
+            <summary>
+            可回收
+            </summary>
+        </member>
+        <member name="M:IFramework.IRecyclable.Recyle">
+            <summary>
+            回收
+            </summary>
+        </member>
+        <member name="M:IFramework.IRecyclable.ResetData">
+            <summary>
+            数据重置
+            </summary>
+        </member>
+        <member name="P:IFramework.IRecyclable.recyled">
+            <summary>
+            是否被回收了
+            </summary>
+        </member>
+        <member name="T:IFramework.RecyclableObjectCollection">
+            <summary>
+            可回收集合
+            </summary>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Get(System.Type,IFramework.IEventArgs)">
+            <summary>
+            获取一个实例
+            </summary>
+            <param name="type"></param>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Get``1(IFramework.IEventArgs)">
+            <summary>
+            获取一个实例
+            </summary>
+            <typeparam name="Object"></typeparam>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Set(System.Type,IFramework.RecyclableObject,IFramework.IEventArgs)">
+            <summary>
+            回收一个实例
+            </summary>
+            <param name="type"></param>
+            <param name="t"></param>
+            <param name="arg"></param>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Set``1(``0,IFramework.IEventArgs)">
+            <summary>
+            回收一个实例
+            </summary>
+            <typeparam name="Object"></typeparam>
+            <param name="t"></param>
+            <param name="arg"></param>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.GetFromMemory(System.Guid,IFramework.RecyclableObject@)">
+            <summary>
+            获取没有回收的实例
+            </summary>
+            <param name="id"></param>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Recyle(System.Guid)">
+            <summary>
+            回收一个运行中的实例
+            </summary>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.RecyleAll">
+            <summary>
+            回收所有运行中的实例
+            </summary>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="T:IFramework.FrameworkArgs">
+            <summary>
+            可回收接口
+            </summary>
+            <summary>
+            可回收消息基类
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkArgs.argsDirty">
+            <summary>
+            消息是否可用
             </summary>
         </member>
         <member name="T:IFramework.FrameworkEnvironment">
@@ -200,7 +285,7 @@
             </summary>
             <param name="version"></param>
         </member>
-        <member name="T:IFramework.Inject.FrameworkContainer.Tuple`2">
+        <member name="T:IFramework.Injection.FrameworkContainer.Tuple`2">
             http://stackoverflow.com/questions/1171812/multi-key-dictionary-in-c
         </member>
         <member name="T:IFramework.Modules.ECS.IEntity">
@@ -2389,91 +2474,6 @@
         <member name="T:IFramework.Pool.IPoolObjectOwner">
             <summary>
             
-            </summary>
-        </member>
-        <member name="T:IFramework.IRecyclable">
-            <summary>
-            可回收
-            </summary>
-        </member>
-        <member name="M:IFramework.IRecyclable.Recyle">
-            <summary>
-            回收
-            </summary>
-        </member>
-        <member name="M:IFramework.IRecyclable.ResetData">
-            <summary>
-            数据重置
-            </summary>
-        </member>
-        <member name="P:IFramework.IRecyclable.recyled">
-            <summary>
-            是否被回收了
-            </summary>
-        </member>
-        <member name="T:IFramework.RecyclableObjectCollection">
-            <summary>
-            可回收集合
-            </summary>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Get(System.Type,IFramework.IEventArgs)">
-            <summary>
-            获取一个实例
-            </summary>
-            <param name="type"></param>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Get``1(IFramework.IEventArgs)">
-            <summary>
-            获取一个实例
-            </summary>
-            <typeparam name="Object"></typeparam>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Set(System.Type,IFramework.RecyclableObject,IFramework.IEventArgs)">
-            <summary>
-            回收一个实例
-            </summary>
-            <param name="type"></param>
-            <param name="t"></param>
-            <param name="arg"></param>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Set``1(``0,IFramework.IEventArgs)">
-            <summary>
-            回收一个实例
-            </summary>
-            <typeparam name="Object"></typeparam>
-            <param name="t"></param>
-            <param name="arg"></param>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.GetFromMemory(System.Guid,IFramework.RecyclableObject@)">
-            <summary>
-            获取没有回收的实例
-            </summary>
-            <param name="id"></param>
-            <param name="obj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Recyle(System.Guid)">
-            <summary>
-            回收一个运行中的实例
-            </summary>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.RecyleAll">
-            <summary>
-            回收所有运行中的实例
-            </summary>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Dispose">
-            <summary>
-            释放
             </summary>
         </member>
         <member name="T:IFramework.RecyclableObject">

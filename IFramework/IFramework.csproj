@@ -55,18 +55,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemblies.cs" />
-    <Compile Include="DependenceAttribute.cs" />
-    <Compile Include="DescriptionAttribute.cs" />
+    <Compile Include="AuthorAttributes\DependenceAttribute.cs" />
+    <Compile Include="AuthorAttributes\DescriptionAttribute.cs" />
+    <Compile Include="Environment\EnvironmentType.cs" />
+    <Compile Include="Environment\IRecyclable.cs" />
+    <Compile Include="Environment\RecyclableObjectCollection.cs" />
     <Compile Include="Extension\FloatExtension.cs" />
     <Compile Include="FrameworkArgs.cs" />
     <Compile Include="FrameworkBitConverter.cs" />
-    <Compile Include="FrameworkEnvironment.cs" />
+    <Compile Include="Environment\FrameworkEnvironment.cs" />
     <Compile Include="FrameworkModules.cs" />
     <Compile Include="FrameworkObject.cs" />
-    <Compile Include="FrameworkVersionAttribute.cs" />
+    <Compile Include="AuthorAttributes\FrameworkVersionAttribute.cs" />
     <Compile Include="Inject\FrameworkContainer.cs" />
     <Compile Include="Inject\InjectAttribute.cs" />
-    <Compile Include="LifeTimeObject.cs" />
+    <Compile Include="Environment\LifeTimeObject.cs" />
+    <Compile Include="Log\ILogRecorder.cs" />
     <Compile Include="Modules\ECS\IEntity.cs" />
     <Compile Include="Modules\FrameworkAppModule.cs" />
     <Compile Include="Modules\Coroutine\Coroutine.cs" />
@@ -120,14 +124,14 @@
     <Compile Include="Modules\Resources\ResourceModule.cs" />
     <Compile Include="Modules\UpdateFrameworkModule.cs" />
     <Compile Include="ObservableObject.cs" />
-    <Compile Include="OnEnvironmentInitAttribute.cs" />
+    <Compile Include="Environment\OnEnvironmentInitAttribute.cs" />
     <Compile Include="Point2.cs" />
     <Compile Include="Point3.cs" />
     <Compile Include="Pool\BaseTypePool.cs" />
     <Compile Include="Pool\CapicityPool.cs" />
     <Compile Include="Pool\ListPool.cs" />
-    <Compile Include="RecyclableObject.cs" />
-    <Compile Include="ScriptVersionUpdateAttribute.cs" />
+    <Compile Include="Environment\RecyclableObject.cs" />
+    <Compile Include="AuthorAttributes\ScriptVersionUpdateAttribute.cs" />
     <Compile Include="Framework.cs" />
     <Compile Include="Modules\Fsm\FsmModule.cs" />
     <Compile Include="Modules\Fsm\ConditionValue.cs" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IFramework.Inject
+namespace IFramework.Injection
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public delegate object OnContainerNotExistType(Type baseType, string name);
