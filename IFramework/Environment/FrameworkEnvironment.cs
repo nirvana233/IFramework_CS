@@ -11,9 +11,10 @@ namespace IFramework
     /// <summary>
     /// 框架运行环境
     /// </summary>
-    [FrameworkVersion(22)]
+    [FrameworkVersion(23)]
     [ScriptVersionUpdate(21, "替换可回收对象池子类型")]
     [ScriptVersionUpdate(22, "调整释放时候的成员顺序")]
+    [ScriptVersionUpdate(23, "增加数据绑定器")]
     public class FrameworkEnvironment : FrameworkObject
     {
         private bool _haveInit;
@@ -43,6 +44,10 @@ namespace IFramework
         /// IRecyclable 实例的环境容器
         /// </summary>
         public RecyclableObjectCollection cycleCollection { get; private set; }
+        /// <summary>
+        /// 数据绑定器
+        /// </summary>
+        public BindableObjectHandler bindHandler { get; private set; }
         /// <summary>
         /// IOC容器
         /// </summary>
@@ -93,6 +98,7 @@ namespace IFramework
             this.envName = envName;
             this._envType = envType;
         }
+
         /// <summary>
         /// 初始化环境，3.5 使用
         /// </summary>
@@ -100,7 +106,7 @@ namespace IFramework
         public void Init(IEnumerable<Type> types)
         {
             if (_haveInit) return;
-
+            bindHandler = new BindableObjectHandler();
             container = new FrameworkContainer();
             _modules = new FrameworkModules(this);
             cycleCollection = new RecyclableObjectCollection();
@@ -150,6 +156,7 @@ namespace IFramework
 
             cycleCollection.Dispose();
             container.Dispose();
+            bindHandler.Dispose();
             if (onDispose != null) onDispose();
             sw_init.Stop();
             sw_delta.Stop();

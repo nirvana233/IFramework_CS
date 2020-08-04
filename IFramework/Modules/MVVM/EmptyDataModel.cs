@@ -1,7 +1,7 @@
 ﻿namespace IFramework.Modules.MVVM
 {
     /// <summary>
-    /// 数据
+    /// 空数据模型
     /// </summary>
-    public interface IDataModel { }
+    public class EmptyDataModel : IDataModel { }
 }

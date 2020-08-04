@@ -12,7 +12,7 @@
          <Members>
           <Member Name="#.ctor()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DoNotIndirectlyExposeMethodsWithLinkDemands" Category="Microsoft.Security" CheckId="CA2122" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="NonBreaking">
+            <Message TypeName="DoNotIndirectlyExposeMethodsWithLinkDemands" Category="Microsoft.Security" CheckId="CA2122" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="NonBreaking">
              <Issue Certainty="33" Level="CriticalError" Path="E:\Project\VS\IFramework\IFramework" File="Assemblies.cs" Line="21">'Assemblies.Assemblies()' 调入具有 LinkDemand 的 'AppDomain.AssemblyLoad.add(AssemblyLoadEventHandler)'。通过此调用，'AppDomain.AssemblyLoad.add(AssemblyLoadEventHandler)' 被间接公开给用户代码。检查以下可能公开避开安全保护的方法的调用堆栈: &#xD;&#xA;   -&gt;'Assemblies.Assemblies()'&#xD;&#xA;   -&gt;'Assemblies.Assemblies()'</Issue>
             </Message>
            </Messages>
@@ -23,7 +23,7 @@
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="BaseTypePool.cs" Line="155">修改 'BaseTypePool&lt;T&gt;.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
             </Message>
            </Messages>
@@ -34,7 +34,7 @@
          <Members>
           <Member Name="#onDispose" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -42,7 +42,7 @@
           </Member>
           <Member Name="#onInit" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -50,7 +50,7 @@
           </Member>
           <Member Name="#update" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -60,14 +60,14 @@
         </Type>
         <Type Name="FrameworkObject" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
            <Issue Name="ProvideDisposeBool" Certainty="95" Level="Error">对 'FrameworkObject' 提供 Dispose(bool) 的可重写实现或将该类型标记为密封。对 Dispose(false) 的调用应仅清理本机资源。对 Dispose(true) 的调用应既清理托管资源又清理本机资源。</Issue>
           </Message>
          </Messages>
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework" File="FrameworkObject.cs" Line="19">修改 'FrameworkObject.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
              <Issue Name="DisposeSignature" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework" File="FrameworkObject.cs" Line="19">确保将 'FrameworkObject.Dispose()' 声明为 public 和 sealed。</Issue>
             </Message>
@@ -79,14 +79,14 @@
          <Members>
           <Member Name="#ReadText(System.String,System.Text.Encoding)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="不要多次释放对象" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="DependsOnFix">
+            <Message TypeName="不要多次释放对象" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="DependsOnFix">
              <Issue Certainty="75" Level="Warning" Path="E:\Project\VS\IFramework\IFramework\Extension" File="IO.cs" Line="91">可以在方法 'IO.ReadText(this string, Encoding)' 中多次释放对象 'fs'。若要避免生成 System.ObjectDisposedException，不应对一个对象多次调用 Dispose。: Lines: 91</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#WriteText(System.String,System.String,System.Text.Encoding)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="不要多次释放对象" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="DependsOnFix">
+            <Message TypeName="不要多次释放对象" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="DependsOnFix">
              <Issue Certainty="75" Level="Warning" Path="E:\Project\VS\IFramework\IFramework\Extension" File="IO.cs" Line="114">可以在方法 'IO.WriteText(this string, string, Encoding)' 中多次释放对象 'fs'。若要避免生成 System.ObjectDisposedException，不应对一个对象多次调用 Dispose。: Lines: 114</Issue>
             </Message>
            </Messages>
@@ -97,14 +97,14 @@
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="ObjectPool.cs" Line="55">修改 'ObjectPool&lt;T&gt;.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#onClearObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -112,7 +112,7 @@
           </Member>
           <Member Name="#onCreateObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -120,7 +120,7 @@
           </Member>
           <Member Name="#onGetObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -128,7 +128,7 @@
           </Member>
           <Member Name="#onSetObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -138,14 +138,14 @@
         </Type>
         <Type Name="RecyclableObjectCollection" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
            <Issue Name="ProvideDisposeBool" Certainty="95" Level="Error">对 'RecyclableObjectCollection' 提供 Dispose(bool) 的可重写实现或将该类型标记为密封。对 Dispose(false) 的调用应仅清理本机资源。对 Dispose(true) 的调用应既清理托管资源又清理本机资源。</Issue>
           </Message>
          </Messages>
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Environment" File="RecyclableObjectCollection.cs" Line="170">修改 'RecyclableObjectCollection.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
             </Message>
            </Messages>
@@ -160,7 +160,7 @@
          <Members>
           <Member Name="#onNotExistType" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'OnContainerNotExistType' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Return" Certainty="95" Level="Error">更改 'OnContainerNotExistType' 以返回 void。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'OnContainerNotExistType' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
@@ -177,7 +177,7 @@
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Modules" File="FrameworkModule.cs" Line="126">修改 'FrameworkModule.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
              <Issue Name="DisposeSignature" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Modules" File="FrameworkModule.cs" Line="126">确保将 'FrameworkModule.Dispose()' 声明为 public 和 sealed。</Issue>
             </Message>
@@ -189,7 +189,7 @@
          <Members>
           <Member Name="#onModuleNotExist" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action&lt;Type, string&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action&lt;Type, string&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -201,7 +201,7 @@
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Modules" File="UpdateFrameworkModule.cs" Line="35">修改 'UpdateFrameworkModule.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
              <Issue Name="DisposeSignature" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Modules" File="UpdateFrameworkModule.cs" Line="35">确保将 'UpdateFrameworkModule.Dispose()' 声明为 public 和 sealed。</Issue>
             </Message>
@@ -217,7 +217,7 @@
          <Members>
           <Member Name="#onCompelete" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -229,7 +229,7 @@
          <Members>
           <Member Name="#.ctor()" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="NonBreaking">
+            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="NonBreaking">
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Modules\Coroutine" File="CoroutineInstruction.cs" Line="19">'CoroutineInstruction.CoroutineInstruction()' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;CoroutineInstruction..ctor()&#xD;&#xA;CoroutineInstruction.InnerLogoc():IEnumerator。</Issue>
             </Message>
            </Messages>
@@ -244,7 +244,7 @@
          <Members>
           <Member Name="#.ctor(IFramework.Modules.Fsm.ConditionValue`1&lt;!0&gt;,System.Object,IFramework.Modules.Fsm.CompareType)" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="NonBreaking">
+            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="NonBreaking">
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Modules\Fsm\Condition" File="Condition.cs" Line="43">'Condition&lt;T&gt;.Condition(ConditionValue&lt;T&gt;, object, CompareType)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;Condition&lt;T&gt;..ctor(ConditionValue&lt;T&gt;, Object, CompareType)&#xD;&#xA;Condition&lt;T&gt;.SetConditionType(CompareType):CompareType。</Issue>
             </Message>
            </Messages>
@@ -255,7 +255,7 @@
          <Members>
           <Member Name="#onStateChange" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error">将 'Action&lt;IState&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error">将 'Action&lt;IState&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -269,14 +269,14 @@
        <Types>
         <Type Name="MVVMGroup" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
            <Issue Name="ProvideDisposeBool" Certainty="95" Level="Error">对 'MVVMGroup' 提供 Dispose(bool) 的可重写实现或将该类型标记为密封。对 Dispose(false) 的调用应仅清理本机资源。对 Dispose(true) 的调用应既清理托管资源又清理本机资源。</Issue>
           </Message>
          </Messages>
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Modules\MVVM" File="MVVMGroup.cs" Line="130">修改 'MVVMGroup.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
             </Message>
            </Messages>
@@ -287,7 +287,10 @@
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message Id="handler" TypeName="DisposableFieldsShouldBeDisposed" Category="Microsoft.Usage" CheckId="CA2213" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="NonBreaking">
+             <Issue Certainty="75" Level="Warning" Path="E:\Project\VS\IFramework\IFramework\Modules\MVVM" File="View.cs" Line="55">'View' 包含 IDisposable 类型的字段 'View.handler': 'ObservableObjectHandler'。请更改 'View' 的 Dispose 方法，使其针对该字段调用 Dispose 或 Close。</Issue>
+            </Message>
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Modules\MVVM" File="View.cs" Line="55">修改 'View.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
             </Message>
            </Messages>
@@ -302,7 +305,7 @@
          <Members>
           <Member Name="#.ctor()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="NonBreaking">
+            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="NonBreaking">
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Modules\Resources" File="ResourceLoader.cs" Line="73">'ResourceLoader.ResourceLoader()' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;ResourceLoader..ctor()&#xD;&#xA;ResourceLoader.CreateResource():Resource。</Issue>
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Modules\Resources" File="ResourceLoader.cs" Line="73">'ResourceLoader.ResourceLoader()' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;ResourceLoader..ctor()&#xD;&#xA;ResourceLoader.set__isdone(Boolean):Void。</Issue>
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Modules\Resources" File="ResourceLoader.cs" Line="73">'ResourceLoader.ResourceLoader()' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;ResourceLoader..ctor()&#xD;&#xA;ResourceLoader.set__progress(Single):Void。</Issue>
@@ -311,7 +314,7 @@
           </Member>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Modules\Resources" File="ResourceLoader.cs" Line="87">修改 'ResourceLoader.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
             </Message>
            </Messages>
@@ -324,14 +327,14 @@
        <Types>
         <Type Name="CachePool`1" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
            <Issue Name="ProvideDisposeBool" Certainty="95" Level="Error">对 'CachePool&lt;T&gt;' 提供 Dispose(bool) 的可重写实现或将该类型标记为密封。对 Dispose(false) 的调用应仅清理本机资源。对 Dispose(true) 的调用应既清理托管资源又清理本机资源。</Issue>
           </Message>
          </Messages>
          <Members>
           <Member Name="#.ctor(IFramework.Pool.RunningPool`1&lt;!0&gt;,IFramework.Pool.SleepingPool`1&lt;!0&gt;)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="NonBreaking">
+            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="NonBreaking">
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="42">'CachePool&lt;T&gt;.CachePool(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;CachePool&lt;T&gt;..ctor(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;)&#xD;&#xA;CachePool&lt;T&gt;..ctor(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;, Boolean, Int32)&#xD;&#xA;CachePool&lt;T&gt;.set_RunningPoool(RunningPool&lt;T&gt;):Void。</Issue>
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="42">'CachePool&lt;T&gt;.CachePool(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;CachePool&lt;T&gt;..ctor(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;)&#xD;&#xA;CachePool&lt;T&gt;..ctor(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;, Boolean, Int32)&#xD;&#xA;CachePool&lt;T&gt;.set_SleepPool(SleepingPool&lt;T&gt;):Void。</Issue>
             </Message>
@@ -339,7 +342,7 @@
           </Member>
           <Member Name="#.ctor(IFramework.Pool.RunningPool`1&lt;!0&gt;,IFramework.Pool.SleepingPool`1&lt;!0&gt;,System.Boolean,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="NonBreaking">
+            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="NonBreaking">
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="43">'CachePool&lt;T&gt;.CachePool(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;, bool, int)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;CachePool&lt;T&gt;..ctor(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;, Boolean, Int32)&#xD;&#xA;CachePool&lt;T&gt;.set_RunningPoool(RunningPool&lt;T&gt;):Void。</Issue>
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="43">'CachePool&lt;T&gt;.CachePool(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;, bool, int)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;CachePool&lt;T&gt;..ctor(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;, Boolean, Int32)&#xD;&#xA;CachePool&lt;T&gt;.set_SleepPool(SleepingPool&lt;T&gt;):Void。</Issue>
             </Message>
@@ -347,7 +350,7 @@
           </Member>
           <Member Name="#.ctor(IFramework.Pool.SleepingPool`1&lt;!0&gt;)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="NonBreaking">
+            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="NonBreaking">
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="41">'CachePool&lt;T&gt;.CachePool(SleepingPool&lt;T&gt;)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;CachePool&lt;T&gt;..ctor(SleepingPool&lt;T&gt;)&#xD;&#xA;CachePool&lt;T&gt;..ctor(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;, Boolean, Int32)&#xD;&#xA;CachePool&lt;T&gt;.set_RunningPoool(RunningPool&lt;T&gt;):Void。</Issue>
              <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="41">'CachePool&lt;T&gt;.CachePool(SleepingPool&lt;T&gt;)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;CachePool&lt;T&gt;..ctor(SleepingPool&lt;T&gt;)&#xD;&#xA;CachePool&lt;T&gt;..ctor(RunningPool&lt;T&gt;, SleepingPool&lt;T&gt;, Boolean, Int32)&#xD;&#xA;CachePool&lt;T&gt;.set_SleepPool(SleepingPool&lt;T&gt;):Void。</Issue>
             </Message>
@@ -355,7 +358,7 @@
           </Member>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="52">修改 'CachePool&lt;T&gt;.Dispose()'，使它先调用 Dispose(true)，然后对当前对象实例(在 Visual Basic 中为“this”或“Me”)调用 GC.SuppressFinalize，最后返回。</Issue>
              <Issue Name="DisposeSignature" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="52">确保将 'CachePool&lt;T&gt;.Dispose()' 声明为 public 和 sealed。</Issue>
             </Message>
@@ -363,7 +366,7 @@
           </Member>
           <Member Name="#OnClearObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="36">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="36">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -371,7 +374,7 @@
           </Member>
           <Member Name="#OnCreateObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="39">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="39">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -379,7 +382,7 @@
           </Member>
           <Member Name="#OnGetObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="37">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="37">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -387,7 +390,7 @@
           </Member>
           <Member Name="#OnRunningPoolClearObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="31">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="31">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -395,7 +398,7 @@
           </Member>
           <Member Name="#OnRunningPoolCreateObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="34">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="34">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -403,7 +406,7 @@
           </Member>
           <Member Name="#OnRunningPoolGetObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="32">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="32">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -411,7 +414,7 @@
           </Member>
           <Member Name="#OnRunningPoolSetObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="33">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="33">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -419,7 +422,7 @@
           </Member>
           <Member Name="#OnSetObject" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
              <Issue Name="First" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="38">将 'Action&lt;T, IEventArgs&gt;' 的第一个参数声明为一个名为“sender”的对象。</Issue>
              <Issue Name="Second" Certainty="95" Level="Error" Path="E:\Project\VS\IFramework\IFramework\Pool" File="CachePool.cs" Line="38">将 'Action&lt;T, IEventArgs&gt;' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
             </Message>
@@ -429,14 +432,14 @@
         </Type>
         <Type Name="PoolObjectPool" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
            <Issue Name="IDisposableReimplementation" Certainty="95" Level="Error">从 'PoolObjectPool' 实现的接口列表中移除 IDisposable，并重写 Dispose 基类实现。</Issue>
           </Message>
          </Messages>
         </Type>
         <Type Name="PoolObjectPool`1" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-04 12:48:02Z" FixCategory="Breaking">
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2020-08-09 10:51:39Z" FixCategory="Breaking">
            <Issue Name="IDisposableReimplementation" Certainty="95" Level="Error">从 'PoolObjectPool&lt;T&gt;' 实现的接口列表中移除 IDisposable，并重写 Dispose 基类实现。</Issue>
           </Message>
          </Messages>
@@ -460,6 +463,16 @@
    <Email>[none]</Email>
    <MessageLevel Certainty="95">Error</MessageLevel>
    <File Name="designrules.dll" Version="15.0.0.0" />
+  </Rule>
+  <Rule TypeName="DisposableFieldsShouldBeDisposed" Category="Microsoft.Usage" CheckId="CA2213">
+   <Name>应释放可释放的字段</Name>
+   <Description>如果实现了 IDisposable 的类型拥有同样实现 IDisposable 的字段，则封装类型的 Dispose() 实现应对每个可释放字段调用 Dispose()。</Description>
+   <Resolution Name="Default">{0} 包含 IDisposable 类型的字段 {1}: {2}。请更改 {0} 的 Dispose 方法，使其针对该字段调用 Dispose 或 Close。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182328.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="usagerules.dll" Version="15.0.0.0" />
   </Rule>
   <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
    <Name>不要在构造函数中调用可重写的方法</Name>

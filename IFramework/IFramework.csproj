@@ -103,6 +103,7 @@
     <Compile Include="Modules\Message\IMessageListener.cs" />
     <Compile Include="Modules\Message\IMessagePublisher.cs" />
     <Compile Include="Modules\Message\MessageMoudle.cs" />
+    <Compile Include="Modules\MVVM\EmptyDataModel.cs" />
     <Compile Include="Modules\MVVM\IDataModel.cs" />
     <Compile Include="Modules\MVVM\MVVMGroup.cs" />
     <Compile Include="Modules\MVVM\MVVMModule.cs" />
@@ -123,8 +124,12 @@
     <Compile Include="Modules\Resources\ResourceLoader.cs" />
     <Compile Include="Modules\Resources\ResourceModule.cs" />
     <Compile Include="Modules\UpdateFrameworkModule.cs" />
-    <Compile Include="ObservableObject.cs" />
+    <Compile Include="Observe\BindableObject.cs" />
+    <Compile Include="Observe\BindableObjectHandler.cs" />
+    <Compile Include="Observe\ObservableObject.cs" />
     <Compile Include="Environment\OnEnvironmentInitAttribute.cs" />
+    <Compile Include="Observe\ObservableObjectHandler.cs" />
+    <Compile Include="Observe\ObservableValue.cs" />
     <Compile Include="Point2.cs" />
     <Compile Include="Point3.cs" />
     <Compile Include="Pool\BaseTypePool.cs" />
@@ -138,7 +143,6 @@
     <Compile Include="Modules\Fsm\Transition.cs" />
     <Compile Include="Modules\Fsm\IState.cs" />
     <Compile Include="Inject\IFrameworkContainer.cs" />
-    <Compile Include="Pool\IPoolObjectOwner.cs" />
     <Compile Include="Pool\CachePool.cs" />
     <Compile Include="Extension\IEnumerableExtension.cs" />
     <Compile Include="Extension\IntExtension.cs" />
