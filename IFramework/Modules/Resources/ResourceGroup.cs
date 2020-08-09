@@ -48,11 +48,11 @@ namespace IFramework.Modules.Resources
 
 
 
-        public ResourceLoader Load<T>(string name, string path, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader) where T : ResourceLoader
+        public ResourceLoader Load<T>( string path, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader) where T : ResourceLoader
         {
-            return Load(typeof(T), name, path, dependences, dependenceLoader);
+            return Load(typeof(T), path, dependences, dependenceLoader);
         }
-        public ResourceLoader Load(Type loaderType,string name, string path, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader) 
+        public ResourceLoader Load(Type loaderType, string path, Dependence[] dependences, Func<Dependence, ResourceLoader> dependenceLoader) 
         {
             using (new LockWait(ref _lock))
             {
@@ -62,9 +62,9 @@ namespace IFramework.Modules.Resources
                     List<ResourceLoader> _loaders = LoadDependences(dependences, dependenceLoader);
 
                     _loader = AllocateLoader(loaderType);
-                    _loader.Config(name, path, _loaders);
+                    _loader.Config(path, _loaders);
                     _loader.Load();
-                    _loaderMap.Add(_loader.name, _loader);
+                    _loaderMap.Add(_loader.path, _loader);
                 }
                 _loader.Retain();
                 return _loader;
@@ -74,8 +74,8 @@ namespace IFramework.Modules.Resources
         {
             using (new LockWait(ref _lock))
             {
-                if (!_loaderMap.ContainsKey(loader.name))
-                    throw new Exception(string.Format("Not Exist Loader Type: {0} Name: {1} Path:{2} ", loader.GetType(), loader.name, loader.path));
+                if (!_loaderMap.ContainsKey(loader.path))
+                    throw new Exception(string.Format("Not Exist Loader Type: {0} Path:{1} ", loader.GetType(),  loader.path));
                 else
                 {
                     List<ResourceLoader> _loaders = LoadDependences(dependences, dependenceLoader);
@@ -103,7 +103,7 @@ namespace IFramework.Modules.Resources
                 {
                     ResourceLoader _loader = _remove.Dequeue();
                     _loader.UnLoad();
-                    _loaderMap.Remove(_loader.name);
+                    _loaderMap.Remove(_loader.path);
                     RecyleLoader(_loader);
                 }
             }

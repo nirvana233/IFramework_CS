@@ -24,10 +24,7 @@ namespace IFramework.Modules.Resources
         /// 自身进度
         /// </summary>
         protected virtual float _progress { get; set; }
-        /// <summary>
-        /// 名字
-        /// </summary>
-        public string name { get; private set; }
+
         /// <summary>
         /// 路径
         /// </summary>
@@ -92,9 +89,8 @@ namespace IFramework.Modules.Resources
         }
 
 
-        internal void Config(string name, string path, List<ResourceLoader> loaders)
+        internal void Config(string path, List<ResourceLoader> loaders)
         {
-            this.name = name;
             this.path = path;
             Config(loaders);
         }
@@ -130,7 +126,7 @@ namespace IFramework.Modules.Resources
             OnReset();
             _progress = 0;
             _isdone = false;
-            error = name = path = string.Empty;
+            error = path = string.Empty;
             group = null;
         }
 

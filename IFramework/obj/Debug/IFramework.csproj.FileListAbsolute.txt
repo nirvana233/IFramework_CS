@@ -48,3 +48,7 @@ E:\Project\VS\IFramework\Plugins\IFramework.pdb
 E:\Project\VS\IFramework\Plugins\IFramework.dll.CodeAnalysisLog.xml
 E:\Project\VS\IFramework\Plugins\IFramework.dll.lastcodeanalysissucceeded
 E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csprojAssemblyReference.cache
+E:\IFramework_CS\IFramework\obj\Debug\IFramework.csprojAssemblyReference.cache
+E:\IFramework_CS\IFramework\obj\Debug\IFramework.csproj.CoreCompileInputs.cache
+E:\IFramework_CS\IFramework\obj\Debug\IFramework.dll
+E:\IFramework_CS\IFramework\obj\Debug\IFramework.pdb
