@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace IFramework.Modules.Resources
+namespace IFramework.Resources
 {
     /// <summary>
     /// 文件流加载器
@@ -24,9 +24,10 @@ namespace IFramework.Modules.Resources
             }
             finally
             {
-                _isdone = true;
-                _progress = 1;
+                isdone = true;
+                progress = 1;
             }
         }
+      
     }
 }

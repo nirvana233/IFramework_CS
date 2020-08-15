@@ -5,3 +5,4 @@ E:\Project\VS\IFramework\Plugins\IFramework.Packets.pdb
 E:\Project\VS\IFramework\IFramework.Packets\obj\Debug\IFramework.Packets.csproj.CopyComplete
 E:\Project\VS\IFramework\IFramework.Packets\obj\Debug\IFramework.Packets.dll
 E:\Project\VS\IFramework\IFramework.Packets\obj\Debug\IFramework.Packets.pdb
+E:\Project\VS\IFramework\IFramework.Packets\obj\Debug\IFramework.Packets.csprojAssemblyReference.cache

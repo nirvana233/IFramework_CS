@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 
-namespace IFramework.Modules.Resources
+namespace IFramework.Resources
 {
     /// <summary>
     /// http流加载器
@@ -25,7 +25,7 @@ namespace IFramework.Modules.Resources
                 while (_stream.Read(Tresource.Tvalue, (int)_stream.Position, _blockSize) > 0)
                 {
                     if (!_stream.CanRead) break;
-                    _progress = _stream.Position / _stream.Length;
+                    progress = _stream.Position / _stream.Length;
                 }
                 //_stream.Close();
                 _response.Close();
@@ -37,8 +37,8 @@ namespace IFramework.Modules.Resources
             }
             finally
             {
-                _progress = 1;
-                _isdone = true;
+                progress = 1;
+                isdone = true;
             }
            
         }

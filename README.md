@@ -9,6 +9,7 @@ Simple  C# Tools
     * FrameworkEnvironment（环境）
       * RecyclableObjectPool （通用对象池）
       * IFrameworkContainer（ioc容器）
+      * bindHandler（数据绑定器）
       * FrameworkModules
         * FsmModule（状态机）
         * LoomModule（线程反馈）

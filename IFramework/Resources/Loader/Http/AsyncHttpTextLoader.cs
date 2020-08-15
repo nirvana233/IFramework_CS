@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace IFramework.Modules.Resources
+namespace IFramework.Resources
 {
     /// <summary>
     /// 异步Http文本加载
@@ -19,16 +19,17 @@ namespace IFramework.Modules.Resources
         /// <summary>
         /// 进度
         /// </summary>
-        protected override float _progress
+        public override float progress
         {
             get
             {
                 if (_stream != null)
                     return _stream.Position / _stream.Length;
-                if (_isdone)
+                if (isdone)
                     return 1;
                 return 0;
             }
+            protected set { }
         }
         /// <summary>
         /// 加载
@@ -46,8 +47,8 @@ namespace IFramework.Modules.Resources
             }
             finally
             {
-                _progress = 1;
-                _isdone = true;
+                progress = 1;
+                isdone = true;
             }
 
         }
@@ -86,7 +87,7 @@ namespace IFramework.Modules.Resources
                 {
                     Tresource.Tvalue = _sb.ToString();
                     _stream.Dispose();
-                    _isdone = true;
+                    isdone = true;
                 }
             }
             catch (Exception e)

@@ -1,35 +1,35 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 
-namespace IFramework.Modules.Resources
+namespace IFramework.Resources
 {
     /// <summary>
-    /// 异步文本加载器
+    /// 异步文件流加载器
     /// </summary>
-    /// <typeparam name="Encod"></typeparam>
-    public class AsyncFileTextLoader<Encod> : AsyncResourceLoader<string> where Encod : Encoding, new()
+    [System.Runtime.InteropServices.ComVisible(false)]
+    public class AsyncFileBytesLoader : AsyncResourceLoader<byte[]>
     {
         /// <summary>
         /// 进度
         /// </summary>
-        protected override float _progress
+        public override float progress
         {
             get
             {
                 if (_fs != null)
                     return _fs.Position / _fs.Length;
-                if (_isdone)
+                if (isdone)
                     return 1;
                 return 0;
             }
-        }
-        private Encod _en { get { return new Encod(); } }
+            protected set
+            {
 
-        private StringBuilder _sb;
+            }
+        }
         private byte[] _buffer;
         private FileStream _fs;
-        private int _blockSize=2048;
+        private int _blockSize = 2048;
         /// <summary>
         /// 加载
         /// </summary>
@@ -37,40 +37,38 @@ namespace IFramework.Modules.Resources
         {
             try
             {
-                _sb = new StringBuilder();
-                _buffer = new byte[_blockSize];
                 _fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, _blockSize, true);
+                Tresource.Tvalue = new byte[_fs.Length];
+                _buffer = new byte[_blockSize];
                 _fs.BeginRead(_buffer, 0, _buffer.Length, EndRead, _fs);
             }
             catch (Exception e)
             {
                 ThrowErr(e.Message);
             }
-
         }
-        private void EndRead(IAsyncResult asyncResult)
+
+        private void EndRead(IAsyncResult ar)
         {
             try
             {
-                int bytesRead = _fs.EndRead(asyncResult);
+                int bytesRead = _fs.EndRead(ar);
                 if (bytesRead > 0)
                 {
-                    var datastr = _en.GetString(_buffer, 0, _buffer.Length);
-                    _sb.Append(datastr);
+                    Array.Copy(_buffer, 0, Tresource.Tvalue, _fs.Position, _blockSize);
                     _fs.BeginRead(_buffer, 0, _buffer.Length, EndRead, null);
                 }
                 else
                 {
-                    Tresource.Tvalue = _sb.ToString();
                     _fs.Dispose();
-                    _isdone = true;
+                    isdone = true;
                 }
             }
             catch (Exception e)
             {
                 ThrowErr(e.Message);
             }
-           
         }
+
     }
 }

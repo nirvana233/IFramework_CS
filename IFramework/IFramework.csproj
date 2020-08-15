@@ -109,20 +109,19 @@
     <Compile Include="Modules\MVVM\MVVMModule.cs" />
     <Compile Include="Modules\MVVM\View.cs" />
     <Compile Include="Modules\MVVM\ViewModel.cs" />
-    <Compile Include="Modules\Resources\Loader\AsyncFileBytesLoader.cs" />
-    <Compile Include="Modules\Resources\Loader\AsyncFileTextLoader.cs" />
-    <Compile Include="Modules\Resources\AsyncResourceLoader.cs" />
-    <Compile Include="Modules\Resources\Loader\AsyncHttpBytesLoader.cs" />
-    <Compile Include="Modules\Resources\Loader\AsyncHttpTextLoader.cs" />
-    <Compile Include="Modules\Resources\Loader\HttpBytesLoader.cs" />
-    <Compile Include="Modules\Resources\Loader\HttpTextLoader.cs" />
-    <Compile Include="Modules\Resources\Dependence.cs" />
-    <Compile Include="Modules\Resources\Loader\FileBytesLoader.cs" />
-    <Compile Include="Modules\Resources\Loader\FileTextLoader.cs" />
-    <Compile Include="Modules\Resources\Resource.cs" />
-    <Compile Include="Modules\Resources\ResourceGroup.cs" />
-    <Compile Include="Modules\Resources\ResourceLoader.cs" />
-    <Compile Include="Modules\Resources\ResourceModule.cs" />
+    <Compile Include="Resources\Group\FileResourceGroup.cs" />
+    <Compile Include="Resources\Group\HttpResourceGroup.cs" />
+    <Compile Include="Resources\Resource.cs" />
+    <Compile Include="Resources\Loader\ResourceLoader.cs" />
+    <Compile Include="Resources\Loader\File\AsyncFileBytesLoader.cs" />
+    <Compile Include="Resources\Loader\File\AsyncFileTextLoader.cs" />
+    <Compile Include="Resources\Loader\AsyncResourceLoader.cs" />
+    <Compile Include="Resources\Loader\Http\AsyncHttpBytesLoader.cs" />
+    <Compile Include="Resources\Loader\Http\AsyncHttpTextLoader.cs" />
+    <Compile Include="Resources\Loader\Http\HttpBytesLoader.cs" />
+    <Compile Include="Resources\Loader\Http\HttpTextLoader.cs" />
+    <Compile Include="Resources\Loader\File\FileBytesLoader.cs" />
+    <Compile Include="Resources\Loader\File\FileTextLoader.cs" />
     <Compile Include="Modules\UpdateFrameworkModule.cs" />
     <Compile Include="Observe\BindableObject.cs" />
     <Compile Include="Observe\BindableObjectHandler.cs" />
@@ -162,6 +161,8 @@
     <Compile Include="Extension\StringExtension_Regex.cs" />
     <Compile Include="Extension\TypeExtension.cs" />
     <Compile Include="Modules\Fsm\Condition\Condition.cs" />
+    <Compile Include="Resources\Group\IResourceGroup.cs" />
+    <Compile Include="Resources\Group\ResourceGroup.cs" />
     <Compile Include="ValueCurve.cs" />
   </ItemGroup>
   <ItemGroup>

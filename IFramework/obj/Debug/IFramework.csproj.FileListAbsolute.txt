@@ -1,49 +1,8 @@
-C:\Users\28093\Desktop\IFramwork_CS\IFramework.dll
-C:\Users\28093\Desktop\IFramwork_CS\IFramework.pdb
-C:\Users\28093\Desktop\IFramwork_CS\IFramework.dll.CodeAnalysisLog.xml
-C:\Users\28093\Desktop\IFramwork_CS\IFramework.dll.lastcodeanalysissucceeded
-C:\Users\28093\Desktop\IF_Git - 副本\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll
-C:\Users\28093\Desktop\IF_Git - 副本\Assets\IFramework\0.1Core\0.1Plugins\IFramework.pdb
-C:\Users\28093\Desktop\IF_Git - 副本\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.CodeAnalysisLog.xml
-C:\Users\28093\Desktop\IF_Git - 副本\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.lastcodeanalysissucceeded
-E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\IFramework.dll
-E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\IFramework.pdb
-E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\IFramework.dll.CodeAnalysisLog.xml
-E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\IFramework.dll.lastcodeanalysissucceeded
-E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.pdb
-E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csproj.CoreCompileInputs.cache
-E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.pdb
-E:\Project\IFrameworkDemo\Client\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll
-E:\Project\IFrameworkDemo\Client\Assets\IFramework\0.1Core\0.1Plugins\IFramework.pdb
-E:\Project\IFrameworkDemo\Client\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.CodeAnalysisLog.xml
-E:\Project\IFrameworkDemo\Client\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.lastcodeanalysissucceeded
-E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml
-E:\Project\VS\IFramework\IFramework\IFramework.exe
-E:\Project\VS\IFramework\IFramework\IFramework.pdb
-E:\Project\VS\IFramework\IFramework\IFramework.exe.CodeAnalysisLog.xml
-E:\Project\VS\IFramework\IFramework\IFramework.exe.lastcodeanalysissucceeded
-E:\Project\VS\IFramework\IFramework\Newtonsoft.Json.dll
-E:\Project\IFrameworkDemo\Client\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml
-E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll
-E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.CodeAnalysisLog.xml
-E:\Project\Unity\IF_Gitee\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.lastcodeanalysissucceeded
-E:\Project\IFrameworkDemo\FormSever\FormSever\Plugins\IFramework.pdb
-E:\Project\IFrameworkDemo\FormSever\FormSever\Plugins\IFramework.dll
-E:\Project\IFrameworkDemo\FormSever\FormSever\Plugins\IFramework.dll.CodeAnalysisLog.xml
-E:\Project\IFrameworkDemo\FormSever\FormSever\Plugins\IFramework.dll.lastcodeanalysissucceeded
-E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.dll
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\0.1Plugins\IFramework.xml
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\0.1Plugins\IFramework.pdb
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.CodeAnalysisLog.xml
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\0.1Plugins\IFramework.dll.lastcodeanalysissucceeded
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.xml
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.dll
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.pdb
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.dll.CodeAnalysisLog.xml
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.dll.lastcodeanalysissucceeded
 E:\Project\VS\IFramework\Plugins\IFramework.xml
 E:\Project\VS\IFramework\Plugins\IFramework.dll
 E:\Project\VS\IFramework\Plugins\IFramework.pdb
 E:\Project\VS\IFramework\Plugins\IFramework.dll.CodeAnalysisLog.xml
 E:\Project\VS\IFramework\Plugins\IFramework.dll.lastcodeanalysissucceeded
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csproj.CoreCompileInputs.cache
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.dll
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.pdb

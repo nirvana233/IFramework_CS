@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 
-namespace IFramework.Modules.Resources
+namespace IFramework.Resources
 {
     /// <summary>
     /// http流加载器
@@ -31,8 +31,8 @@ namespace IFramework.Modules.Resources
             }
             finally
             {
-                _progress = 1;
-                _isdone = true;
+                progress = 1;
+                isdone = true;
             }
         }
     }

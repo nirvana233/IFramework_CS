@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace IFramework.Modules.Resources
+namespace IFramework.Resources
 {
     /// <summary>
     /// 文本加载器
@@ -26,8 +26,8 @@ namespace IFramework.Modules.Resources
             }
             finally
             {
-                _isdone = true;
-                _progress = 1;
+                isdone = true;
+                progress = 1;
             }
 
         }

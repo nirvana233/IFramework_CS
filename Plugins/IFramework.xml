@@ -1588,529 +1588,6 @@
             方便书写
             </summary>
         </member>
-        <member name="T:IFramework.Modules.Resources.AsyncFileBytesLoader">
-            <summary>
-            异步文件流加载器
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.AsyncFileBytesLoader._progress">
-            <summary>
-            进度
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.AsyncFileBytesLoader.OnLoad">
-            <summary>
-            加载
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.AsyncFileTextLoader`1">
-            <summary>
-            异步文本加载器
-            </summary>
-            <typeparam name="Encod"></typeparam>
-        </member>
-        <member name="P:IFramework.Modules.Resources.AsyncFileTextLoader`1._progress">
-            <summary>
-            进度
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.AsyncFileTextLoader`1.OnLoad">
-            <summary>
-            加载
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.AsyncResourceLoader">
-            <summary>
-            异步资源加载器
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.AsyncResourceLoader`1">
-            <summary>
-            泛型异步资源加载器
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="P:IFramework.Modules.Resources.AsyncResourceLoader`1.Tresource">
-            <summary>
-            泛型资源
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.AsyncResourceLoader`1.CreateResource">
-            <summary>
-            创建泛型资源实例
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.AsyncResourceLoader`1.OnUnLoad">
-            <summary>
-            卸载
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.AsyncHttpBytesLoader">
-            <summary>
-            异步Http加载器
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.AsyncHttpBytesLoader._progress">
-            <summary>
-            进度
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.AsyncHttpBytesLoader.OnLoad">
-            <summary>
-            加载
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.AsyncHttpTextLoader">
-            <summary>
-            异步Http文本加载
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.AsyncHttpTextLoader._progress">
-            <summary>
-            进度
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.AsyncHttpTextLoader.OnLoad">
-            <summary>
-            加载
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.HttpBytesLoader">
-            <summary>
-            http流加载器
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.HttpBytesLoader.OnLoad">
-            <summary>
-            加载
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.HttpTextLoader">
-            <summary>
-            http流加载器
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.HttpTextLoader.OnLoad">
-            <summary>
-            加载
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.Dependence">
-            <summary>
-            依赖
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Resources.Dependence.name">
-            <summary>
-            名字
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Resources.Dependence.path">
-            <summary>
-            路径
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.FileBytesLoader">
-            <summary>
-            文件流加载器
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.FileBytesLoader.OnLoad">
-            <summary>
-            加载
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.FileTextLoader`1">
-            <summary>
-            文本加载器
-            </summary>
-            <typeparam name="Encod"></typeparam>
-        </member>
-        <member name="M:IFramework.Modules.Resources.FileTextLoader`1.OnLoad">
-            <summary>
-            加载
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.Resource">
-            <summary>
-            资源
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource.progress">
-            <summary>
-            进度
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource.name">
-            <summary>
-            名字
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource.isdone">
-            <summary>
-            是否完成
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource.path">
-            <summary>
-            路径
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource.groupName">
-            <summary>
-            资源组
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource.moudule">
-            <summary>
-            模块
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource.dependences">
-            <summary>
-            依赖资源
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource.error">
-            <summary>
-            错误
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.Resource.Release">
-            <summary>
-            释放资源 
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource.value">
-            <summary>
-            资源
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.Resource`1">
-            <summary>
-            泛型资源
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="P:IFramework.Modules.Resources.Resource`1.Tvalue">
-            <summary>
-            资源值
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.ResourceLoader">
-            <summary>
-            资源加载器
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.ResourceLoader._isdone">
-            <summary>
-            自生是否完成
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.ResourceLoader._progress">
-            <summary>
-            自身进度
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.ResourceLoader.name">
-            <summary>
-            名字
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.ResourceLoader.path">
-            <summary>
-            路径
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.ResourceLoader.isdone">
-            <summary>
-            是否完成
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.ResourceLoader.progress">
-            <summary>
-            进度
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.ResourceLoader.resource">
-            <summary>
-            资源
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader.Dispose">
-            <summary>
-            最终释放
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader.CreateResource">
-            <summary>
-            创建泛型资源实例
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader.OnLoad">
-            <summary>
-            加载资源
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader.OnUnLoad">
-            <summary>
-            卸载资源
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader.OnReset">
-            <summary>
-            重置数据
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader.OnDispose">
-            <summary>
-            释放时
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader.ThrowErr(System.String)">
-            <summary>
-            抛出错误
-            </summary>
-            <param name="err"></param>
-        </member>
-        <member name="T:IFramework.Modules.Resources.ResourceLoader`1">
-            <summary>
-             泛型资源加载器
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="P:IFramework.Modules.Resources.ResourceLoader`1.Tresource">
-            <summary>
-            泛型资源
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader`1.CreateResource">
-            <summary>
-            创建泛型资源实例
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceLoader`1.OnUnLoad">
-            <summary>
-            卸载时
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Resources.ResourceModule">
-            <summary>
-            资源模块
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Resources.ResourceModule.trick">
-            <summary>
-            gc
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.Load``1(System.String,System.String,System.String)">
-            <summary>
-            加载资源
-            </summary>
-            <typeparam name="LoaderType"></typeparam>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync``1(System.String,System.String,System.String)">
-            <summary>
-            异步加载资源
-            </summary>
-            <typeparam name="LoaderType"></typeparam>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.Load``2(System.String,System.String,System.String)">
-            <summary>
-            加载资源(泛型)
-            </summary>
-            <typeparam name="T"></typeparam>
-            <typeparam name="LoaderType"></typeparam>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync``2(System.String,System.String,System.String)">
-            <summary>
-            异步加载资源(泛型)
-            </summary>
-            <typeparam name="T"></typeparam>
-            <typeparam name="LoaderType"></typeparam>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.Load``1(System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
-            <summary>
-            加载资源
-            </summary>
-            <typeparam name="LoaderType"></typeparam>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <param name="dependences"></param>
-            <param name="dependenceLoader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync``1(System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
-            <summary>
-            异步加载资源
-            </summary>
-            <typeparam name="LoaderType"></typeparam>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <param name="dependences"></param>
-            <param name="dependenceLoader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.Load``2(System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
-            <summary>
-            加载资源(泛型)
-            </summary>
-            <typeparam name="T"></typeparam>
-            <typeparam name="LoaderType"></typeparam>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <param name="dependences"></param>
-            <param name="dependenceLoader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync``2(System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
-            <summary>
-            异步加载资源(泛型)
-            </summary>
-            <typeparam name="T"></typeparam>
-            <typeparam name="LoaderType"></typeparam>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <param name="dependences"></param>
-            <param name="dependenceLoader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.Load(System.Type,System.String,System.String,System.String)">
-            <summary>
-            加载资源
-            </summary>
-            <param name="loaderType"></param>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync(System.Type,System.String,System.String,System.String)">
-            <summary>
-            异步加载资源
-            </summary>
-            <param name="loaderType"></param>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.Load``1(System.Type,System.String,System.String,System.String)">
-            <summary>
-            加载资源(泛型)
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="loaderType"></param>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync``1(System.Type,System.String,System.String,System.String)">
-            <summary>
-            异步加载资源(泛型)
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="loaderType"></param>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.Load(System.Type,System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
-            <summary>
-            加载资源
-            </summary>
-            <param name="loaderType"></param>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <param name="dependences"></param>
-            <param name="dependenceLoader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync(System.Type,System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
-            <summary>
-            异步加载资源
-            </summary>
-            <param name="loaderType"></param>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <param name="dependences"></param>
-            <param name="dependenceLoader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.Load``1(System.Type,System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
-            <summary>
-            加载资源(泛型)
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="loaderType"></param>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <param name="dependences"></param>
-            <param name="dependenceLoader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync``1(System.Type,System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
-            <summary>
-            异步加载资源(泛型)
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="loaderType"></param>
-            <param name="groupName"></param>
-            <param name="name"></param>
-            <param name="path"></param>
-            <param name="dependences"></param>
-            <param name="dependenceLoader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadDependence(IFramework.Modules.Resources.Resource,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
-            <summary>
-            加载资源依赖（第一次没法加载依赖时候）
-            </summary>
-            <param name="resource"></param>
-            <param name="dependences"></param>
-            <param name="dependenceLoader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Resources.ResourceModule.UnLoad(IFramework.Modules.Resources.Resource)">
-            <summary>
-            卸载资源
-            </summary>
-            <param name="resource"></param>
-        </member>
         <member name="T:IFramework.Modules.UpdateFrameworkModule">
             <summary>
             OnUpdate OnEnable OnDisable
@@ -2135,6 +1612,387 @@
         <member name="M:IFramework.Modules.UpdateFrameworkModule.Update">
             <summary>
             刷新
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.FileResourceGroup">
+            <summary>
+            文件资源加载组
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.FileResourceGroup.#ctor(System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:IFramework.Resources.FileResourceGroup.LoadBytes(System.String)">
+            <summary>
+            加载字节
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.FileResourceGroup.LoadBytesAsync(System.String)">
+            <summary>
+            异步加载字节
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.FileResourceGroup.LoadText(System.String,System.Text.Encoding)">
+            <summary>
+            加载文字
+            </summary>
+            <param name="path"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.FileResourceGroup.LoadTextAsync(System.String,System.Text.Encoding)">
+            <summary>
+            异步加载文字
+            </summary>
+            <param name="path"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Resources.HttpResourceGroup">
+            <summary>
+            Http资源加载组
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.HttpResourceGroup.#ctor(System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:IFramework.Resources.HttpResourceGroup.LoadBytes(System.String)">
+            <summary>
+            加载字节
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.HttpResourceGroup.LoadBytesAsync(System.String)">
+            <summary>
+            异步加载字节
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.HttpResourceGroup.LoadText(System.String)">
+            <summary>
+            加载文字
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.HttpResourceGroup.LoadTextAsync(System.String)">
+            <summary>
+            异步加载文字
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Resources.Resource">
+            <summary>
+            资源
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.Resource.progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.Resource.isdone">
+            <summary>
+            是否完成
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.Resource.path">
+            <summary>
+            路径
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.Resource.groupName">
+            <summary>
+            资源组
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.Resource.error">
+            <summary>
+            错误
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.Resource.Release">
+            <summary>
+            释放资源 
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.Resource`1">
+            <summary>
+            泛型资源
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.Resources.Resource`1.Tvalue">
+            <summary>
+            资源值
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.ResourceLoader">
+            <summary>
+            资源加载器
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.ResourceLoader.path">
+            <summary>
+            路径
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.ResourceLoader.isdone">
+            <summary>
+            是否完成
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.ResourceLoader.progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.ResourceLoader.resource">
+            <summary>
+            资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.ResourceLoader.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.ResourceLoader.CreateResource">
+            <summary>
+            创建泛型资源实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.ResourceLoader.OnLoad">
+            <summary>
+            加载资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.ResourceLoader.OnUnLoad">
+            <summary>
+            卸载资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.ResourceLoader.ThrowErr(System.String)">
+            <summary>
+            抛出错误
+            </summary>
+            <param name="err"></param>
+        </member>
+        <member name="T:IFramework.Resources.ResourceLoader`1">
+            <summary>
+            泛型资源加载器
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.Resources.ResourceLoader`1.Tresource">
+            <summary>
+            泛型资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.ResourceLoader`1.CreateResource">
+            <summary>
+            创建泛型资源实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.ResourceLoader`1.OnUnLoad">
+            <summary>
+            卸载时
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.AsyncFileBytesLoader">
+            <summary>
+            异步文件流加载器
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.AsyncFileBytesLoader.progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.AsyncFileBytesLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.AsyncFileTextLoader`1">
+            <summary>
+            异步文本加载器
+            </summary>
+            <typeparam name="Encod"></typeparam>
+        </member>
+        <member name="P:IFramework.Resources.AsyncFileTextLoader`1.progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.AsyncFileTextLoader`1.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.AsyncResourceLoader">
+            <summary>
+            异步资源加载器
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.AsyncResourceLoader`1">
+            <summary>
+            泛型异步资源加载器
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.Resources.AsyncResourceLoader`1.Tresource">
+            <summary>
+            泛型资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.AsyncResourceLoader`1.CreateResource">
+            <summary>
+            创建泛型资源实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.AsyncResourceLoader`1.OnUnLoad">
+            <summary>
+            卸载
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.AsyncHttpBytesLoader">
+            <summary>
+            异步Http加载器
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.AsyncHttpBytesLoader.progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.AsyncHttpBytesLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.AsyncHttpTextLoader">
+            <summary>
+            异步Http文本加载
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.AsyncHttpTextLoader.progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.AsyncHttpTextLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.HttpBytesLoader">
+            <summary>
+            http流加载器
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.HttpBytesLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.HttpTextLoader">
+            <summary>
+            http流加载器
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.HttpTextLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.FileBytesLoader">
+            <summary>
+            文件流加载器
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.FileBytesLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.FileTextLoader`1">
+            <summary>
+            文本加载器
+            </summary>
+            <typeparam name="Encod"></typeparam>
+        </member>
+        <member name="M:IFramework.Resources.FileTextLoader`1.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Resources.ResourceGroup">
+            <summary>
+            资源组
+            </summary>
+        </member>
+        <member name="P:IFramework.Resources.ResourceGroup.name">
+             <summary>
+            名字
+             </summary>
+        </member>
+        <member name="M:IFramework.Resources.ResourceGroup.#ctor(System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:IFramework.Resources.ResourceGroup.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.ResourceGroup.Load(System.Type,System.String)">
+            <summary>
+            加载
+            </summary>
+            <param name="loaderType"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.ResourceGroup.ClearUnuseResources">
+            <summary>
+            删除无用资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Resources.ResourceGroup.AllocateLoader(System.Type)">
+            <summary>
+            分配加载器
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Resources.ResourceGroup.RecyleLoader(IFramework.Resources.ResourceLoader)">
+            <summary>
+            回收加载器
+            </summary>
+            <param name="loader"></param>
+        </member>
+        <member name="M:IFramework.Resources.ResourceGroup.OnDispose">
+            <summary>
+            释放时
             </summary>
         </member>
         <member name="T:IFramework.BindableObject">

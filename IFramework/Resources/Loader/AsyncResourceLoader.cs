@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IFramework.Modules.Resources
+﻿namespace IFramework.Resources
 {
     /// <summary>
     /// 异步资源加载器
