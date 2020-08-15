@@ -11,10 +11,7 @@
         /// 进度
         /// </summary>
         public float progress { get { return loader.progress; } }
-        /// <summary>
-        /// 名字
-        /// </summary>
-        public string name { get { return loader.name; } }
+
         /// <summary>
         /// 是否完成
         /// </summary>
