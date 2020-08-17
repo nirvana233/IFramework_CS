@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 
-namespace IFramework.Resources
+namespace IFramework.Resource
 {
     /// <summary>
     /// http流加载器

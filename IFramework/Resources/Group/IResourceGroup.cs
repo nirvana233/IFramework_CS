@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IFramework.Resources
+namespace IFramework.Resource
 {
     interface IResourceGroup : IDisposable
     {

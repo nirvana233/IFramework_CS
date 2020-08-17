@@ -37,7 +37,6 @@ namespace IFramework
                                  else
                                      sum += 1;
                              });
-            Log.E(sum);
             int mul = 1000;
             do
             {
@@ -74,7 +73,7 @@ namespace IFramework
         /// <param name="envName">环境名称</param>
         /// <param name=" envType">环境类型</param>
         /// <returns>环境</returns>
-        public static FrameworkEnvironment CreateEnv(string envName, EnvironmentType envType)
+        private static FrameworkEnvironment CreateEnv(string envName, EnvironmentType envType)
         {
             return FrameworkEnvironment.CreateInstance(envName, envType);
         }
@@ -86,6 +85,12 @@ namespace IFramework
         /// <returns>环境</returns>
         public static FrameworkEnvironment InitEnv(string envName, EnvironmentType envType)
         {
+            if (GetEnv(envType)!=null)
+            {
+                Log.E(string.Format("The EnvironmentType {0} is not null ", envType));
+                return GetEnv(envType);
+            }
+
             switch (envType)
             {
                 case EnvironmentType.Ev0: env0 = CreateEnv(envName, envType); return env0;

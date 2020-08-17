@@ -8,3 +8,4 @@ E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.pdb
 E:\Project\VS\IFramework\Plugins\IFramework.Net.xml
 E:\Project\VS\IFramework\Plugins\IFramework.Net.dll
 E:\Project\VS\IFramework\Plugins\IFramework.Net.pdb
+E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.csprojAssemblyReference.cache

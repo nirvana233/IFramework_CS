@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace IFramework.Resources
+namespace IFramework.Resource
 {
     /// <summary>
     /// 异步文本加载器

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace IFramework.Resources
+namespace IFramework.Resource
 {
     /// <summary>
     /// 文件资源加载组

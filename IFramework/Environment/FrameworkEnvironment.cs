@@ -106,6 +106,8 @@ namespace IFramework
         public void Init(IEnumerable<Type> types)
         {
             if (_haveInit) return;
+            currentEnv = this;
+
             bindHandler = new BindableObjectHandler();
             container = new FrameworkContainer();
             _modules = new FrameworkModules(this);
@@ -176,11 +178,29 @@ namespace IFramework
         public void Update()
         {
             if (disposed) return;
+            currentEnv = this;
             sw_delta.Reset();
             sw_delta.Start();
             if (update != null) update();
             sw_delta.Stop();
             deltaTime = sw_delta.Elapsed;
+        }
+
+        private static LockParam _envsetlock = new LockParam();
+        private static FrameworkEnvironment _currentEnv;
+        /// <summary>
+        /// 当前环境
+        /// </summary>
+        public static FrameworkEnvironment currentEnv
+        {
+            get { return _currentEnv; }
+            private set
+            {
+                using (new LockWait(ref _envsetlock))
+                {
+                    _currentEnv = value;
+                }
+            }
         }
     }
 }

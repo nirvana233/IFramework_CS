@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace IFramework.Resources
+namespace IFramework.Resource
 {
     /// <summary>
     /// 异步文件流加载器

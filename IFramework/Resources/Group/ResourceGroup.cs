@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IFramework.Resources
+namespace IFramework.Resource
 {
     /// <summary>
     /// 资源组

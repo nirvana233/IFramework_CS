@@ -50,6 +50,7 @@ namespace IFramework.NodeAction
             }
             if (_isDone)
             {
+                OnCompelete();
                 if (onCompelete != null)
                     onCompelete();
                 if (_autoRecyle)

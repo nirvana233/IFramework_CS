@@ -4,4 +4,3 @@ E:\Project\VS\IFramework\Plugins\IFramework.Singleton.pdb
 E:\Project\VS\IFramework\IFramework.Singleton\obj\Debug\IFramework.Singleton.csproj.CoreCompileInputs.cache
 E:\Project\VS\IFramework\IFramework.Singleton\obj\Debug\IFramework.Singleton.dll
 E:\Project\VS\IFramework\IFramework.Singleton\obj\Debug\IFramework.Singleton.pdb
-E:\Project\VS\IFramework\IFramework.Singleton\obj\Debug\IFramework.Singleton.csprojAssemblyReference.cache

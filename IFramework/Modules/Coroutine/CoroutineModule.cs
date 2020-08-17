@@ -100,6 +100,17 @@ namespace IFramework.Modules.Coroutine
             FrameworkEnvironment _env = Framework.GetEnv( envType);
             return _env.modules.Coroutine.StartCoroutine(routine);
         }
+        /// <summary>
+        /// 开启一个携程
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="env"></param>
+        /// <param name="routine">迭代器</param>
+        /// <returns></returns>
+        public static Coroutine StartCoroutine(this object obj, FrameworkEnvironment env, IEnumerator routine)
+        {
+            return env.modules.Coroutine.StartCoroutine(routine);
+        }
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

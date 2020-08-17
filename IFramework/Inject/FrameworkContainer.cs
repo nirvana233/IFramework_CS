@@ -5,9 +5,6 @@ using System.Reflection;
 
 namespace IFramework.Injection
 {
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
-
     class FrameworkContainer : IFrameworkContainer
     {
         /// http://stackoverflow.com/questions/1171812/multi-key-dictionary-in-c

@@ -55,8 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemblies.cs" />
-    <Compile Include="AuthorAttributes\DependenceAttribute.cs" />
-    <Compile Include="AuthorAttributes\DescriptionAttribute.cs" />
+    <Compile Include="Attributes\DependenceAttribute.cs" />
+    <Compile Include="Attributes\DescriptionAttribute.cs" />
     <Compile Include="Environment\EnvironmentType.cs" />
     <Compile Include="Environment\IRecyclable.cs" />
     <Compile Include="Environment\RecyclableObjectCollection.cs" />
@@ -66,7 +66,7 @@
     <Compile Include="Environment\FrameworkEnvironment.cs" />
     <Compile Include="FrameworkModules.cs" />
     <Compile Include="FrameworkObject.cs" />
-    <Compile Include="AuthorAttributes\FrameworkVersionAttribute.cs" />
+    <Compile Include="Attributes\FrameworkVersionAttribute.cs" />
     <Compile Include="Inject\FrameworkContainer.cs" />
     <Compile Include="Inject\InjectAttribute.cs" />
     <Compile Include="Environment\LifeTimeObject.cs" />
@@ -135,7 +135,7 @@
     <Compile Include="Pool\CapicityPool.cs" />
     <Compile Include="Pool\ListPool.cs" />
     <Compile Include="Environment\RecyclableObject.cs" />
-    <Compile Include="AuthorAttributes\ScriptVersionUpdateAttribute.cs" />
+    <Compile Include="Attributes\ScriptVersionUpdateAttribute.cs" />
     <Compile Include="Framework.cs" />
     <Compile Include="Modules\Fsm\FsmModule.cs" />
     <Compile Include="Modules\Fsm\ConditionValue.cs" />

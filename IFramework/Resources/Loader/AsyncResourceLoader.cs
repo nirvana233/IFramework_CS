@@ -1,4 +1,4 @@
-﻿namespace IFramework.Resources
+﻿namespace IFramework.Resource
 {
     /// <summary>
     /// 异步资源加载器

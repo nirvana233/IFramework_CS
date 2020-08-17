@@ -1,4 +1,4 @@
-﻿namespace IFramework.Resources
+﻿namespace IFramework.Resource
 {
     /// <summary>
     /// Http资源加载组
