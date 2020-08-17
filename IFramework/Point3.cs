@@ -3,7 +3,7 @@
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 namespace IFramework
 {
-    public struct Point3 : IEquatable<Point3>
+    public struct Point3 : IEquatable<Point3> 
     {
         private static readonly Point3 zeroVector = new Point3(0f, 0f, 0f);
         private static readonly Point3 oneVector = new Point3(1f, 1f, 1f);
