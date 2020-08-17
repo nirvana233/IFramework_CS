@@ -1,0 +1,22 @@
+<<<<<<< HEAD
+=======
+E:\Project\VS\IFramework\Plugins\IFramework.xml
+E:\Project\VS\IFramework\Plugins\IFramework.dll
+E:\Project\VS\IFramework\Plugins\IFramework.pdb
+E:\Project\VS\IFramework\Plugins\IFramework.dll.CodeAnalysisLog.xml
+E:\Project\VS\IFramework\Plugins\IFramework.dll.lastcodeanalysissucceeded
+<<<<<<< HEAD
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csproj.CoreCompileInputs.cache
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.dll
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.pdb
+=======
+<<<<<<< HEAD
+=======
+E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csprojAssemblyReference.cache
+E:\IFramework_CS\IFramework\obj\Debug\IFramework.csprojAssemblyReference.cache
+E:\IFramework_CS\IFramework\obj\Debug\IFramework.csproj.CoreCompileInputs.cache
+E:\IFramework_CS\IFramework\obj\Debug\IFramework.dll
+E:\IFramework_CS\IFramework\obj\Debug\IFramework.pdb
+>>>>>>> f74552ac3b0470567683434105114bd84608c271
+>>>>>>> 718326e6abf0644af12729bc907e1bb6b8be762d
+>>>>>>> dad90d5e623b96fa215bfde93d409425d737dcf8
