@@ -54,7 +54,6 @@ namespace IFramework
         /// <returns></returns>
         public BindableObjectHandler BindProperty<T>(Action<T> setter, Func<T> getter)
         {
-
             Type type = typeof(T);
             if (!_callmap.ContainsKey(type))
                 _callmap.Add(type, new Dictionary<string, Action<string, object>>());
@@ -70,9 +69,19 @@ namespace IFramework
                 setter(t);
             };
             object value = _valuemap[type][this._propertyName];
-            if (!EqualityComparer<T>.Default.Equals(tvalue, (T)value))
+            if (value == null)
             {
-                action.Invoke(this._propertyName, value);
+                if (!EqualityComparer<T>.Default.Equals(tvalue, default(T)))
+                {
+                    action.Invoke(this._propertyName, value);
+                }
+            }
+            else
+            {
+                if (!EqualityComparer<T>.Default.Equals(tvalue, (T)value))
+                {
+                    action.Invoke(this._propertyName, value);
+                }
             }
 
             _callmap[type][this._propertyName] += action;
