@@ -6,8 +6,8 @@ namespace IFramework
     /// <summary>
     /// 可回收类
     /// </summary>
-    [FrameworkVersion(20)]
-    [ScriptVersionUpdate(20,"增加未回收实例的控制")]
+    [Version(20)]
+    [Update(20,"增加未回收实例的控制")]
     public abstract class RecyclableObject : FrameworkObject, IRecyclable
     {
         /// <summary>

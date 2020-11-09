@@ -31,6 +31,52 @@ namespace IFramework
         /// <summary>
         /// 环境4
         /// </summary>
-        Ev4 = 32
+        Ev4 = 32,
+        /// <summary>
+        /// 环境5
+        /// </summary>
+        Ev5 = 64,
+        /// <summary>
+        /// 环境6
+        /// </summary>
+        Ev6 = 128,
+        /// <summary>
+        /// 环境7
+        /// </summary>
+        Ev7 = 256,
+        /// <summary>
+        /// 环境8
+        /// </summary>
+        Ev8 = 512,
+        /// <summary>
+        /// 环境9
+        /// </summary>
+        Ev9 = 1024,
+
+
+        /// <summary>
+        /// 额外的1
+        /// </summary>
+        Extra0 = 16384,
+        /// <summary>
+        /// 额外的1
+        /// </summary>
+        Extra1 = 32768,
+        /// <summary>
+        /// 额外的2
+        /// </summary>
+        Extra2 = 65536,
+        /// <summary>
+        /// 额外的3
+        /// </summary>
+        Extra3 = 131072,
+        /// <summary>
+        /// 额外的4
+        /// </summary>
+        Extra4 = 262144,
     }
+
+
+
+
 }

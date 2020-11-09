@@ -15,9 +15,9 @@ namespace IFramework.Serialization.DataTable
     /// <summary>
     /// string 解释器
     /// </summary>
-    [ScriptVersionUpdate(1,"数据转化")]
-    [ScriptVersionUpdate(10,"处理序列化过程中存在 , \" 的情况")]
-    [FrameworkVersion(10)]
+    [UpdateAttribute(1,"数据转化")]
+    [UpdateAttribute(10,"处理序列化过程中存在 , \" 的情况")]
+    [VersionAttribute(10)]
     [Dependence(typeof(StringConvert))]
     public class DataExplainer : IDataExplainer
     {

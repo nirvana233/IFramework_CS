@@ -6,8 +6,8 @@ namespace IFramework
     /// 代码升级说明
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
-    [FrameworkVersion(2)]
-    public class ScriptVersionUpdateAttribute : FrameworkVersionAttribute
+    [Version(2)]
+    public class UpdateAttribute : VersionAttribute
     {
         /// <summary>
         /// 描述
@@ -18,7 +18,7 @@ namespace IFramework
         /// </summary>
         /// <param name="version"></param>
         /// <param name="description"></param>
-        public ScriptVersionUpdateAttribute(int version, string description) : base(version)
+        public UpdateAttribute(int version, string description) : base(version)
         {
             this.description = description;
         }

@@ -6,7 +6,7 @@ namespace IFramework
     /// <summary>
     /// 绑定器
     /// </summary>
-    [FrameworkVersion(11)]
+    [VersionAttribute(11)]
     public class BindableObjectHandler : FrameworkObject
     {
         struct BindEntity
@@ -20,30 +20,146 @@ namespace IFramework
             public Type type { get { return _type; } }
             public string propertyName { get { return _propertyName; } }
             public BindableObject bindable { get { return _bind; } }
-
+            public Action<string, object> setValueAction;
+            public BindableObject.BindOperation operation;
             public BindEntity(BindableObject bind, string propertyName, BindableObjectHandler handler, Type type)
             {
                 this._propertyName = propertyName;
                 this._bind = bind;
                 this._handler = handler;
                 this._type = type;
+                setValueAction = null;
+                operation = BindableObject.BindOperation.Both;
             }
 
             public void Bind()
             {
-                bindable.Subscribe(propertyName, _listenner);
+                if (_bind.bindOperation == BindableObject.BindOperation.Both && operation == BindableObject.BindOperation.Both)
+                    bindable.Subscribe(propertyName, _listenner);
             }
-            public void UnBind()
+            public void UnBind(bool unbind=true)
             {
-                bindable.UnSubscribe(propertyName, _listenner);
+                if (unbind)
+                    _handler._callmap[_type][_propertyName] -= setValueAction;
+                if (_bind.bindOperation == BindableObject.BindOperation.Both && operation == BindableObject.BindOperation.Both)
+                    bindable.UnSubscribe(propertyName, _listenner);
             }
         }
 
+        private class ValueMap
+        {
+            private interface ITypeMap {
+                object Get(string name);
+                void Set(string name, object obj);
+            }
+            private interface ITypeMap<T> : ITypeMap {
+                T Get(string name);
+                void Set(string name, T obj);
+            }
+            private class TypeMap<T>: ITypeMap<T>
+            {
+                private Dictionary<string, T> values;
+                public TypeMap()
+                {
+                    values = new Dictionary<string, T>();
+                }
+                public T Get(string name)
+                {
+                    T t;
+                    if (!values.TryGetValue(name,out t))
+                    {
+                        t = default(T);
+                        values.Add(name,t);
+                    }
+                    return t;
+                }
+                public void Set(string name,T obj)
+                {
+                    if (!values.ContainsKey(name))
+                    {
+                        values.Add(name, obj);
+                    }
+                    else {
+                        values[name] = obj;
+                    }
+                }
+
+                public void Set(string name, object obj)
+                {
+                    if (!values.ContainsKey(name))
+                    {
+                        values.Add(name, (T)obj);
+                    }
+                    else
+                    {
+                        values[name] = (T)obj;
+                    }
+                }
+
+                object ITypeMap.Get(string name)
+                {
+                    return Get(name);
+                }
+            }
+            private Dictionary<Type, ITypeMap> values;
+            public ValueMap() {
+                values = new Dictionary<Type, ITypeMap>();
+            }
+            public T Get<T>(string name)
+            {
+                Type type = typeof(T);
+                ITypeMap map;
+                if (!values.TryGetValue(type,out map))
+                {
+                    map = new TypeMap<T>();
+                    values.Add(type, map);
+                }
+                return (map as TypeMap<T>).Get(name);
+            }
+            public void Set<T>(string name ,T t)
+            {
+                Type type = typeof(T);
+                ITypeMap map;
+                if (!values.TryGetValue(type, out map))
+                {
+                    map = new TypeMap<T>();
+                    values.Add(type, map);
+                }
+                (map as TypeMap<T>).Set(name,t);
+            }
+            public object Get(Type type, string name)
+            {
+                ITypeMap map;
+                if (!values.TryGetValue(type, out map))
+                {
+                    map = Activator.CreateInstance(typeof(TypeMap<>).MakeGenericType(type)) as ITypeMap;
+                    values.Add(type, map);
+                }
+                return map.Get(name);
+            }
+            public void Set(Type type, string name, object t)
+            {
+                ITypeMap map;
+                if (!values.TryGetValue(type, out map))
+                {
+                    map = Activator.CreateInstance(typeof(TypeMap<>).MakeGenericType(type)) as ITypeMap;
+                    values.Add(type, map);
+                }
+                map.Set(name, t);
+            }
+
+            public void Clear()
+            {
+                values.Clear();
+            }
+        }
+
+
         internal static BindableObjectHandler handler;
         private List<BindEntity> _entitys = new List<BindEntity>();
-        private Dictionary<Type, Dictionary<string, Action<string, object>>> _callmap = new Dictionary<Type, Dictionary<string, Action<string, object>>>();
-        private Dictionary<Type, Dictionary<string, object>> _valuemap = new Dictionary<Type, Dictionary<string, object>>();
 
+        private ValueMap _valuemap = new ValueMap();
+        private Dictionary<Type, Dictionary<string, Action<string, object>>> _callmap = new Dictionary<Type, Dictionary<string, Action<string, object>>>();
 
         /// <summary>
         /// 绑定
@@ -51,61 +167,72 @@ namespace IFramework
         /// <typeparam name="T"></typeparam>
         /// <param name="setter"></param>
         /// <param name="getter"></param>
+        /// <param name="operation"></param>
         /// <returns></returns>
-        public BindableObjectHandler BindProperty<T>(Action<T> setter, Func<T> getter)
+        public BindableObjectHandler BindProperty<T>(Action<T> setter, Func<T> getter,BindableObject.BindOperation operation= BindableObject.BindOperation.Both)
         {
             Type type = typeof(T);
             if (!_callmap.ContainsKey(type))
                 _callmap.Add(type, new Dictionary<string, Action<string, object>>());
-            if (!_valuemap.ContainsKey(type))
-                _valuemap.Add(type, new Dictionary<string, object>());
             handler = this;
             T tvalue = getter.Invoke();
             handler = null;
+            var lastEntity = _entitys[_entitys.Count - 1];
+            string propertyName = lastEntity.propertyName;
+            lastEntity.operation = operation;
+            lastEntity.setValueAction = (name, obj) => {
+                T t;
+                if (obj == null)
+                {
+                    t = default(T);
+                }
+                else
+                {
+                    t = (T)obj;
+                }
+                _valuemap.Set<T>(name, t);
 
-            Action<string, object> action = (name, obj) => {
-                _valuemap[type][name] = obj;
-                T t = (T)obj;
-                setter(t);
+                if (setter!=null)
+                {
+                    setter(t);
+                }
             };
-            object value = _valuemap[type][this._propertyName];
+
+            _entitys[_entitys.Count - 1] = lastEntity;
+            T value = _valuemap.Get<T>(propertyName);
+
             if (value == null)
             {
                 if (!EqualityComparer<T>.Default.Equals(tvalue, default(T)))
                 {
-                    action.Invoke(this._propertyName, value);
+                    _entitys[_entitys.Count - 1].setValueAction.Invoke(propertyName, value);
                 }
             }
             else
             {
-                if (!EqualityComparer<T>.Default.Equals(tvalue, (T)value))
+                if (!EqualityComparer<T>.Default.Equals(tvalue, value))
                 {
-                    action.Invoke(this._propertyName, value);
+                    _entitys[_entitys.Count - 1].setValueAction.Invoke(propertyName, value);
                 }
             }
 
-            _callmap[type][this._propertyName] += action;
+            _callmap[type][propertyName] += _entitys[_entitys.Count - 1].setValueAction;
 
             for (int i = 0; i < _entitys.Count; i++)
             {
-                if (_entitys[i].type == type && _entitys[i].propertyName == this._propertyName)
+                if (_entitys[i].type == type && _entitys[i].propertyName == propertyName)
                 {
-                    _entitys[i].UnBind();
+                    _entitys[i].UnBind(false);
                     _entitys[i].Bind();
                 }
             }
-            this._propertyName = string.Empty;
             return this;
         }
-        private string _propertyName;
+
         internal BindableObjectHandler Subscribe(BindableObject _object, Type propertyType, string propertyName)
         {
-            this._propertyName = propertyName;
-
             if (!_callmap[propertyType].ContainsKey(propertyName))
                 _callmap[propertyType].Add(propertyName, null);
-            if (!_valuemap[propertyType].ContainsKey(propertyName))
-                _valuemap[propertyType].Add(propertyName, null);
 
             var listenner = _callmap[propertyType];
             var bindTarget = new BindEntity(_object, propertyName, this, propertyType);
@@ -126,7 +253,7 @@ namespace IFramework
                 throw new Exception(string.Format("Not Exist type {0},name {1}", type, propertyName));
             if (!_callmap[type].ContainsKey(propertyName))
                 throw new Exception(string.Format("Not Exist type {0},name {1}", type, propertyName));
-            _callmap[type][this._propertyName].Invoke(_propertyName, value);
+            _callmap[type][propertyName].Invoke(propertyName, value);
             return this;
         }
 
@@ -137,7 +264,7 @@ namespace IFramework
         {
             _entitys.ForEach((entity) =>
             {
-                entity.UnBind();
+                entity.UnBind(true);
             });
             _entitys.Clear();
         }
@@ -149,9 +276,17 @@ namespace IFramework
         {
             var result = _entitys.RemoveAll((entity) =>
             {
-                if (entity.bindable != _object) return false;
-                entity.UnBind();
+                if (entity.bindable != _object)
+                {
+                    entity.UnBind();
+                    return false;
+                }
+                entity.UnBind(true);
                 return true;
+            });
+            _entitys.ForEach((entity) =>
+            {
+                entity.Bind();
             });
         }
         /// <summary>
@@ -162,10 +297,19 @@ namespace IFramework
         {
             var result = _entitys.RemoveAll((entity) =>
             {
-                if (entity.propertyName != propertyName) return false;
-                entity.UnBind();
+                if (entity.propertyName != propertyName)
+                {
+                    entity.UnBind();
+                    return false;
+                } 
+                entity.UnBind(true);
                 return true;
             });
+            _entitys.ForEach((entity) =>
+            {
+                entity.Bind();
+            });
+
         }
         /// <summary>
         /// 解绑
@@ -176,9 +320,17 @@ namespace IFramework
         {
             var result = _entitys.RemoveAll((entity) =>
             {
-                if (entity.bindable != _object || entity.propertyName != propertyName) return false;
+                if (entity.bindable != _object || entity.propertyName != propertyName) {
+
+                    entity.UnBind(false);
+                    return false;
+                }
                 entity.UnBind();
                 return true;
+            });
+            _entitys.ForEach((entity) =>
+            {
+                entity.Bind();
             });
         }
         /// <summary>
@@ -191,9 +343,16 @@ namespace IFramework
         {
             var result = _entitys.RemoveAll((entity) =>
             {
-                if (entity.bindable != _object || entity.type != type || entity.propertyName != propertyName) return false;
+                if (entity.bindable != _object || entity.type != type || entity.propertyName != propertyName) {
+                    entity.UnBind(false);
+                    return false;
+                }
                 entity.UnBind();
                 return true;
+            });
+            _entitys.ForEach((entity) =>
+            {
+                entity.Bind();
             });
         }
         /// <summary>

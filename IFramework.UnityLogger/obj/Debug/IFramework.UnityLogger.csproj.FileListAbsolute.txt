@@ -1,8 +1,5 @@
 E:\Project\VS\IFramework\IFramework.UnityLogger\obj\Debug\IFramework.UnityLogger.csproj.CoreCompileInputs.cache
 E:\Project\VS\IFramework\Plugins\IFramework.UnityLogger.xml
 E:\Project\VS\IFramework\Plugins\IFramework.UnityLogger.dll
-E:\Project\VS\IFramework\Plugins\IFramework.UnityLogger.pdb
 E:\Project\VS\IFramework\IFramework.UnityLogger\obj\Debug\IFramework.UnityLogger.csproj.CopyComplete
 E:\Project\VS\IFramework\IFramework.UnityLogger\obj\Debug\IFramework.UnityLogger.dll
-E:\Project\VS\IFramework\IFramework.UnityLogger\obj\Debug\IFramework.UnityLogger.pdb
-E:\Project\VS\IFramework\IFramework.UnityLogger\obj\Debug\IFramework.UnityLogger.csprojAssemblyReference.cache

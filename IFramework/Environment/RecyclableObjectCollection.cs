@@ -6,8 +6,8 @@ namespace IFramework
     /// <summary>
     /// 可回收集合
     /// </summary>
-    [FrameworkVersion(21)]
-    [ScriptVersionUpdate(20, "增加未回收实例的控制")]
+    [VersionAttribute(21)]
+    [UpdateAttribute(20, "增加未回收实例的控制")]
     public class RecyclableObjectCollection : IDisposable
     {
         private class RecyclableObjectPool : BaseTypePool<RecyclableObject> { }

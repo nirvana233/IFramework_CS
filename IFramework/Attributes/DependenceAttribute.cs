@@ -6,7 +6,7 @@ namespace IFramework
     /// 依赖描述
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
-    [FrameworkVersion(6)]
+    [Version(6)]
     public class DependenceAttribute : DescriptionAttribute
     {
         /// <summary>

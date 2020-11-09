@@ -2,17 +2,27 @@
 
 namespace IFramework
 {
-     class CSLogger : ILoger
+    class CSLogger : ILoger
     {
-        public void Log(LogType logType, object message, params object[] paras)
+        public void Error(object messages, params object[] paras)
         {
-            Console.WriteLine(string.Format("[{0}] {1}:\t\t{2} {3}", DateTime.Now.ToString(), logType, message, paras));
+            Console.WriteLine(string.Format("[Error] {0}:\t\t{1} {2}", DateTime.Now.ToString(), messages, paras));
         }
 
-        public void LogFormat(LogType logType, string format, object message, params object[] paras)
+        public void Exception(Exception ex)
         {
-            Console.WriteLine(string.Format("[{0}] {1}:\t\t{2}", DateTime.Now.ToString(), logType, string.Format(format, message, paras)));
+            Console.WriteLine(string.Format("[Warn] {0}:\t\t{1}", DateTime.Now.ToString(), ex.Message));
+            Console.WriteLine(ex.StackTrace);
+        }
+
+        public void Log(object messages, params object[] paras)
+        {
+            Console.WriteLine(string.Format("[Log] {0}:\t\t{1} {2}", DateTime.Now.ToString(), messages, paras));
+        }
+
+        public void Warn(object messages, params object[] paras)
+        {
+            Console.WriteLine(string.Format("[Warn] {0}:\t\t{1} {2}", DateTime.Now.ToString(), messages, paras));
         }
     }
-
 }

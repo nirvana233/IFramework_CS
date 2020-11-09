@@ -1,8 +1,5 @@
 E:\Project\VS\IFramework\IFramework.Utility\obj\Debug\IFramework.Utility.csproj.CoreCompileInputs.cache
 E:\Project\VS\IFramework\Plugins\IFramework.Utility.xml
 E:\Project\VS\IFramework\Plugins\IFramework.Utility.dll
-E:\Project\VS\IFramework\Plugins\IFramework.Utility.pdb
 E:\Project\VS\IFramework\IFramework.Utility\obj\Debug\IFramework.Utility.csproj.CopyComplete
 E:\Project\VS\IFramework\IFramework.Utility\obj\Debug\IFramework.Utility.dll
-E:\Project\VS\IFramework\IFramework.Utility\obj\Debug\IFramework.Utility.pdb
-E:\Project\VS\IFramework\IFramework.Utility\obj\Debug\IFramework.Utility.csprojAssemblyReference.cache

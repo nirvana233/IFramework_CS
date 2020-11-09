@@ -6,13 +6,13 @@ using System.Reflection;
 namespace IFramework { }
 namespace IFramework
 {
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
     /// <summary>
     /// 框架入口
     /// </summary>
     [Dependence(typeof(FrameworkEnvironment))]
     [Dependence(typeof(Assemblies))]
+    [Version(8)]
+    [Update(8,"增加环境数量")]
     public static class Framework
     {
         static Framework()
@@ -29,9 +29,9 @@ namespace IFramework
                              .ForEach((type) =>
                              {
                                  if (!type.FullName.Contains(FrameworkName)) return;
-                                 if (type.IsDefined(typeof(FrameworkVersionAttribute), false))
+                                 if (type.IsDefined(typeof(VersionAttribute), false))
                                  {
-                                     FrameworkVersionAttribute attr = type.GetCustomAttributes(typeof(FrameworkVersionAttribute), false).First() as FrameworkVersionAttribute;
+                                     VersionAttribute attr = type.GetCustomAttributes(typeof(VersionAttribute), false).First() as VersionAttribute;
                                      sum += attr.version;
                                  }
                                  else
@@ -63,17 +63,22 @@ namespace IFramework
         public static FrameworkEnvironment env2;
         public static FrameworkEnvironment env3;
         public static FrameworkEnvironment env4;
+        public static FrameworkEnvironment env5;
+        public static FrameworkEnvironment env6;
+        public static FrameworkEnvironment env7;
+        public static FrameworkEnvironment env8;
+        public static FrameworkEnvironment env9;
+
+
+        public static FrameworkEnvironment extra0;
+        public static FrameworkEnvironment extra1;
+        public static FrameworkEnvironment extra2;
+        public static FrameworkEnvironment extra3;
+        public static FrameworkEnvironment extra4;
 
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
-
-        /// <summary>
-        /// 创建一个环境
-        /// </summary>
-        /// <param name="envName">环境名称</param>
-        /// <param name=" envType">环境类型</param>
-        /// <returns>环境</returns>
-        private static FrameworkEnvironment CreateEnv(string envName, EnvironmentType envType)
+        private static FrameworkEnvironment CreateInstance(string envName, EnvironmentType envType)
         {
             return FrameworkEnvironment.CreateInstance(envName, envType);
         }
@@ -83,7 +88,7 @@ namespace IFramework
         /// <param name="envName">环境名</param>
         /// <param name=" envType">环境类型</param>
         /// <returns>环境</returns>
-        public static FrameworkEnvironment InitEnv(string envName, EnvironmentType envType)
+        public static FrameworkEnvironment CreateEnv(string envName, EnvironmentType envType)
         {
             if (GetEnv(envType)!=null)
             {
@@ -93,11 +98,21 @@ namespace IFramework
 
             switch (envType)
             {
-                case EnvironmentType.Ev0: env0 = CreateEnv(envName, envType); return env0;
-                case EnvironmentType.Ev1: env1 = CreateEnv(envName, envType); return env1;
-                case EnvironmentType.Ev2: env2 = CreateEnv(envName, envType); return env2;
-                case EnvironmentType.Ev3: env3 = CreateEnv(envName, envType); return env3;
-                case EnvironmentType.Ev4: env4 = CreateEnv(envName, envType); return env4;
+                case EnvironmentType.Ev0: env0 = CreateInstance(envName, envType); return env0;
+                case EnvironmentType.Ev1: env1 = CreateInstance(envName, envType); return env1;
+                case EnvironmentType.Ev2: env2 = CreateInstance(envName, envType); return env2;
+                case EnvironmentType.Ev3: env3 = CreateInstance(envName, envType); return env3;
+                case EnvironmentType.Ev4: env4 = CreateInstance(envName, envType); return env4;
+                case EnvironmentType.Ev5: env5 = CreateInstance(envName, envType); return env5;
+                case EnvironmentType.Ev6: env6 = CreateInstance(envName, envType); return env6;
+                case EnvironmentType.Ev7: env7 = CreateInstance(envName, envType); return env7;
+                case EnvironmentType.Ev8: env8 = CreateInstance(envName, envType); return env8;
+                case EnvironmentType.Ev9: env9 = CreateInstance(envName, envType); return env9;
+                case EnvironmentType.Extra0: extra0 = CreateInstance(envName, envType); return extra0;
+                case EnvironmentType.Extra1: extra1 = CreateInstance(envName, envType); return extra1;
+                case EnvironmentType.Extra2: extra2 = CreateInstance(envName, envType); return extra2;
+                case EnvironmentType.Extra3: extra3 = CreateInstance(envName, envType); return extra3;
+                case EnvironmentType.Extra4: extra4 = CreateInstance(envName, envType); return extra4;
                 default:
                     throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ", envType));
             }
@@ -116,6 +131,16 @@ namespace IFramework
                 case EnvironmentType.Ev2: return env3;
                 case EnvironmentType.Ev3: return env3;
                 case EnvironmentType.Ev4: return env4;
+                case EnvironmentType.Ev5: return env5;
+                case EnvironmentType.Ev6: return env6;
+                case EnvironmentType.Ev7: return env7;
+                case EnvironmentType.Ev8: return env8;
+                case EnvironmentType.Ev9: return env9;
+                case EnvironmentType.Extra0: return extra0;
+                case EnvironmentType.Extra1: return extra1;
+                case EnvironmentType.Extra2: return extra2;
+                case EnvironmentType.Extra3: return extra3;
+                case EnvironmentType.Extra4: return extra4;
                 default:
                     throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ", envType));
             }
@@ -194,5 +219,4 @@ namespace IFramework
             action.UnBindEnvDispose(GetEnv(envType));
         }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

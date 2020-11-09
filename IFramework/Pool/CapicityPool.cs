@@ -1,4 +1,4 @@
-﻿namespace IFramework.Pool
+﻿namespace IFramework
 {
     /// <summary>
     /// 有容量的对象池

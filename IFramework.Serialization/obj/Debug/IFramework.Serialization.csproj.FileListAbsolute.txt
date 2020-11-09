@@ -1,8 +1,5 @@
 E:\Project\VS\IFramework\IFramework.Serialization\obj\Debug\IFramework.Serialization.csproj.CoreCompileInputs.cache
 E:\Project\VS\IFramework\Plugins\IFramework.Serialization.xml
 E:\Project\VS\IFramework\Plugins\IFramework.Serialization.dll
-E:\Project\VS\IFramework\Plugins\IFramework.Serialization.pdb
 E:\Project\VS\IFramework\IFramework.Serialization\obj\Debug\IFramework.Serialization.csproj.CopyComplete
 E:\Project\VS\IFramework\IFramework.Serialization\obj\Debug\IFramework.Serialization.dll
-E:\Project\VS\IFramework\IFramework.Serialization\obj\Debug\IFramework.Serialization.pdb
-E:\Project\VS\IFramework\IFramework.Serialization\obj\Debug\IFramework.Serialization.csprojAssemblyReference.cache

@@ -6,8 +6,8 @@ namespace IFramework
     /// <summary>
     /// ObservableObject 注册监听Helper
     /// </summary>
-    [FrameworkVersion(11)]
-    [ScriptVersionUpdate(11, "继承 FrameworkObject")]
+    [VersionAttribute(11)]
+    [UpdateAttribute(11, "继承 FrameworkObject")]
     public class ObservableObjectHandler : FrameworkObject
     {
         struct ObserveEntity

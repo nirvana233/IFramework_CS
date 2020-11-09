@@ -6,7 +6,7 @@ namespace IFramework
     /// 描述
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = false)]
-    [FrameworkVersion(2)]
+    [Version(2)]
     public class DescriptionAttribute : Attribute
     {
         /// <summary>

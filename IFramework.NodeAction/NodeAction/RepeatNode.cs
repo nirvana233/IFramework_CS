@@ -2,7 +2,7 @@
 
 namespace IFramework.NodeAction
 {
-    [FrameworkVersion(3)]
+    [VersionAttribute(3)]
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public class RepeatNode : ContainerNode
     {

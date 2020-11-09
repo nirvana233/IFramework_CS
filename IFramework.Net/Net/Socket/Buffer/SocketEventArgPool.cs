@@ -6,14 +6,13 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-using IFramework.Pool;
 using System;
 using System.Net.Sockets;
 using System.Threading;
 
 namespace IFramework.Net
 {
-     class SocketEventArgPool : CapicityPool<SocketAsyncEventArgs>
+    class SocketEventArgPool : CapicityPool<SocketAsyncEventArgs>
     {
         public SocketEventArgPool(int capcity) : base(capcity) { }
         protected override void OnClear(SocketAsyncEventArgs t, IEventArgs arg)

@@ -14,7 +14,7 @@ namespace IFramework.Modules.Message
     /// <summary>
     /// 消息模块
     /// </summary>
-    [FrameworkVersion(101)]
+    [VersionAttribute(101)]
     public class MessageModule : FrameworkModule
     {
         private interface IMessageEntity : IDisposable
@@ -289,7 +289,7 @@ namespace IFramework.Modules.Message
 
     }
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    [FrameworkVersion(5)]
+    [VersionAttribute(5)]
     public static class MessageMouduleExtension
     {
         public static bool Subscribe(this IMessageListener listener, EnvironmentType envType, Type publishType)

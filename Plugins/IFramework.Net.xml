@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IFramework.Net</name>
+    </assembly>
+    <members>
+        <member name="F:IFramework.Net.FileDownLoader_Http.tempSaveFilePath">
+            临时文件全路径
+        </member>
+        <member name="T:IFramework.Net.OnConnect">
+            <summary>
+            链接回调
+            </summary>
+            <param name="token"></param>
+            <param name="connected"></param>
+        </member>
+        <member name="T:IFramework.Net.OnReceivedString">
+            <summary>
+            收到 String
+            </summary>
+            <param name="sToken"></param>
+            <param name="content"></param>
+        </member>
+        <member name="T:IFramework.Net.OnReceieve">
+            <summary>
+            收到消息
+            </summary>
+            <param name="token"></param>
+            <param name="seg"></param>
+        </member>
+        <member name="T:IFramework.Net.OnSendCallBack">
+            <summary>
+            发送回调
+            </summary>
+            <param name="token"></param>
+            <param name="seg"></param>
+        </member>
+        <member name="T:IFramework.Net.OnAccept">
+            <summary>
+            接收到客户端
+            </summary>
+            <param name="token"></param>
+        </member>
+        <member name="T:IFramework.Net.OnDisConnect">
+            <summary>
+            客户端断线
+            </summary>
+            <param name="token"></param>
+        </member>
+        <member name="T:IFramework.Net.SocketToken">
+            <summary>
+            链接实例
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.SocketToken.tokenId">
+            <summary>
+            序号
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.SocketToken.sock">
+            <summary>
+            套接字
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.SocketToken.endPoint">
+            <summary>
+            端口
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.SocketToken.arg">
+            <summary>
+            异步消息
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.SocketToken.isDisposed">
+            <summary>
+            是否释放
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.SocketToken.connTime">
+            <summary>
+            连接时间
+            </summary>
+        </member>
+        <member name="M:IFramework.Net.SocketToken.Finalize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:IFramework.Net.SocketToken.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.Net.SocketToken.#ctor(System.Int32)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="M:IFramework.Net.SocketToken.Close">
+            <summary>
+            关闭
+            </summary>
+        </member>
+        <member name="M:IFramework.Net.SocketToken.CompareTo(IFramework.Net.SocketToken)">
+            <summary>
+            比较==
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Net.SocketToken.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.Net.SocketToken.Dispose(System.Boolean)">
+            <summary>
+            释放时
+            </summary>
+            <param name="dispose"></param>
+        </member>
+        <member name="P:IFramework.Net.AccessInfo.host">
+            <summary>
+            连接主机
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.AccessInfo.origin">
+            <summary>
+            连接源
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.AccessInfo.secWebSocketExtensions">
+            <summary>
+            安全扩展
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.AccessInfo.secWebSocketKey">
+            <summary>
+            安全密钥
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.AccessInfo.secWebSocketVersion">
+            <summary>
+            安全版本
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.BaseInfo.httpProto">
+            <summary>
+            http连接协议
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.BaseInfo.connection">
+            <summary>
+            连接类型
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.BaseInfo.upgrade">
+            <summary>
+            连接方式
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.AcceptInfo.secWebSocketAccept">
+            <summary>
+            接入访问验证码
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.AcceptInfo.secWebSocketLocation">
+            <summary>
+            客户端来源
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.AcceptInfo.secWebSocketOrigin">
+            <summary>
+            服务端来源
+            </summary>
+        </member>
+        <member name="F:IFramework.Net.DataFrame._isEof">
+            <summary>
+            如果为true则该消息为消息尾部,如果false为零则还有后续数据包;
+            </summary>
+        </member>
+        <member name="P:IFramework.Net.DataFrame.rsv1">
+            <summary>
+            RSV1,RSV2,RSV3,各1位，用于扩展定义的,如果没有扩展约定的情况则必须为0
+            </summary>
+        </member>
+        <member name="F:IFramework.Net.DataFrame._opCode">
+             <summary>
+            0x0表示附加数据帧
+            0x1表示文本数据帧
+            0x2表示二进制数据帧
+            0x3-7暂时无定义，为以后的非控制帧保留
+            0x8表示连接关闭
+            0x9表示ping
+            0xA表示pong
+            0xB-F暂时无定义，为以后的控制帧保留
+             </summary>
+        </member>
+        <member name="F:IFramework.Net.DataFrame._mask">
+            <summary>
+            true使用掩码解析消息
+            </summary>
+        </member>
+        <member name="M:IFramework.Net.WSClientToken.Connect(System.String)">
+            <summary>
+            wsUrl:ws://ip:port
+            </summary>
+            <param name="wsUrl"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

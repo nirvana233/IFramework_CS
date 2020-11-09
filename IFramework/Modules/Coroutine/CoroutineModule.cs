@@ -7,7 +7,7 @@ namespace IFramework.Modules.Coroutine
     /// <summary>
     /// 携程模块
     /// </summary>
-    [FrameworkVersion(8)]
+    [VersionAttribute(8)]
     public class CoroutineModule : UpdateFrameworkModule
     {
         class CoroutinePool : IDisposable
@@ -85,7 +85,7 @@ namespace IFramework.Modules.Coroutine
 
     }
 
-    [FrameworkVersion(3)]
+    [VersionAttribute(3)]
     public static class CoroutineModuleExtension
     {
         /// <summary>

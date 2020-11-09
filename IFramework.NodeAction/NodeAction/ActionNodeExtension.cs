@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace IFramework.NodeAction
 {
-    [FrameworkVersion(16)] 
+    [VersionAttribute(16)] 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public static class ActionNodeExtension
     {

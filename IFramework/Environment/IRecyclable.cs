@@ -3,8 +3,8 @@
     /// <summary>
     /// 可回收
     /// </summary>
-    [FrameworkVersion(20)]
-    [ScriptVersionUpdate(20, "添加注释")]
+    [VersionAttribute(20)]
+    [UpdateAttribute(20, "添加注释")]
     public interface IRecyclable
     {
         /// <summary>

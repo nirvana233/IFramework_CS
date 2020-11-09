@@ -3,10 +3,10 @@
 namespace IFramework
 {
     /// <summary>
-    /// 框架初始化时候调用被标记的静态类
+    /// 环境初始化时候调用被标记的静态类
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    [FrameworkVersion(2)]
+    [Version(2)]
     public class OnEnvironmentInitAttribute : Attribute
     {
         /// <summary>

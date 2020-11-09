@@ -11,10 +11,10 @@ namespace IFramework
     /// <summary>
     /// 框架运行环境
     /// </summary>
-    [FrameworkVersion(23)]
-    [ScriptVersionUpdate(21, "替换可回收对象池子类型")]
-    [ScriptVersionUpdate(22, "调整释放时候的成员顺序")]
-    [ScriptVersionUpdate(23, "增加数据绑定器")]
+    [Version(23)]
+    [Update(21, "替换可回收对象池子类型")]
+    [Update(22, "调整释放时候的成员顺序")]
+    [Update(23, "增加数据绑定器")]
     public class FrameworkEnvironment : FrameworkObject
     {
         private bool _haveInit;

@@ -12,11 +12,12 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -25,10 +26,11 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>..\Plugins\IFramework.xml</DocumentationFile>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <NoWarn>
     </NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,6 +59,8 @@
     <Compile Include="Assemblies.cs" />
     <Compile Include="Attributes\DependenceAttribute.cs" />
     <Compile Include="Attributes\DescriptionAttribute.cs" />
+    <Compile Include="Attributes\UpdateAttribute.cs" />
+    <Compile Include="Attributes\VersionAttribute.cs" />
     <Compile Include="Environment\EnvironmentType.cs" />
     <Compile Include="Environment\IRecyclable.cs" />
     <Compile Include="Environment\RecyclableObjectCollection.cs" />
@@ -66,7 +70,6 @@
     <Compile Include="Environment\FrameworkEnvironment.cs" />
     <Compile Include="FrameworkModules.cs" />
     <Compile Include="FrameworkObject.cs" />
-    <Compile Include="Attributes\FrameworkVersionAttribute.cs" />
     <Compile Include="Inject\FrameworkContainer.cs" />
     <Compile Include="Inject\InjectAttribute.cs" />
     <Compile Include="Environment\LifeTimeObject.cs" />
@@ -109,6 +112,7 @@
     <Compile Include="Modules\MVVM\MVVMModule.cs" />
     <Compile Include="Modules\MVVM\View.cs" />
     <Compile Include="Modules\MVVM\ViewModel.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Resources\Group\FileResourceGroup.cs" />
     <Compile Include="Resources\Group\HttpResourceGroup.cs" />
     <Compile Include="Resources\Resource.cs" />
@@ -135,27 +139,21 @@
     <Compile Include="Pool\CapicityPool.cs" />
     <Compile Include="Pool\ListPool.cs" />
     <Compile Include="Environment\RecyclableObject.cs" />
-    <Compile Include="Attributes\ScriptVersionUpdateAttribute.cs" />
     <Compile Include="Framework.cs" />
     <Compile Include="Modules\Fsm\FsmModule.cs" />
     <Compile Include="Modules\Fsm\ConditionValue.cs" />
     <Compile Include="Modules\Fsm\Transition.cs" />
     <Compile Include="Modules\Fsm\IState.cs" />
     <Compile Include="Inject\IFrameworkContainer.cs" />
-    <Compile Include="Pool\CachePool.cs" />
     <Compile Include="Extension\IEnumerableExtension.cs" />
     <Compile Include="Extension\IntExtension.cs" />
     <Compile Include="Extension\IO.cs" />
     <Compile Include="IEventArgs.cs" />
-    <Compile Include="Pool\IPoolObject.cs" />
     <Compile Include="LockWait.cs" />
     <Compile Include="Log\CSLogger.cs" />
     <Compile Include="Log\ILoger.cs" />
     <Compile Include="Log\Log.cs" />
-    <Compile Include="Log\LogExtension.cs" />
-    <Compile Include="Log\LogType.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
-    <Compile Include="Pool\PoolObjectPool.cs" />
     <Compile Include="Pool\ObjectPool.cs" />
     <Compile Include="Extension\StringExtension.cs" />
     <Compile Include="Extension\StringExtension_Regex.cs" />

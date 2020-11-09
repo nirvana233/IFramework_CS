@@ -7,8 +7,8 @@ namespace IFramework
     /// <summary>
     /// 可观测 Object
     /// </summary>
-    [FrameworkVersion(20)]
-    [ScriptVersionUpdate(21, "改为 抽象类")]
+    [VersionAttribute(20)]
+    [UpdateAttribute(21, "改为 抽象类")]
     public abstract class ObservableObject : FrameworkObject
     {
         private Dictionary<string, Action> _callmap;

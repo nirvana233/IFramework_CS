@@ -32,12 +32,12 @@
         }
         private bool _binded;
         public bool binded { get { return _binded; } }
-        public void BindEnv()
+        private void BindEnv()
         {
             Framework.BindEnvUpdate(Update, this.env);
             _binded = true;
         }
-        public void UnBindEnv()
+        private void UnBindEnv()
         {
             if (_binded)
             {
@@ -50,12 +50,12 @@
         {
             base.OnAllocate();
             (this as ILifeTimeObject).Awake();
-            (this as ILifeTimeObject).enable = true; 
-
+            (this as ILifeTimeObject).enable = true;
+            BindEnv();
         }
-
         protected override void OnRecyle() { }
         protected override void OnDataReset() { }
+        protected override void OnDispose() { }
 
 
         protected virtual void Awake() { }
@@ -64,7 +64,6 @@
         protected virtual void Update() { }
         protected virtual void OnDestory() { }
 
-        protected override void OnDispose() { }
 
         public void Destory()
         {
@@ -92,8 +91,6 @@
             if (recyled) return;
             Update();
         }
-       
-
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

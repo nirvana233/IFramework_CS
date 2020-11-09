@@ -8,7 +8,7 @@ namespace IFramework.Modules.MVVM
     /// <summary>
     /// MVVM 模块
     /// </summary>
-    [FrameworkVersion(56)]
+    [VersionAttribute(56)]
     [Dependence(typeof(MessageModule))]
     public class MVVMModule : FrameworkModule
     {

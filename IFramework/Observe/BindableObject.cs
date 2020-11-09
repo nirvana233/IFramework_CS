@@ -7,9 +7,29 @@ namespace IFramework
     /// <summary>
     /// 绑定对象
     /// </summary>
-    [FrameworkVersion(11)]
+    [VersionAttribute(11)]
     public abstract class BindableObject : FrameworkObject
     {
+        /// <summary>
+        /// 绑定方式
+        /// </summary>
+        public enum BindOperation
+        {
+            /// <summary>
+            /// 监听+发布
+            /// </summary>
+            Both,
+            /// <summary>
+            /// 监听
+            /// </summary>
+            Listen,
+        }
+        /// <summary>
+        /// 绑定方式
+        /// </summary>
+        public BindOperation bindOperation = BindOperation.Both;
+
+    
         private Dictionary<string, Action<string, object>> _callmap;
         /// <summary>
         /// ctor
@@ -18,6 +38,7 @@ namespace IFramework
         {
             _callmap = new Dictionary<string, Action<string, object>>();
         }
+
         /// <summary>
         /// 注册监听
         /// </summary>
@@ -29,6 +50,7 @@ namespace IFramework
                 _callmap.Add(propertyName, null);
             _callmap[propertyName] += listener;
         }
+
         /// <summary>
         /// 移除监听
         /// </summary>
@@ -72,6 +94,7 @@ namespace IFramework
             if (string.IsNullOrEmpty(propertyName))
                 propertyName = GetProperyName(new StackTrace(true).GetFrame(1).GetMethod().Name);
             property = value;
+            //if (bindOperation == BindOperation.Listen) return;
             PublishPropertyChange(propertyName, value);
         }
         private string GetProperyName(string methodName)
@@ -89,6 +112,7 @@ namespace IFramework
             if (_callmap[propertyName] == null) return;
             _callmap[propertyName].Invoke(propertyName, obj);
         }
+
         /// <summary>
         /// 释放
         /// </summary>

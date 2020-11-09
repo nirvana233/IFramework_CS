@@ -142,7 +142,7 @@ namespace IFramework
 
         public override string ToString()
         {
-            return string.Format("({0:F1}, {1:F1})", new object[]
+            return string.Format("({0}, {1})", new object[]
             {
                 this.x,
                 this.y

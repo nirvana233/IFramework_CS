@@ -17,7 +17,7 @@ namespace IFramework
         /// <summary>
         /// 步长
         /// </summary>
-        public float step { get { return _step; } set { _step = value; ClacSteps(); } }
+        public float step { get { return _step; } set { _step = value;} }
         /// <summary>
         /// ctor
         /// </summary>
@@ -26,7 +26,7 @@ namespace IFramework
         public ValueCurve(List<Point2> points, float step = 0.002f)
         {
             this._points = points;
-            this._step = step;
+            this.step = step;
             _steps = new List<Point2>();
             ClacSteps();
         }
@@ -81,12 +81,11 @@ namespace IFramework
             for (int i = 0; i < _steps.Count; i++)
             {
                 Point2 v = _steps[i];
-                if (v.x >= x - step && v.x <= x + step)
+                if (v.x > x - step/2 && v.x < x + step/2)
                 {
                     return v.y;
                 }
             }
-            Log.E(x);
             return -1;
         }
         /// <summary>
@@ -102,6 +101,10 @@ namespace IFramework
                 _steps.Add(CalcBezierPoint(val, _points));
                 val += _step;
             } while (val <= 1);
+   
+
+            _steps.Add(_points[_points.Count - 1]);
+            _steps.Insert(0, _points[0]);
         }
 
         private static Point2 CalcBezierPoint(float delta, List<Point2> _points)

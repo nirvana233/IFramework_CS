@@ -6,7 +6,7 @@ namespace IFramework
     /// 可观测树值
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [FrameworkVersion(10)]
+    [VersionAttribute(10)]
     public class ObservableValue<T> : ObservableObject
     {
         /// <summary>

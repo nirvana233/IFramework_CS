@@ -10,7 +10,7 @@ namespace IFramework.Modules.MVVM
     /// <summary>
     /// VM
     /// </summary>
-    [FrameworkVersion(12)]
+    [VersionAttribute(12)]
     public abstract class ViewModel : ObservableObject, IViewModel
     {
         internal MVVMGroup group { get; set; }

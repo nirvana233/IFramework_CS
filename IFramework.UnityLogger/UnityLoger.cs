@@ -1,39 +1,26 @@
 ﻿
 
+using System;
+
 namespace IFramework
 {
     public class UnityLoger : ILoger
     {
-        public void Log(LogType logType, object message, params object[] paras)
+        public void Error(object messages, params object[] paras)
         {
-            switch (logType)
-            {
-                case LogType.Error:
-                    UnityEngine.Debug.LogError(message);
-                    break;
-                case LogType.Warning:
-                    UnityEngine.Debug.LogWarning(message);
-                    break;
-                case LogType.Log:
-                    UnityEngine.Debug.Log(message);
-                    break;
-            }
+            UnityEngine.Debug.LogError(messages);
         }
-
-        public void LogFormat(LogType logType, string format, object message, params object[] paras)
+        public void Exception(Exception ex)
         {
-            switch (logType)
-            {
-                case LogType.Error:
-                    UnityEngine.Debug.LogErrorFormat(message as UnityEngine.Object, format, paras);
-                    break;
-                case LogType.Warning:
-                    UnityEngine.Debug.LogWarningFormat(message as UnityEngine.Object, format, paras);
-                    break;
-                case LogType.Log:
-                    UnityEngine.Debug.LogFormat(message as UnityEngine.Object, format, paras);
-                    break;
-            }
+            UnityEngine.Debug.LogError(string.Format("{0}\n{1}",ex.Message ,ex.StackTrace));
+        }
+        public void Log(object messages, params object[] paras)
+        {
+            UnityEngine.Debug.Log(messages);
+        }
+        public void Warn(object messages, params object[] paras)
+        {
+            UnityEngine.Debug.LogWarning(messages);
         }
     }
 

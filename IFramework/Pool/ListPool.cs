@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IFramework.Pool
+namespace IFramework
 {
     /// <summary>
     /// list对象池

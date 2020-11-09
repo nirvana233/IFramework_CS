@@ -9,7 +9,7 @@ namespace IFramework
     /// <summary>
     /// 框架提供的模块
     /// </summary>
-    [FrameworkVersion(6)]
+    [VersionAttribute(6)]
     public class FrameworkModules : FrameworkModuleContainer
     {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
