@@ -40,6 +40,13 @@
             string 解释器
             </summary>
         </member>
+        <member name="M:IFramework.Serialization.DataTable.DataExplainer.#ctor(System.String,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="dot">替换逗号的字符</param>
+            <param name="quotes">替换双引号的字符</param>
+        </member>
         <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance``1">
             <summary>
             创建实例
@@ -75,7 +82,7 @@
             数据表读者
             </summary>
         </member>
-        <member name="M:IFramework.Serialization.DataTable.DataReader.#ctor(System.IO.StreamReader,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+        <member name="M:IFramework.Serialization.DataTable.DataReader.#ctor(System.IO.TextReader,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
             <summary>
             Ctor
             </summary>
@@ -144,12 +151,44 @@
             <param name="headNames">写入的标题</param>
             <returns></returns>
         </member>
+        <member name="T:IFramework.Serialization.DataTable.DataTableUtil">
+            <summary>
+            DataTable
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataTableUtil.CreateReader(System.IO.TextReader,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            创建数据读取器
+            </summary>
+            <param name="streamReader"></param>
+            <param name="rowReader"></param>
+            <param name="explainer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataTableUtil.CreateReader(System.String,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            创建数据读取器
+            </summary>
+            <param name="text"></param>
+            <param name="rowReader"></param>
+            <param name="explainer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataTableUtil.CreateWriter(System.IO.TextWriter,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            创建数据写入器
+            </summary>
+            <param name="streamWriter"></param>
+            <param name="rowWriter"></param>
+            <param name="explainer"></param>
+            <returns></returns>
+        </member>
         <member name="T:IFramework.Serialization.DataTable.DataWriter">
             <summary>
             数据写入者
             </summary>
         </member>
-        <member name="M:IFramework.Serialization.DataTable.DataWriter.#ctor(System.IO.StreamWriter,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+        <member name="M:IFramework.Serialization.DataTable.DataWriter.#ctor(System.IO.TextWriter,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
             <summary>
             Ctor
             </summary>
@@ -207,6 +246,18 @@
             <param name="membersDic">需要序列化的成员</param>
             <returns></returns>
         </member>
+        <member name="T:IFramework.Serialization.DataTable.IDataReader">
+            <summary>
+            数据读取器
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataReader.Get``1">
+            <summary>
+            获取
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
         <member name="T:IFramework.Serialization.DataTable.IDataRow">
             <summary>
             数据行
@@ -239,6 +290,26 @@
             写入标题行
             </summary>
             <param name="headNames">写入的标题</param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.IDataWriter">
+            <summary>
+            数据写入器
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataWriter.Write``1(System.Collections.Generic.List{``0})">
+            <summary>
+            写入
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataWriter.WriteString``1(System.Collections.Generic.List{``0})">
+            <summary>
+            写入
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
             <returns></returns>
         </member>
     </members>

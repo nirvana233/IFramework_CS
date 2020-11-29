@@ -4,7 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace IFramework
 {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    /// <summary>
+    /// byte[]转换
+    /// </summary>
     public static class FrameworkBitConverter
     {
         private static readonly uint[] ByteToHexCharLookupLowerCase = CreateByteToHexLookup(false);
@@ -54,10 +56,15 @@ namespace IFramework
             return result;
         }
 
-
-        public static string BytesToHexString(byte[] bytes, bool lowerCaseHexChars = true)
+        /// <summary>
+        /// string
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="lower"></param>
+        /// <returns></returns>
+        public static string BytesToHexString(byte[] bytes, bool lower = true)
         {
-            var lookup = lowerCaseHexChars ? ByteToHexCharLookupLowerCase : ByteToHexCharLookupUpperCase;
+            var lookup = lower ? ByteToHexCharLookupLowerCase : ByteToHexCharLookupUpperCase;
             var result = new char[bytes.Length * 2];
 
             for (int i = 0; i < bytes.Length; i++)
@@ -70,6 +77,11 @@ namespace IFramework
 
             return new string(result);
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="hex"></param>
+        /// <returns></returns>
         public static byte[] HexStringToBytes(string hex)
         {
             int length = hex.Length;
@@ -123,6 +135,12 @@ namespace IFramework
             return result;
         }
 
+        /// <summary>
+        /// short
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static short ToInt16(byte[] buffer, int offset)
         {
             short value = default(short);
@@ -135,6 +153,12 @@ namespace IFramework
 
             return value;
         }
+        /// <summary>
+        /// int
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static int ToInt32(byte[] buffer, int offset)
         {
             int value = default(int);
@@ -149,6 +173,12 @@ namespace IFramework
 
             return value;
         }
+        /// <summary>
+        /// long
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static long ToInt64(byte[] buffer, int offset)
         {
             long value = default(long);
@@ -171,7 +201,12 @@ namespace IFramework
 
             return value;
         }
-
+        /// <summary>
+        /// ushort
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static ushort ToUInt16(byte[] buffer, int offset)
         {
             ushort value = default(ushort);
@@ -182,6 +217,12 @@ namespace IFramework
 
             return value;
         }
+        /// <summary>
+        /// uint
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static uint ToUInt32(byte[] buffer, int offset)
         {
             uint value = default(uint);
@@ -196,6 +237,12 @@ namespace IFramework
 
             return value;
         }
+        /// <summary>
+        /// ulong
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static ulong ToUInt64(byte[] buffer, int offset)
         {
             ulong value = default(ulong);
@@ -218,7 +265,12 @@ namespace IFramework
 
             return value;
         }
-
+        /// <summary>
+        /// float
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static float ToSingle(byte[] buffer, int offset)
         {
             var union = default(SingleByteUnion);
@@ -240,6 +292,12 @@ namespace IFramework
 
             return union.Value;
         }
+        /// <summary>
+        /// double
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static double ToDouble(byte[] buffer, int offset)
         {
             var union = default(DoubleByteUnion);
@@ -269,6 +327,12 @@ namespace IFramework
 
             return union.Value;
         }
+        /// <summary>
+        /// ToDecimal
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static decimal ToDecimal(byte[] buffer, int offset)
         {
             var union = default(DecimalByteUnion);
@@ -314,6 +378,12 @@ namespace IFramework
 
             return union.Value;
         }
+        /// <summary>
+        /// Guid
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static Guid ToGuid(byte[] buffer, int offset)
         {
             var union = default(GuidByteUnion);
@@ -352,6 +422,12 @@ namespace IFramework
 
             return union.Value;
         }
+        /// <summary>
+        /// sbyte
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static sbyte ToSByte(byte[] bytes, int offset)
         {
             var b = bytes[offset];
@@ -360,17 +436,33 @@ namespace IFramework
             else
                 return (sbyte)b;
         }
-
+        /// <summary>
+        /// bool
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static bool ToBoolean(byte[] buffer, int offset)
         {
             return buffer[offset] == 1;
         }
+        /// <summary>
+        /// char
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static char ToChar(byte[] buffer, int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return (char)(((buffer[offset] & 0xFF) << 8) | (buffer[offset+1] & 0xFF));
             return (char)(((buffer[offset+1] & 0xFF) << 8) | (buffer[offset ] & 0xFF));
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(sbyte value)
         {
             if (value <0)
@@ -382,7 +474,11 @@ namespace IFramework
                     (byte)(value),
                 };
         }
-
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(char value)
         {
             if (BitConverter.IsLittleEndian)
@@ -401,12 +497,22 @@ namespace IFramework
             }
 
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(bool value)
         {
             return new byte[] {
                     value?(byte)1:(byte)0,
                 };
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(short value)
         {
             if (BitConverter.IsLittleEndian)
@@ -424,6 +530,11 @@ namespace IFramework
                 };
             }
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(int value)
         {
             if (BitConverter.IsLittleEndian)
@@ -450,6 +561,11 @@ namespace IFramework
 
             }
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(long value)
         {
             if (BitConverter.IsLittleEndian)
@@ -481,6 +597,11 @@ namespace IFramework
                 };
             }
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(ushort value)
         {
             if (BitConverter.IsLittleEndian)
@@ -500,6 +621,11 @@ namespace IFramework
 
             }
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(uint value)
         {
             if (BitConverter.IsLittleEndian)
@@ -524,6 +650,11 @@ namespace IFramework
 
             }
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(ulong value)
         {
             if (BitConverter.IsLittleEndian)
@@ -554,6 +685,11 @@ namespace IFramework
                 };
             }
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(float value)
         {
             var union = default(SingleByteUnion);
@@ -580,6 +716,11 @@ namespace IFramework
 
             }
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(double value)
         {
             var union = default(DoubleByteUnion);
@@ -613,6 +754,11 @@ namespace IFramework
                 };
             }
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(decimal value)
         {
             var union = default(DecimalByteUnion);
@@ -664,6 +810,11 @@ namespace IFramework
                 };
             }
         }
+        /// <summary>
+        /// byte[]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static byte[] GetBytes(Guid value)
         {
             var union = default(GuidByteUnion);

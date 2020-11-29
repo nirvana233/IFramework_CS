@@ -2,10 +2,9 @@
 
 namespace IFramework.NodeAction
 {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class TimeSpanNode : ActionNode
+    class TimeSpanNode : ActionNode, ITimeSpanNode
     {
-        public void Config(TimeSpan timeSpan, bool autoRecyle)
+        internal void Config(TimeSpan timeSpan, bool autoRecyle)
         {
             base.Config(autoRecyle);
             this.timeSpan = timeSpan;
@@ -36,8 +35,7 @@ namespace IFramework.NodeAction
 
         protected override void OnCompelete() { }
 
-        protected override void OnNodeDispose() { }
+        //protected override void OnNodeDispose() { }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

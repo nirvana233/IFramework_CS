@@ -1,4 +1,5 @@
 ﻿using IFramework.Injection;
+using IFramework.Modules;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,43 +12,31 @@ namespace IFramework
     /// <summary>
     /// 框架运行环境
     /// </summary>
-    [Version(23)]
-    [Update(21, "替换可回收对象池子类型")]
-    [Update(22, "调整释放时候的成员顺序")]
-    [Update(23, "增加数据绑定器")]
+    [ScriptVersionAttribute(23)]
+    [VersionUpdateAttribute(21, "替换可回收对象池子类型")]
+    [VersionUpdateAttribute(22, "调整释放时候的成员顺序")]
+    [VersionUpdateAttribute(23, "增加数据绑定器")]
     public class FrameworkEnvironment : FrameworkObject
     {
-        private bool _haveInit;
+        private bool _inited;
         private FrameworkModules _modules;
         private Stopwatch sw_init;
         private Stopwatch sw_delta;
         private EnvironmentType _envType;
+        private LoomModule _loom;
+        private event Action update;
+        private event Action onDispose;
+        private static LockParam _envsetlock = new LockParam();
+        private static FrameworkEnvironment _current;
 
-        /// <summary>
-        /// Update 方法的回调
-        /// </summary>
-        public event Action update;
-        /// <summary>
-        /// 环境初始化回调
-        /// </summary>
-        public event Action onInit;
-        /// <summary>
-        /// 环境释放的回调
-        /// </summary>
-        public event Action onDispose;
         /// <summary>
         /// 环境是否已经初始化
         /// </summary>
-        public bool haveInit { get { return _haveInit; } }
-
+        public bool inited { get { return _inited; } }
         /// <summary>
         /// IRecyclable 实例的环境容器
         /// </summary>
-        public RecyclableObjectCollection cycleCollection { get; private set; }
-        /// <summary>
-        /// 数据绑定器
-        /// </summary>
-        public BindableObjectHandler bindHandler { get; private set; }
+        internal RecyclableObjectCollection cycleCollection { get; private set; }
         /// <summary>
         /// IOC容器
         /// </summary>
@@ -55,7 +44,7 @@ namespace IFramework
         /// <summary>
         /// 环境下自带的模块容器
         /// </summary>
-        public FrameworkModules modules { get { return _modules; } }
+        public IFrameworkModules modules { get { return _modules; } }
         /// <summary>
         /// 环境类型
         /// </summary>
@@ -82,18 +71,29 @@ namespace IFramework
                 return span;
             }
         }
+
+
         /// <summary>
-        /// 创建一个 环境
+        /// 当前环境
         /// </summary>
-        /// <param name="envName">环境名称</param>
-        /// <param name="envType">环境类型</param>
-        /// <returns></returns>
-        public static FrameworkEnvironment CreateInstance(string envName, EnvironmentType envType)
+        public static FrameworkEnvironment current
         {
-            return new FrameworkEnvironment(envName, envType);
+            get { return _current; }
+            private set
+            {
+                using (new LockWait(ref _envsetlock))
+                {
+                    _current = value;
+                }
+            }
         }
 
-        private FrameworkEnvironment(string envName, EnvironmentType envType)
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="envName"></param>
+        /// <param name="envType"></param>
+        public FrameworkEnvironment(string envName, EnvironmentType envType)
         {
             this.envName = envName;
             this._envType = envType;
@@ -105,10 +105,9 @@ namespace IFramework
         /// <param name="types">需要初始化调用的静态类</param>
         public void Init(IEnumerable<Type> types)
         {
-            if (_haveInit) return;
+            if (_inited) return;
             current = this;
-
-            bindHandler = new BindableObjectHandler();
+            _loom = LoomModule.CreatInstance<LoomModule>(this.envName, this.envName);
             container = new FrameworkContainer();
             _modules = new FrameworkModules(this);
             cycleCollection = new RecyclableObjectCollection();
@@ -119,12 +118,9 @@ namespace IFramework
                     if ((ta & TypeAttributes.Abstract) != 0 && ((ta & TypeAttributes.Sealed) != 0))
                         RuntimeHelpers.RunClassConstructor(type.TypeHandle);
                 });
-
-            if (onInit != null) onInit();
             deltaTime = TimeSpan.Zero;
-            _haveInit = true;
+            _inited = true;
             sw_delta = new Stopwatch();
-
             sw_init = new Stopwatch();
             sw_init.Start();
         }
@@ -147,31 +143,29 @@ namespace IFramework
             types.RemoveAll((type) => { return type == null; });
             Init(types);
         }
-
         /// <summary>
         /// 释放
         /// </summary>
         protected override void OnDispose()
         {
             base.OnDispose();
-            if (disposed || !haveInit) return;
+            if (disposed || !inited) return;
 
-            cycleCollection.Dispose();
+            (cycleCollection as RecyclableObjectCollection).Dispose();
             container.Dispose();
-            bindHandler.Dispose();
             if (onDispose != null) onDispose();
             sw_init.Stop();
             sw_delta.Stop();
+            _loom.Dispose();
 
+            _loom = null;
             container = null;
             sw_delta = null;
             sw_init = null;
             _modules = null;
-            onInit = null;
             update = null;
             onDispose = null;
         }
-
         /// <summary>
         /// 刷新环境
         /// </summary>
@@ -182,25 +176,59 @@ namespace IFramework
             sw_delta.Reset();
             sw_delta.Start();
             if (update != null) update();
+            _loom.Update();
             sw_delta.Stop();
             deltaTime = sw_delta.Elapsed;
         }
 
-        private static LockParam _envsetlock = new LockParam();
-        private static FrameworkEnvironment _current;
         /// <summary>
-        /// 当前环境
+        /// 在子线程跑方法
         /// </summary>
-        public static FrameworkEnvironment current
+        /// <param name="action"></param>
+        public void RunsOnSubThread(Action action)
         {
-            get { return _current; }
-            private set
-            {
-                using (new LockWait(ref _envsetlock))
-                {
-                    _current = value;
-                }
-            }
+            _loom.RunOnSubThread(action);
+        }
+        /// <summary>
+        /// 等待 环境的 update，即等到该环境的线程来临
+        /// </summary>
+        /// <param name="action"></param>
+        public void WaitEnvironmentFrame(Action action)
+        {
+            _loom.RunOnMainThread(action);
+        }
+
+        /// <summary>
+        /// 绑定帧
+        /// </summary>
+        /// <param name="action"></param>
+        public void BindUpdate(Action action)
+        {
+            update += action;
+        }
+        /// <summary>
+        /// 移除绑定帧
+        /// </summary>
+        /// <param name="action"></param>
+        public void UnBindUpdate(Action action)
+        {
+            update -= action;
+        }
+        /// <summary>
+        /// 绑定dispose
+        /// </summary>
+        /// <param name="action"></param>
+        public void BindDispose(Action action)
+        {
+            onDispose += action;
+        }
+        /// <summary>
+        /// 移除绑定dispose
+        /// </summary>
+        /// <param name="action"></param>
+        public void UnBindDispose(Action action)
+        {
+            onDispose -= action;
         }
     }
 }

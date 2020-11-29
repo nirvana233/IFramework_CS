@@ -6,7 +6,7 @@ namespace IFramework
     /// <summary>
     /// 绑定器
     /// </summary>
-    [VersionAttribute(11)]
+    [ScriptVersion(11)]
     public class BindableObjectHandler : FrameworkObject
     {
         struct BindEntity
@@ -53,8 +53,8 @@ namespace IFramework
                 void Set(string name, object obj);
             }
             private interface ITypeMap<T> : ITypeMap {
-                T Get(string name);
-                void Set(string name, T obj);
+                T GetValue(string name);
+                void SetValue(string name, T obj);
             }
             private class TypeMap<T>: ITypeMap<T>
             {
@@ -63,7 +63,7 @@ namespace IFramework
                 {
                     values = new Dictionary<string, T>();
                 }
-                public T Get(string name)
+                public T GetValue(string name)
                 {
                     T t;
                     if (!values.TryGetValue(name,out t))
@@ -73,7 +73,7 @@ namespace IFramework
                     }
                     return t;
                 }
-                public void Set(string name,T obj)
+                public void SetValue(string name,T obj)
                 {
                     if (!values.ContainsKey(name))
                     {
@@ -95,10 +95,9 @@ namespace IFramework
                         values[name] = (T)obj;
                     }
                 }
-
-                object ITypeMap.Get(string name)
+                public object Get(string name)
                 {
-                    return Get(name);
+                    return GetValue(name);
                 }
             }
             private Dictionary<Type, ITypeMap> values;
@@ -114,7 +113,7 @@ namespace IFramework
                     map = new TypeMap<T>();
                     values.Add(type, map);
                 }
-                return (map as TypeMap<T>).Get(name);
+                return (map as TypeMap<T>).GetValue(name);
             }
             public void Set<T>(string name ,T t)
             {
@@ -125,7 +124,7 @@ namespace IFramework
                     map = new TypeMap<T>();
                     values.Add(type, map);
                 }
-                (map as TypeMap<T>).Set(name,t);
+                (map as TypeMap<T>).SetValue(name,t);
             }
             public object Get(Type type, string name)
             {
@@ -239,6 +238,50 @@ namespace IFramework
             _entitys.Add(bindTarget);
             return this;
         }
+
+
+        /// <summary>
+        /// 获取数值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public T GetValue<T>(string name)
+        {
+            return _valuemap.Get<T>(name);
+        }
+        /// <summary>
+        /// 获取数值
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public object GetValue(Type type,string name)
+        {
+            return _valuemap.Get(type,name);
+        }
+
+
+        /// <summary>
+        /// 发布变化
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public BindableObjectHandler PublishProperty(Type type,object value, string propertyName)
+        {
+            if (!_callmap.ContainsKey(type))
+                _callmap.Add(type, new Dictionary<string, Action<string, object>>());
+            if (!_callmap[type].ContainsKey(propertyName))
+                _callmap[type].Add(propertyName, null);
+            if (_callmap[type][propertyName] != null)
+            {
+                _callmap[type][propertyName].Invoke(propertyName, value);
+            }
+            return this;
+        }
+
         /// <summary>
         /// 发布变化
         /// </summary>
@@ -250,10 +293,13 @@ namespace IFramework
         {
             Type type = typeof(T);
             if (!_callmap.ContainsKey(type))
-                throw new Exception(string.Format("Not Exist type {0},name {1}", type, propertyName));
+                _callmap.Add(type, new Dictionary<string, Action<string, object>>());
             if (!_callmap[type].ContainsKey(propertyName))
-                throw new Exception(string.Format("Not Exist type {0},name {1}", type, propertyName));
-            _callmap[type][propertyName].Invoke(propertyName, value);
+                _callmap[type].Add(propertyName,new Action<string, object>((str,obj)=> { }));
+            if (_callmap[type][propertyName]!=null)
+            {
+                _callmap[type][propertyName].Invoke(propertyName, value);
+            }
             return this;
         }
 

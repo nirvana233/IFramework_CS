@@ -2,14 +2,13 @@
 
 namespace IFramework.NodeAction
 {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class ConditionNode : ActionNode
+    class ConditionNode : ActionNode, IConditionNode
     {
         private Func<bool> _condition;
         private Action _callback;
-        public Func<bool> condition { get { return _condition; } }
-        public Action callback { get { return _callback; } }
-        public void Config(Func<bool> condition, Action callback, bool autoRecyle)
+        //public Func<bool> condition { get { return _condition; } }
+        //public Action callback { get { return _callback; } }
+        internal void Config(Func<bool> condition, Action callback, bool autoRecyle)
         {
             this._condition = condition;
             this._callback = callback;
@@ -22,7 +21,7 @@ namespace IFramework.NodeAction
             _condition = null;
         }
 
-       
+
 
         protected override bool OnMoveNext()
         {
@@ -35,12 +34,11 @@ namespace IFramework.NodeAction
         protected override void OnBegin() { }
         protected override void OnCompelete() { }
 
-        protected override void OnNodeDispose()
-        {
-            _callback = null;
-            _condition = null;
-        }
+        //protected override void OnNodeDispose()
+        //{
+        //    _callback = null;
+        //    _condition = null;
+        //}
     }
 
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

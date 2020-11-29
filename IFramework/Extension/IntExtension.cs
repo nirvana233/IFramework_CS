@@ -58,6 +58,8 @@ namespace IFramework
             float _tem = self;
             return _tem.Lerp(end, pecent).RoundToInt();
         }
+
+
     }
 
 }

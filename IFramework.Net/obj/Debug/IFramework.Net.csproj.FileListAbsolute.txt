@@ -1,9 +1,5 @@
 E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.csproj.CoreCompileInputs.cache
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.Net.xml
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.Net.dll
-E:\Project\Unity\IF_Git\Assets\IFramework\0.1Core\Plugins\IFramework.Net.pdb
+E:\Project\VS\IFramework\Plugins\IFramework.Net.dll
 E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.csproj.CopyComplete
 E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.dll
-E:\Project\VS\IFramework\Plugins\IFramework.Net.xml
-E:\Project\VS\IFramework\Plugins\IFramework.Net.dll
 E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.csprojAssemblyReference.cache

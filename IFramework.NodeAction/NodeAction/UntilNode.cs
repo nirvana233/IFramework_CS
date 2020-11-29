@@ -2,15 +2,14 @@
 
 namespace IFramework.NodeAction
 {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class UntilNode : ActionNode
+    class UntilNode : ActionNode, IUntilNode
     {
 
         private Func<bool> _condition;
-        public Func<bool> condition { get { return _condition; }  }
+        //public Func<bool> condition { get { return _condition; }  }
 
 
-        public void Config(Func<bool> condition, bool autoRecyle)
+        internal void Config(Func<bool> condition, bool autoRecyle)
         {
             this._condition = condition;
             base.Config(autoRecyle);
@@ -22,17 +21,16 @@ namespace IFramework.NodeAction
         }
         protected override bool OnMoveNext()
         {
-            return !condition.Invoke();
+            return !_condition.Invoke();
         }
 
         protected override void OnBegin() { }
         protected override void OnCompelete() { }
         protected override void OnNodeReset() { }
 
-        protected override void OnNodeDispose() { }
+        //protected override void OnNodeDispose() { }
     }
 
 
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

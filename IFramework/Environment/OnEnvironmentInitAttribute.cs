@@ -6,7 +6,7 @@ namespace IFramework
     /// 环境初始化时候调用被标记的静态类
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    [Version(2)]
+    [ScriptVersionAttribute(2)]
     public class OnEnvironmentInitAttribute : Attribute
     {
         /// <summary>

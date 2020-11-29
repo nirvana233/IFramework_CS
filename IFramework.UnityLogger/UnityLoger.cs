@@ -12,7 +12,7 @@ namespace IFramework
         }
         public void Exception(Exception ex)
         {
-            UnityEngine.Debug.LogError(string.Format("{0}\n{1}",ex.Message ,ex.StackTrace));
+            UnityEngine.Debug.LogException(ex);
         }
         public void Log(object messages, params object[] paras)
         {

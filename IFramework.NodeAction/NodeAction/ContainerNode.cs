@@ -2,11 +2,10 @@
 
 namespace IFramework.NodeAction
 {
-    [VersionAttribute(3)]
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public abstract class ContainerNode : ActionNode
+    [ScriptVersion(3)]
+    abstract class ContainerNode : ActionNode, IContainerNode
     {
-        public int count
+        protected int count
         {
             get
             {
@@ -20,7 +19,7 @@ namespace IFramework.NodeAction
             nodeList = new List<ActionNode>();
         }
         protected List<ActionNode> nodeList;
-        public virtual void Append(ActionNode node)
+        internal virtual void Append(ActionNode node)
         {
             nodeList.Add(node);
         }
@@ -31,27 +30,26 @@ namespace IFramework.NodeAction
                 nodeList[i].Recyle();
             nodeList.Clear();
         }
-        protected override void OnNodeDispose()
-        {
-            for (int i = 0; i < nodeList.Count; i++)
-                nodeList[i].Dispose();
-            nodeList.Clear();
-            nodeList = null;
-        }
-       
-        protected override void OnDataReset()
-        {
-            base.OnDataReset();
-            for (int i = 0; i < nodeList.Count; i++)
-                nodeList[i].ResetData();
-        }
+        //protected override void OnNodeDispose()
+        //{
+        //    for (int i = 0; i < nodeList.Count; i++)
+        //        nodeList[i].Dispose();
+        //    nodeList.Clear();
+        //    nodeList = null;
+        //}
+
+        //protected override void OnDataReset()
+        //{
+        //    base.OnDataReset();
+        //    for (int i = 0; i < nodeList.Count; i++)
+        //        nodeList[i].ResetData();
+        //}
         protected override void OnNodeReset()
         {
             for (int i = 0; i < nodeList.Count; i++)
                 nodeList[i].NodeReset();
         }
-       
+
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

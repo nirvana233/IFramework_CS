@@ -9,10 +9,10 @@ namespace IFramework
     /// <summary>
     /// 框架入口
     /// </summary>
-    [Dependence(typeof(FrameworkEnvironment))]
-    [Dependence(typeof(Assemblies))]
-    [Version(8)]
-    [Update(8,"增加环境数量")]
+    [RequireAttribute(typeof(FrameworkEnvironment))]
+    [RequireAttribute(typeof(Assemblies))]
+    [ScriptVersionAttribute(8)]
+    [VersionUpdateAttribute(8,"增加环境数量")]
     public static class Framework
     {
         static Framework()
@@ -29,9 +29,9 @@ namespace IFramework
                              .ForEach((type) =>
                              {
                                  if (!type.FullName.Contains(FrameworkName)) return;
-                                 if (type.IsDefined(typeof(VersionAttribute), false))
+                                 if (type.IsDefined(typeof(ScriptVersionAttribute), false))
                                  {
-                                     VersionAttribute attr = type.GetCustomAttributes(typeof(VersionAttribute), false).First() as VersionAttribute;
+                                     ScriptVersionAttribute attr = type.GetCustomAttributes(typeof(ScriptVersionAttribute), false).First() as ScriptVersionAttribute;
                                      sum += attr.version;
                                  }
                                  else
@@ -77,11 +77,6 @@ namespace IFramework
         public static FrameworkEnvironment extra4;
 
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
-        private static FrameworkEnvironment CreateInstance(string envName, EnvironmentType envType)
-        {
-            return FrameworkEnvironment.CreateInstance(envName, envType);
-        }
         /// <summary>
         /// 实例化环境
         /// </summary>
@@ -98,21 +93,21 @@ namespace IFramework
 
             switch (envType)
             {
-                case EnvironmentType.Ev0: env0 = CreateInstance(envName, envType); return env0;
-                case EnvironmentType.Ev1: env1 = CreateInstance(envName, envType); return env1;
-                case EnvironmentType.Ev2: env2 = CreateInstance(envName, envType); return env2;
-                case EnvironmentType.Ev3: env3 = CreateInstance(envName, envType); return env3;
-                case EnvironmentType.Ev4: env4 = CreateInstance(envName, envType); return env4;
-                case EnvironmentType.Ev5: env5 = CreateInstance(envName, envType); return env5;
-                case EnvironmentType.Ev6: env6 = CreateInstance(envName, envType); return env6;
-                case EnvironmentType.Ev7: env7 = CreateInstance(envName, envType); return env7;
-                case EnvironmentType.Ev8: env8 = CreateInstance(envName, envType); return env8;
-                case EnvironmentType.Ev9: env9 = CreateInstance(envName, envType); return env9;
-                case EnvironmentType.Extra0: extra0 = CreateInstance(envName, envType); return extra0;
-                case EnvironmentType.Extra1: extra1 = CreateInstance(envName, envType); return extra1;
-                case EnvironmentType.Extra2: extra2 = CreateInstance(envName, envType); return extra2;
-                case EnvironmentType.Extra3: extra3 = CreateInstance(envName, envType); return extra3;
-                case EnvironmentType.Extra4: extra4 = CreateInstance(envName, envType); return extra4;
+                case EnvironmentType.Ev0: env0 = new FrameworkEnvironment(envName, envType); return env0;
+                case EnvironmentType.Ev1: env1 = new FrameworkEnvironment(envName, envType); return env1;
+                case EnvironmentType.Ev2: env2 = new FrameworkEnvironment(envName, envType); return env2;
+                case EnvironmentType.Ev3: env3 = new FrameworkEnvironment(envName, envType); return env3;
+                case EnvironmentType.Ev4: env4 = new FrameworkEnvironment(envName, envType); return env4;
+                case EnvironmentType.Ev5: env5 = new FrameworkEnvironment(envName, envType); return env5;
+                case EnvironmentType.Ev6: env6 = new FrameworkEnvironment(envName, envType); return env6;
+                case EnvironmentType.Ev7: env7 = new FrameworkEnvironment(envName, envType); return env7;
+                case EnvironmentType.Ev8: env8 = new FrameworkEnvironment(envName, envType); return env8;
+                case EnvironmentType.Ev9: env9 = new FrameworkEnvironment(envName, envType); return env9;
+                case EnvironmentType.Extra0: extra0 = new FrameworkEnvironment(envName, envType); return extra0;
+                case EnvironmentType.Extra1: extra1 = new FrameworkEnvironment(envName, envType); return extra1;
+                case EnvironmentType.Extra2: extra2 = new FrameworkEnvironment(envName, envType); return extra2;
+                case EnvironmentType.Extra3: extra3 = new FrameworkEnvironment(envName, envType); return extra3;
+                case EnvironmentType.Extra4: extra4 = new FrameworkEnvironment(envName, envType); return extra4;
                 default:
                     throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ", envType));
             }
@@ -145,6 +140,10 @@ namespace IFramework
                     throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ", envType));
             }
         }
+
+
+
+
         /// <summary>
         /// 绑顶 方法 到一个环境的 Update
         /// </summary>
@@ -152,7 +151,7 @@ namespace IFramework
         /// <param name="env">环境</param>
         public static void BindEnvUpdate(this Action action, FrameworkEnvironment env)
         {
-            env.update += action;
+            env.BindUpdate(action);
         }
         /// <summary>
         /// 解除绑顶 方法 到一个环境的 Update
@@ -161,7 +160,7 @@ namespace IFramework
         /// <param name="env">环境</param>
         public static void UnBindEnvUpdate(this Action action, FrameworkEnvironment env)
         {
-            env.update -= action;
+            env.UnBindUpdate ( action);
         }
         /// <summary>
         /// 绑顶 方法 到一个环境的 Dispose
@@ -170,7 +169,7 @@ namespace IFramework
         /// <param name="env">环境</param>
         public static void BindEnvDispose(this Action action, FrameworkEnvironment env)
         {
-            env.onDispose += action;
+            env.BindDispose(action);
         }
         /// <summary>
         /// 解除绑顶 方法 到一个环境的 Dispose
@@ -179,7 +178,7 @@ namespace IFramework
         /// <param name="env">环境</param>
         public static void UnBindEnvDispose(this Action action, FrameworkEnvironment env)
         {
-            env.onDispose -= action;
+            env.UnBindDispose(action);
         }
 
         /// <summary>

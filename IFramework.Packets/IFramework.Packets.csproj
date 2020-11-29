@@ -49,9 +49,6 @@
   <ItemGroup>
     <Compile Include="Packet\CycQueue.cs" />
     <Compile Include="Packet\Extension\ByteExtension.cs" />
-    <Compile Include="Packet\Extension\UInt16Extension.cs" />
-    <Compile Include="Packet\Extension\UInt32Extension.cs" />
-    <Compile Include="Packet\Extension\UInt64Extension.cs" />
     <Compile Include="Packet\Packet.cs" />
     <Compile Include="Packet\PacketHeader.cs" />
     <Compile Include="Packet\PacketQueue.cs" />

@@ -2,8 +2,9 @@
 
 namespace IFramework
 {
-
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    /// <summary>
+    /// 正则
+    /// </summary>
     public static partial class StringExtension_Regex
     {
         /// <summary>
@@ -26,11 +27,21 @@ namespace IFramework
             if (string.IsNullOrEmpty(self)) return false;
             return Regex.IsMatch(self, @"^[1]+[3,5]+\d{9}");
         }
+        /// <summary>
+        /// 是否是年龄
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static bool IsAge(this string self)
         {
             if (string.IsNullOrEmpty(self)) return false;
             return Regex.IsMatch(self, @"^\d{1,2}$");
         }
+        /// <summary>
+        /// 是否是密码
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static bool IsPassWord(this string self)
         {
             if (string.IsNullOrEmpty(self)) return false;
@@ -115,15 +126,32 @@ namespace IFramework
         {
             return Regex.Replace(self, "[0,9]", "", RegexOptions.IgnoreCase);
         }
+        /// <summary>
+        /// 移除数字
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="minLen"></param>
+        /// <param name="maxLen"></param>
+        /// <returns></returns>
         public static string RemoveNumbers(this string self, int minLen, int maxLen)
         {
             return Regex.Replace(self, string.Format("[0,9]{2}{0},{1}{3}", minLen, maxLen,"{","}"), "", RegexOptions.IgnoreCase);
         }
+        /// <summary>
+        /// 移除数字
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="minLen"></param>
+        /// <returns></returns>
         public static string RemoveNumbers(this string self, int minLen)
         {
             return Regex.Replace(self, string.Format("[0,9]{1}{0},{2}", minLen, "{", "}"), "", RegexOptions.IgnoreCase);
         }
-
+        /// <summary>
+        /// 留下数字
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static string RemoveNotNumber(this string self)
         {
             return Regex.Replace(self, @"[^\d]*", "", RegexOptions.IgnoreCase);
@@ -131,5 +159,4 @@ namespace IFramework
 
     }
 
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

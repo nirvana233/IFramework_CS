@@ -7,7 +7,7 @@ namespace IFramework
     /// <summary>
     /// 绑定对象
     /// </summary>
-    [VersionAttribute(11)]
+    [ScriptVersion(11)]
     public abstract class BindableObject : FrameworkObject
     {
         /// <summary>

@@ -2,19 +2,18 @@
 
 namespace IFramework.NodeAction
 {
-    [VersionAttribute(3)]
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class EventNode : ActionNode
+    [ScriptVersion(3)]
+    class EventNode : ActionNode, IEventNode
     {
         private Action _callback;
-        public Action callback { get { return _callback; } }
+        //public Action callback { get { return _callback; } }
 
-        public void Config(Action callback, bool autoRecyle)
+        internal void Config(Action callback, bool autoRecyle)
         {
             this._callback = callback;
             base.Config(autoRecyle);
         }
-      
+
 
 
         protected override void OnDataReset()
@@ -33,8 +32,7 @@ namespace IFramework.NodeAction
         protected override void OnCompelete() { }
         protected override void OnNodeReset() { }
 
-        protected override void OnNodeDispose() { }
+        //protected override void OnNodeDispose() { }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

@@ -49,6 +49,16 @@
     <Compile Include="NodeAction\ConditionNode.cs" />
     <Compile Include="NodeAction\ContainerNode.cs" />
     <Compile Include="NodeAction\EventNode.cs" />
+    <Compile Include="NodeAction\Interface\IActionNode.cs" />
+    <Compile Include="NodeAction\Interface\IConditionNode.cs" />
+    <Compile Include="NodeAction\Interface\IContainerNode.cs" />
+    <Compile Include="NodeAction\Interface\IEventNode.cs" />
+    <Compile Include="NodeAction\Interface\IRepeatNode.cs" />
+    <Compile Include="NodeAction\Interface\ISequenceNode.cs" />
+    <Compile Include="NodeAction\Interface\ISpawnNode.cs" />
+    <Compile Include="NodeAction\Interface\ITimeSpanNode.cs" />
+    <Compile Include="NodeAction\Interface\IUntilNode.cs" />
+    <Compile Include="NodeAction\Interface\IWhileNode.cs" />
     <Compile Include="NodeAction\RepeatNode.cs" />
     <Compile Include="NodeAction\SequenceNode.cs" />
     <Compile Include="NodeAction\SpawnNode.cs" />

@@ -1,11 +1,10 @@
 ﻿namespace IFramework.NodeAction
 {
-    [VersionAttribute(3)]
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class SequenceNode : ContainerNode
+    [ScriptVersion(3)]
+    class SequenceNode : ContainerNode, ISequenceNode
     {
         private int _curIndex;
-        public ActionNode curAction
+        private ActionNode curAction
         {
             get
             {
@@ -13,7 +12,6 @@
             }
         }
 
-        public SequenceNode() : base() { }
         protected override bool OnMoveNext()
         {
             if (_curIndex >= count) return false;
@@ -26,7 +24,7 @@
         protected override void OnDataReset()
         {
             base.OnDataReset();
-        //    Log.L(_curIndex + "_ " + count + "_" + isDone);
+            //    Log.L(_curIndex + "_ " + count + "_" + isDone);
 
             _curIndex = 0;
         }
@@ -38,10 +36,9 @@
         }
         protected override void OnBegin()
         {
-          //  Log.L(_curIndex+" "+count+""+isDone);
+            //  Log.L(_curIndex+" "+count+""+isDone);
         }
         protected override void OnCompelete() { }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

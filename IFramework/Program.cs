@@ -2,76 +2,44 @@
 //using System.Collections.Generic;
 //using System.Linq;
 //using System.Text;
-
+//using System.Threading;
+//using IFramework.Modules.Message;
 //namespace IFramework
 //{
-//    class Program
+//    class Program:IMessagePublisher
 //    {
-//        class BindA : BindableObject
-//        {
-//            private bool _startGame;
 
-//            public bool startGame
-//            {
-//                get { return GetProperty(ref _startGame, "startGame"); }
-//                set { SetProperty(ref _startGame, value, "startGame"); }
-//            }
-
-
-//        }
-//        private class CallClass<T>
-//        {
-//            private event Action<string, T> call;
-
-//            public void Invoke(string name,T t)
-//            {
-//                if (call == null) return;
-//                call.Invoke(name, t);
-//            }
-//            public static CallClass<T> operator +(CallClass<T> _class, Action<string, T> call)
-//            {
-//                _class.call += call;
-//                return _class;
-//            }
-//            public static CallClass<T> operator -(CallClass<T> _class, Action<string, T> call)
-//            {
-//                _class.call -= call;
-//                return _class;
-//            }
-//        }
-
+//        static MessageModule moudle;
 //        static void Main(string[] args)
 //        {
-//            //BindA a = new BindA();
-//            //BindA b = new BindA();
-//            //a.bindOperation = BindableObject.BindOperation.Listen;
+//            moudle = MessageModule.CreatInstance<MessageModule>("", "");
+//            moudle.Subscribe<Program>(Listen);
+//            for (int i = 0; i < 10; i++)
+//            {
+//                moudle.Publish(typeof(Program),10- i, null, 10 - i);
+//            }
 
-//            //BindableObjectHandler binder = new BindableObjectHandler();
-//            //binder.BindProperty((value) => { b.startGame = value; }, () => { return b.startGame; });
-//            //binder.BindProperty((value) => { a.startGame = value; }, () => { return a.startGame; });
-//            //Console.WriteLine($"A :{a.startGame}   B :{b.startGame}");
-
-//            //a.startGame = true;
-//            //Console.WriteLine($"A :{a.startGame}   B :{b.startGame}");
-
-//            ////binder.UnBind(a);
-
-//            //a.startGame = false;
-//            //Console.WriteLine($"A :{a.startGame}   B :{b.startGame}");
-
-
-//            ////b.startGame = false;
-//            ////Console.WriteLine($"A :{a.startGame}   B :{b.startGame}");
-//            //b.startGame = true;
-
-//            //Console.WriteLine($"A :{a.startGame}   B :{b.startGame}");
-
-//            Console.WriteLine(ValueCurve.linecurve.GetPercent(1).ToString());
 //            while (true)
 //            {
+//                moudle.Update();
+//                //Console.Clear();
+//                ////Console.WriteLine(System.DateTime.Now.ToString());
+
+//                ////moudle.Publish<Program>(3, null, MessageUrgencyType.Unimportant);
+//                ////moudle.Publish<Program>(0, null, MessageUrgencyType.VeryUrgent);
+
+//                //moudle.Update();
+//                //Thread.Sleep(99);
 
 //            }
 
+//        }
+
+//        private static void Listen(Type publishType, int code, IEventArgs args, object[] param)
+//        {
+//            Console.WriteLine("code "+code);
+//            Thread.Sleep(100);
+//            moudle.Publish(typeof(Program), code, null, code);
 //        }
 //    }
 //}

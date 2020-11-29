@@ -2,23 +2,22 @@
 
 namespace IFramework.NodeAction
 {
-    [VersionAttribute(3)]
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class RepeatNode : ContainerNode
+    [ScriptVersion(3)]
+    class RepeatNode : ContainerNode, IRepeatNode
     {
         private int _curRepeat;
         private int _repeat;
         private int curRepeat { get { return _curRepeat; } }
         public int repeat { get { return _repeat; } set { _repeat = value; } }
-        public ActionNode node { get { return nodeList[0]; }set { nodeList[0] = value; } }
+        private ActionNode node { get { return nodeList[0]; } set { nodeList[0] = value; } }
 
         public RepeatNode() : base() { }
-        public void Config(int repeat, bool autoRecyle)
+        internal void Config(int repeat, bool autoRecyle)
         {
             this._repeat = repeat;
             base.Config(autoRecyle);
         }
-        public override void Append(ActionNode node)
+        internal override void Append(ActionNode node)
         {
             if (nodeList.Count >= 1)
                 Log.E("RepeatNode Can Have One Inner Node");
@@ -45,7 +44,7 @@ namespace IFramework.NodeAction
                 return false;
             return true;
         }
-        
+
 
         protected override void OnDataReset()
         {
@@ -63,6 +62,5 @@ namespace IFramework.NodeAction
         protected override void OnBegin() { }
         protected override void OnCompelete() { }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

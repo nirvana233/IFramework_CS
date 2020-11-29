@@ -4,25 +4,45 @@ using System.Collections;
 
 namespace IFramework.NodeAction
 {
-    [VersionAttribute(16)] 
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    /// <summary>
+    /// 静态扩展
+    /// </summary>
+    [ScriptVersion(55)] 
+    [VersionUpdateAttribute(55,"面向接口")]
     public static class ActionNodeExtension
     {
-        public static IEnumerator ActionEnumerator<T>(this T self) where T : ActionNode
+        /// <summary>
+        /// 获取节点运行的 迭代器
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static IEnumerator ActionEnumerator<T>(this T self) where T : IActionNode
         {
-            while (self.MoveNext())
+            while ((self as ActionNode).MoveNext())
             {
                 yield return null;
             }
         }
-        [Dependence(typeof(CoroutineModule))]
-        public static T Run<T>(this T self, CoroutineModule moudle) where T : ActionNode
+        /// <summary>
+        /// 运行于自定义的 ICoroutineModule 上
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="moudle"></param>
+        /// <returns></returns>
+        public static T Run<T>(this T self, ICoroutineModule moudle) where T : IActionNode
         {
             moudle.StartCoroutine(self.ActionEnumerator());
             return self;
         }
-        [Dependence(typeof(CoroutineModule))]
-        public static T Run<T>(this T self) where T : ActionNode
+        /// <summary>
+        /// 运行于环境默认的 ICoroutineModule上
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static T Run<T>(this T self) where T : IActionNode
         {
             self.env.modules.Coroutine.StartCoroutine(self.ActionEnumerator());
             return self;
@@ -42,143 +62,262 @@ namespace IFramework.NodeAction
                 t = RecyclableObject.Allocate<T>( envType);
             return t;
         }
+      
 
-
-        [Dependence(typeof(FrameworkEnvironment))]
-        public static SequenceNode Sequence(this object self, EnvironmentType envType, bool autoRecyle = true)
+        /// <summary>
+        /// 开启顺序节点
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="envType"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        [RequireAttribute(typeof(FrameworkEnvironment))]
+        public static ISequenceNode Sequence(this object self, EnvironmentType envType, bool autoRecyle = true)
         {
-            SequenceNode node = Allocate<SequenceNode>( envType);
+            SequenceNode node = Allocate<SequenceNode>(envType);
             node.Config(autoRecyle);
             return node;
         }
-        [Dependence(typeof(FrameworkEnvironment))]
-        public static SequenceNode Sequence(this object self, FrameworkEnvironment env, bool autoRecyle = true)
+        /// <summary>
+        /// 开启顺序节点
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="env"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        [RequireAttribute(typeof(FrameworkEnvironment))]
+        public static ISequenceNode Sequence(this object self, FrameworkEnvironment env, bool autoRecyle = true)
         {
             SequenceNode node = Allocate<SequenceNode>(env);
             node.Config(autoRecyle);
             return node;
         }
-
-        public static T OnCompelete<T>(this T self, Action<T> action) where T : ActionNode
+        /// <summary>
+        /// 结束回调
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static T OnCompelete<T>(this T self, Action<T> action) where T : IActionNode
         {
             self.OnCompelete(() => { action(self); });
             return self;
         }
-        public static T OnBegin<T>(this T self, Action<T> action) where T : ActionNode
+        /// <summary>
+        /// 开始回调
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static T OnBegin<T>(this T self, Action<T> action) where T : IActionNode
         {
             return self.OnBegin(() => { action(self); });
         }
-        public static T OnRecyle<T>(this T self, Action<T> action) where T : ActionNode
+        /// <summary>
+        /// 被回收回调
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static T OnRecyle<T>(this T self, Action<T> action) where T : IActionNode
         {
             return self.OnRecyle(() => { action(self); });
         }
-        public static T OnFrame<T>(this T self, Action<T> action) where T : ActionNode
+        /// <summary>
+        /// 每一帧回调
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static T OnFrame<T>(this T self, Action<T> action) where T : IActionNode
         {
             return self.OnFrame(() => { action(self); });
         }
-
-        public static T OnCompelete<T>(this T self, Action action) where T : ActionNode
+        /// <summary>
+        /// 结束回调
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static T OnCompelete<T>(this T self, Action action) where T : IActionNode
         {
-            self.onCompelete += action;
+            (self as ActionNode).onCompelete += action;
             return self;
         }
-        public static T OnBegin<T>(this T self, Action action) where T : ActionNode
+        /// <summary>
+        /// 开始回调
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static T OnBegin<T>(this T self, Action action) where T : IActionNode
         {
-            self.onBegin += action;
+            (self as ActionNode).onBegin += action;
             return self;
         }
-        public static T OnRecyle<T>(this T self, Action action) where T : ActionNode
+        /// <summary>
+        /// 被回收回调
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static T OnRecyle<T>(this T self, Action action) where T : IActionNode
         {
-            self.onRecyle += action;
+            (self as ActionNode).onRecyle += action;
             return self;
         }
-        public static T OnFrame<T>(this T self, Action action) where T : ActionNode
+        /// <summary>
+        /// 每一帧回调
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static T OnFrame<T>(this T self, Action action) where T : IActionNode
         {
-            self.onFrame += action;
+            (self as ActionNode).onFrame += action;
             return self;
         }
 
-        [Description("Normally, Disposed When Environment Dispose ,Be Carefull")]
-        public static T OnDispose<T>(this T self, Action<T> action) where T : ActionNode
-        {
-            return self.OnDispose(() => { action(self); });
-        }
-        [Description("Normally, Disposed When Environment Dispose ,Be Carefull")]
-        public static T OnDispose<T>(this T self, Action action) where T : ActionNode
-        {
-            self.onDispose += action;
-            return self;
-        }
 
 
-
-        public static T TimeSpan<T>(this T self, TimeSpan timeSpan, bool autoRecyle = false) where T : ContainerNode
+        /// <summary>
+        /// 开启一个时间节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="timeSpan"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        public static T TimeSpan<T>(this T self, TimeSpan timeSpan, bool autoRecyle = false) where T : IContainerNode
         {
             TimeSpanNode node = Allocate<TimeSpanNode>(self.env);
             node.Config(timeSpan, autoRecyle);
-            self.Append(node);
+            (self as ContainerNode).Append(node);
             return self;
         }
-        public static T Until<T>(this T self, Func<bool> func, bool autoRecyle = false) where T : ContainerNode
+        /// <summary>
+        /// 开启一个条件结束节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="func"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        public static T Until<T>(this T self, Func<bool> func, bool autoRecyle = false) where T : IContainerNode
         {
             UntilNode node = Allocate<UntilNode>(self.env);
             node.Config(func, autoRecyle);
-            self.Append(node);
+            (self as ContainerNode).Append(node);
             return self;
         }
-        public static T While<T>(this T self, Func<bool> func,Action loop, bool autoRecyle = false) where T : ContainerNode
+        /// <summary>
+        /// 开启一个条件运行节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="func"></param>
+        /// <param name="loop"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        public static T While<T>(this T self, Func<bool> func,Action loop, bool autoRecyle = false) where T : IContainerNode
         {
             WhileNode node = Allocate<WhileNode>(self.env);
             node.Config(func,loop, autoRecyle);
-            self.Append(node);
+            (self as ContainerNode).Append(node);
             return self;
         }
-        public static T Event<T>(this T self, Action action, bool autoRecyle = false) where T : ContainerNode
+        /// <summary>
+        /// 开启一个事件节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        public static T Event<T>(this T self, Action action, bool autoRecyle = false) where T : IContainerNode
         {
             EventNode node = Allocate<EventNode>(self.env);
             node.Config(action, autoRecyle);
-            self.Append(node);
+            (self as ContainerNode).Append(node);
             return self;
         }
-        public static T Condition<T>(this T self, Func<bool> condition, Action callback, bool autoRecyle=false) where T : ContainerNode
+        /// <summary>
+        /// 开启一个 IF 节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="condition"></param>
+        /// <param name="callback"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        public static T Condition<T>(this T self, Func<bool> condition, Action callback, bool autoRecyle=false) where T :IContainerNode
         {
             ConditionNode node = Allocate<ConditionNode>(self.env);
             node.Config(condition,callback, autoRecyle);
-            self.Append(node);
+            (self as ContainerNode).Append(node);
             return self;
         }
 
-
-        public static T Repeat<T>(this T self, Action<RepeatNode> action, int repeat = 1, bool autoRecyle = false) where T : ContainerNode
+        /// <summary>
+        /// 开启一个重复运行节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <param name="repeat"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        public static T Repeat<T>(this T self, Action<IRepeatNode> action, int repeat = 1, bool autoRecyle = false) where T : IContainerNode
         {
             RepeatNode node = Allocate<RepeatNode>(self.env);
             node.Config(repeat, autoRecyle);
             if (action != null)
                 action(node);
-            self.Append(node);
+            (self as ContainerNode).Append(node);
             return self;
         }
-        public static T Sequence<T>(this T self, Action<SequenceNode> action, bool autoRecyle = false) where T : ContainerNode
+        /// <summary>
+        /// 开启一个 顺序运行节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        public static T Sequence<T>(this T self, Action<ISequenceNode> action, bool autoRecyle = false) where T : IContainerNode
         {
             SequenceNode node = Allocate<SequenceNode>(self.env);
             node.Config(autoRecyle);
             if (action != null)
                 action(node);
-            self.Append(node);
+            (self as ContainerNode).Append(node);
             return self;
         }
-        public static T Spawn<T>(this T self, Action<SpawnNode> action, bool autoRecyle = false) where T : ContainerNode
+        /// <summary>
+        /// 开启一个并行运行节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        public static T Spawn<T>(this T self, Action<ISpawnNode> action, bool autoRecyle = false) where T : IContainerNode
         {
             SpawnNode node = Allocate<SpawnNode>(self.env);
             node.Config(autoRecyle);
             if (action != null)
                 action(node);
-            self.Append(node);
+            (self as ContainerNode).Append(node);
             return self;
         }
-
-      
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

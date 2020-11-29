@@ -51,7 +51,6 @@ namespace IFramework
         /// </summary>
         public void Dispose()
         {
-
             OnDispose();
             Clear();
             pool = null;
