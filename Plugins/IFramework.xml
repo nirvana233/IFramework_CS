@@ -222,6 +222,259 @@
             <param name="name"></param>
             <returns></returns>
         </member>
+        <member name="T:IFramework.Modules.Recorder.ActionGroupState">
+            <summary>
+            回调组
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.ActionGroupState.Redo">
+            <summary>
+            执行
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.ActionGroupState.Undo">
+            <summary>
+            撤回
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.ActionGroupState.OnReset">
+            <summary>
+            重置数据
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Recorder.ActionState">
+            <summary>
+            回调状态
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.ActionState.Redo">
+            <summary>
+            执行
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.ActionState.Undo">
+            <summary>
+            撤回
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.ActionState.OnReset">
+            <summary>
+            重置数据
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Recorder.BaseState">
+            <summary>
+            状态基类
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.BaseState.Redo">
+            <summary>
+            执行
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.BaseState.Undo">
+            <summary>
+            撤回
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.BaseState.OnReset">
+            <summary>
+            重置数据
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Recorder.CommandGroupState">
+            <summary>
+            命令组
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.CommandGroupState.Redo">
+            <summary>
+            执行
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.CommandGroupState.Undo">
+            <summary>
+            撤回
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.CommandGroupState.OnReset">
+            <summary>
+            重置数据
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Recorder.CommandState">
+            <summary>
+            命令状态
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.CommandState.Redo">
+            <summary>
+            执行
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.CommandState.Undo">
+            <summary>
+            撤回
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.CommandState.OnReset">
+            <summary>
+            重置数据
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Recorder.ICommand">
+            <summary>
+            命令
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.ICommand.Excute">
+            <summary>
+            处理
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Recorder.IOperationRecorderModule">
+            <summary>
+            操作记录
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.IOperationRecorderModule.Allocate``1">
+            <summary>
+            分配
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.IOperationRecorderModule.Redo">
+            <summary>
+            执行
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.IOperationRecorderModule.Subscribe(IFramework.Modules.Recorder.BaseState,System.Boolean)">
+            <summary>
+            注册
+            </summary>
+            <param name="state"></param>
+            <param name="redo"></param>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.IOperationRecorderModule.Undo">
+            <summary>
+            撤回
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Recorder.OperationRecorderModule">
+            <summary>
+            操作记录
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderModule.Allocate``1">
+            <summary>
+            分配状态
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderModule.Subscribe(IFramework.Modules.Recorder.BaseState,System.Boolean)">
+            <summary>
+            注册
+            </summary>
+            <param name="state"></param>
+            <param name="redo"></param>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderModule.Undo">
+            <summary>
+            撤回
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderModule.Redo">
+            <summary>
+            执行
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Recorder.OperationRecorderEx">
+            <summary>
+            扩展
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderEx.AllocateCommand(IFramework.Modules.Recorder.IOperationRecorderModule)">
+            <summary>
+            分配命令
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderEx.AllocateAction(IFramework.Modules.Recorder.IOperationRecorderModule)">
+            <summary>
+            分配回调
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderEx.AllocateCommandGroup(IFramework.Modules.Recorder.IOperationRecorderModule)">
+            <summary>
+            分配命令组
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderEx.AllocateActionGroup(IFramework.Modules.Recorder.IOperationRecorderModule)">
+            <summary>
+            分配回调组
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderEx.SetCommand``1(``0,IFramework.Modules.Recorder.ICommand,IFramework.Modules.Recorder.ICommand)">
+            <summary>
+            设置值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="redo"></param>
+            <param name="undo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderEx.SetGroupCommand``1(``0,IFramework.Modules.Recorder.ICommand,IFramework.Modules.Recorder.ICommand)">
+            <summary>
+            设置值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="redo"></param>
+            <param name="undo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderEx.SetCommand``1(``0,System.Action,System.Action)">
+            <summary>
+            设置值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="redo"></param>
+            <param name="undo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderEx.SetGroupCommand``1(``0,System.Action,System.Action)">
+            <summary>
+            设置值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="redo"></param>
+            <param name="undo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Recorder.OperationRecorderEx.Subscribe``1(``0)">
+            <summary>
+            注册
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
         <member name="T:IFramework.Modules.Config.ConfigModule">
             <summary>
             config 模块
@@ -1594,6 +1847,11 @@
         <member name="P:IFramework.Modules.IFrameworkModules.Config">
             <summary>
             config
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.IFrameworkModules.Recoder">
+            <summary>
+            操作记录
             </summary>
         </member>
         <member name="T:IFramework.Modules.LoomModule">

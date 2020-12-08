@@ -4,6 +4,7 @@ using IFramework.Modules.ECS;
 using IFramework.Modules.Fsm;
 using IFramework.Modules.Message;
 using IFramework.Modules.MVVM;
+using IFramework.Modules.Recorder;
 
 namespace IFramework.Modules
 {
@@ -36,5 +37,9 @@ namespace IFramework.Modules
         /// config
         /// </summary>
         IConfigModule Config { get; }
+        /// <summary>
+        /// 操作记录
+        /// </summary>
+        IOperationRecorderModule Recoder { get; }
     }
 }

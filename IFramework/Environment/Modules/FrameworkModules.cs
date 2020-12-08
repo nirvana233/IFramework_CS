@@ -4,6 +4,8 @@ using IFramework.Modules.ECS;
 using IFramework.Modules.Fsm;
 using IFramework.Modules.Message;
 using IFramework.Modules.MVVM;
+using IFramework.Modules.Recorder;
+
 namespace IFramework.Modules
 {
     /// <summary>
@@ -19,6 +21,8 @@ namespace IFramework.Modules
         public IECSModule ECS { get { return FindModule<ECSModule>("default"); } }
         public IMVVMModule MVVM { get { return FindModule<MVVMModule>("default"); } }
         public IConfigModule Config { get { return FindModule<ConfigModule>("default"); } }
+        public IOperationRecorderModule Recoder { get { return FindModule<OperationRecorderModule>("default"); } }
+
 
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 

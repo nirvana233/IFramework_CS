@@ -64,6 +64,14 @@
     <Compile Include="Attributes\VersionUpdateAttribute.cs" />
     <Compile Include="Environment\EnvironmentType.cs" />
     <Compile Include="Environment\Modules\IFrameworkModuleContainer.cs" />
+    <Compile Include="Environment\Modules\Recorder\ActionGroupState.cs" />
+    <Compile Include="Environment\Modules\Recorder\ActionState.cs" />
+    <Compile Include="Environment\Modules\Recorder\BaseState.cs" />
+    <Compile Include="Environment\Modules\Recorder\CommandGroupState.cs" />
+    <Compile Include="Environment\Modules\Recorder\CommandState.cs" />
+    <Compile Include="Environment\Modules\Recorder\ICommand.cs" />
+    <Compile Include="Environment\Modules\Recorder\IOperationRecorderModule.cs" />
+    <Compile Include="Environment\Modules\Recorder\OperationRecorderModule.cs" />
     <Compile Include="Environment\Recylable\RecyclableObjectCollection.cs" />
     <Compile Include="Extension\FloatExtension.cs" />
     <Compile Include="FrameworkBitConverter.cs" />
