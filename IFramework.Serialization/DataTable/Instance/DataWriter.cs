@@ -64,7 +64,7 @@ namespace IFramework.Serialization.DataTable
         public string WriteString<T>(List<T> source)
         {
             List<List<DataColumn>> rows = new List<List<DataColumn>>();
-            var members = DataTool.GetMemberInfo(typeof(T));
+            var members = DataTableTool.GetMemberInfo(typeof(T));
             source.ForEach((t) => {
                 var row = _explainer.GetColumns<T>(t, members);
                 rows.Add(row);

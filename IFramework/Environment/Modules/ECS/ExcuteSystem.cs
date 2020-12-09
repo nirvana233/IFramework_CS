@@ -8,12 +8,12 @@ namespace IFramework.Modules.ECS
     /// <typeparam name="TEntity"></typeparam>
     public abstract class ExcuteSystem<TEntity> : IExcuteSystem where TEntity : IEntity
     {
-        internal ECSModule _moudule { get; }
+        internal IECSModule _moudule { get; }
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="module"></param>
-        protected ExcuteSystem(ECSModule module)
+        protected ExcuteSystem(IECSModule module)
         {
             _moudule = module;
             _moduleDispose = false;

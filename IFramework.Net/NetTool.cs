@@ -8,7 +8,7 @@ using System.Net.Sockets;
 
 namespace IFramework.Net
 {
-    public static class NetProvider
+    public static class NetTool
     {
         public static INetPacketProvider CreatePacketsProvider(int capacity=4096)
         {

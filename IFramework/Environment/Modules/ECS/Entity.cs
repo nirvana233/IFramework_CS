@@ -10,7 +10,7 @@ namespace IFramework.Modules.ECS
         /// <summary>
         /// 注册的模块
         /// </summary>
-        public IECSModule _mou { get; set; }
+        public IECSModule mou { get; set; }
         /// <summary>
         /// 获取组件
         /// </summary>
@@ -18,7 +18,7 @@ namespace IFramework.Modules.ECS
         /// <returns></returns>
         public IComponent GetComponent(Type type)
         {
-            return _mou.GetComponent(this, type);
+            return mou.GetComponent(this, type);
         }
         /// <summary>
         /// 湖区组件
@@ -36,7 +36,7 @@ namespace IFramework.Modules.ECS
         /// <returns></returns>
         public IComponent AddComponent(Type type)
         {
-            return _mou.AddComponent(this, type);
+            return mou.AddComponent(this, type);
         }
         /// <summary>
         /// 添加组件
@@ -55,7 +55,7 @@ namespace IFramework.Modules.ECS
         /// <returns></returns>
         public IComponent AddComponent(IComponent component, bool useSame)
         {
-            return _mou.AddComponent(this, component,useSame);
+            return mou.AddComponent(this, component,useSame);
         }
         /// <summary>
         /// 添加组件
@@ -74,7 +74,7 @@ namespace IFramework.Modules.ECS
         /// <param name="type"></param>
         public void RemoveComponent(Type type)
         {
-            _mou.RemoveComponent(this, type);
+            mou.RemoveComponent(this, type);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace IFramework.Modules.ECS
         /// <returns></returns>
         public bool ContainsComponent(Type type)
         {
-            return _mou.GetComponent(this, type) != null;
+            return mou.GetComponent(this, type) != null;
         }
         /// <summary>
         /// 是否包含组件
@@ -110,7 +110,7 @@ namespace IFramework.Modules.ECS
         /// <param name="component"></param>
         public void ReFreshComponent(Type type ,IComponent component)
         {
-            _mou.ReFreshComponent(this, type, component);
+            mou.ReFreshComponent(this, type, component);
         }
         /// <summary>
         /// 直接替换原组件，结构体必须使用这个方法刷新数据
@@ -129,8 +129,8 @@ namespace IFramework.Modules.ECS
           //  Log.E("dispose  " +GetType());
 
             OnDestory();
-            if (_mou != null)
-                _mou.UnSubscribeEntity(this);
+            if (mou != null)
+                mou.UnSubscribeEntity(this);
         }
         /// <summary>
         /// 解除模块注册时调用

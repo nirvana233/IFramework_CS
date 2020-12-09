@@ -312,7 +312,7 @@ namespace IFramework.Modules.ECS
                 return false;
             }
 
-            private LockParam _lock;
+            private LockParam _lock=new LockParam();
 
 
             public Entitys(ECSModule moudle)
@@ -334,9 +334,10 @@ namespace IFramework.Modules.ECS
                 using (new LockWait(ref _lock))
                 {
                     var em = _entitys.Keys.ToList();
-
+                    
                     em.ForEach((i, e) =>
                     {
+                        e.mou = null;
                         e.Destory();
                     });
                     _componentUseCount.Clear();
@@ -360,7 +361,7 @@ namespace IFramework.Modules.ECS
                 {
                     if (!_entitys.ContainsKey(entity))
                     {
-                        entity._mou = _moudle;
+                        entity.mou = _moudle;
                         _entitys.Add(entity, new EntityContainer(_moudle));
                     }
                 }
@@ -373,7 +374,7 @@ namespace IFramework.Modules.ECS
                     EntityContainer container;
                     if (FindContainer(entity, out container))
                     {
-                        entity._mou = null;
+                        entity.mou = null;
                         var indexs = container.componetIndexs;
                         indexs.ForEach((i, index) => {
                             FreeComponentIndex(index);
@@ -510,7 +511,7 @@ namespace IFramework.Modules.ECS
         private class Systems : IDisposable
         {
             private List<IExcuteSystem> _systems;
-            private LockParam _lock;
+            private LockParam _lock=new LockParam();
 
             public Systems()
             {
@@ -525,7 +526,7 @@ namespace IFramework.Modules.ECS
                 using (new LockWait(ref _lock))
                 {
                     _dispose = true;
-                    _systems.ForEach((sys) => { sys.OnModuleDispose(); });
+                    _systems.ForEach((index,sys) => { sys.OnModuleDispose(); });
                     _systems.Clear();
                     _systems = null;
                 }

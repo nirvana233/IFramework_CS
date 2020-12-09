@@ -56,7 +56,18 @@ namespace IFramework.Serialization.DataTable
             membersDic.ForEach((pair) => {
                 MemberInfo m = pair.Key;
                 string csvName = pair.Value;
-                DataColumn column = cols.Find((c) => { return c.headLineName == csvName; });
+                DataColumn column;
+                if (m.IsDefined(typeof(DataColumnIndexAttribute),false))
+                {
+                    DataColumnIndexAttribute attr = m.GetCustomAttributes(typeof(DataColumnIndexAttribute), false)[0] as DataColumnIndexAttribute;
+                    if (attr.index >= cols.Count)
+                        throw new Exception(string.Format("index {0} is too Large Then colums  {1}",attr.index,cols.Count));
+                    column = cols[attr.index];
+                }
+                else
+                {
+                    column = cols.Find((c) => { return c.headLineName == csvName; });
+                }
                 string str = FitterCsv_CreatInstance(column.strValue);
                 if (m is PropertyInfo)
                 {

@@ -919,7 +919,7 @@
             实体
             </summary>
         </member>
-        <member name="P:IFramework.Modules.ECS.IEntity._mou">
+        <member name="P:IFramework.Modules.ECS.IEntity.mou">
             <summary>
             注册的模块
             </summary>
@@ -1102,7 +1102,7 @@
             实体
             </summary>
         </member>
-        <member name="P:IFramework.Modules.ECS.Entity._mou">
+        <member name="P:IFramework.Modules.ECS.Entity.mou">
             <summary>
             注册的模块
             </summary>
@@ -1208,7 +1208,7 @@
             </summary>
             <typeparam name="TEntity"></typeparam>
         </member>
-        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.#ctor(IFramework.Modules.ECS.ECSModule)">
+        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.#ctor(IFramework.Modules.ECS.IECSModule)">
             <summary>
             ctor
             </summary>
@@ -3085,6 +3085,19 @@
             <summary>
             清除所有
             </summary>
+        </member>
+        <member name="T:IFramework.ActivatorCreatePool`1">
+            <summary>
+            Activator 创建实例 对现池
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:IFramework.ActivatorCreatePool`1.CreatNew(IFramework.IEventArgs)">
+            <summary>
+            创建
+            </summary>
+            <param name="arg"></param>
+            <returns></returns>
         </member>
         <member name="T:IFramework.Queue.FastPriorityQueue`1">
             <summary>
@@ -5610,6 +5623,107 @@
             <param name="self"></param>
             <param name="assembly"></param>
             <returns></returns>
+        </member>
+        <member name="T:IFramework.Singleton.ISingleton">
+            <summary>
+            单例
+            </summary>
+        </member>
+        <member name="M:IFramework.Singleton.ISingleton.OnSingletonInit">
+            <summary>
+            单例初始化
+            </summary>
+        </member>
+        <member name="T:IFramework.Singleton.Singleton`1">
+            <summary>
+            单例基类
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.Singleton.Singleton`1.instance">
+            <summary>
+            实例
+            </summary>
+        </member>
+        <member name="M:IFramework.Singleton.Singleton`1.#ctor">
+            <summary>
+            ctror
+            </summary>
+        </member>
+        <member name="M:IFramework.Singleton.Singleton`1.OnSingletonInit">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="M:IFramework.Singleton.Singleton`1.Dispose">
+            <summary>
+            注销
+            </summary>
+        </member>
+        <member name="T:IFramework.Singleton.SingletonCollection">
+            <summary>
+            单例合集
+            </summary>
+        </member>
+        <member name="M:IFramework.Singleton.SingletonCollection.Set``1(``0)">
+            <summary>
+            注入单例
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="singleton"></param>
+        </member>
+        <member name="M:IFramework.Singleton.SingletonCollection.Dispose``1">
+            <summary>
+            注销一个单例
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:IFramework.Singleton.SingletonCollection.Dispose">
+            <summary>
+            注销所有单例
+            </summary>
+        </member>
+        <member name="T:IFramework.Singleton.SingletonProperty`1">
+            <summary>
+            单例属性
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.Singleton.SingletonProperty`1.instance">
+            <summary>
+            实例
+            </summary>
+        </member>
+        <member name="M:IFramework.Singleton.SingletonProperty`1.Dispose">
+            <summary>
+            注销
+            </summary>
+        </member>
+        <member name="T:IFramework.Singleton.SingletonPropertyClass`1">
+            <summary>
+            单例属性类
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.Singleton.SingletonPropertyClass`1.instance">
+            <summary>
+            实例
+            </summary>
+        </member>
+        <member name="M:IFramework.Singleton.SingletonPropertyClass`1.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.Singleton.SingletonPropertyClass`1.OnSingletonInit">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="M:IFramework.Singleton.SingletonPropertyClass`1.Dispose">
+            <summary>
+            注销
+            </summary>
         </member>
         <member name="T:IFramework.ValueCurve">
             <summary>

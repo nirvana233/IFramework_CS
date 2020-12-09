@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.Serialization", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.Packets", "IFramework.Packets\IFramework.Packets.csproj", "{B6885E20-9FFA-4F6D-BF96-84F8BA7038F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.Singleton", "IFramework.Singleton\IFramework.Singleton.csproj", "{73E8F0E7-D827-4D6E-9956-83B0BB874EF3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.Utility", "IFramework.Utility\IFramework.Utility.csproj", "{6712A3A9-EC70-4BCE-9DD9-4E97DDF2948E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.NodeAction", "IFramework.NodeAction\IFramework.NodeAction.csproj", "{F1AC37EE-9A55-459F-9ED9-C7891A914171}"
@@ -37,10 +35,6 @@ Global
 		{B6885E20-9FFA-4F6D-BF96-84F8BA7038F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6885E20-9FFA-4F6D-BF96-84F8BA7038F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6885E20-9FFA-4F6D-BF96-84F8BA7038F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73E8F0E7-D827-4D6E-9956-83B0BB874EF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73E8F0E7-D827-4D6E-9956-83B0BB874EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73E8F0E7-D827-4D6E-9956-83B0BB874EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73E8F0E7-D827-4D6E-9956-83B0BB874EF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6712A3A9-EC70-4BCE-9DD9-4E97DDF2948E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6712A3A9-EC70-4BCE-9DD9-4E97DDF2948E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6712A3A9-EC70-4BCE-9DD9-4E97DDF2948E}.Release|Any CPU.ActiveCfg = Release|Any CPU

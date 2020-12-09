@@ -10,7 +10,7 @@ namespace IFramework.Modules.ECS
         /// <summary>
         /// 注册的模块
         /// </summary>
-        IECSModule _mou { get; set; }
+        IECSModule mou { get; set; }
         /// <summary>
         /// 获取组件
         /// </summary>

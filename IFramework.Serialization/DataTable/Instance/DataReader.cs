@@ -85,7 +85,7 @@ namespace IFramework.Serialization.DataTable
         public List<T> Get<T>()
         {
             List<T> ts = new List<T>();
-            var members = DataTool.GetMemberInfo(typeof(T));
+            var members = DataTableTool.GetMemberInfo(typeof(T));
 
             _rows.ForEach((cols) =>
             {

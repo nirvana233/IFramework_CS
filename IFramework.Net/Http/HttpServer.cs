@@ -15,7 +15,7 @@ namespace IFramework.Net.Http
 
         public HttpServer(int maxPoolCount = 64, int blockSize = 4096)
         {
-            sProvider = NetProvider.CreateTcpSever(blockSize, maxPoolCount);
+            sProvider = NetTool.CreateTcpSever(blockSize, maxPoolCount);
             sProvider.DisconnectedCallback = new OnDisconnectedHandler(OnDisconnected);
             sProvider.ReceivedOffsetCallback = new OnReceivedSegmentHandler(OnReceived);
             sProvider.AcceptedCallback = new OnAcceptedHandler(OnAccepted);

@@ -1,14 +1,29 @@
 ﻿namespace IFramework.Singleton
 {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    /// <summary>
+    /// 单例属性类
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class SingletonPropertyClass<T> : ISingleton where T : SingletonPropertyClass<T>
     {
-        protected static T Instance { get { return SingletonProperty<T>.Instance; } }
+        /// <summary>
+        /// 实例
+        /// </summary>
+        protected static T instance { get { return SingletonProperty<T>.instance; } }
+        /// <summary>
+        /// ctor
+        /// </summary>
         protected SingletonPropertyClass() { }
+        /// <summary>
+        /// 初始化
+        /// </summary>
         protected virtual void OnSingletonInit()
         {
 
         }
+        /// <summary>
+        /// 注销
+        /// </summary>
         public virtual void Dispose()
         {
             SingletonProperty<T>.Dispose();
@@ -20,6 +35,5 @@
             OnSingletonInit();
         }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

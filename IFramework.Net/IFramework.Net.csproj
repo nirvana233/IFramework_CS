@@ -60,6 +60,7 @@
     <Compile Include="Base\SocketToken.cs" />
     <Compile Include="Base\DelegateHandler.cs" />
     <Compile Include="Base\Structures.cs" />
+    <Compile Include="NetTool.cs" />
     <Compile Include="Pools\SocketBufferManager.cs" />
     <Compile Include="Pools\SocketTokenManager.cs" />
     <Compile Include="Pools\TokenConnectionManager.cs" />
@@ -69,7 +70,6 @@
     <Compile Include="Http\HttpPost.cs" />
     <Compile Include="Http\HttpServer.cs" />
     <Compile Include="Http\HttpUri.cs" />
-    <Compile Include="NetProvider.cs" />
     <Compile Include="Tcp\ITcpClientProvider.cs" />
     <Compile Include="Tcp\ITcpServerProvider.cs" />
     <Compile Include="Udp\IUdpClientProvider.cs" />

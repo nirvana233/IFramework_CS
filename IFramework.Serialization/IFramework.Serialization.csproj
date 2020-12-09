@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTable\DataColumnIndexAttribute.cs" />
+    <Compile Include="DataTable\DataTableTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataTable\DataColumn.cs" />
     <Compile Include="DataTable\DataColumnNameAttribute.cs" />
@@ -57,8 +59,6 @@
     <Compile Include="DataTable\DataIgnoreAttribute.cs" />
     <Compile Include="DataTable\Instance\DataReader.cs" />
     <Compile Include="DataTable\Instance\DataRow.cs" />
-    <Compile Include="DataTable\DataTableUtil.cs" />
-    <Compile Include="DataTable\DataTool.cs" />
     <Compile Include="DataTable\Instance\DataWriter.cs" />
     <Compile Include="DataTable\Interface\IDataExplainer.cs" />
     <Compile Include="DataTable\Interface\IDataReader.cs" />

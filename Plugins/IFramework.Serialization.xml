@@ -4,6 +4,54 @@
         <name>IFramework.Serialization</name>
     </assembly>
     <members>
+        <member name="T:IFramework.Serialization.DataTable.DataColumnIndexAttribute">
+            <summary>
+            数据列
+            </summary>
+        </member>
+        <member name="P:IFramework.Serialization.DataTable.DataColumnIndexAttribute.index">
+            <summary>
+            所在列
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataColumnIndexAttribute.#ctor(System.Int32)">
+            <summary>
+            ctor
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataTableTool">
+            <summary>
+            DataTable
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataTableTool.CreateReader(System.IO.TextReader,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            创建数据读取器
+            </summary>
+            <param name="streamReader"></param>
+            <param name="rowReader"></param>
+            <param name="explainer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataTableTool.CreateReader(System.String,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            创建数据读取器
+            </summary>
+            <param name="text"></param>
+            <param name="rowReader"></param>
+            <param name="explainer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataTableTool.CreateWriter(System.IO.TextWriter,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            创建数据写入器
+            </summary>
+            <param name="streamWriter"></param>
+            <param name="rowWriter"></param>
+            <param name="explainer"></param>
+            <returns></returns>
+        </member>
         <member name="T:IFramework.Serialization.DataTable.DataColumn">
             <summary>
             每一个格子
@@ -149,38 +197,6 @@
             写入标题行
             </summary>
             <param name="headNames">写入的标题</param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataTableUtil">
-            <summary>
-            DataTable
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataTableUtil.CreateReader(System.IO.TextReader,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            创建数据读取器
-            </summary>
-            <param name="streamReader"></param>
-            <param name="rowReader"></param>
-            <param name="explainer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataTableUtil.CreateReader(System.String,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            创建数据读取器
-            </summary>
-            <param name="text"></param>
-            <param name="rowReader"></param>
-            <param name="explainer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataTableUtil.CreateWriter(System.IO.TextWriter,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            创建数据写入器
-            </summary>
-            <param name="streamWriter"></param>
-            <param name="rowWriter"></param>
-            <param name="explainer"></param>
             <returns></returns>
         </member>
         <member name="T:IFramework.Serialization.DataTable.DataWriter">
