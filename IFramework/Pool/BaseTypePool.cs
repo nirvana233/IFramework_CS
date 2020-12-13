@@ -42,18 +42,7 @@ namespace IFramework
             /// <summary>
             /// 释放时
             /// </summary>
-            protected override void OnDispose()
-            {
-                base.OnDispose();
-
-
-                for (int i = 0; i < pool.Count; i++)
-                {
-                    IDisposable dispose = pool[i] as IDisposable;
-                    if (dispose != null)
-                        dispose.Dispose();
-                }
-            }
+           
 
         }
         private Dictionary<Type, IBaseTypeInnerPool> _poolMap;

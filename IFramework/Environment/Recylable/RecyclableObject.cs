@@ -8,7 +8,7 @@ namespace IFramework
     /// </summary>
     [ScriptVersionAttribute(20)]
     [VersionUpdateAttribute(20,"增加未回收实例的控制")]
-    public abstract class RecyclableObject : FrameworkObject
+    public abstract class RecyclableObject : FrameworkObject, IRecyclable
     {
         /// <summary>
         /// 分配一个实例
@@ -133,7 +133,7 @@ namespace IFramework
         /// <summary>
         /// 数据是否发生改变
         /// </summary>
-        public bool dataDirty { get { return _datadirty; } }
+        protected bool dataDirty { get { return _datadirty; } }
         /// <summary>
         /// 当前所处环境
         /// </summary>

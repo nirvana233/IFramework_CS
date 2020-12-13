@@ -2508,6 +2508,36 @@
             刷新
             </summary>
         </member>
+        <member name="T:IFramework.IRecyclable">
+            <summary>
+            可回收
+            </summary>
+        </member>
+        <member name="P:IFramework.IRecyclable.env">
+            <summary>
+            环境
+            </summary>
+        </member>
+        <member name="P:IFramework.IRecyclable.recyled">
+            <summary>
+            是否被回收
+            </summary>
+        </member>
+        <member name="P:IFramework.IRecyclable.guid">
+            <summary>
+            唯一ID
+            </summary>
+        </member>
+        <member name="P:IFramework.IRecyclable.name">
+            <summary>
+            名字
+            </summary>
+        </member>
+        <member name="M:IFramework.IRecyclable.Recyle">
+            <summary>
+            回收
+            </summary>
+        </member>
         <member name="T:IFramework.RecyclableObjectCollection">
             <summary>
             可回收集合
@@ -4476,11 +4506,6 @@
             <param name="arg"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.BaseTypePool`1.BaseTypeInnerPool`1.OnDispose">
-            <summary>
-            释放时
-            </summary>
-        </member>
         <member name="F:IFramework.BaseTypePool`1.para">
             <summary>
             自旋锁
@@ -4577,59 +4602,6 @@
             </summary>
             <param name="t"></param>
             <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.ListPool`1">
-            <summary>
-            list对象池
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:IFramework.ListPool`1.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.ListPool`1.Get(System.Predicate{`0},IFramework.IEventArgs)">
-            <summary>
-            获取
-            </summary>
-            <param name="p"></param>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.ListPool`1.Clear(`0,IFramework.IEventArgs)">
-            <summary>
-            清除
-            </summary>
-            <param name="t"></param>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.ListPool`1.Contains(`0)">
-            <summary>
-            是否包含
-            </summary>
-            <param name="t"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.ListPool`1.ForEach(System.Action{`0})">
-            <summary>
-            遍历
-            </summary>
-            <param name="action"></param>
-        </member>
-        <member name="M:IFramework.ListPool`1.Contains(System.Predicate{`0})">
-            <summary>
-            是否包含
-            </summary>
-            <param name="p"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.ListPool`1.Peek">
-            <summary>
-            获取第一个元素
-            </summary>
             <returns></returns>
         </member>
         <member name="T:IFramework.RecyclableObject">

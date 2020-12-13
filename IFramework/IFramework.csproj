@@ -72,6 +72,7 @@
     <Compile Include="Environment\Modules\Recorder\ICommand.cs" />
     <Compile Include="Environment\Modules\Recorder\IOperationRecorderModule.cs" />
     <Compile Include="Environment\Modules\Recorder\OperationRecorderModule.cs" />
+    <Compile Include="Environment\Recylable\IRecyclable.cs" />
     <Compile Include="Environment\Recylable\RecyclableObjectCollection.cs" />
     <Compile Include="Extension\FloatExtension.cs" />
     <Compile Include="FrameworkBitConverter.cs" />
@@ -167,7 +168,6 @@
     <Compile Include="Point3.cs" />
     <Compile Include="Pool\BaseTypePool.cs" />
     <Compile Include="Pool\CapicityPool.cs" />
-    <Compile Include="Pool\ListPool.cs" />
     <Compile Include="Environment\Recylable\RecyclableObject.cs" />
     <Compile Include="Framework.cs" />
     <Compile Include="Environment\Modules\Fsm\FsmModule.cs" />

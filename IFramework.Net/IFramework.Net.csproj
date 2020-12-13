@@ -60,6 +60,14 @@
     <Compile Include="Base\SocketToken.cs" />
     <Compile Include="Base\DelegateHandler.cs" />
     <Compile Include="Base\Structures.cs" />
+    <Compile Include="KCP\BufferQueue.cs" />
+    <Compile Include="KCP\IKcpSocket.cs" />
+    <Compile Include="KCP\ISessionListener.cs" />
+    <Compile Include="KCP\Kcp.cs" />
+    <Compile Include="KCP\KcpClient.cs" />
+    <Compile Include="KCP\KcpSocket.cs" />
+    <Compile Include="KCP\KcpTool.cs" />
+    <Compile Include="KCP\UDPSession.cs" />
     <Compile Include="NetTool.cs" />
     <Compile Include="Pools\SocketBufferManager.cs" />
     <Compile Include="Pools\SocketTokenManager.cs" />
@@ -101,8 +109,6 @@
     <Compile Include="WebSocket\WSServerProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Https\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

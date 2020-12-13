@@ -222,31 +222,6 @@
             自动回收
             </summary>
         </member>
-        <member name="P:IFramework.NodeAction.IActionNode.guid">
-            <summary>
-            唯一ID
-            </summary>
-        </member>
-        <member name="P:IFramework.NodeAction.IActionNode.name">
-            <summary>
-            名字
-            </summary>
-        </member>
-        <member name="P:IFramework.NodeAction.IActionNode.env">
-            <summary>
-            所属环境
-            </summary>
-        </member>
-        <member name="P:IFramework.NodeAction.IActionNode.recyled">
-            <summary>
-            是否回收了
-            </summary>
-        </member>
-        <member name="M:IFramework.NodeAction.IActionNode.Recyle">
-            <summary>
-            结束
-            </summary>
-        </member>
         <member name="T:IFramework.NodeAction.IConditionNode">
             <summary>
             条件节点

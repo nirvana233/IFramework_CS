@@ -26,10 +26,16 @@ namespace IFramework.Packets
 
         public byte[] message { get;private set; }
 
-        public Packet() { }
-        public Packet(ushort pkgCount,uint pkgID,byte pkgType,byte[] buffer) {
-
+        public Packet()
+        {
             _Head = new PacketHeader();
+        }
+        public Packet(ushort pkgCount,uint pkgID,byte pkgType,byte[] buffer):this()
+        {
+            Config(pkgCount, pkgID, pkgType, buffer);
+        }
+        public void Config(ushort pkgCount, uint pkgID, byte pkgType, byte[] buffer)
+        {
             _Head.pkgCount = pkgCount;
             _Head.pkgID = pkgID;
             _Head.pkgType = pkgType;

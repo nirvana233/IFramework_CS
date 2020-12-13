@@ -3,3 +3,4 @@ E:\Project\VS\IFramework\Plugins\IFramework.NodeAction.xml
 E:\Project\VS\IFramework\Plugins\IFramework.NodeAction.dll
 E:\Project\VS\IFramework\IFramework.NodeAction\obj\Debug\IFramework.NodeAction.csproj.CopyComplete
 E:\Project\VS\IFramework\IFramework.NodeAction\obj\Debug\IFramework.NodeAction.dll
+E:\Project\VS\IFramework\IFramework.NodeAction\obj\Debug\IFramework.NodeAction.csprojAssemblyReference.cache

@@ -28,7 +28,7 @@ namespace IFramework
         /// <summary>
         /// 数据容器
         /// </summary>
-        protected List<T> pool;
+        protected Queue<T> pool;
         /// <summary>
         /// 自旋锁
         /// </summary>
@@ -45,14 +45,13 @@ namespace IFramework
         /// <summary>
         /// Ctor
         /// </summary>
-        protected ObjectPool() { pool = new List<T>(); lockParam = new LockParam(); }
+        protected ObjectPool() { pool = new Queue<T>(); lockParam = new LockParam(); }
         /// <summary>
         /// 释放
         /// </summary>
         public void Dispose()
         {
             OnDispose();
-            Clear();
             pool = null;
             lockParam = null;
             onClearObject = null;
@@ -63,7 +62,14 @@ namespace IFramework
         /// <summary>
         /// 释放时
         /// </summary>
-        protected virtual void OnDispose() { }
+        protected virtual void OnDispose() {
+            while (pool.Count>0)
+            {
+                IDisposable dispose = pool.Dequeue() as IDisposable;
+                if (dispose != null)
+                    dispose.Dispose();
+            }
+        }
 
         /// <summary>
         /// 获取
