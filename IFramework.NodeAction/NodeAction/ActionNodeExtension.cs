@@ -11,6 +11,31 @@ namespace IFramework.NodeAction
     [VersionUpdateAttribute(55,"面向接口")]
     public static class ActionNodeExtension
     {
+        private class NodeIterator : RecyclableObject
+        {
+            private ActionNode _node;
+            public void Config(IActionNode node)
+            {
+                this._node = node as ActionNode;
+                this.env.BindUpdate(Update);
+                SetDataDirty();
+            }
+            private void Update()
+            {
+                bool bo = _node.MoveNext();
+                if (!bo)
+                {
+                    this.env.UnBindUpdate(Update);
+                    Recyle();
+                }
+            }
+
+            protected override void OnDataReset()
+            {
+                this._node = null;
+            }
+        }
+
         /// <summary>
         /// 获取节点运行的 迭代器
         /// </summary>
@@ -25,7 +50,7 @@ namespace IFramework.NodeAction
             }
         }
         /// <summary>
-        /// 运行于自定义的 ICoroutineModule 上
+        /// 运行于 ICoroutineModule 上
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
@@ -36,15 +61,19 @@ namespace IFramework.NodeAction
             moudle.StartCoroutine(self.ActionEnumerator());
             return self;
         }
+
+
         /// <summary>
-        /// 运行于环境默认的 ICoroutineModule上
+        /// 直接运行于环境默认的上
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
         /// <returns></returns>
         public static T Run<T>(this T self) where T : IActionNode
         {
-            self.env.modules.Coroutine.StartCoroutine(self.ActionEnumerator());
+            NodeIterator it= NodeIterator.Allocate<NodeIterator>(self.env);
+            it.Config(self);
+           // self.env.modules.Coroutine.StartCoroutine(self.ActionEnumerator());
             return self;
         }
 
@@ -265,6 +294,23 @@ namespace IFramework.NodeAction
             (self as ContainerNode).Append(node);
             return self;
         }
+        /// <summary>
+        /// 开启一个帧节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="frame"></param>
+        /// <param name="autoRecyle"></param>
+        /// <returns></returns>
+        public static T Frame<T>(this T self, int frame, bool autoRecyle = false) where T : IContainerNode
+        {
+            FrameNode node = Allocate<FrameNode>(self.env);
+            node.Config(frame, autoRecyle);
+            (self as ContainerNode).Append(node);
+            return self;
+        }
+
+
 
         /// <summary>
         /// 开启一个重复运行节点
@@ -318,6 +364,30 @@ namespace IFramework.NodeAction
             (self as ContainerNode).Append(node);
             return self;
         }
+
+
+        /// <summary>
+        /// 获取容器节点中的最后一个
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static T LastNode<T>(this T self,Action<IActionNode> action) where T : IContainerNode
+        {
+            IActionNode last = self.last;
+            if (last==null)
+            {
+                Log.E("There is nothing  in this node");
+            }
+            else
+            {
+                if (action != null)
+                    action(last);
+            }
+            return self;
+        }
+
     }
 
 }

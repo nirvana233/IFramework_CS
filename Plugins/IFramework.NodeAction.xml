@@ -19,7 +19,7 @@
         </member>
         <member name="M:IFramework.NodeAction.ActionNodeExtension.Run``1(``0,IFramework.Modules.Coroutine.ICoroutineModule)">
             <summary>
-            运行于自定义的 ICoroutineModule 上
+            运行于 ICoroutineModule 上
             </summary>
             <typeparam name="T"></typeparam>
             <param name="self"></param>
@@ -28,7 +28,7 @@
         </member>
         <member name="M:IFramework.NodeAction.ActionNodeExtension.Run``1(``0)">
             <summary>
-            运行于环境默认的 ICoroutineModule上
+            直接运行于环境默认的上
             </summary>
             <typeparam name="T"></typeparam>
             <param name="self"></param>
@@ -176,6 +176,16 @@
             <param name="autoRecyle"></param>
             <returns></returns>
         </member>
+        <member name="M:IFramework.NodeAction.ActionNodeExtension.Frame``1(``0,System.Int32,System.Boolean)">
+            <summary>
+            开启一个帧节点
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="self"></param>
+            <param name="frame"></param>
+            <param name="autoRecyle"></param>
+            <returns></returns>
+        </member>
         <member name="M:IFramework.NodeAction.ActionNodeExtension.Repeat``1(``0,System.Action{IFramework.NodeAction.IRepeatNode},System.Int32,System.Boolean)">
             <summary>
             开启一个重复运行节点
@@ -207,6 +217,20 @@
             <param name="autoRecyle"></param>
             <returns></returns>
         </member>
+        <member name="M:IFramework.NodeAction.ActionNodeExtension.LastNode``1(``0,System.Action{IFramework.NodeAction.IActionNode})">
+            <summary>
+            获取容器节点中的最后一个
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="self"></param>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.NodeAction.IFrameNode">
+            <summary>
+            帧节点
+            </summary>
+        </member>
         <member name="T:IFramework.NodeAction.IActionNode">
             <summary>
             节点
@@ -230,6 +254,11 @@
         <member name="T:IFramework.NodeAction.IContainerNode">
             <summary>
             容器节点
+            </summary>
+        </member>
+        <member name="P:IFramework.NodeAction.IContainerNode.last">
+            <summary>
+            最后一个节点
             </summary>
         </member>
         <member name="T:IFramework.NodeAction.IEventNode">

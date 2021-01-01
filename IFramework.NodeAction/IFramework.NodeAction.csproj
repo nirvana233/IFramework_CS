@@ -49,6 +49,8 @@
     <Compile Include="NodeAction\ConditionNode.cs" />
     <Compile Include="NodeAction\ContainerNode.cs" />
     <Compile Include="NodeAction\EventNode.cs" />
+    <Compile Include="NodeAction\FrameNode.cs" />
+    <Compile Include="NodeAction\Interface\IFrameNode.cs" />
     <Compile Include="NodeAction\Interface\IActionNode.cs" />
     <Compile Include="NodeAction\Interface\IConditionNode.cs" />
     <Compile Include="NodeAction\Interface\IContainerNode.cs" />

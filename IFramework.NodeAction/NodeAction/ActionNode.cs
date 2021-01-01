@@ -15,18 +15,12 @@ namespace IFramework.NodeAction
         internal event Action onBegin;
         internal event Action onCompelete;
         internal event Action onRecyle;
-        //internal event Action onDispose;
         internal event Action onFrame;
 
         protected override void OnDispose()
         {
-            base.OnDispose();
             if (!recyled)
                 Recyle();
-            //OnNodeDispose();
-            //if (onDispose != null)
-            //    onDispose();
-            //onDispose = null;
         }
         internal bool MoveNext()
         {
@@ -89,7 +83,6 @@ namespace IFramework.NodeAction
         protected abstract void OnBegin();
         protected abstract void OnCompelete();
         protected abstract bool OnMoveNext();
-        //protected abstract void OnNodeDispose();
         protected abstract void OnNodeReset();
     }
 

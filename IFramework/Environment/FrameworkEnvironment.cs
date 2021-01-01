@@ -49,10 +49,7 @@ namespace IFramework
         /// 环境类型
         /// </summary>
         public EnvironmentType envType { get { return _envType; } }
-        /// <summary>
-        /// 环境名称
-        /// </summary>
-        public string envName { get { return name; } set { name = value; } }
+
         /// <summary>
         /// 最近一次 Update 方法用时
         /// </summary>
@@ -91,11 +88,11 @@ namespace IFramework
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="envName"></param>
+        /// <param name="name"></param>
         /// <param name="envType"></param>
-        public FrameworkEnvironment(string envName, EnvironmentType envType)
+        public FrameworkEnvironment(string name, EnvironmentType envType)
         {
-            this.envName = envName;
+            this.name = name;
             this._envType = envType;
         }
 
@@ -107,7 +104,7 @@ namespace IFramework
         {
             if (_inited) return;
             current = this;
-            _loom = LoomModule.CreatInstance<LoomModule>(this.envName, this.envName);
+            _loom = LoomModule.CreatInstance<LoomModule>(this.name, this.name);
             container = new FrameworkContainer();
             _modules = new FrameworkModules(this);
             cycleCollection = new RecyclableObjectCollection();
@@ -148,7 +145,6 @@ namespace IFramework
         /// </summary>
         protected override void OnDispose()
         {
-            base.OnDispose();
             if (disposed || !inited) return;
 
             (cycleCollection as RecyclableObjectCollection).Dispose();

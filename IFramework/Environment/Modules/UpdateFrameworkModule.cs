@@ -32,12 +32,8 @@
         /// </summary>
         public override void Dispose()
         {
-            Dispose(() => {
-                enable = false;
-                OnDispose();
-            }, () => {
-                UnBind(false);
-            });
+            enable = false;
+            base.Dispose();
         }
         /// <summary>
         /// 刷新

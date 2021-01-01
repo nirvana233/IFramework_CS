@@ -14,6 +14,9 @@ namespace IFramework.NodeAction
                 return nodeList.Count;
             }
         }
+
+        public IActionNode last { get { return nodeList[nodeList.Count - 1]; } }
+
         protected ContainerNode()
         {
             nodeList = new List<ActionNode>();

@@ -9,7 +9,6 @@
         void Update();
         void Destory();
         bool enable { get; set; }
-        string name { get; set; }
     }
 
     public class LifeTimeObject : RecyclableObject, ILifeTimeObject

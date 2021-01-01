@@ -123,16 +123,13 @@ namespace IFramework.Modules
         /// </summary>
         public override void Dispose()
         {
-            Dispose(() => {
-                OnDispose();
-            }, ()=> {
-                UnBind(false);
-            });
+            UnBind(false);
+            base.Dispose();
         }
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+        /// <summary>
+        /// 初始化
+        /// </summary>
         protected abstract void Awake();
-        protected abstract new void OnDispose();
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
     }
 }

@@ -138,7 +138,6 @@ namespace IFramework.Modules
         /// </summary>
         protected override void OnDispose()
         {
-            base.OnDispose();
             UnBindEnv(false);
             //for (int i = update_list.Count - 1; i >= 0; i--)
             //{
