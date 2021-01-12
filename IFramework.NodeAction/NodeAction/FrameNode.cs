@@ -9,9 +9,6 @@
             this._frame = frame;
             base.Config(autoRecyle);
         }
-        protected override void OnBegin() { }
-
-        protected override void OnCompelete() { }
 
         protected override bool OnMoveNext()
         {

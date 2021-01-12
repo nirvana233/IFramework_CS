@@ -2,31 +2,30 @@
 
 namespace IFramework.NodeAction
 {
-    class ConditionNode : ActionNode, IConditionNode
+    class DoWhileNode :ActionNode, IDoWhileNode
     {
         private Func<bool> _condition;
         private Action _body;
 
-        internal void Config(Func<bool> condition, Action boday, bool autoRecyle)
+        internal void Config(Func<bool> condition, Action body, bool autoRecyle)
         {
+            this._body = body;
             this._condition = condition;
-            this._body = boday;
             base.Config(autoRecyle);
         }
         protected override void OnDataReset()
         {
             base.OnDataReset();
-            _body = null;
             _condition = null;
+            _body = null;
         }
-
-
-
         protected override bool OnMoveNext()
         {
-            if (_condition.Invoke())
+            if (_body != null)
+            {
                 _body();
-            return false;
+            }
+            return _condition.Invoke();
         }
 
         protected override void OnNodeReset() { }

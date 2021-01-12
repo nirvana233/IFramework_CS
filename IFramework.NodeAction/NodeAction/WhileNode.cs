@@ -6,13 +6,11 @@ namespace IFramework.NodeAction
     {
 
         private Func<bool> _condition;
-        //public Func<bool> condition { get { return _condition; } }
-        private Action _loop;
-        //public Action loop { get { return _loop; } }
+        private Action _body;
 
-        internal void Config(Func<bool> condition, Action loop, bool autoRecyle)
+        internal void Config(Func<bool> condition, Action body, bool autoRecyle)
         {
-            this._loop = loop;
+            this._body = body;
             this._condition = condition;
             base.Config(autoRecyle);
         }
@@ -24,18 +22,15 @@ namespace IFramework.NodeAction
         protected override bool OnMoveNext()
         {
             bool bo = _condition.Invoke();
-            if (bo && _loop != null)
+            if (bo && _body != null)
             {
-                _loop();
+                _body();
             }
             return bo;
         }
 
-        protected override void OnBegin() { }
-        protected override void OnCompelete() { }
         protected override void OnNodeReset() { }
 
-        //protected override void OnNodeDispose() { }
     }
 
 }

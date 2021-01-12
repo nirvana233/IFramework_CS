@@ -26,9 +26,6 @@
             }
             return _mFinishCount < count;
         }
-
-        protected override void OnBegin() { }
-        protected override void OnCompelete() { }
     }
 
 }

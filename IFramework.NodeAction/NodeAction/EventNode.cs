@@ -5,12 +5,11 @@ namespace IFramework.NodeAction
     [ScriptVersion(3)]
     class EventNode : ActionNode, IEventNode
     {
-        private Action _callback;
-        //public Action callback { get { return _callback; } }
+        private Action _body;
 
-        internal void Config(Action callback, bool autoRecyle)
+        internal void Config(Action body, bool autoRecyle)
         {
-            this._callback = callback;
+            this._body = body;
             base.Config(autoRecyle);
         }
 
@@ -19,20 +18,17 @@ namespace IFramework.NodeAction
         protected override void OnDataReset()
         {
             base.OnDataReset();
-            _callback = null;
+            _body = null;
         }
 
         protected override bool OnMoveNext()
         {
-            _callback.Invoke();
+            _body.Invoke();
             return false;
         }
 
-        protected override void OnBegin() { }
-        protected override void OnCompelete() { }
         protected override void OnNodeReset() { }
 
-        //protected override void OnNodeDispose() { }
     }
 
 }

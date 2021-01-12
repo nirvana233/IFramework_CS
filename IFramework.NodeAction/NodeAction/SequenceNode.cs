@@ -24,8 +24,6 @@
         protected override void OnDataReset()
         {
             base.OnDataReset();
-            //    Log.L(_curIndex + "_ " + count + "_" + isDone);
-
             _curIndex = 0;
         }
 
@@ -34,11 +32,7 @@
             base.OnNodeReset();
             _curIndex = 0;
         }
-        protected override void OnBegin()
-        {
-            //  Log.L(_curIndex+" "+count+""+isDone);
-        }
-        protected override void OnCompelete() { }
+
     }
 
 }

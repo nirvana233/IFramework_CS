@@ -9,5 +9,6 @@
         /// 最后一个节点
         /// </summary>
         IActionNode last { get; }
+
     }
 }

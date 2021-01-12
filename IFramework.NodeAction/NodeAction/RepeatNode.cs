@@ -17,15 +17,13 @@ namespace IFramework.NodeAction
             this._repeat = repeat;
             base.Config(autoRecyle);
         }
-        internal override void Append(ActionNode node)
+        public override void Append(ActionNode node)
         {
             if (nodeList.Count >= 1)
                 Log.E("RepeatNode Can Have One Inner Node");
             else
                 nodeList.Add(node);
         }
-
-
 
         protected override bool OnMoveNext()
         {
@@ -58,9 +56,6 @@ namespace IFramework.NodeAction
             base.OnNodeReset();
             _curRepeat = 0;
         }
-
-        protected override void OnBegin() { }
-        protected override void OnCompelete() { }
     }
 
 }

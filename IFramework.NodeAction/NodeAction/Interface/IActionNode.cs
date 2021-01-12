@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IFramework.NodeAction
+﻿namespace IFramework.NodeAction
 {
     /// <summary>
     /// 节点

@@ -4,12 +4,12 @@ namespace IFramework.NodeAction
 {
     class TimeSpanNode : ActionNode, ITimeSpanNode
     {
-        internal void Config(TimeSpan timeSpan, bool autoRecyle)
+        internal void Config(TimeSpan time, bool autoRecyle)
         {
             base.Config(autoRecyle);
-            this.timeSpan = timeSpan;
+            this._time = time;
         }
-        private TimeSpan timeSpan;
+        private TimeSpan _time;
         private DateTime setTime;
 
         protected override void OnBegin()
@@ -19,23 +19,19 @@ namespace IFramework.NodeAction
 
         protected override bool OnMoveNext()
         {
-            return (DateTime.Now - setTime).TotalMilliseconds < timeSpan.TotalMilliseconds;
+            return (DateTime.Now - setTime).TotalMilliseconds < _time.TotalMilliseconds;
         }
         protected override void OnDataReset()
         {
             base.OnDataReset();
             setTime = DateTime.Now;
-            timeSpan = TimeSpan.Zero;
+            _time = TimeSpan.Zero;
         }
 
         protected override void OnNodeReset()
         {
             setTime = DateTime.Now;
         }
-
-        protected override void OnCompelete() { }
-
-        //protected override void OnNodeDispose() { }
     }
 
 }

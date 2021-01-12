@@ -6,7 +6,6 @@ namespace IFramework.NodeAction
     {
 
         private Func<bool> _condition;
-        //public Func<bool> condition { get { return _condition; }  }
 
 
         internal void Config(Func<bool> condition, bool autoRecyle)
@@ -24,11 +23,9 @@ namespace IFramework.NodeAction
             return !_condition.Invoke();
         }
 
-        protected override void OnBegin() { }
-        protected override void OnCompelete() { }
+
         protected override void OnNodeReset() { }
 
-        //protected override void OnNodeDispose() { }
     }
 
 

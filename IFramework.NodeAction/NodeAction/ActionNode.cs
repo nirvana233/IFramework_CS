@@ -2,26 +2,27 @@
 
 namespace IFramework.NodeAction
 {
-    abstract class ActionNode : RecyclableObject, IActionNode
+    /// <summary>
+    /// 节点
+    /// </summary>
+    public abstract class ActionNode : RecyclableObject, IActionNode
     {
         private bool mOnBeginCalled;
 
         private bool _isDone;
         private bool _autoRecyle;
-
+        /// <summary>
+        /// 是否完成
+        /// </summary>
         public bool isDone { get { return _isDone; } }
+        /// <summary>
+        /// 自动回收
+        /// </summary>
         public bool autoRecyle { get { return _autoRecyle; } set { _autoRecyle = value; } }
 
         internal event Action onBegin;
         internal event Action onCompelete;
         internal event Action onRecyle;
-        internal event Action onFrame;
-
-        protected override void OnDispose()
-        {
-            if (!recyled)
-                Recyle();
-        }
         internal bool MoveNext()
         {
             if (recyled || disposed) return false;
@@ -32,12 +33,7 @@ namespace IFramework.NodeAction
                 if (onBegin != null)
                     onBegin();
             }
-            if (!_isDone)
-            {
-                if (onFrame != null)
-                    onFrame();
-                _isDone = !OnMoveNext();
-            }
+            if (!_isDone) _isDone = !OnMoveNext();
             if (_isDone)
             {
                 OnCompelete();
@@ -55,21 +51,49 @@ namespace IFramework.NodeAction
             OnNodeReset();
         }
 
-        internal void Config(bool autoRecyle)
+
+        /// <summary>
+        /// 下一帧
+        /// </summary>
+        /// <returns></returns>
+        protected abstract bool OnMoveNext();
+        /// <summary>
+        /// 调用时机：repeat 节点完成一次
+        /// </summary>
+        protected abstract void OnNodeReset();
+
+
+        /// <summary>
+        /// 释放
+        /// </summary>
+        protected override void OnDispose()
+        {
+            if (!recyled)
+                Recyle();
+        }
+        /// <summary>
+        /// 设置自动回收
+        /// </summary>
+        /// <param name="autoRecyle"></param>
+        public void Config(bool autoRecyle)
         {
             this._autoRecyle = autoRecyle;
             SetDataDirty();
         }
-
+        /// <summary>
+        /// 数据重置
+        /// </summary>
         protected override void OnDataReset()
         {
             mOnBeginCalled = false;
             _isDone = false;
-            onFrame = null;
             onBegin = null;
             onCompelete = null;
             onRecyle = null;
         }
+        /// <summary>
+        /// 被回收时
+        /// </summary>
         protected override void OnRecyle()
         {
             if (onRecyle != null)
@@ -79,11 +103,16 @@ namespace IFramework.NodeAction
         }
 
 
+        /// <summary>
+        /// 开始时
+        /// </summary>
+        protected virtual void OnBegin() { }
+        /// <summary>
+        /// 结束时
+        /// </summary>
+        protected virtual void OnCompelete() { }
 
-        protected abstract void OnBegin();
-        protected abstract void OnCompelete();
-        protected abstract bool OnMoveNext();
-        protected abstract void OnNodeReset();
+
     }
 
 }
