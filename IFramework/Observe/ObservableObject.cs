@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace IFramework
 {
@@ -38,7 +39,7 @@ namespace IFramework
         public void UnSubscribe(string propertyName, Action listener)
         {
             if (!_callmap.ContainsKey(propertyName))
-                throw new Exception("Have not Subscribe " + propertyName);
+                throw new Exception($"Have not Subscribe {propertyName}");
             _callmap[propertyName] -= listener;
             if (_callmap[propertyName] == null)
                 _callmap.Remove(propertyName);
@@ -50,26 +51,16 @@ namespace IFramework
         /// <param name="property">获取的属性</param>
         /// <param name="propertyName">属性名称</param>
         /// <returns></returns>
-        protected T GetProperty<T>(ref T property, string propertyName = "")
+        protected T GetProperty<T>(ref T property, [CallerMemberName]string propertyName = "")
         {
             if (ObservableObjectHandler.handler != null)
             {
-                if (string.IsNullOrEmpty(propertyName))
-                    propertyName = GetProperyName(new StackTrace(true).GetFrame(1).GetMethod().Name);
+                //if (string.IsNullOrEmpty(propertyName))
+                //    propertyName = GetProperyName(new StackTrace(true).GetFrame(1).GetMethod().Name);
                 ObservableObjectHandler.handler.Subscribe(this, propertyName);
             }
             return property;
         }
-        private string GetProperyName(string methodName)
-        {
-            if (methodName.StartsWith("get_") || methodName.StartsWith("set_") ||
-                methodName.StartsWith("put_"))
-            {
-                return methodName.Substring("get_".Length);
-            }
-            throw new Exception(methodName + " not a method of Property");
-        }
-
         /// <summary>
         /// 设置属性
         /// </summary>
@@ -77,11 +68,11 @@ namespace IFramework
         /// <param name="property">赋值的变量</param>
         /// <param name="value">变化的值</param>
         /// <param name="propertyName">属性名称</param>
-        protected void SetProperty<T>(ref T property, T value, string propertyName = "")
+        protected void SetProperty<T>(ref T property, T value, [CallerMemberName]string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(property, value)) return;
-            if (string.IsNullOrEmpty(propertyName))
-                propertyName = GetProperyName(new StackTrace(true).GetFrame(1).GetMethod().Name);
+            //if (string.IsNullOrEmpty(propertyName))
+            //    propertyName = GetProperyName(new StackTrace(true).GetFrame(1).GetMethod().Name);
             property = value;
             PublishPropertyChange(propertyName);
         }
@@ -93,7 +84,6 @@ namespace IFramework
         {
             if (!_callmap.ContainsKey(propertyName)) return;
             if (_callmap[propertyName] == null) return;
-
             _callmap[propertyName].Invoke();
         }
         /// <summary>
@@ -104,4 +94,15 @@ namespace IFramework
             _callmap.Clear();
             _callmap = null;
         }
-    }}
+        //private string GetProperyName(string methodName)
+        //{
+        //    if (methodName.StartsWith("get_") || methodName.StartsWith("set_") ||
+        //        methodName.StartsWith("put_"))
+        //    {
+        //        return methodName.Substring("get_".Length);
+        //    }
+        //    throw new Exception(methodName + " not a method of Property");
+        //}
+
+    }
+}

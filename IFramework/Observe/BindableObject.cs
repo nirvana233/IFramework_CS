@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace IFramework
 {
@@ -71,12 +72,12 @@ namespace IFramework
         /// <param name="property"></param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        protected T GetProperty<T>(ref T property, string propertyName = "")
+        protected T GetProperty<T>(ref T property, [CallerMemberName]string propertyName = "")
         {
             if (BindableObjectHandler.handler != null)
             {
-                if (string.IsNullOrEmpty(propertyName))
-                    propertyName = GetProperyName(new StackTrace(true).GetFrame(1).GetMethod().Name);
+                //if (string.IsNullOrEmpty(propertyName))
+                //    propertyName = GetProperyName(new StackTrace(true).GetFrame(1).GetMethod().Name);
                 BindableObjectHandler.handler.Subscribe(this, typeof(T), propertyName);
             }
             return property;
@@ -88,23 +89,14 @@ namespace IFramework
         /// <param name="property"></param>
         /// <param name="value"></param>
         /// <param name="propertyName"></param>
-        protected void SetProperty<T>(ref T property, T value, string propertyName = "")
+        protected void SetProperty<T>(ref T property, T value, [CallerMemberName]string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(property, value)) return;
-            if (string.IsNullOrEmpty(propertyName))
-                propertyName = GetProperyName(new StackTrace(true).GetFrame(1).GetMethod().Name);
+            //if (string.IsNullOrEmpty(propertyName))
+            //    propertyName = GetProperyName(new StackTrace(true).GetFrame(1).GetMethod().Name);
             property = value;
             //if (bindOperation == BindOperation.Listen) return;
             PublishPropertyChange(propertyName, value);
-        }
-        private string GetProperyName(string methodName)
-        {
-            if (methodName.StartsWith("get_") || methodName.StartsWith("set_") ||
-                methodName.StartsWith("put_"))
-            {
-                return methodName.Substring("get_".Length);
-            }
-            throw new Exception(methodName + " not a method of Property");
         }
         private void PublishPropertyChange(string propertyName, object obj)
         {
@@ -121,5 +113,14 @@ namespace IFramework
             _callmap.Clear();
             _callmap = null;
         }
+        //private string GetProperyName(string methodName)
+        //{
+        //    if (methodName.StartsWith("get_") || methodName.StartsWith("set_") ||
+        //        methodName.StartsWith("put_"))
+        //    {
+        //        return methodName.Substring("get_".Length);
+        //    }
+        //    throw new Exception(methodName + " not a method of Property");
+        //}
     }
 }
