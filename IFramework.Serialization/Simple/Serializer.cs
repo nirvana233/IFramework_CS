@@ -27,8 +27,7 @@ namespace IFramework.Serialization.Simple
             { typeof(UIntPtr),  typeof(UIntPtrSerializer) },
             { typeof(Guid),  typeof(GuidSerializer) },
             { typeof(DateTime),  typeof(DateTimeSerializer) },
-            { typeof(Point2),  typeof(Point2Serializer) },
-            { typeof(Point3),  typeof(Point3Serializer) }
+
 
         };
         private static readonly Dictionary<Type, Serializer> _ins = new Dictionary<Type, Serializer>();

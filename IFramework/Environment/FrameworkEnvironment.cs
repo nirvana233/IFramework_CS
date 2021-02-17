@@ -28,7 +28,10 @@ namespace IFramework
         private event Action onDispose;
         private static LockParam _envsetlock = new LockParam();
         private static FrameworkEnvironment _current;
-
+        /// <summary>
+        /// 名字
+        /// </summary>
+        public string name { get; set; }
         /// <summary>
         /// 环境是否已经初始化
         /// </summary>

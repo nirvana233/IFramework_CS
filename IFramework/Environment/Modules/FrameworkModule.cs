@@ -117,7 +117,10 @@ namespace IFramework.Modules
         /// 模块所处的容器
         /// </summary>
         public IFrameworkModuleContainer container { get { return _container; } }
-       
+        /// <summary>
+        /// 名字
+        /// </summary>
+        public string name { get; set; }
         /// <summary>
         /// 释放
         /// </summary>

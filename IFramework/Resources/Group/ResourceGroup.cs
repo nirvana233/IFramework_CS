@@ -29,6 +29,7 @@ namespace IFramework.Resource
             _lock = new LockParam();
             _remove = new Queue<ResourceLoader>();
             _loaderMap = new Dictionary<string, ResourceLoader>();
+            _loaderPool = new ResourceLoaderPool();
         }
         /// <summary>
         /// 释放
@@ -58,16 +59,21 @@ namespace IFramework.Resource
         /// </summary>
         /// <param name="loaderType"></param>
         /// <param name="path"></param>
+        /// <param name="beforeLoad"></param>
         /// <returns></returns>
-        protected ResourceLoader Load(Type loaderType, string path)
+        protected ResourceLoader Load(Type loaderType, string path,Action<ResourceLoader> beforeLoad=null)
         {
             using (new LockWait(ref _lock))
             {
                 ResourceLoader _loader;
-                if (!_loaderMap.TryGetValue(name, out _loader))
+                if (!_loaderMap.TryGetValue(path, out _loader))
                 {
                     _loader = AllocateLoader(loaderType);
                     _loader.Config(path);
+                    if (beforeLoad!=null)
+                    {
+                        beforeLoad(_loader);
+                    }
                     _loader.Load();
                     _loaderMap.Add(_loader.path, _loader);
                 }

@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemblies.cs" />
+    <Compile Include="Awaitable\IAwaitable.cs" />
+    <Compile Include="Awaitable\IAwaiter.cs" />
+    <Compile Include="Awaitable\ICriticalAwaiter.cs" />
     <Compile Include="Attributes\IDescription.cs" />
     <Compile Include="Attributes\IVersion.cs" />
     <Compile Include="Attributes\RequireAttribute.cs" />
@@ -74,6 +77,8 @@
     <Compile Include="Environment\Modules\Recorder\OperationRecorderModule.cs" />
     <Compile Include="Environment\Recylable\IRecyclable.cs" />
     <Compile Include="Environment\Recylable\RecyclableObjectCollection.cs" />
+    <Compile Include="Extension\FieldExtend\ExtensibleObject.cs" />
+    <Compile Include="Extension\FieldExtend\ObjectEX.cs" />
     <Compile Include="Extension\FloatExtension.cs" />
     <Compile Include="FrameworkBitConverter.cs" />
     <Compile Include="Environment\FrameworkEnvironment.cs" />
@@ -83,7 +88,6 @@
     <Compile Include="FrameworkObject.cs" />
     <Compile Include="Environment\Inject\FrameworkContainer.cs" />
     <Compile Include="Environment\Inject\InjectAttribute.cs" />
-    <Compile Include="Environment\Recylable\LifeTimeObject.cs" />
     <Compile Include="Log\ILogRecorder.cs" />
     <Compile Include="Environment\Modules\Coroutine\CoroutineModuleEx.cs" />
     <Compile Include="Environment\Modules\Coroutine\ICoroutine.cs" />
@@ -164,8 +168,6 @@
     <Compile Include="Environment\OnEnvironmentInitAttribute.cs" />
     <Compile Include="Observe\ObservableObjectHandler.cs" />
     <Compile Include="Observe\ObservableValue.cs" />
-    <Compile Include="Point2.cs" />
-    <Compile Include="Point3.cs" />
     <Compile Include="Pool\BaseTypePool.cs" />
     <Compile Include="Pool\CapicityPool.cs" />
     <Compile Include="Environment\Recylable\RecyclableObject.cs" />
@@ -197,7 +199,7 @@
     <Compile Include="Singleton\SingletonCreator.cs" />
     <Compile Include="Singleton\SingletonProperty.cs" />
     <Compile Include="Singleton\SingletonPropertyClass.cs" />
-    <Compile Include="ValueCurve.cs" />
+    <Compile Include="ValueMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

@@ -7,8 +7,7 @@ namespace IFramework.Resource
     /// <summary>
     /// 异步文本加载器
     /// </summary>
-    /// <typeparam name="Encod"></typeparam>
-    public class AsyncFileTextLoader<Encod> : AsyncResourceLoader<string> where Encod : Encoding, new()
+     class AsyncFileTextLoader : AsyncResourceLoader<string>
     {
         /// <summary>
         /// 进度
@@ -26,7 +25,10 @@ namespace IFramework.Resource
             protected set { }
         }
 
-        private Encod _en { get { return new Encod(); } }
+        /// <summary>
+        /// 编码
+        /// </summary>
+        public Encoding encoding;
 
         private StringBuilder _sb;
         private byte[] _buffer;
@@ -57,7 +59,7 @@ namespace IFramework.Resource
                 int bytesRead = _fs.EndRead(asyncResult);
                 if (bytesRead > 0)
                 {
-                    var datastr = _en.GetString(_buffer, 0, _buffer.Length);
+                    var datastr = encoding.GetString(_buffer, 0, _buffer.Length);
                     _sb.Append(datastr);
                     _fs.BeginRead(_buffer, 0, _buffer.Length, EndRead, null);
                 }

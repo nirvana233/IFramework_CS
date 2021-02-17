@@ -28,7 +28,8 @@ namespace IFramework
         /// <summary>
         /// 数据容器
         /// </summary>
-        protected Queue<T> pool;
+        protected Queue<T> pool { get { return _lazy.Value; } }
+        private Lazy<Queue<T>> _lazy=new Lazy<Queue<T>>(()=> { return new Queue<T>(); },true);
         /// <summary>
         /// 自旋锁
         /// </summary>
@@ -45,14 +46,14 @@ namespace IFramework
         /// <summary>
         /// Ctor
         /// </summary>
-        protected ObjectPool() { pool = new Queue<T>(); lockParam = new LockParam(); }
+        protected ObjectPool() { lockParam = new LockParam(); }
         /// <summary>
         /// 释放
         /// </summary>
         public void Dispose()
         {
             OnDispose();
-            pool = null;
+            _lazy = null;
             lockParam = null;
             onClearObject = null;
             onGetObject = null;

@@ -39,9 +39,9 @@ namespace IFramework.Resource
         /// <param name="path"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        public Resource<string> LoadText(string path,Encoding encoding)
+        public Resource<string> LoadText(string path, Encoding encoding)
         {
-            return Load(typeof(FileTextLoader<>).MakeGenericType(encoding.GetType()), path).resource as Resource<string>;
+            return Load(typeof(FileTextLoader), path, (loader) => { (loader as FileTextLoader).encoding = encoding; }).resource as Resource<string>;
         }
         /// <summary>
         /// 异步加载文字
@@ -51,7 +51,7 @@ namespace IFramework.Resource
         /// <returns></returns>
         public Resource<string> LoadTextAsync(string path, Encoding encoding)
         {
-            return Load(typeof(AsyncFileTextLoader<>).MakeGenericType(encoding.GetType()), path).resource as Resource<string>;
+            return Load(typeof(AsyncFileTextLoader), path, (loader) => { (loader as AsyncFileTextLoader).encoding = encoding; }).resource as Resource<string>;
         }
 
     }

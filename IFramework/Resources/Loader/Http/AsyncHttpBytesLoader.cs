@@ -8,7 +8,7 @@ namespace IFramework.Resource
     /// 异步Http加载器
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
-    public class AsyncHttpBytesLoader : ResourceLoader<byte[]>
+     class AsyncHttpBytesLoader : ResourceLoader<byte[]>
     {
         private int _blockSize = 2048;
         private byte[] _buffer;

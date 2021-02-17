@@ -59,23 +59,23 @@ namespace IFramework
 
         public static Assemblies Assembly = new Assemblies();
 
-        public static FrameworkEnvironment env0;
-        public static FrameworkEnvironment env1;
-        public static FrameworkEnvironment env2;
-        public static FrameworkEnvironment env3;
-        public static FrameworkEnvironment env4;
-        public static FrameworkEnvironment env5;
-        public static FrameworkEnvironment env6;
-        public static FrameworkEnvironment env7;
-        public static FrameworkEnvironment env8;
-        public static FrameworkEnvironment env9;
+        public static FrameworkEnvironment env0 { get; private set; }
+        public static FrameworkEnvironment env1 { get; private set; }
+        public static FrameworkEnvironment env2 { get; private set; }
+        public static FrameworkEnvironment env3 { get; private set; }
+        public static FrameworkEnvironment env4 { get; private set; }
+        public static FrameworkEnvironment env5 { get; private set; }
+        public static FrameworkEnvironment env6 { get; private set; }
+        public static FrameworkEnvironment env7 { get; private set; }
+        public static FrameworkEnvironment env8 { get; private set; }
+        public static FrameworkEnvironment env9 { get; private set; }
 
 
-        public static FrameworkEnvironment extra0;
-        public static FrameworkEnvironment extra1;
-        public static FrameworkEnvironment extra2;
-        public static FrameworkEnvironment extra3;
-        public static FrameworkEnvironment extra4;
+        public static FrameworkEnvironment extra0 { get; private set; }
+        public static FrameworkEnvironment extra1 { get; private set; }
+        public static FrameworkEnvironment extra2 { get; private set; }
+        public static FrameworkEnvironment extra3 { get; private set; }
+        public static FrameworkEnvironment extra4 { get; private set; }
 
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         /// <summary>

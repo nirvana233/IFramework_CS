@@ -44,7 +44,30 @@ namespace IFramework
             if (memberExpression == null) return null;
             return memberExpression.Member.Name;
         }
-
+        /// <summary>
+        /// 强转
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static T As<T>(this object obj)
+        {
+            if (obj==null)
+            {
+                return default(T);
+            }
+            return (T)obj;
+        }
+        /// <summary>
+        /// 对象是否是该类型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static bool Is<T>(this object obj)
+        {
+            return obj is T;
+        }
     }
 
 }

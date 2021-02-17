@@ -7,10 +7,12 @@ namespace IFramework.Resource
     /// <summary>
     /// 文本加载器
     /// </summary>
-    /// <typeparam name="Encod"></typeparam>
-    public class FileTextLoader<Encod> : ResourceLoader<string> where Encod: Encoding,new()
+     class FileTextLoader : ResourceLoader<string> 
     {
-        private Encod _en { get { return new Encod(); } }
+        /// <summary>
+        /// 编码
+        /// </summary>
+        public Encoding encoding;
         /// <summary>
         /// 加载
         /// </summary>
@@ -18,7 +20,7 @@ namespace IFramework.Resource
         {
             try
             {
-                Tresource.Tvalue = File.ReadAllText(path,_en);
+                Tresource.Tvalue = File.ReadAllText(path,encoding);
             }
             catch (Exception e)
             {

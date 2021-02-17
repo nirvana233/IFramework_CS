@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Point2.cs" />
+    <Compile Include="Point3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Astar\AStarMap2X.cs" />
     <Compile Include="Astar\AStarMap3X.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Explanation\IExplainer.cs" />
     <Compile Include="IReference.cs" />
     <Compile Include="ProcessUtil.cs" />
+    <Compile Include="ValueCurve.cs" />
     <Compile Include="Verifier.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,7 +8,7 @@ namespace IFramework.Resource
     /// http流加载器
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
-    public class HttpTextLoader : ResourceLoader<string>
+     class HttpTextLoader : ResourceLoader<string>
     {
         /// <summary>
         /// 加载

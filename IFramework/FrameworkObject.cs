@@ -2,19 +2,30 @@
 
 namespace IFramework
 {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    /// <summary>
+    /// 基类
+    /// </summary>
     public class FrameworkObject : IDisposable, IFrameworkObject
     {
         private bool _disposed;
         private Guid _guid = Guid.NewGuid();
         private string _name;
-
+        /// <summary>
+        /// 唯一id
+        /// </summary>
         public Guid guid { get { return _guid; } }
+        /// <summary>
+        /// 是否已经释放
+        /// </summary>
         public bool disposed { get { return _disposed; } }
-        public string name { get { return _name; } set { _name = value; } }
 
+        /// <summary>
+        /// 释放时
+        /// </summary>
         protected virtual void OnDispose() { }
-
+        /// <summary>
+        /// 释放
+        /// </summary>
         public virtual void Dispose()
         {
             OnDispose();
@@ -25,12 +36,18 @@ namespace IFramework
         }
 
     }
-
+    /// <summary>
+    /// 积累接口
+    /// </summary>
     public interface IFrameworkObject:IEventArgs
     {
+        /// <summary>
+        /// 唯一id
+        /// </summary>
         Guid guid { get; }
+        /// <summary>
+        /// 是否释放
+        /// </summary>
         bool disposed { get; }
-        string name { get; set; }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 }

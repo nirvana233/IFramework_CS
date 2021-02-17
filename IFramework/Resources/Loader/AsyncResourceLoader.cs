@@ -1,14 +1,10 @@
 ﻿namespace IFramework.Resource
 {
     /// <summary>
-    /// 异步资源加载器
-    /// </summary>
-    public abstract class AsyncResourceLoader : ResourceLoader { }
-    /// <summary>
     /// 泛型异步资源加载器
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class AsyncResourceLoader<T> : AsyncResourceLoader 
+    public abstract class AsyncResourceLoader<T> : ResourceLoader
     {
         /// <summary>
         /// 泛型资源

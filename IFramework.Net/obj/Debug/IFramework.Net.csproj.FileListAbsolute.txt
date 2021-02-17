@@ -2,4 +2,3 @@ E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.csproj.CoreComp
 E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.csproj.CopyComplete
 E:\Project\VS\IFramework\Plugins\IFramework.Net.dll
 E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.dll
-E:\Project\VS\IFramework\IFramework.Net\obj\Debug\IFramework.Net.csprojAssemblyReference.cache

@@ -8,7 +8,7 @@ namespace IFramework.Resource
     /// http流加载器
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
-    public class HttpBytesLoader : ResourceLoader<byte[]>
+     class HttpBytesLoader : ResourceLoader<byte[]>
     {
         private int _blockSize=2048;
         /// <summary>
