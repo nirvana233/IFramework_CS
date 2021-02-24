@@ -197,10 +197,11 @@ namespace IFramework.Modules.Recorder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="t"></param>
+        /// <param name="redo"></param>
         /// <returns></returns>
-        public static T Subscribe<T>(this T t)where T :BaseState
+        public static T Subscribe<T>(this T t, bool redo = true) where T :BaseState
         {
-            t.recorder.Subscribe(t);
+            t.recorder.Subscribe(t,redo);
             return t;
         }
     }

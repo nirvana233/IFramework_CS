@@ -1,5 +1,0 @@
-E:\Project\VS\IFramework\IFramework.Packets\obj\Debug\IFramework.Packets.csproj.CoreCompileInputs.cache
-E:\Project\VS\IFramework\Plugins\IFramework.Packets.xml
-E:\Project\VS\IFramework\Plugins\IFramework.Packets.dll
-E:\Project\VS\IFramework\IFramework.Packets\obj\Debug\IFramework.Packets.csproj.CopyComplete
-E:\Project\VS\IFramework\IFramework.Packets\obj\Debug\IFramework.Packets.dll

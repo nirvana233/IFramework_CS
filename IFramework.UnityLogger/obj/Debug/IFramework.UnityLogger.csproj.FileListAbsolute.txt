@@ -2,3 +2,4 @@ E:\Project\VS\IFramework\IFramework.UnityLogger\obj\Debug\IFramework.UnityLogger
 E:\Project\VS\IFramework\Plugins\IFramework.UnityLogger.dll
 E:\Project\VS\IFramework\IFramework.UnityLogger\obj\Debug\IFramework.UnityLogger.csproj.CopyComplete
 E:\Project\VS\IFramework\IFramework.UnityLogger\obj\Debug\IFramework.UnityLogger.dll
+E:\Project\VS\IFramework\IFramework.UnityLogger\obj\Debug\IFramework.UnityLogger.csprojAssemblyReference.cache
