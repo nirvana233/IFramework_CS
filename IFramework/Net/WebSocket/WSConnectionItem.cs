@@ -10,6 +10,7 @@ namespace IFramework.Net.WebSocket
         public WSConnectionItem(string wsUrl)
         {
             string[] urlParams = wsUrl.Split(':');
+
             if (urlParams.Length < 3)
                 throw new Exception("wsUrl is error format.for example as ws://localhost:80");
 

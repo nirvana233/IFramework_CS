@@ -59,7 +59,6 @@ namespace IFramework.Net.WebSocket
                 Origin = "http://" + wsItem.Host,
                 SecWebSocketKey = Convert.ToBase64String(encoding.GetBytes(wsUrl + rand.Next(100, 100000).ToString()))
             }.ToString();
-
             isOk = clientProvider.Send(new SegmentOffset(encoding.GetBytes(req)));
 
             resetEvent.WaitOne(waitingTimeout);

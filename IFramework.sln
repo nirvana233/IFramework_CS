@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.Serialization", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.UnityLogger", "IFramework.UnityLogger\IFramework.UnityLogger.csproj", "{D3561428-0601-4B66-8587-58218D7A7EAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{A26FFA53-1C22-4871-93B2-ADE332BEB037}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D3561428-0601-4B66-8587-58218D7A7EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3561428-0601-4B66-8587-58218D7A7EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3561428-0601-4B66-8587-58218D7A7EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

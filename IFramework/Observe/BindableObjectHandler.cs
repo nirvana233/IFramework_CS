@@ -163,6 +163,7 @@ namespace IFramework
         /// <returns></returns>
         public BindableObjectHandler PublishProperty(Type type,object value, string propertyName)
         {
+            _valuemap.Set(type, propertyName, value);
             if (!_callmap.ContainsKey(type))
                 _callmap.Add(type, new Dictionary<string, Action<string, object>>());
             if (!_callmap[type].ContainsKey(propertyName))
@@ -184,15 +185,18 @@ namespace IFramework
         public BindableObjectHandler PublishProperty<T>(T value, string propertyName)
         {
             Type type = typeof(T);
-            if (!_callmap.ContainsKey(type))
-                _callmap.Add(type, new Dictionary<string, Action<string, object>>());
-            if (!_callmap[type].ContainsKey(propertyName))
-                _callmap[type].Add(propertyName,new Action<string, object>((str,obj)=> { }));
-            if (_callmap[type][propertyName]!=null)
-            {
-                _callmap[type][propertyName].Invoke(propertyName, value);
-            }
-            return this;
+            return PublishProperty(type, value, propertyName);
+            //_valuemap.Set(type, propertyName, value);
+
+            //if (!_callmap.ContainsKey(type))
+            //    _callmap.Add(type, new Dictionary<string, Action<string, object>>());
+            //if (!_callmap[type].ContainsKey(propertyName))
+            //    _callmap[type].Add(propertyName,new Action<string, object>((str,obj)=> { }));
+            //if (_callmap[type][propertyName]!=null)
+            //{
+            //    _callmap[type][propertyName].Invoke(propertyName, value);
+            //}
+            //return this;
         }
 
         /// <summary>
