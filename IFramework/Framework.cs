@@ -11,7 +11,6 @@ namespace IFramework
     /// 框架入口
     /// </summary>
     [RequireAttribute(typeof(FrameworkEnvironment))]
-    [RequireAttribute(typeof(Assemblies))]
     [ScriptVersionAttribute(8)]
     [VersionUpdateAttribute(8,"增加环境数量")]
     public static class Framework
@@ -56,8 +55,6 @@ namespace IFramework
         public const string Author = "OnClick";
         public static string Version;
         public const string Description = FrameworkName;
-
-        public static Assemblies Assembly = new Assemblies();
 
         public static FrameworkEnvironment env0 { get; private set; }
         public static FrameworkEnvironment env1 { get; private set; }

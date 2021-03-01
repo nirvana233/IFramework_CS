@@ -9,11 +9,11 @@ using IFramework.Packets;
 
 namespace Example
 {
-    public class NetTest: Test
+    public class NetTest : Test
     {
         protected override void Start()
         {
-            TcpDemo();
+           // TcpDemo();
             // UdpDemo();
             // ProtocolsDemo();
             // ConnectionPoolManagerDemo();
@@ -21,8 +21,8 @@ namespace Example
             //ConnectDemo();
             //PacketSocketDemo();
             //PacketDemo();
-           // WebSocketDemo();
-           // HttpTest();
+             WebSocketDemo();
+            // HttpTest();
         }
 
         private static void TcpDemo()
@@ -529,16 +529,16 @@ namespace Example
             }
         }
 
-       
+
 
         protected override void Update()
         {
-           
+
         }
 
         protected override void Stop()
         {
-            
+
         }
     }
 

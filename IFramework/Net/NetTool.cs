@@ -46,11 +46,11 @@ namespace IFramework.Net
         }
         public static IWSServerProvider CreateWSSever(int chunkBufferSize = 4096, int maxNumberOfConnections = 32)
         {
-            return new WSServerProvider(chunkBufferSize, maxNumberOfConnections);
+            return new WSServerProvider(maxNumberOfConnections, chunkBufferSize);
         }
-        public static IHttpServerProvider CreateHttpSever(int chunkBufferSize = 4096, int maxNumberOfConnections = 32)
+        public static IHttpServerProvider CreateHttpSever(int maxPoolCount = 64, int blockSize = 4096)
         {
-            return new HttpServer(chunkBufferSize, maxNumberOfConnections);
+            return new HttpServer( maxPoolCount ,blockSize);
         }
 
 

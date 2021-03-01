@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simple\Assemblies.cs" />
     <Compile Include="Simple\CustomSerializer.cs" />
     <Compile Include="Simple\DataWriter.cs" />
     <Compile Include="Simple\NodeType.cs" />

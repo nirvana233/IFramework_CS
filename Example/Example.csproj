@@ -57,13 +57,18 @@
     <Compile Include="ConfigTest.cs" />
     <Compile Include="CoroutineTest.cs" />
     <Compile Include="DataTableTest.cs" />
+    <Compile Include="FsmTest.cs" />
     <Compile Include="InjectTest.cs" />
     <Compile Include="MessageExample.cs" />
+    <Compile Include="MouduleTest.cs" />
     <Compile Include="NetTest.cs" />
     <Compile Include="NodeActionTest.cs" />
+    <Compile Include="PoolTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecorderTest.cs" />
+    <Compile Include="RecyclableObjectTest.cs" />
+    <Compile Include="SingletonTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
