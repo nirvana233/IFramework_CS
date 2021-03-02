@@ -61,19 +61,26 @@ namespace IFramework.Modules
         {
             if (string.IsNullOrEmpty(name))
                 name = string.Format("{0}.{1}", _chunck, type.Name);
-            FrameworkModule mou;
-            if (moudle_dic.ContainsKey(type))
-            {
-                mou = moudle_dic[type].Find((m) => { return m.name == name; });
-                if (mou == null)
-                {
-                    mou = CreateModule(type, name);
-                }
-            }
-            else
-                mou = CreateModule(type, name);
-            return mou;
+            if (!moudle_dic.ContainsKey(type)) return null;
+            return moudle_dic[type].Find((m) => { return m.name == name; });
         }
+        /// <summary>
+        /// 获取模块
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public FrameworkModule GetModule(Type type, string name = "")
+        {
+            var tmp = FindModule(type, name);
+            if (tmp == null)
+            {
+                tmp = CreateModule(type, name);
+            }
+            return tmp;
+        }
+
+
         /// <summary>
         /// 查找模块
         /// </summary>
@@ -83,6 +90,16 @@ namespace IFramework.Modules
         public T FindModule<T>(string name = "") where T : FrameworkModule
         {
             return FindModule(typeof(T), name) as T;
+        }
+        /// <summary>
+        /// 获取模块
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public T GetModule<T>(string name = "") where T : FrameworkModule
+        {
+            return GetModule(typeof(T), name) as T;
         }
 
         /// <summary>
@@ -215,6 +232,8 @@ namespace IFramework.Modules
                 }
             }
         }
+
+
     }
 
 }

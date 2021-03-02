@@ -34,7 +34,21 @@ namespace IFramework.Modules
         /// <returns></returns>
         T CreateModule<T>(string name = "") where T : FrameworkModule;
         /// <summary>
-        /// 查询模块
+        /// 获取模块
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        FrameworkModule GetModule(Type type, string name = "");
+        /// <summary>
+        /// 获取模块
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        T GetModule<T>(string name = "") where T : FrameworkModule;
+        /// <summary>
+        /// 查找模块
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>

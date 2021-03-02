@@ -64,6 +64,7 @@
     <Compile Include="NetTest.cs" />
     <Compile Include="NodeActionTest.cs" />
     <Compile Include="PoolTest.cs" />
+    <Compile Include="PriorityQueueTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecorderTest.cs" />

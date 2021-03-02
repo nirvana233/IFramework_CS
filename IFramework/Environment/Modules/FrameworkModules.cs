@@ -15,13 +15,13 @@ namespace IFramework.Modules
     internal class FrameworkModules : FrameworkModuleContainer, IFrameworkModules
     {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        public IFsmModule Fsm { get { return FindModule<FsmModule>("default"); } }
-        public ICoroutineModule Coroutine { get { return FindModule<CoroutineModule>("default"); } }
-        public IMessageModule Message { get { return FindModule<MessageModule>("default"); } }
-        public IECSModule ECS { get { return FindModule<ECSModule>("default"); } }
-        public IMVVMModule MVVM { get { return FindModule<MVVMModule>("default"); } }
-        public IConfigModule Config { get { return FindModule<ConfigModule>("default"); } }
-        public IOperationRecorderModule Recoder { get { return FindModule<OperationRecorderModule>("default"); } }
+        public IFsmModule Fsm { get { return GetModule<FsmModule>("default"); } }
+        public ICoroutineModule Coroutine { get { return GetModule<CoroutineModule>("default"); } }
+        public IMessageModule Message { get { return GetModule<MessageModule>("default"); } }
+        public IECSModule ECS { get { return GetModule<ECSModule>("default"); } }
+        public IMVVMModule MVVM { get { return GetModule<MVVMModule>("default"); } }
+        public IConfigModule Config { get { return GetModule<ConfigModule>("default"); } }
+        public IOperationRecorderModule Recoder { get { return GetModule<OperationRecorderModule>("default"); } }
 
 
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
