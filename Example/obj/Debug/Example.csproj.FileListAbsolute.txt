@@ -2,7 +2,6 @@ E:\Project\VS\IFramework\Example\bin\Debug\Example.exe.config
 E:\Project\VS\IFramework\Example\bin\Debug\Example.exe
 E:\Project\VS\IFramework\Example\bin\Debug\Example.pdb
 E:\Project\VS\IFramework\Example\bin\Debug\IFramework.dll
-E:\Project\VS\IFramework\Example\bin\Debug\IFramework.Serialization.dll
 E:\Project\VS\IFramework\Example\bin\Debug\IFramework.xml
 E:\Project\VS\IFramework\Example\bin\Debug\IFramework.Serialization.xml
 E:\Project\VS\IFramework\Example\obj\Debug\Example.csproj.CoreCompileInputs.cache

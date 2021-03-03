@@ -56,11 +56,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Awaitable\IAwaitable.cs" />
-    <Compile Include="Awaitable\IAwaiter.cs" />
-    <Compile Include="Awaitable\ICriticalAwaiter.cs" />
-    <Compile Include="Attributes\IDescription.cs" />
-    <Compile Include="Attributes\IVersion.cs" />
+    <Compile Include="__Interfaces\IBelongToEnvironment.cs" />
+    <Compile Include="__Interfaces\IFrameworkObject.cs" />
+    <Compile Include="__Interfaces\Awaitable\IAwaitable.cs" />
+    <Compile Include="__Interfaces\Awaitable\IAwaiter.cs" />
+    <Compile Include="__Interfaces\Awaitable\ICriticalAwaiter.cs" />
+    <Compile Include="__Interfaces\IDescription.cs" />
+    <Compile Include="__Interfaces\IModel.cs" />
+    <Compile Include="__Interfaces\IValueBox.cs" />
+    <Compile Include="__Interfaces\IVersion.cs" />
     <Compile Include="Attributes\RequireAttribute.cs" />
     <Compile Include="Attributes\ScriptVersionAttribute.cs" />
     <Compile Include="Attributes\VersionUpdateAttribute.cs" />
@@ -71,10 +75,10 @@
     <Compile Include="Environment\Modules\Recorder\BaseState.cs" />
     <Compile Include="Environment\Modules\Recorder\CommandGroupState.cs" />
     <Compile Include="Environment\Modules\Recorder\CommandState.cs" />
-    <Compile Include="Environment\Modules\Recorder\ICommand.cs" />
+    <Compile Include="__Interfaces\ICommand.cs" />
     <Compile Include="Environment\Modules\Recorder\IOperationRecorderModule.cs" />
     <Compile Include="Environment\Modules\Recorder\OperationRecorderModule.cs" />
-    <Compile Include="Environment\Recylable\IRecyclable.cs" />
+    <Compile Include="__Interfaces\IRecyclable.cs" />
     <Compile Include="Environment\Recylable\RecyclableObjectCollection.cs" />
     <Compile Include="Extension\FieldExtend\ExtensibleObject.cs" />
     <Compile Include="Extension\FieldExtend\ObjectEX.cs" />
@@ -130,7 +134,6 @@
     <Compile Include="Environment\Modules\Message\MessageUrgency.cs" />
     <Compile Include="Environment\Modules\Message\MessageUrgencyType.cs" />
     <Compile Include="Environment\Modules\MVVM\EmptyDataModel.cs" />
-    <Compile Include="Environment\Modules\MVVM\IDataModel.cs" />
     <Compile Include="Environment\Modules\MVVM\IMVVMModule.cs" />
     <Compile Include="Environment\Modules\MVVM\MVVMGroup.cs" />
     <Compile Include="Environment\Modules\MVVM\MVVMModule.cs" />
@@ -233,7 +236,6 @@
     <Compile Include="Queue\SimplePriorityQueue.cs" />
     <Compile Include="Queue\StablePriorityQueue.cs" />
     <Compile Include="Queue\StablePriorityQueueNode.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Resources\Group\FileResourceGroup.cs" />
     <Compile Include="Resources\Group\HttpResourceGroup.cs" />
     <Compile Include="Resources\Resource.cs" />
@@ -248,12 +250,12 @@
     <Compile Include="Resources\Loader\File\FileBytesLoader.cs" />
     <Compile Include="Resources\Loader\File\FileTextLoader.cs" />
     <Compile Include="Environment\Modules\UpdateFrameworkModule.cs" />
-    <Compile Include="Observe\BindableObject.cs" />
-    <Compile Include="Observe\BindableObjectHandler.cs" />
-    <Compile Include="Observe\ObservableObject.cs" />
+    <Compile Include="Observable\BindableObject.cs" />
+    <Compile Include="Observable\BindableObjectHandler.cs" />
+    <Compile Include="Observable\ObservableObject.cs" />
     <Compile Include="Environment\OnEnvironmentInitAttribute.cs" />
-    <Compile Include="Observe\ObservableObjectHandler.cs" />
-    <Compile Include="Observe\ObservableValue.cs" />
+    <Compile Include="Observable\ObservableObjectHandler.cs" />
+    <Compile Include="Observable\ObservableValue.cs" />
     <Compile Include="Pool\BaseTypePool.cs" />
     <Compile Include="Pool\CapicityPool.cs" />
     <Compile Include="Environment\Recylable\RecyclableObject.cs" />
@@ -266,7 +268,7 @@
     <Compile Include="Extension\IEnumerableExtension.cs" />
     <Compile Include="Extension\IntExtension.cs" />
     <Compile Include="Extension\IO.cs" />
-    <Compile Include="IEventArgs.cs" />
+    <Compile Include="__Interfaces\IEventArgs.cs" />
     <Compile Include="LockWait.cs" />
     <Compile Include="Log\CSLogger.cs" />
     <Compile Include="Log\ILoger.cs" />

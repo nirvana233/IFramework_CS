@@ -26,6 +26,7 @@ namespace IFramework
             Version = "";
             AppDomain.CurrentDomain.GetAssemblies()
                              .SelectMany(item => item.GetTypes())
+                             .ToList()
                              .ForEach((type) =>
                              {
                                  if (!type.FullName.Contains(FrameworkName)) return;

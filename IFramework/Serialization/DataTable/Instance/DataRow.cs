@@ -75,14 +75,17 @@ namespace IFramework.Serialization.DataTable
         public virtual string WriteLine(List<DataColumn> cols)
         {
             string result = string.Empty;
-            cols.ForEach((index, c) => {
+            for (int i = 0; i < cols.Count; i++)
+            {
+                var index = i;
+                var c = cols[index];
                 string val = c.strValue;
                 val = val.Replace("\"", "\"\"");
                 if (val.Contains(",") || val.Contains("\"") || val.Contains('\r') || val.Contains('\n'))
                     val = string.Format("\"{0}\"", val);
                 if (index == cols.Count - 1) result = result.Append(val).Append(",");
                 else result = result.Append(val).Append(",");
-            });
+            }
             return result;
         }
         /// <summary>
@@ -93,13 +96,16 @@ namespace IFramework.Serialization.DataTable
         public virtual string WriteHeadLine(List<string> headNames)
         {
             string result = string.Empty;
-            headNames.ForEach((index, val) => {
+            for (int i = 0; i < headNames.Count; i++)
+            {
+                var index = i;
+                var val = headNames[index];
                 val = val.Replace("\"", "\"\"");
                 if (val.Contains(",") || val.Contains("\"") || val.Contains('\r') || val.Contains('\n'))
                     val = string.Format("\"{0}\"", val);
                 if (index == headNames.Count - 1) result = result.Append(val).Append(",");
                 else result = result.Append(val).Append(",");
-            });
+            }
             return result;
         }
     }

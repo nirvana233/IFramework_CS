@@ -12,7 +12,7 @@ namespace IFramework
     /// <summary>
     /// 框架运行环境
     /// </summary>
-    [ScriptVersionAttribute(23)]
+    [ScriptVersionAttribute(29)]
     [VersionUpdateAttribute(21, "替换可回收对象池子类型")]
     [VersionUpdateAttribute(22, "调整释放时候的成员顺序")]
     [VersionUpdateAttribute(23, "增加数据绑定器")]
@@ -112,12 +112,14 @@ namespace IFramework
             _modules = new FrameworkModules(this);
             cycleCollection = new RecyclableObjectCollection();
             if (types != null)
-                types.ForEach((type) =>
+            {
+                foreach (var type in types)
                 {
                     TypeAttributes ta = type.Attributes;
                     if ((ta & TypeAttributes.Abstract) != 0 && ((ta & TypeAttributes.Sealed) != 0))
                         RuntimeHelpers.RunClassConstructor(type.TypeHandle);
-                });
+                }
+            }
             deltaTime = TimeSpan.Zero;
             _inited = true;
             sw_delta = new Stopwatch();
@@ -181,20 +183,12 @@ namespace IFramework
         }
 
         /// <summary>
-        /// 在子线程跑方法
-        /// </summary>
-        /// <param name="action"></param>
-        public void RunsOnSubThread(Action action)
-        {
-            _loom.RunOnSubThread(action);
-        }
-        /// <summary>
         /// 等待 环境的 update，即等到该环境的线程来临
         /// </summary>
         /// <param name="action"></param>
         public void WaitEnvironmentFrame(Action action)
         {
-            _loom.RunOnMainThread(action);
+            _loom.RunDelay(action);
         }
 
         /// <summary>

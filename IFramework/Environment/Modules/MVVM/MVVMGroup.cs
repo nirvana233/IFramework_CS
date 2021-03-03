@@ -30,7 +30,7 @@ namespace IFramework.Modules.MVVM
 
         private ViewModel _viewModel;
         private View _view;
-        private IDataModel _model;
+        private IModel _model;
         private string _name;
         /// <summary>
         /// 组名
@@ -43,7 +43,7 @@ namespace IFramework.Modules.MVVM
         /// <summary>
         /// 数据
         /// </summary>
-        public IDataModel model
+        public IModel model
         {
             get { return _model; }
             set { _model = value;
@@ -85,7 +85,7 @@ namespace IFramework.Modules.MVVM
         /// <param name="view"></param>
         /// <param name="viewModel"></param>
         /// <param name="model"></param>
-        public MVVMGroup(string name, View view, ViewModel viewModel, IDataModel model)
+        public MVVMGroup(string name, View view, ViewModel viewModel, IModel model)
         {
             this._name = name;
             this._view = view;

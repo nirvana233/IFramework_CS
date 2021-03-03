@@ -28,6 +28,7 @@ namespace Example
         {
             Listenner listenner = new Listenner();
             Log.L("不要太频繁按键，因为 1秒 检测一次按键");
+            //Framework.env0.modules.Message.fitSubType = false;
             Framework.env0.modules.Message.Publish<Pub>(100, null);
         }
 

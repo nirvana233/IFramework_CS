@@ -65,7 +65,7 @@ namespace IFramework.Resource
                 }
                 else
                 {
-                    Tresource.Tvalue = _sb.ToString();
+                    Tresource.value = _sb.ToString();
                     _fs.Dispose();
                     isdone = true;
                 }

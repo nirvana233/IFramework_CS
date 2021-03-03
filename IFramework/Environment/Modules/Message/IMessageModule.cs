@@ -8,6 +8,10 @@ namespace IFramework.Modules.Message
     public interface IMessageModule
     {
         /// <summary>
+        /// 适配子类型
+        /// </summary>
+        bool fitSubType { get; set; }
+        /// <summary>
         /// 每一帧处理消息上限
         /// </summary>
         int processesPerFrame { get; set; }

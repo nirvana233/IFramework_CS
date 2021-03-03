@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace IFramework.Modules
 {
@@ -10,114 +8,69 @@ namespace IFramework.Modules
     /// </summary>
     class LoomModule : UpdateFrameworkModule
     {
-        private struct DelayedTask
+        private class DelayedTask
         {
-            public float time;
             public Action action;
-            public DelayedTask(float time, Action action)
+            public DelayedTask Config(Action action)
             {
-                this.time = time;
                 this.action = action;
+                return this;
             }
 
         }
-        private int MaxThreadCount = 8;
-        private int ThreadCount;
-        private Semaphore _semaphore;
-        private List<DelayedTask> _tasks;
-        private List<DelayedTask> _delayedTasks;
-        private List<DelayedTask> _NoDelayTasks;
-
-
-        private double GetUtcFrame(DateTime time)
+        private class Pool : ObjectPool<DelayedTask>
         {
-            DateTime timeZerro = new DateTime(1970, 1, 1);
-            return (time - timeZerro).TotalMilliseconds;
+            protected override DelayedTask CreatNew(IEventArgs arg)
+            {
+                return new DelayedTask();
+            }
         }
+        private Queue<DelayedTask> _tasks;
+        private Queue<DelayedTask> _delay;
+        private Pool _pool;
         /// <summary>
         /// 在主线程跑一个方法
         /// </summary>
         /// <param name="action"></param>
-        /// <param name="time">延时</param>
-        public void RunOnMainThread(Action action, float time = 0.0f)
+        public void RunDelay(Action action)
         {
-            if (time != 0)
+            lock (_delay)
             {
-                lock (_delayedTasks)
-                {
-                    _delayedTasks.Add(new DelayedTask((float)GetUtcFrame(DateTime.Now) + time, action));
-                }
-            }
-            else
-            {
-                lock (_NoDelayTasks)
-                {
-                    _NoDelayTasks.Add(new DelayedTask(0, action));
-                }
+                _delay.Enqueue(_pool.Get().Config(action));
             }
         }
-        /// <summary>
-        /// 在子线程跑一个方法
-        /// </summary>
-        /// <param name="action"></param>
-        public void RunOnSubThread(Action action)
-        {
-            _semaphore.WaitOne();
-            Interlocked.Increment(ref ThreadCount);
-            ThreadPool.QueueUserWorkItem((ar) => {
 
-                try
-                {
-                    action();
-                }
-                catch { }
-                finally
-                {
-                    Interlocked.Decrement(ref ThreadCount);
-                }
-            });
-        }
-
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         public override int priority { get { return 10; } }
 
         protected override void OnUpdate()
         {
-            lock (_NoDelayTasks)
+            int count = 0;
+            lock (_delay)
             {
-                while (_NoDelayTasks.Count > 0)
+                count = _delay.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    _NoDelayTasks.Dequeue().action();
+                    _tasks.Enqueue(_delay.Dequeue());
                 }
             }
-            lock (_tasks)
+            for (int i = 0; i < count; i++)
             {
-                lock (_delayedTasks)
-                {
-                    var temp = _delayedTasks.Where(d => d.time <= (float)GetUtcFrame(DateTime.Now)).ToList();
-                    _tasks.AddRange(temp);
-                    temp.ForEach((task) => { _delayedTasks.Remove(task); });
-                }
-                while (_tasks.Count != 0)
-                {
-                    _tasks.Dequeue().action();
-                }
+                var _task = _tasks.Dequeue();
+                _task.action();
+                _pool.Set(_task);
             }
         }
         protected override void OnDispose()
         {
-            _NoDelayTasks.Clear();
             _tasks.Clear();
-            _delayedTasks.Clear();
-            _semaphore.Close();
+            _delay.Clear();
+            _pool.Dispose();
         }
         protected override void Awake()
         {
-            _semaphore = new Semaphore(MaxThreadCount, MaxThreadCount);
-            _tasks = new List<DelayedTask>();
-            _delayedTasks = new List<DelayedTask>();
-            _NoDelayTasks = new List<DelayedTask>();
+            _tasks = new Queue<DelayedTask>();
+            _delay = new Queue<DelayedTask>();
+            _pool = new Pool();
         }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
     }
 }

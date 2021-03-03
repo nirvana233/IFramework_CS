@@ -20,7 +20,7 @@ namespace IFramework.Resource
         {
             try
             {
-                Tresource.Tvalue = File.ReadAllText(path,encoding);
+                Tresource.value = File.ReadAllText(path,encoding);
             }
             catch (Exception e)
             {

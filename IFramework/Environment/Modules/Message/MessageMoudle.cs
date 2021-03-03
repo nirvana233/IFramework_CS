@@ -6,125 +6,86 @@ namespace IFramework.Modules.Message
     /// <summary>
     /// 消息模块
     /// </summary>
-    [ScriptVersionAttribute(120)]
-    [VersionUpdateAttribute(120,"加入消息优先级以及进程等待")]
+    [ScriptVersionAttribute(140)]
+    [VersionUpdateAttribute(120, "加入消息优先级以及进程等待")]
+    [VersionUpdateAttribute(140, "增加子类型匹配")]
     public class MessageModule : UpdateFrameworkModule, IMessageModule
     {
         private interface IMessageEntity : IDisposable
         {
             Type listenType { get; }
-            bool Publish(Type publishType, int code, IEventArgs args, params object[] param);
+            void Publish(Type publishType, int code, IEventArgs args, params object[] param);
         }
         private class MessageEntity : IMessageEntity
         {
             private readonly Type _listenType;
             public Type listenType { get { return _listenType; } }
-            private List<IMessageListener> _listenners;
-            private LockParam _lock = new LockParam();
+            private List<IMessageListener> _listeners;
             public MessageEntity(Type listenType)
             {
-                using (new LockWait(ref _lock))
-                {
-                    this._listenType = listenType;
-                    _listenners = new List<IMessageListener>();
-                }
+                this._listenType = listenType;
+                _listeners = new List<IMessageListener>();
             }
             public bool Subscribe(IMessageListener listener)
             {
-                using (new LockWait(ref _lock))
-                {
-                    if (_listenners.Contains(listener)) return false;
-                    else _listenners.Add(listener); return true;
-                }
+                if (_listeners.Contains(listener)) return false;
+                else _listeners.Add(listener); return true;
             }
             public bool UnSubscribe(IMessageListener listener)
             {
-                using (new LockWait(ref _lock))
-                {
-                    if (!_listenners.Contains(listener)) return false;
-                    else _listenners.Remove(listener); return true;
-                }
+                if (!_listeners.Contains(listener)) return false;
+                else _listeners.Remove(listener); return true;
             }
-            public bool Publish(Type publishType, int code, IEventArgs args, params object[] param)
+            public void Publish(Type publishType, int code, IEventArgs args, params object[] param)
             {
-                using (new LockWait(ref _lock))
+                if (_listeners.Count <= 0) return;
+                for (int i = _listeners.Count-1; i >= 0; i--)
                 {
-                    if (_listenners.Count <= 0)
-                        return false;
-                    if (!publishType.IsSubClassOfInterface(_listenType) &&
-                        !publishType.IsSubclassOf(_listenType) &&
-                        publishType != _listenType) return false;
-
-                    _listenners.ForEach((index, listener) => {
-                        if (listener != null) listener.Listen(publishType, code, args, param);
-                        else _listenners.Remove(listener);
-                    });
-                    return true;
+                    var listener = _listeners[i];
+                    if (listener != null) listener.Listen(publishType, code, args, param);
+                    else _listeners.Remove(listener);
                 }
             }
             public void Dispose()
             {
-                using (new LockWait(ref _lock))
-                {
-                    _listenners.Clear();
-                    _listenners = null;
-                }
+                _listeners.Clear();
+                _listeners = null;
             }
         }
         private class DelgateMessageEntity : IMessageEntity
         {
             private readonly Type _listenType;
             public Type listenType { get { return _listenType; } }
-            private List<MessageListener> _listenners;
-            private LockParam _lock = new LockParam();
+            private List<MessageListener> _listeners;
             public DelgateMessageEntity(Type listenType)
             {
-                using (new LockWait(ref _lock))
-                {
-                    this._listenType = listenType;
-                    _listenners = new List<MessageListener>();
-                }
+                this._listenType = listenType;
+                _listeners = new List<MessageListener>();
             }
             public bool Subscribe(MessageListener listener)
             {
-                using (new LockWait(ref _lock))
-                {
-                    if (_listenners.Contains(listener)) return false;
-                    else _listenners.Add(listener); return true;
-                }
+                if (_listeners.Contains(listener)) return false;
+                else _listeners.Add(listener); return true;
             }
             public bool UnSubscribe(MessageListener listener)
             {
-                using (new LockWait(ref _lock))
-                {
-                    if (!_listenners.Contains(listener)) return false;
-                    else _listenners.Remove(listener); return true;
-                }
+                if (!_listeners.Contains(listener)) return false;
+                else _listeners.Remove(listener); return true;
             }
-            public bool Publish(Type publishType, int code, IEventArgs args, params object[] param)
+            public void Publish(Type publishType, int code, IEventArgs args, params object[] param)
             {
-                using (new LockWait(ref _lock))
+                if (_listeners.Count <= 0) return;
+                for (int i = _listeners.Count - 1; i >= 0; i--)
                 {
-                    if (_listenners.Count <= 0)
-                        return false;
-                    if (!publishType.IsSubClassOfInterface(_listenType) &&
-                        !publishType.IsSubclassOf(_listenType) &&
-                        publishType != _listenType) return false;
-
-                    _listenners.ForEach((index, listener) => {
-                        if (listener != null) listener(publishType, code, args, param);
-                        else _listenners.Remove(listener);
-                    });
-                    return true;
+                    var listener = _listeners[i];
+                    if (listener != null) listener.Invoke(publishType, code, args, param);
+                    else _listeners.Remove(listener);
                 }
             }
             public void Dispose()
             {
-                using (new LockWait(ref _lock))
-                {
-                    _listenners.Clear();
-                    _listenners = null;
-                }
+                _listeners.Clear();
+                _listeners = null;
             }
         }
 
@@ -146,13 +107,22 @@ namespace IFramework.Modules.Message
 
 
         private List<MessageEntity> _entitys;
-        private List<DelgateMessageEntity> _entitydels;
+        private List<DelgateMessageEntity> _delEntitys;
+        private Dictionary<Type, int> _entityMap;
+        private Dictionary<Type, int> _delEntityMap;
+
 
         private StablePriorityQueue<Message> _queue;
         private MessagePool _pool;
         private List<Message> _list;
+        private LockParam _lock_message = new LockParam();
+        private LockParam _lock_entity = new LockParam();
+        private LockParam _lock_entitydel = new LockParam();
 
-        private int _processesPerFrame=20;
+        private Queue<Message> _tmp = new Queue<Message>();
+
+        private int _processesPerFrame = 20;
+        private bool _fitSubType=true;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         public override int priority { get { return 20; } }
@@ -161,32 +131,76 @@ namespace IFramework.Modules.Message
             _queue.Clear();
             _pool.Clear();
             _list.Clear();
-            foreach (var item in _entitys)
-                item.Dispose();
+            for (int i = 0; i < _entitys.Count; i++) _entitys[i].Dispose();
             _entitys.Clear();
-            foreach (var item in _entitydels)
-                item.Dispose();
-            _entitydels.Clear();
+            _entityMap.Clear();
+            for (int i = 0; i < _delEntitys.Count; i++) _delEntitys[i].Dispose();
+            _delEntitys.Clear();
+            _delEntityMap.Clear();
             _entitys = null;
-            _entitydels = null;
+            _delEntitys = null;
         }
         protected override void Awake()
         {
             _entitys = new List<MessageEntity>();
-            _entitydels = new List<DelgateMessageEntity>();
+            _delEntitys = new List<DelgateMessageEntity>();
             _queue = new StablePriorityQueue<Message>();
             _pool = new MessagePool();
             _list = new List<Message>();
+            _entityMap = new Dictionary<Type, int>();
+            _delEntityMap = new Dictionary<Type, int>();
         }
 
-        private LockParam _lock = new LockParam();
-        private Queue<Message> _tmp = new Queue<Message>();
+        private void EntityPublish(Message message)
+        {
+            var type = message.publishType;
+            if (fitSubType)
+            {
+                foreach (var _listenType in _entityMap.Keys)
+                {
+                    if (type.IsExtendInterface(_listenType) || type.IsSubclassOf(_listenType))
+                    {
+                        _entitys[_entityMap[_listenType]].Publish(type, message.code, message.args, message.param);
+                    }
+                }
+            }
+            else
+            {
+                if (_entityMap.ContainsKey(type))
+                {
+                    _entitys[_entityMap[type]].Publish(type, message.code, message.args, message.param);
+                }
+            }
+           
+        }
+        private void DelEntityPublish(Message message)
+        {
+            var type = message.publishType;
+            if (fitSubType)
+            {
+                foreach (var _listenType in _delEntityMap.Keys)
+                {
+                    if (type.IsExtendInterface(_listenType) || type.IsSubclassOf(_listenType))
+                    {
+                        _delEntitys[_delEntityMap[_listenType]].Publish(type, message.code, message.args, message.param);
+                    }
+                }
+            }
+            else
+            {
+                if (_delEntityMap.ContainsKey(type))
+                {
+                    _delEntitys[_delEntityMap[type]].Publish(type, message.code, message.args, message.param);
+                }
+            }
 
+        }
         protected override void OnUpdate()
         {
-            using (new LockWait(ref _lock))
+            int count = 0;
+            using (new LockWait(ref _lock_message))
             {
-                int count = Math.Min(processesPerFrame, _queue.count);
+                count = Math.Min(processesPerFrame, _queue.count);
                 if (count == 0) return;
                 for (int i = 0; i < count; i++)
                 {
@@ -196,32 +210,35 @@ namespace IFramework.Modules.Message
                 }
                 if (_list.Count > 0)
                 {
-                    for (int i = 0; i < _list.Count; i++)
+                    for (int i = _list.Count - 1; i >= 0; i--)
                     {
                         _queue.UpdatePriority(_list[i], _list[i].priority - 1);
                     }
                 }
             }
-
-            while (_tmp.Count > 0)
+            for (int i = 0; i < count; i++)
             {
                 var message = _tmp.Dequeue();
+                using (new LockWait(ref _lock_entity))
+                {
+                    EntityPublish(message);
+                }
+                using (new LockWait(ref _lock_entitydel))
+                {
+                    DelEntityPublish(message);
+                }
                 _pool.Set(message);
-                _entitys.ForEach((index, en) =>
-                {
-                    en.Publish(message.publishType, message.code, message.args, message.param);
-                });
-                _entitydels.ForEach((index, en) =>
-                {
-                    en.Publish(message.publishType, message.code, message.args, message.param);
-                });
             }
         }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         /// <summary>
+        /// 适配子类型
+        /// </summary>
+        public bool fitSubType { get { return _fitSubType; } set { _fitSubType = value; } }
+        /// <summary>
         /// 每帧处理消息个数
         /// </summary>
-        public int processesPerFrame { get { return _processesPerFrame; }set { _processesPerFrame = value; } }
+        public int processesPerFrame { get { return _processesPerFrame; } set { _processesPerFrame = value; } }
         /// <summary>
         /// 注册监听
         /// </summary>
@@ -230,14 +247,23 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool Subscribe(Type publishType, IMessageListener listener)
         {
-            MessageEntity en = _entitys.Find((e) => { return e.listenType == publishType; });
-            if (en == null)
+            using (new LockWait(ref _lock_entity))
             {
-                en = new MessageEntity(publishType);
-                _entitys.Add(en);
+                int index;
+                MessageEntity en;
+                if (!_entityMap.TryGetValue(publishType, out index))
+                {
+                    index = _entitys.Count;
+                    en = new MessageEntity(publishType);
+                    _entityMap.Add(publishType, index);
+                    _entitys.Add(en);
+                }
+                else
+                {
+                    en = _entitys[_entityMap[publishType]];
+                }
+                return en.Subscribe(listener);
             }
-
-            return en.Subscribe(listener);
         }
         /// <summary>
         /// 注册监听
@@ -257,13 +283,12 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool UnSubscribe(Type publishType, IMessageListener listener)
         {
-            MessageEntity en = _entitys.Find((e) => { return e.listenType == publishType; });
-            if (en == null)
+            using (new LockWait(ref _lock_entity))
             {
-                return false;
+                int index;
+                if (!_entityMap.TryGetValue(publishType, out index)) return false;
+                return _entitys[_entityMap[publishType]].UnSubscribe(listener);
             }
-            return en.UnSubscribe(listener);
-
         }
         /// <summary>
         /// 解除注册监听
@@ -275,6 +300,8 @@ namespace IFramework.Modules.Message
             return UnSubscribe(typeof(T), listener);
         }
 
+
+
         /// <summary>
         /// 注册监听
         /// </summary>
@@ -283,14 +310,23 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool Subscribe(Type publishType, MessageListener listener)
         {
-            DelgateMessageEntity en = _entitydels.Find((e) => { return e.listenType == publishType; });
-            if (en == null)
+            using (new LockWait(ref _lock_entitydel))
             {
-                en = new DelgateMessageEntity(publishType);
-                _entitydels.Add(en);
+                int index;
+                DelgateMessageEntity en;
+                if (!_delEntityMap.TryGetValue(publishType, out index))
+                {
+                    index = _delEntitys.Count;
+                    en = new DelgateMessageEntity(publishType);
+                    _delEntityMap.Add(publishType, index);
+                    _delEntitys.Add(en);
+                }
+                else
+                {
+                    en = _delEntitys[_delEntityMap[publishType]];
+                }
+                return en.Subscribe(listener);
             }
-
-            return en.Subscribe(listener);
         }
         /// <summary>
         /// 注册监听
@@ -310,12 +346,19 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public bool UnSubscribe(Type publishType, MessageListener listener)
         {
-            DelgateMessageEntity en = _entitydels.Find((e) => { return e.listenType == publishType; });
-            if (en == null)
+            using (new LockWait(ref _lock_entitydel))
             {
-                return false;
+                int index;
+                if (!_delEntityMap.TryGetValue(publishType, out index))
+                {
+                    return false;
+                }
+                else
+                {
+                    return _delEntitys[_delEntityMap[publishType]].UnSubscribe(listener);
+                }
             }
-            return en.UnSubscribe(listener);
+
         }
         /// <summary>
         /// 解除注册监听
@@ -409,14 +452,14 @@ namespace IFramework.Modules.Message
         /// <param name="priority">越大处理越晚</param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public void PublishByNumber(Type publishType, int code, IEventArgs args, int priority= MessageUrgency.Common, params object[] param)
+        public void PublishByNumber(Type publishType, int code, IEventArgs args, int priority = MessageUrgency.Common, params object[] param)
         {
             var message = _pool.Get();
             message.publishType = publishType;
             message.code = code;
             message.args = args;
             message.param = param;
-            using (new LockWait(ref _lock))
+            using (new LockWait(ref _lock_message))
             {
                 if (_queue.count == _queue.capcity)
                 {

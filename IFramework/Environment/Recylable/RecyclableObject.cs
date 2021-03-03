@@ -8,7 +8,7 @@ namespace IFramework
     /// </summary>
     [ScriptVersionAttribute(20)]
     [VersionUpdateAttribute(20,"增加未回收实例的控制")]
-    public abstract class RecyclableObject : FrameworkObject, IRecyclable
+    public abstract class RecyclableObject : FrameworkObject, IRecyclable,IBelongToEnvironment
     {
         /// <summary>
         /// 分配一个实例

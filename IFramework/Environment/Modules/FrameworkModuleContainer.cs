@@ -6,7 +6,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块容器
     /// </summary>
-    internal class FrameworkModuleContainer : FrameworkObject, IFrameworkModuleContainer
+    internal class FrameworkModuleContainer : FrameworkObject, IFrameworkModuleContainer,IBelongToEnvironment
     {
         private string _chunck;
         private bool _binded;
@@ -156,19 +156,20 @@ namespace IFramework.Modules
         protected override void OnDispose()
         {
             UnBindEnv(false);
-            //for (int i = update_list.Count - 1; i >= 0; i--)
-            //{
-            //    var m = update_list[i];
-            //    m.Dispose();
-            //}
             List<FrameworkModule> list = new List<FrameworkModule>();
             foreach (var item in moudle_dic.Values)
             {
-                item.ForEach((index, m) => { list.Add(m); });
+                for (int i = 0; i < item.Count; i++)
+                {
+                    list.Add(item[i]);
+                }
             }
 
             list.Sort((x, y) => { return y.priority.CompareTo(x.priority); });
-            list.ForEach((index, m) => { m.Dispose(); });
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i].Dispose();
+            }
             update_list.Clear();
             moudle_dic.Clear();
             update_list = null;

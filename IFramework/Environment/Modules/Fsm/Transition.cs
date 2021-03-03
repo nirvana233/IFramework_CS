@@ -57,10 +57,13 @@ namespace IFramework.Modules.Fsm
         {
             if (this.conditions == null) return true;
             bool finalReslt = true;
-            conditions.GetInvocationList().ForEach((del) => {
-                var result = (Func<bool>)del;
+            var array = conditions.GetInvocationList();
+            for (int i = 0; i < array.Length; i++)
+            {
+                var result = (Func<bool>)array[i];
                 finalReslt = finalReslt && result();
-            });
+            }
+
             return finalReslt;
         }
         internal bool IsMetCondition { get { return RunConditions(); } }

@@ -3,7 +3,7 @@
     /// <summary>
     /// 节点
     /// </summary>
-    public interface IActionNode:IRecyclable
+    public interface IActionNode:IRecyclable,IBelongToEnvironment
     {
         /// <summary>
         /// 是否完成
@@ -13,7 +13,5 @@
         /// 自动回收
         /// </summary>
         bool autoRecyle { get; }
-
-
     }
 }

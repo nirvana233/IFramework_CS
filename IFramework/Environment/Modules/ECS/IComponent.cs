@@ -3,5 +3,5 @@
     /// <summary>
     /// 组件
     /// </summary>
-    public interface IComponent { }
+    public interface IComponent:IModel { }
 }

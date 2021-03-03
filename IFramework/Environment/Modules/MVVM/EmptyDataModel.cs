@@ -3,5 +3,5 @@
     /// <summary>
     /// 空数据模型
     /// </summary>
-    public class EmptyDataModel : IDataModel { }
+    public class EmptyDataModel : IModel { }
 }

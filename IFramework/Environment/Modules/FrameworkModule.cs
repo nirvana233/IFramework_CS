@@ -9,6 +9,10 @@ namespace IFramework.Modules
     public abstract class FrameworkModule : FrameworkObject
     {
         /// <summary>
+        /// 阻止 New
+        /// </summary>
+        protected FrameworkModule() { }
+        /// <summary>
         /// 创建实例
         /// </summary>
         /// <param name="type">模块类型</param>

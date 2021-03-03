@@ -48,13 +48,13 @@
     /// 泛型资源
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Resource<T> : Resource
+    public class Resource<T> : Resource,IValueBox<T>
     {
         private T _value;
         /// <summary>
         /// 资源值
         /// </summary>
-        public T Tvalue { get { return (T)_value; } set { _value = value; } }
+        public T value { get { return (T)_value; } set { _value = value; } }
     }
 
 }

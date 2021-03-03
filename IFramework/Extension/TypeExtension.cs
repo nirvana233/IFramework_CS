@@ -55,9 +55,9 @@ namespace IFramework
         /// <param name="self"></param>
         /// <param name="Interface"></param>
         /// <returns></returns>
-        public static bool IsSubClassOfInterface(this Type self, Type Interface)
+        public static bool IsExtendInterface(this Type self, Type Interface)
         {
-            return !self.IsInterface && self.GetInterfaces().Contains(Interface);
+            return self.GetInterfaces().Contains(Interface);
         }
         
         /// <summary>

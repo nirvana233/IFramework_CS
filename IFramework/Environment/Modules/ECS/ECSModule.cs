@@ -272,23 +272,21 @@ namespace IFramework.Modules.ECS
                         if (last == empty) return;
 
                         _components[empty] = _components[last];
-
-                        _entitys.Values.ForEach((c) =>
+                        foreach (var c in _entitys.Values)
                         {
                             c.FreshIndex(last, empty);
-                        });
+                        }
                     }
                 }
                 else
                 {
                     int last = --_count;
                     _components[empty] = _components[last];
-
-                    _entitys.Values.ForEach((c) =>
+                    foreach (var c in _entitys.Values)
                     {
                         c.FreshIndex(last, empty);
-                    });
-
+                    }
+                   
                 }
 
                
@@ -334,12 +332,12 @@ namespace IFramework.Modules.ECS
                 using (new LockWait(ref _lock))
                 {
                     var em = _entitys.Keys.ToList();
-                    
-                    em.ForEach((i, e) =>
+                    for (int i = 0; i < em.Count; i++)
                     {
+                        var e = em[i];
                         e.mou = null;
                         e.Destory();
-                    });
+                    }
                     _componentUseCount.Clear();
                     _entitys.Clear();
                     _components = null;
@@ -376,12 +374,12 @@ namespace IFramework.Modules.ECS
                     {
                         entity.mou = null;
                         var indexs = container.componetIndexs;
-                        indexs.ForEach((i, index) => {
-                            FreeComponentIndex(index);
+                        for (int i = 0; i < indexs.Count; i++)
+                        {
+                            FreeComponentIndex(indexs[i]);
 
-
-                        });
-
+                        }
+                        
                         container.Dispose();
                         _entitys.Remove(entity);
                     }
@@ -526,7 +524,10 @@ namespace IFramework.Modules.ECS
                 using (new LockWait(ref _lock))
                 {
                     _dispose = true;
-                    _systems.ForEach((index,sys) => { sys.OnModuleDispose(); });
+                    for (int i = 0; i < _systems.Count; i++)
+                    {
+                        _systems[i].OnModuleDispose();
+                    }
                     _systems.Clear();
                     _systems = null;
                 }

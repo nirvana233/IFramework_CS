@@ -250,7 +250,7 @@ namespace IFramework.Injection
         public virtual void SubscribeInstance(Type baseType, object instance, string name = "empty", bool inject = true)
         {
             Type type = instance.GetType();
-            if (type != baseType && !type.IsSubClassOfInterface(baseType) && !type.IsSubclassOf(baseType))
+            if (type != baseType && !type.IsExtendInterface(baseType) && !type.IsSubclassOf(baseType))
             {
                 throw new Exception(string.Format("{0} is Not {1}", type, baseType));
             }

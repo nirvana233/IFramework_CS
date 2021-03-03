@@ -38,7 +38,7 @@ namespace IFramework.Resource
             try
             {
                 _fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, _blockSize, true);
-                Tresource.Tvalue = new byte[_fs.Length];
+                Tresource.value = new byte[_fs.Length];
                 _buffer = new byte[_blockSize];
                 _fs.BeginRead(_buffer, 0, _buffer.Length, EndRead, _fs);
             }
@@ -55,7 +55,7 @@ namespace IFramework.Resource
                 int bytesRead = _fs.EndRead(ar);
                 if (bytesRead > 0)
                 {
-                    Array.Copy(_buffer, 0, Tresource.Tvalue, _fs.Position, _blockSize);
+                    Array.Copy(_buffer, 0, Tresource.value, _fs.Position, _blockSize);
                     _fs.BeginRead(_buffer, 0, _buffer.Length, EndRead, null);
                 }
                 else

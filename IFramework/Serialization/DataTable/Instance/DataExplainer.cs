@@ -53,15 +53,16 @@ namespace IFramework.Serialization.DataTable
         public T CreatInstance<T>(List<DataColumn> cols, Dictionary<MemberInfo, string> membersDic)
         {
             T t = CreatInstance<T>();
-            membersDic.ForEach((pair) => {
+            foreach (var pair in membersDic)
+            {
                 MemberInfo m = pair.Key;
                 string csvName = pair.Value;
                 DataColumn column;
-                if (m.IsDefined(typeof(DataColumnIndexAttribute),false))
+                if (m.IsDefined(typeof(DataColumnIndexAttribute), false))
                 {
                     DataColumnIndexAttribute attr = m.GetCustomAttributes(typeof(DataColumnIndexAttribute), false)[0] as DataColumnIndexAttribute;
                     if (attr.index >= cols.Count)
-                        throw new Exception(string.Format("index {0} is too Large Then colums  {1}",attr.index,cols.Count));
+                        throw new Exception(string.Format("index {0} is too Large Then colums  {1}", attr.index, cols.Count));
                     column = cols[attr.index];
                 }
                 else
@@ -87,7 +88,7 @@ namespace IFramework.Serialization.DataTable
                     else
                         throw new Exception(string.Format("Convert Err Type {0} Name {1} Value {2}", typeof(T), csvName, column.strValue));
                 }
-            });
+            }
             return t;
         }
         /// <summary>
@@ -100,7 +101,7 @@ namespace IFramework.Serialization.DataTable
         public List<DataColumn> GetColumns<T>(T t, Dictionary<MemberInfo, string> membersDic)
         {
             List<DataColumn> columns = new List<DataColumn>();
-            membersDic.ForEach((member) =>
+            foreach (var member in membersDic)
             {
                 string val = string.Empty;
                 MemberInfo m = member.Key;
@@ -118,10 +119,10 @@ namespace IFramework.Serialization.DataTable
                 {
                     headLineName = member.Value,
                     //StrValue = val
-                    strValue = FitterCsv_GetColum( val)
+                    strValue = FitterCsv_GetColum(val)
 
                 });
-            });
+            }
             return columns;
         }
 

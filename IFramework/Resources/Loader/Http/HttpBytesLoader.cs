@@ -21,8 +21,8 @@ namespace IFramework.Resource
                 HttpWebRequest _request = (HttpWebRequest)WebRequest.Create(path);
                 HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
                 Stream _stream = _response.GetResponseStream();
-                Tresource.Tvalue = new byte[_stream.Length];
-                while (_stream.Read(Tresource.Tvalue, (int)_stream.Position, _blockSize) > 0)
+                Tresource.value = new byte[_stream.Length];
+                while (_stream.Read(Tresource.value, (int)_stream.Position, _blockSize) > 0)
                 {
                     if (!_stream.CanRead) break;
                     progress = _stream.Position / _stream.Length;

@@ -12,14 +12,18 @@ using System.Text;
 
 namespace IFramework.Utility
 {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
-    /// 校验相关的实用函数。
+    /// <summary>
+    /// 校验相关的实用函数
+    /// </summary>
     public class Verifier
     {
         private static readonly byte[] Zero = new byte[] { 0, 0, 0, 0 };
 
-        /// 计算二进制流的 CRC32。
+        /// <summary>
+        ///  计算二进制流的 CRC32。
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
         public static byte[] GetCrc32(byte[] bytes)
         {
             if (bytes == null)
@@ -35,14 +39,18 @@ namespace IFramework.Utility
             }
         }
 
-        /// 计算指定文件的 CRC32。
-        public static byte[] GetCrc32(string fileName)
+        /// <summary>
+        ///  计算指定文件的 CRC32。
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static byte[] GetCrc32(string path)
         {
-            if (!File.Exists(fileName))
+            if (!File.Exists(path))
             {
                 return Zero;
             }
-            using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
                 Crc32 calculator = new Crc32();
                 byte[] result = calculator.ComputeHash(fileStream);
@@ -51,7 +59,11 @@ namespace IFramework.Utility
             }
         }
 
+        /// <summary>
         /// 计算二进制流的 MD5。
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
         public static string GetMD5(byte[] bytes)
         {
             MD5 alg = new MD5CryptoServiceProvider();
@@ -63,13 +75,18 @@ namespace IFramework.Utility
             }
             return stringBuilder.ToString();
         }
-        public static string GetFileMD5(string absPath)
+        /// <summary>
+        ///  计算指定文件的 CRC32。
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetFileMD5(string path)
         {
-            if (!File.Exists(absPath))
+            if (!File.Exists(path))
                 return "";
 
             MD5CryptoServiceProvider md5CSP = new MD5CryptoServiceProvider();
-            FileStream file = new FileStream(absPath, FileMode.Open);
+            FileStream file = new FileStream(path, FileMode.Open);
             byte[] retVal = md5CSP.ComputeHash(file);
             file.Close();
             string result = "";
@@ -81,7 +98,12 @@ namespace IFramework.Utility
 
             return result;
         }
-        public static string GetStrMD5(string str)
+        /// <summary>
+        /// 获取字符串 MD5
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetStringMD5(string str)
         {
             MD5CryptoServiceProvider md5CSP = new MD5CryptoServiceProvider();
             byte[] retVal = md5CSP.ComputeHash(Encoding.Default.GetBytes(str));
@@ -199,6 +221,4 @@ namespace IFramework.Utility
             }
         }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
 }

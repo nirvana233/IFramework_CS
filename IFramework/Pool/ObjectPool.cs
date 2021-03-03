@@ -10,22 +10,6 @@ namespace IFramework
     public abstract class ObjectPool<T> : IDisposable
     {
         /// <summary>
-        /// 清理数据时
-        /// </summary>
-        public event Action<T, IEventArgs> onClearObject;
-        /// <summary>
-        /// 获取数据时
-        /// </summary>
-        public event Action<T, IEventArgs> onGetObject;
-        /// <summary>
-        /// 当回收数据时
-        /// </summary>
-        public event Action<T, IEventArgs> onSetObject;
-        /// <summary>
-        /// 当清理创建数据时
-        /// </summary>
-        public event Action<T, IEventArgs> onCreateObject;
-        /// <summary>
         /// 数据容器
         /// </summary>
         protected Queue<T> pool { get { return _lazy.Value; } }
@@ -55,10 +39,6 @@ namespace IFramework
             OnDispose();
             _lazy = null;
             lockParam = null;
-            onClearObject = null;
-            onGetObject = null;
-            onSetObject = null;
-            onCreateObject = null;
         }
         /// <summary>
         /// 释放时
@@ -165,11 +145,7 @@ namespace IFramework
         /// </summary>
         /// <param name="t"></param>
         /// <param name="arg"></param>
-        protected virtual void OnClear(T t, IEventArgs arg)
-        {
-            if (onClearObject != null) onClearObject(t, arg);
-
-        }
+        protected virtual void OnClear(T t, IEventArgs arg) { }
         /// <summary>
         /// 数据被回收时，返回true可以回收
         /// </summary>
@@ -178,7 +154,6 @@ namespace IFramework
         /// <returns></returns>
         protected virtual bool OnSet(T t, IEventArgs arg)
         {
-            if (onSetObject != null) onSetObject(t, arg);
             return true;
         }
         /// <summary>
@@ -186,19 +161,12 @@ namespace IFramework
         /// </summary>
         /// <param name="t"></param>
         /// <param name="arg"></param>
-        protected virtual void OnGet(T t, IEventArgs arg)
-        {
-            if (onGetObject != null) onGetObject(t, arg);
-
-        }
+        protected virtual void OnGet(T t, IEventArgs arg) { }
         /// <summary>
         /// 数据被创建时
         /// </summary>
         /// <param name="t"></param>
         /// <param name="arg"></param>
-        protected virtual void OnCreate(T t, IEventArgs arg)
-        {
-            if (onCreateObject != null) onCreateObject(t, arg);
-        }
+        protected virtual void OnCreate(T t, IEventArgs arg) { }
     }
 }

@@ -23,9 +23,9 @@
         /// </summary>
         protected override void OnUnLoad()
         {
-            if (Tresource.Tvalue != null)
+            if (Tresource.value != null)
             {
-                Tresource.Tvalue = default(T);
+                Tresource.value = default(T);
             }
         }
 

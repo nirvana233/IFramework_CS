@@ -3,9 +3,18 @@ using System.Diagnostics;
 
 namespace IFramework.Utility
 {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    /// <summary>
+    /// 进程工具
+    /// </summary>
     public static class ProcessUtil
     {
+        /// <summary>
+        /// 创建进程
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="args"></param>
+        /// <param name="workingDir"></param>
+        /// <returns></returns>
         public static Process CreateProcess(string cmd, string args, string workingDir = "")
         {
             var pStartInfo = new ProcessStartInfo(cmd);
@@ -22,10 +31,11 @@ namespace IFramework.Utility
             }
             return Process.Start(pStartInfo);
         }
-        public static void OpenFloder(string path)
-        {
-            Process.Start("explorer.exe", path.Replace("/", "\\"));
-        }
+        /// <summary>
+        /// 进程输出Log
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="isThrowExcpetion"></param>
         public static void OuputLog(this Process p, bool isThrowExcpetion)
         {
             string standardError = string.Empty;
@@ -58,7 +68,14 @@ namespace IFramework.Utility
                 Log.E(standardError);
             }
         }
+        /// <summary>
+        /// 打开文件夹
+        /// </summary>
+        /// <param name="path"></param>
+        public static void OpenFloder(string path)
+        {
+            Process.Start("explorer.exe", path.Replace("/", "\\"));
+        }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }
