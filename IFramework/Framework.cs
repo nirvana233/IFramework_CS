@@ -11,8 +11,9 @@ namespace IFramework
     /// 框架入口
     /// </summary>
     [RequireAttribute(typeof(FrameworkEnvironment))]
-    [ScriptVersionAttribute(8)]
+    [ScriptVersionAttribute(10)]
     [VersionUpdateAttribute(8,"增加环境数量")]
+    [VersionUpdateAttribute(10, "改变环境为属性")]
     public static class Framework
     {
         static Framework()
