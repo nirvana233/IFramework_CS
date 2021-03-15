@@ -8,6 +8,10 @@ namespace IFramework.Modules.Message
     public interface IMessageModule
     {
         /// <summary>
+        /// 剩余消息数目
+        /// </summary>
+        int count { get; }
+        /// <summary>
         /// 适配子类型
         /// </summary>
         bool fitSubType { get; set; }
@@ -18,74 +22,62 @@ namespace IFramework.Modules.Message
         /// <summary>
         /// 发布消息
         /// </summary>
-        /// <param name="publishType"></param>
-        /// <param name="code"></param>
+        /// <param name="tyoe"></param>
         /// <param name="args"></param>
-        /// <param name="type"></param>
-        /// <param name="param"></param>
-        void Publish(Type publishType, int code, IEventArgs args, MessageUrgencyType type = MessageUrgencyType.Common, params object[] param);
+        /// <param name="priority"></param>
+        IMessage Publish(Type tyoe, IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common);
         /// <summary>
         /// 发布消息
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="code"></param>
         /// <param name="args"></param>
-        /// <param name="type"></param>
-        /// <param name="param"></param>
-        void Publish<T>(int code, IEventArgs args, MessageUrgencyType type = MessageUrgencyType.Common, params object[] param) where T : IMessagePublisher;
+        /// <param name="priority"></param>
+        IMessage Publish<T>(IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common) where T : IMessagePublisher;
         /// <summary>
         /// 发布消息
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="t"></param>
-        /// <param name="code"></param>
         /// <param name="args"></param>
-        /// <param name="type"></param>
-        /// <param name="param"></param>
-        void Publish<T>(T t, int code, IEventArgs args, MessageUrgencyType type = MessageUrgencyType.Common, params object[] param) where T : IMessagePublisher;
+        /// <param name="priority"></param>
+        IMessage Publish<T>(T t, IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common) where T : IMessagePublisher;
         /// <summary>
         /// 发布消息
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="t"></param>
-        /// <param name="code"></param>
         /// <param name="args"></param>
         /// <param name="priority"></param>
-        /// <param name="param"></param>
-        void PublishByNumber<T>(T t, int code, IEventArgs args, int priority = 512, params object[] param) where T : IMessagePublisher;
+        IMessage PublishByNumber<T>(T t, IEventArgs args, int priority = 512) where T : IMessagePublisher;
         /// <summary>
         /// 发布消息
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="code"></param>
         /// <param name="args"></param>
         /// <param name="priority"></param>
-        /// <param name="param"></param>
-        void PublishByNumber<T>(int code, IEventArgs args, int priority = 512, params object[] param) where T : IMessagePublisher;
+        IMessage PublishByNumber<T>(IEventArgs args, int priority = 512) where T : IMessagePublisher;
         /// <summary>
         /// 发布消息
         /// </summary>
-        /// <param name="publishType"></param>
-        /// <param name="code"></param>
+        /// <param name="type"></param>
         /// <param name="args"></param>
         /// <param name="priority"></param>
-        /// <param name="param"></param>
-        void PublishByNumber(Type publishType, int code, IEventArgs args, int priority = 512, params object[] param);
+        IMessage PublishByNumber(Type type, IEventArgs args, int priority = 512);
 
         /// <summary>
         /// 注册
         /// </summary>
-        /// <param name="publishType"></param>
+        /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool Subscribe(Type publishType, IMessageListener listener);
+        bool Subscribe(Type type, IMessageListener listener);
         /// <summary>
         /// 注册
         /// </summary>
-        /// <param name="publishType"></param>
+        /// <param name="tyoe"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool Subscribe(Type publishType, MessageListener listener);
+        bool Subscribe(Type tyoe, MessageListener listener);
         /// <summary>
         /// 注册
         /// </summary>
@@ -103,17 +95,17 @@ namespace IFramework.Modules.Message
         /// <summary>
         /// 移除
         /// </summary>
-        /// <param name="publishType"></param>
+        /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribe(Type publishType, IMessageListener listener);
+        bool UnSubscribe(Type type, IMessageListener listener);
         /// <summary>
         /// 移除
         /// </summary>
-        /// <param name="publishType"></param>
+        /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribe(Type publishType, MessageListener listener);
+        bool UnSubscribe(Type type, MessageListener listener);
         /// <summary>
         /// 移除
         /// </summary>

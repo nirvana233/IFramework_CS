@@ -56,6 +56,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\TipAttribute.cs" />
+    <Compile Include="Environment\Modules\Message\IMessage.cs" />
+    <Compile Include="Environment\Modules\Message\MessageErrorCode.cs" />
+    <Compile Include="Environment\Modules\Message\MessageModule.cs" />
+    <Compile Include="Environment\Modules\Message\MessageState.cs" />
     <Compile Include="__Interfaces\IBelongToEnvironment.cs" />
     <Compile Include="__Interfaces\IFrameworkObject.cs" />
     <Compile Include="__Interfaces\Awaitable\IAwaitable.cs" />
@@ -130,7 +135,6 @@
     <Compile Include="Environment\Modules\Message\IMessageModule.cs" />
     <Compile Include="Environment\Modules\Message\IMessagePublisher.cs" />
     <Compile Include="Environment\Modules\Message\MessageListener.cs" />
-    <Compile Include="Environment\Modules\Message\MessageMoudle.cs" />
     <Compile Include="Environment\Modules\Message\MessageUrgency.cs" />
     <Compile Include="Environment\Modules\Message\MessageUrgencyType.cs" />
     <Compile Include="Environment\Modules\MVVM\EmptyDataModel.cs" />

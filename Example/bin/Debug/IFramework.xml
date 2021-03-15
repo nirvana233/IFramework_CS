@@ -4,283 +4,491 @@
         <name>IFramework</name>
     </assembly>
     <members>
-        <member name="T:IFramework.IBelongToEnvironment">
+        <member name="T:IFramework.TipAttribute">
             <summary>
-            属于环境
+            小提示
             </summary>
         </member>
-        <member name="P:IFramework.IBelongToEnvironment.env">
+        <member name="M:IFramework.TipAttribute.#ctor(System.String)">
             <summary>
-            环境
+            ctor
             </summary>
+            <param name="description"></param>
         </member>
-        <member name="T:IFramework.IFrameworkObject">
-            <summary>
-            积累接口
-            </summary>
-        </member>
-        <member name="P:IFramework.IFrameworkObject.guid">
-            <summary>
-            唯一id
-            </summary>
-        </member>
-        <member name="P:IFramework.IFrameworkObject.disposed">
-            <summary>
-            是否释放
-            </summary>
-        </member>
-        <member name="T:IFramework.IAwaitable`1">
-            <summary>
-            表示一个可等待对象，如果一个方法返回此类型的实例，则此方法可以使用 `await` 异步等待。
-            </summary>
-            <typeparam name="TAwaiter">用于给 await 确定返回时机的 IAwaiter 的实例。</typeparam>
-        </member>
-        <member name="M:IFramework.IAwaitable`1.GetAwaiter">
-            <summary>
-            获取一个可用于 await 关键字异步等待的异步等待对象。
-            此方法会被编译器自动调用。
-            </summary>
-        </member>
-        <member name="T:IFramework.IAwaitable`2">
-            <summary>
-            表示一个包含返回值的可等待对象，如果一个方法返回此类型的实例，则此方法可以使用 `await` 异步等待返回值。
-            </summary>
-            <typeparam name="TAwaiter">用于给 await 确定返回时机的 IAwaiter{<typeparamref name="TResult"/>} 的实例。</typeparam>
-            <typeparam name="TResult">异步返回的返回值类型。</typeparam>
-        </member>
-        <member name="M:IFramework.IAwaitable`2.GetAwaiter">
-            <summary>
-            获取一个可用于 await 关键字异步等待的异步等待对象。
-            此方法会被编译器自动调用。
-            </summary>
-        </member>
-        <member name="T:IFramework.IAwaiter">
-            <summary>
-            用于给 await 确定异步返回的时机。
-            </summary>
-        </member>
-        <member name="P:IFramework.IAwaiter.IsCompleted">
-            <summary>
-            获取一个状态，该状态表示正在异步等待的操作已经完成（成功完成或发生了异常）；此状态会被编译器自动调用。
-            在实现中，为了达到各种效果，可以灵活应用其值：可以始终为 true，或者始终为 false。
-            </summary>
-        </member>
-        <member name="M:IFramework.IAwaiter.GetResult">
-            <summary>
-            此方法会被编译器在 await 结束时自动调用以获取返回状态（包括异常）。
-            </summary>
-        </member>
-        <member name="T:IFramework.IAwaiter`1">
-            <summary>
-            用于给 await 确定异步返回的时机，并获取到返回值。
-            </summary>
-            <typeparam name="TResult">异步返回的返回值类型。</typeparam>
-        </member>
-        <member name="P:IFramework.IAwaiter`1.IsCompleted">
-            <summary>
-            获取一个状态，该状态表示正在异步等待的操作已经完成（成功完成或发生了异常）；此状态会被编译器自动调用。
-            在实现中，为了达到各种效果，可以灵活应用其值：可以始终为 true，或者始终为 false。
-            </summary>
-        </member>
-        <member name="M:IFramework.IAwaiter`1.GetResult">
-            <summary>
-            获取此异步等待操作的返回值，此方法会被编译器在 await 结束时自动调用以获取返回值（包括异常）。
-            </summary>
-            <returns>异步操作的返回值。</returns>
-        </member>
-        <member name="T:IFramework.ICriticalAwaiter">
-            <summary>
-            当执行关键代码（此代码中的错误可能给应用程序中的其他状态造成负面影响）时，
-            用于给 await 确定异步返回的时机。
-            </summary>
-        </member>
-        <member name="T:IFramework.ICriticalAwaiter`1">
-            <summary>
-            当执行关键代码（此代码中的错误可能给应用程序中的其他状态造成负面影响）时，
-            用于给 await 确定异步返回的时机，并获取到返回值。
-            </summary>
-            <typeparam name="TResult">异步返回的返回值类型。</typeparam>
-        </member>
-        <member name="T:IFramework.IDescription">
+        <member name="P:IFramework.TipAttribute.description">
             <summary>
             描述
             </summary>
         </member>
-        <member name="P:IFramework.IDescription.description">
+        <member name="T:IFramework.Modules.Message.IMessage">
             <summary>
-            描述内容
+            消息
             </summary>
         </member>
-        <member name="T:IFramework.IModel">
+        <member name="P:IFramework.Modules.Message.IMessage.type">
             <summary>
-            模型
+            发送消息类型
             </summary>
         </member>
-        <member name="T:IFramework.IValueBox`1">
+        <member name="P:IFramework.Modules.Message.IMessage.args">
             <summary>
-            数据容器
+            承载消息内容
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Message.IMessage.code">
+            <summary>
+            code,帮助区分 args
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Message.IMessage.state">
+            <summary>
+            消息状态
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Message.IMessage.errorCode">
+            <summary>
+            消息发送结果
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Message.IMessage.priority">
+            <summary>
+            优先级 
+            仅在 state 为 MessageState.Wait时有效
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Message.IMessage.position">
+            <summary>
+            所在位置 
+            仅在 state 为 MessageState.Wait时有效
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessage.SetCode(System.Int32)">
+            <summary>
+            设置Code，
+            仅在 state 为 MessageState.Wait时有效
+            </summary>
+            <param name="code"></param>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessage.SetPriority(System.Int32)">
+            <summary>
+            设置优先级 
+            仅在 state 为 MessageState.Wait时有效
+            </summary>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessage.OnRecycle(System.Action{IFramework.Modules.Message.IMessage})">
+            <summary>
+            仅在 state 为 MessageState.Wait时有效
+            实例被回收时的引用
+            消息发布完成，回收时候触发
+            回收后，此回调内部会制空，即只会触发一次
+            如果缓存了引用，记得制空引用
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="T:IFramework.Modules.Message.MessageErrorCode">
+            <summary>
+            消息发送结果
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.Message.MessageErrorCode.None">
+            <summary>
+            无状态,即不在使用
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.Message.MessageErrorCode.Success">
+            <summary>
+            成功
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.Message.MessageErrorCode.NoneListen">
+            <summary>
+            无人监听
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Message.MessageModule">
+            <summary>
+            消息模块
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Message.MessageModule.count">
+            <summary>
+            剩余消息数目
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Message.MessageModule.fitSubType">
+            <summary>
+            适配子类型
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Message.MessageModule.processesPerFrame">
+            <summary>
+            每帧处理消息个数
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.Subscribe(System.Type,IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            注册监听
+            </summary>
+            <param name="type"></param>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.Subscribe``1(IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            注册监听
             </summary>
             <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
         </member>
-        <member name="P:IFramework.IValueBox`1.value">
+        <member name="M:IFramework.Modules.Message.MessageModule.UnSubscribe(System.Type,IFramework.Modules.Message.IMessageListener)">
             <summary>
-            数据
-            </summary>
-        </member>
-        <member name="T:IFramework.IVersion">
-            <summary>
-            版本
-            </summary>
-        </member>
-        <member name="P:IFramework.IVersion.version">
-            <summary>
-            版本
-            </summary>
-        </member>
-        <member name="T:IFramework.RequireAttribute">
-            <summary>
-            依赖描述
-            </summary>
-        </member>
-        <member name="P:IFramework.RequireAttribute.description">
-            <summary>
-            描述
-            </summary>
-        </member>
-        <member name="P:IFramework.RequireAttribute.type">
-            <summary>
-            types
-            </summary>
-        </member>
-        <member name="M:IFramework.RequireAttribute.#ctor(System.Type)">
-            <summary>
-            ctor
+            解除注册监听
             </summary>
             <param name="type"></param>
+            <param name="listener"></param>
+            <returns></returns>
         </member>
-        <member name="M:IFramework.RequireAttribute.#ctor(System.Type,System.String)">
+        <member name="M:IFramework.Modules.Message.MessageModule.UnSubscribe``1(IFramework.Modules.Message.IMessageListener)">
             <summary>
-            ctor
+            解除注册监听
+            </summary>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.Subscribe(System.Type,IFramework.Modules.Message.MessageListener)">
+            <summary>
+            注册监听
             </summary>
             <param name="type"></param>
-            <param name="description"></param>
+            <param name="listener"></param>
+            <returns></returns>
         </member>
-        <member name="T:IFramework.ScriptVersionAttribute">
+        <member name="M:IFramework.Modules.Message.MessageModule.Subscribe``1(IFramework.Modules.Message.MessageListener)">
             <summary>
-             框架代码版本默认有 1
+            注册监听
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.UnSubscribe(System.Type,IFramework.Modules.Message.MessageListener)">
+            <summary>
+            解除注册监听
+            </summary>
+            <param name="type"></param>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.UnSubscribe``1(IFramework.Modules.Message.MessageListener)">
+            <summary>
+            解除注册监听
+            </summary>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.Publish``1(IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType)">
+            <summary>
+            发布消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="args"></param>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.Publish``1(``0,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType)">
+            <summary>
+            发布消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="args"></param>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.PublishByNumber``1(IFramework.IEventArgs,System.Int32)">
+            <summary>
+            发布消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="args"></param>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.PublishByNumber``1(``0,IFramework.IEventArgs,System.Int32)">
+            <summary>
+            发布消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="args"></param>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.Publish(System.Type,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType)">
+            <summary>
+            发布消息
+            </summary>
+            <param name="type"></param>
+            <param name="args"></param>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.MessageModule.PublishByNumber(System.Type,IFramework.IEventArgs,System.Int32)">
+            <summary>
+            发布消息
+            </summary>
+            <param name="type"></param>
+            <param name="args"></param>
+            <param name="priority">越大处理越晚</param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Message.MessageState">
+            <summary>
+            消息状态
             </summary>
         </member>
-        <member name="P:IFramework.ScriptVersionAttribute.version">
+        <member name="F:IFramework.Modules.Message.MessageState.Rest">
             <summary>
-            版本
+            休息
             </summary>
         </member>
-        <member name="M:IFramework.ScriptVersionAttribute.#ctor(System.Int32)">
+        <member name="F:IFramework.Modules.Message.MessageState.Wait">
             <summary>
-            Ctor
-            </summary>
-            <param name="version"></param>
-        </member>
-        <member name="T:IFramework.VersionUpdateAttribute">
-            <summary>
-            代码升级说明
+            等待被发布
             </summary>
         </member>
-        <member name="P:IFramework.VersionUpdateAttribute.description">
+        <member name="F:IFramework.Modules.Message.MessageState.Lock">
             <summary>
-            描述
+            正在发布中
             </summary>
         </member>
-        <member name="M:IFramework.VersionUpdateAttribute.#ctor(System.Int32,System.String)">
+        <member name="T:IFramework.Modules.Message.IMessageListener">
             <summary>
-            ctor
-            </summary>
-            <param name="version"></param>
-            <param name="description"></param>
-        </member>
-        <member name="T:IFramework.EnvironmentType">
-            <summary>
-            环境类型
+            消息监听者
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.None">
+        <member name="M:IFramework.Modules.Message.IMessageListener.Listen(IFramework.Modules.Message.IMessage)">
             <summary>
-            所有，配合环境初始化
+            收到消息回调
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="T:IFramework.Modules.Message.IMessageModule">
+            <summary>
+            消息模块
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev0">
+        <member name="P:IFramework.Modules.Message.IMessageModule.count">
             <summary>
-            环境0
+            剩余消息数目
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev1">
+        <member name="P:IFramework.Modules.Message.IMessageModule.fitSubType">
             <summary>
-            环境1
+            适配子类型
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev2">
+        <member name="P:IFramework.Modules.Message.IMessageModule.processesPerFrame">
             <summary>
-            环境2
+            每一帧处理消息上限
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev3">
+        <member name="M:IFramework.Modules.Message.IMessageModule.Publish(System.Type,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType)">
             <summary>
-            环境3
+            发布消息
+            </summary>
+            <param name="tyoe"></param>
+            <param name="args"></param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.Publish``1(IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType)">
+            <summary>
+            发布消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="args"></param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.Publish``1(``0,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType)">
+            <summary>
+            发布消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="args"></param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.PublishByNumber``1(``0,IFramework.IEventArgs,System.Int32)">
+            <summary>
+            发布消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="args"></param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.PublishByNumber``1(IFramework.IEventArgs,System.Int32)">
+            <summary>
+            发布消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="args"></param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.PublishByNumber(System.Type,IFramework.IEventArgs,System.Int32)">
+            <summary>
+            发布消息
+            </summary>
+            <param name="type"></param>
+            <param name="args"></param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.Subscribe(System.Type,IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            注册
+            </summary>
+            <param name="type"></param>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.Subscribe(System.Type,IFramework.Modules.Message.MessageListener)">
+            <summary>
+            注册
+            </summary>
+            <param name="tyoe"></param>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.Subscribe``1(IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            注册
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.Subscribe``1(IFramework.Modules.Message.MessageListener)">
+            <summary>
+            注册
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.UnSubscribe(System.Type,IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            移除
+            </summary>
+            <param name="type"></param>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.UnSubscribe(System.Type,IFramework.Modules.Message.MessageListener)">
+            <summary>
+            移除
+            </summary>
+            <param name="type"></param>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.UnSubscribe``1(IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            移除
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Message.IMessageModule.UnSubscribe``1(IFramework.Modules.Message.MessageListener)">
+            <summary>
+            移除
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Message.IMessagePublisher">
+            <summary>
+            消息发送者
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev4">
+        <member name="T:IFramework.Modules.Message.MessageListener">
             <summary>
-            环境4
+            消息监听
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="T:IFramework.Modules.Message.MessageUrgency">
+            <summary>
+            消息紧急程度
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev5">
+        <member name="F:IFramework.Modules.Message.MessageUrgency.VeryUrgent">
             <summary>
-            环境5
+            非常紧急
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev6">
+        <member name="F:IFramework.Modules.Message.MessageUrgency.Urgent">
             <summary>
-            环境6
+            紧急
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev7">
+        <member name="F:IFramework.Modules.Message.MessageUrgency.Important">
             <summary>
-            环境7
+            重要的
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev8">
+        <member name="F:IFramework.Modules.Message.MessageUrgency.Common">
             <summary>
-            环境8
+            普通的
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Ev9">
+        <member name="F:IFramework.Modules.Message.MessageUrgency.Unimportant">
             <summary>
-            环境9
+            不重要的
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Extra0">
+        <member name="F:IFramework.Modules.Message.MessageUrgency.Dispensable">
             <summary>
-            额外的1
+            可有可无的
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Extra1">
+        <member name="T:IFramework.Modules.Message.MessageUrgencyType">
             <summary>
-            额外的1
+            消息紧急程度
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Extra2">
+        <member name="F:IFramework.Modules.Message.MessageUrgencyType.VeryUrgent">
             <summary>
-            额外的2
+            非常紧急
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Extra3">
+        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Urgent">
             <summary>
-            额外的3
+            紧急
             </summary>
         </member>
-        <member name="F:IFramework.EnvironmentType.Extra4">
+        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Important">
             <summary>
-            额外的4
+            重要的
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Common">
+            <summary>
+            普通的
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Unimportant">
+            <summary>
+            不重要的
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Dispensable">
+            <summary>
+            可有可无的
             </summary>
         </member>
         <member name="T:IFramework.Modules.IFrameworkModuleContainer">
@@ -2016,390 +2224,6 @@
             </summary>
             <param name="action"></param>
         </member>
-        <member name="T:IFramework.Modules.Message.IMessageListener">
-            <summary>
-            消息监听者
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageListener.Listen(System.Type,System.Int32,IFramework.IEventArgs,System.Object[])">
-            <summary>
-            收到消息回调
-            </summary>
-            <param name="publishType"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="param"></param>
-        </member>
-        <member name="T:IFramework.Modules.Message.IMessageModule">
-            <summary>
-            消息模块
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Message.IMessageModule.fitSubType">
-            <summary>
-            适配子类型
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Message.IMessageModule.processesPerFrame">
-            <summary>
-            每一帧处理消息上限
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.Publish(System.Type,System.Int32,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <param name="publishType"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="type"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.Publish``1(System.Int32,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="type"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.Publish``1(``0,System.Int32,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="t"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="type"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.PublishByNumber``1(``0,System.Int32,IFramework.IEventArgs,System.Int32,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="t"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="priority"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.PublishByNumber``1(System.Int32,IFramework.IEventArgs,System.Int32,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="priority"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.PublishByNumber(System.Type,System.Int32,IFramework.IEventArgs,System.Int32,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <param name="publishType"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="priority"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.Subscribe(System.Type,IFramework.Modules.Message.IMessageListener)">
-            <summary>
-            注册
-            </summary>
-            <param name="publishType"></param>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.Subscribe(System.Type,IFramework.Modules.Message.MessageListener)">
-            <summary>
-            注册
-            </summary>
-            <param name="publishType"></param>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.Subscribe``1(IFramework.Modules.Message.IMessageListener)">
-            <summary>
-            注册
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.Subscribe``1(IFramework.Modules.Message.MessageListener)">
-            <summary>
-            注册
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.UnSubscribe(System.Type,IFramework.Modules.Message.IMessageListener)">
-            <summary>
-            移除
-            </summary>
-            <param name="publishType"></param>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.UnSubscribe(System.Type,IFramework.Modules.Message.MessageListener)">
-            <summary>
-            移除
-            </summary>
-            <param name="publishType"></param>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.UnSubscribe``1(IFramework.Modules.Message.IMessageListener)">
-            <summary>
-            移除
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessageModule.UnSubscribe``1(IFramework.Modules.Message.MessageListener)">
-            <summary>
-            移除
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Message.IMessagePublisher">
-            <summary>
-            消息发送者
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Message.MessageListener">
-            <summary>
-            消息监听
-            </summary>
-            <param name="publishType"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="param"></param>
-        </member>
-        <member name="T:IFramework.Modules.Message.MessageModule">
-            <summary>
-            消息模块
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Message.MessageModule.fitSubType">
-            <summary>
-            适配子类型
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Message.MessageModule.processesPerFrame">
-            <summary>
-            每帧处理消息个数
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.Subscribe(System.Type,IFramework.Modules.Message.IMessageListener)">
-            <summary>
-            注册监听
-            </summary>
-            <param name="publishType"></param>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.Subscribe``1(IFramework.Modules.Message.IMessageListener)">
-            <summary>
-            注册监听
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.UnSubscribe(System.Type,IFramework.Modules.Message.IMessageListener)">
-            <summary>
-            解除注册监听
-            </summary>
-            <param name="publishType"></param>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.UnSubscribe``1(IFramework.Modules.Message.IMessageListener)">
-            <summary>
-            解除注册监听
-            </summary>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.Subscribe(System.Type,IFramework.Modules.Message.MessageListener)">
-            <summary>
-            注册监听
-            </summary>
-            <param name="publishType"></param>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.Subscribe``1(IFramework.Modules.Message.MessageListener)">
-            <summary>
-            注册监听
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.UnSubscribe(System.Type,IFramework.Modules.Message.MessageListener)">
-            <summary>
-            解除注册监听
-            </summary>
-            <param name="publishType"></param>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.UnSubscribe``1(IFramework.Modules.Message.MessageListener)">
-            <summary>
-            解除注册监听
-            </summary>
-            <param name="listener"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.Publish``1(System.Int32,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="type"></param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.Publish``1(``0,System.Int32,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="t"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="type"></param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.PublishByNumber``1(System.Int32,IFramework.IEventArgs,System.Int32,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="priority"></param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.PublishByNumber``1(``0,System.Int32,IFramework.IEventArgs,System.Int32,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="t"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="priority"></param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.Publish(System.Type,System.Int32,IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <param name="publishType"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="type"></param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.MessageModule.PublishByNumber(System.Type,System.Int32,IFramework.IEventArgs,System.Int32,System.Object[])">
-            <summary>
-            发布消息
-            </summary>
-            <param name="publishType"></param>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="priority">越大处理越晚</param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Message.MessageUrgency">
-            <summary>
-            消息紧急程度
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgency.VeryUrgent">
-            <summary>
-            非常紧急
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgency.Urgent">
-            <summary>
-            紧急
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgency.Important">
-            <summary>
-            重要的
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgency.Common">
-            <summary>
-            普通的
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgency.Unimportant">
-            <summary>
-            不重要的
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgency.Dispensable">
-            <summary>
-            可有可无的
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Message.MessageUrgencyType">
-            <summary>
-            消息紧急程度
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgencyType.VeryUrgent">
-            <summary>
-            非常紧急
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Urgent">
-            <summary>
-            紧急
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Important">
-            <summary>
-            重要的
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Common">
-            <summary>
-            普通的
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Unimportant">
-            <summary>
-            不重要的
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Dispensable">
-            <summary>
-            可有可无的
-            </summary>
-        </member>
         <member name="T:IFramework.Modules.MVVM.EmptyDataModel">
             <summary>
             空数据模型
@@ -2655,6 +2479,285 @@
         <member name="M:IFramework.Modules.UpdateFrameworkModule.Update">
             <summary>
             刷新
+            </summary>
+        </member>
+        <member name="T:IFramework.IBelongToEnvironment">
+            <summary>
+            属于环境
+            </summary>
+        </member>
+        <member name="P:IFramework.IBelongToEnvironment.env">
+            <summary>
+            环境
+            </summary>
+        </member>
+        <member name="T:IFramework.IFrameworkObject">
+            <summary>
+            积累接口
+            </summary>
+        </member>
+        <member name="P:IFramework.IFrameworkObject.guid">
+            <summary>
+            唯一id
+            </summary>
+        </member>
+        <member name="P:IFramework.IFrameworkObject.disposed">
+            <summary>
+            是否释放
+            </summary>
+        </member>
+        <member name="T:IFramework.IAwaitable`1">
+            <summary>
+            表示一个可等待对象，如果一个方法返回此类型的实例，则此方法可以使用 `await` 异步等待。
+            </summary>
+            <typeparam name="TAwaiter">用于给 await 确定返回时机的 IAwaiter 的实例。</typeparam>
+        </member>
+        <member name="M:IFramework.IAwaitable`1.GetAwaiter">
+            <summary>
+            获取一个可用于 await 关键字异步等待的异步等待对象。
+            此方法会被编译器自动调用。
+            </summary>
+        </member>
+        <member name="T:IFramework.IAwaitable`2">
+            <summary>
+            表示一个包含返回值的可等待对象，如果一个方法返回此类型的实例，则此方法可以使用 `await` 异步等待返回值。
+            </summary>
+            <typeparam name="TAwaiter">用于给 await 确定返回时机的 IAwaiter{<typeparamref name="TResult"/>} 的实例。</typeparam>
+            <typeparam name="TResult">异步返回的返回值类型。</typeparam>
+        </member>
+        <member name="M:IFramework.IAwaitable`2.GetAwaiter">
+            <summary>
+            获取一个可用于 await 关键字异步等待的异步等待对象。
+            此方法会被编译器自动调用。
+            </summary>
+        </member>
+        <member name="T:IFramework.IAwaiter">
+            <summary>
+            用于给 await 确定异步返回的时机。
+            </summary>
+        </member>
+        <member name="P:IFramework.IAwaiter.IsCompleted">
+            <summary>
+            获取一个状态，该状态表示正在异步等待的操作已经完成（成功完成或发生了异常）；此状态会被编译器自动调用。
+            在实现中，为了达到各种效果，可以灵活应用其值：可以始终为 true，或者始终为 false。
+            </summary>
+        </member>
+        <member name="M:IFramework.IAwaiter.GetResult">
+            <summary>
+            此方法会被编译器在 await 结束时自动调用以获取返回状态（包括异常）。
+            </summary>
+        </member>
+        <member name="T:IFramework.IAwaiter`1">
+            <summary>
+            用于给 await 确定异步返回的时机，并获取到返回值。
+            </summary>
+            <typeparam name="TResult">异步返回的返回值类型。</typeparam>
+        </member>
+        <member name="P:IFramework.IAwaiter`1.IsCompleted">
+            <summary>
+            获取一个状态，该状态表示正在异步等待的操作已经完成（成功完成或发生了异常）；此状态会被编译器自动调用。
+            在实现中，为了达到各种效果，可以灵活应用其值：可以始终为 true，或者始终为 false。
+            </summary>
+        </member>
+        <member name="M:IFramework.IAwaiter`1.GetResult">
+            <summary>
+            获取此异步等待操作的返回值，此方法会被编译器在 await 结束时自动调用以获取返回值（包括异常）。
+            </summary>
+            <returns>异步操作的返回值。</returns>
+        </member>
+        <member name="T:IFramework.ICriticalAwaiter">
+            <summary>
+            当执行关键代码（此代码中的错误可能给应用程序中的其他状态造成负面影响）时，
+            用于给 await 确定异步返回的时机。
+            </summary>
+        </member>
+        <member name="T:IFramework.ICriticalAwaiter`1">
+            <summary>
+            当执行关键代码（此代码中的错误可能给应用程序中的其他状态造成负面影响）时，
+            用于给 await 确定异步返回的时机，并获取到返回值。
+            </summary>
+            <typeparam name="TResult">异步返回的返回值类型。</typeparam>
+        </member>
+        <member name="T:IFramework.IDescription">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:IFramework.IDescription.description">
+            <summary>
+            描述内容
+            </summary>
+        </member>
+        <member name="T:IFramework.IModel">
+            <summary>
+            模型
+            </summary>
+        </member>
+        <member name="T:IFramework.IValueBox`1">
+            <summary>
+            数据容器
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.IValueBox`1.value">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="T:IFramework.IVersion">
+            <summary>
+            版本
+            </summary>
+        </member>
+        <member name="P:IFramework.IVersion.version">
+            <summary>
+            版本
+            </summary>
+        </member>
+        <member name="T:IFramework.RequireAttribute">
+            <summary>
+            依赖描述
+            </summary>
+        </member>
+        <member name="P:IFramework.RequireAttribute.description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:IFramework.RequireAttribute.type">
+            <summary>
+            types
+            </summary>
+        </member>
+        <member name="M:IFramework.RequireAttribute.#ctor(System.Type)">
+            <summary>
+            ctor
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:IFramework.RequireAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="type"></param>
+            <param name="description"></param>
+        </member>
+        <member name="T:IFramework.ScriptVersionAttribute">
+            <summary>
+             框架代码版本默认有 1
+            </summary>
+        </member>
+        <member name="P:IFramework.ScriptVersionAttribute.version">
+            <summary>
+            版本
+            </summary>
+        </member>
+        <member name="M:IFramework.ScriptVersionAttribute.#ctor(System.Int32)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="version"></param>
+        </member>
+        <member name="T:IFramework.VersionUpdateAttribute">
+            <summary>
+            代码升级说明
+            </summary>
+        </member>
+        <member name="P:IFramework.VersionUpdateAttribute.description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="M:IFramework.VersionUpdateAttribute.#ctor(System.Int32,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="version"></param>
+            <param name="description"></param>
+        </member>
+        <member name="T:IFramework.EnvironmentType">
+            <summary>
+            环境类型
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.None">
+            <summary>
+            所有，配合环境初始化
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev0">
+            <summary>
+            环境0
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev1">
+            <summary>
+            环境1
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev2">
+            <summary>
+            环境2
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev3">
+            <summary>
+            环境3
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev4">
+            <summary>
+            环境4
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev5">
+            <summary>
+            环境5
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev6">
+            <summary>
+            环境6
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev7">
+            <summary>
+            环境7
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev8">
+            <summary>
+            环境8
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev9">
+            <summary>
+            环境9
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra0">
+            <summary>
+            额外的1
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra1">
+            <summary>
+            额外的1
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra2">
+            <summary>
+            额外的2
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra3">
+            <summary>
+            额外的3
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra4">
+            <summary>
+            额外的4
             </summary>
         </member>
         <member name="T:IFramework.ICommand">
