@@ -10,7 +10,7 @@ namespace IFramework.Modules
     {
         private string _chunck;
         private bool _binded;
-        private FrameworkEnvironment _env;
+        private IEnvironment _env;
         /// <summary>
         /// 代码块
         /// </summary>
@@ -18,12 +18,12 @@ namespace IFramework.Modules
         /// <summary>
         /// 环境
         /// </summary>
-        public FrameworkEnvironment env { get { return _env; } }
+        public IEnvironment env { get { return _env; } }
         /// <summary>
         /// 是否绑定环境
         /// </summary>
         public bool binded { get { return _binded; } }
-
+        private LockParam _lock=new LockParam();
         private Dictionary<Type, List<FrameworkModule>> moudle_dic;
         private List<UpdateFrameworkModule> update_list;
 
@@ -36,9 +36,12 @@ namespace IFramework.Modules
         /// <returns></returns>
         public FrameworkModule CreateModule(Type type, string name = "")
         {
-            var mou = FrameworkModule.CreatInstance(type, chunck, name);
-            mou.Bind(this);
-            return mou;
+            using (new LockWait(ref _lock))
+            {
+                var mou = FrameworkModule.CreatInstance(type, chunck, name);
+                mou.Bind(this);
+                return mou;
+            }
         }
         /// <summary>
         /// 创建模块
@@ -59,10 +62,14 @@ namespace IFramework.Modules
         /// <returns></returns>
         public FrameworkModule FindModule(Type type, string name = "")
         {
-            if (string.IsNullOrEmpty(name))
-                name = string.Format("{0}.{1}", _chunck, type.Name);
-            if (!moudle_dic.ContainsKey(type)) return null;
-            return moudle_dic[type].Find((m) => { return m.name == name; });
+            using (new LockWait(ref _lock))
+            {
+                if (string.IsNullOrEmpty(name))
+                    name = string.Format("{0}.{1}", _chunck, type.Name);
+                if (!moudle_dic.ContainsKey(type)) return null;
+                return moudle_dic[type].Find((m) => { return m.name == name; });
+            }
+
         }
         /// <summary>
         /// 获取模块
@@ -110,17 +117,20 @@ namespace IFramework.Modules
         /// <param name="bind"></param>
         public FrameworkModuleContainer(string chunck, FrameworkEnvironment env, bool bind = true)
         {
-            _chunck = chunck;
-            this._env = env;
-            update_list = new List<UpdateFrameworkModule>();
-            moudle_dic = new Dictionary<Type, List<FrameworkModule>>();
-            if (bind)
-                BindEnv();
+            using (new LockWait(ref _lock))
+            {
+                _chunck = chunck;
+                this._env = env;
+                update_list = new List<UpdateFrameworkModule>();
+                moudle_dic = new Dictionary<Type, List<FrameworkModule>>();
+                if (bind)
+                    BindEnv();
+            }
         }
         /// <summary>
         /// 绑定环境
         /// </summary>
-        public void BindEnv()
+        private void BindEnv()
         {
             if (_binded)
             {
@@ -135,7 +145,7 @@ namespace IFramework.Modules
         /// 解绑环境
         /// </summary>
         /// <param name="dispose"></param>
-        public void UnBindEnv(bool dispose = true)
+        private void UnBindEnv(bool dispose = true)
         {
             if (_binded)
             {
@@ -155,32 +165,34 @@ namespace IFramework.Modules
         /// </summary>
         protected override void OnDispose()
         {
-            UnBindEnv(false);
-            List<FrameworkModule> list = new List<FrameworkModule>();
-            foreach (var item in moudle_dic.Values)
+            using (new LockWait(ref _lock))
             {
-                for (int i = 0; i < item.Count; i++)
+                UnBindEnv(false);
+                List<FrameworkModule> list = new List<FrameworkModule>();
+                foreach (var item in moudle_dic.Values)
                 {
-                    list.Add(item[i]);
+                    for (int i = 0; i < item.Count; i++)
+                    {
+                        list.Add(item[i]);
+                    }
                 }
+                list.Sort((x, y) => { return y.priority.CompareTo(x.priority); });
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Dispose();
+                }
+                update_list.Clear();
+                moudle_dic.Clear();
+                update_list = null;
+                moudle_dic = null;
             }
-
-            list.Sort((x, y) => { return y.priority.CompareTo(x.priority); });
-            for (int i = 0; i < list.Count; i++)
-            {
-                list[i].Dispose();
-            }
-            update_list.Clear();
-            moudle_dic.Clear();
-            update_list = null;
-            moudle_dic = null;
         }
-        /// <summary>
-        /// 刷新
-        /// </summary>
-        public void Update()
+        private void Update()
         {
-            update_list.ForEach((m) => { m.Update(); });
+            using (new LockWait(ref _lock))
+            {
+                update_list.ForEach((m) => { m.Update(); });
+            }
         }
 
         internal bool SubscribeModule(FrameworkModule moudle)

@@ -5,7 +5,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块容器
     /// </summary>
-    public interface IFrameworkModuleContainer
+    public interface IFrameworkModuleContainer:IContainer,IBelongToEnvironment
     {
         /// <summary>
         /// 是否绑定
@@ -15,10 +15,7 @@ namespace IFramework.Modules
         /// 组
         /// </summary>
         string chunck { get; }
-        /// <summary>
-        /// 环境
-        /// </summary>
-        FrameworkEnvironment env { get; }
+ 
         /// <summary>
         /// 创建模块
         /// </summary>

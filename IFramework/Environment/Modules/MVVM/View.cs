@@ -7,7 +7,7 @@ namespace IFramework.Modules.MVVM
     /// 界面
     /// </summary>
     [ScriptVersion(12)]
-    public abstract class View : IDisposable,IMessagePublisher
+    public abstract class View : IDisposable
     {
         internal MVVMGroup group { get; set; }
         private bool _inited;

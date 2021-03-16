@@ -8,6 +8,6 @@
         /// <summary>
         /// 环境
         /// </summary>
-        FrameworkEnvironment env { get; }
+        IEnvironment env { get; }
     }
 }

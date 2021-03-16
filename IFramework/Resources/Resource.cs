@@ -48,7 +48,7 @@
     /// 泛型资源
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Resource<T> : Resource,IValueBox<T>
+    public class Resource<T> : Resource,IValueContainer<T>
     {
         private T _value;
         /// <summary>

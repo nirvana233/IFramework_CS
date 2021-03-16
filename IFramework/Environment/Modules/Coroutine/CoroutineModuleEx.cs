@@ -19,7 +19,7 @@ namespace IFramework.Modules.Coroutine
         /// <returns></returns>
         public static ICoroutine StartCoroutine(this object obj, IEnumerator routine, EnvironmentType envType)
         {
-            FrameworkEnvironment _env = Framework.GetEnv( envType);
+            var _env = Framework.GetEnv( envType);
             return _env.modules.Coroutine.StartCoroutine(routine);
         }
         /// <summary>
@@ -29,7 +29,7 @@ namespace IFramework.Modules.Coroutine
         /// <param name="env"></param>
         /// <param name="routine">迭代器</param>
         /// <returns></returns>
-        public static ICoroutine StartCoroutine(this object obj, IEnumerator routine, FrameworkEnvironment env)
+        public static ICoroutine StartCoroutine(this object obj, IEnumerator routine, IEnvironment env)
         {
             return env.modules.Coroutine.StartCoroutine(routine);
         }

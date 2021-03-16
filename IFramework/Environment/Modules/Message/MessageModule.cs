@@ -425,7 +425,7 @@ namespace IFramework.Modules.Message
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Subscribe<T>(IMessageListener listener) where T : IMessagePublisher
+        public bool Subscribe<T>(IMessageListener listener)
         {
             return Subscribe(typeof(T), listener);
         }
@@ -449,7 +449,7 @@ namespace IFramework.Modules.Message
         /// </summary>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool UnSubscribe<T>(IMessageListener listener) where T : IMessagePublisher
+        public bool UnSubscribe<T>(IMessageListener listener)
         {
             return UnSubscribe(typeof(T), listener);
         }
@@ -488,7 +488,7 @@ namespace IFramework.Modules.Message
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Subscribe<T>(MessageListener listener) where T : IMessagePublisher
+        public bool Subscribe<T>(MessageListener listener) 
         {
             return Subscribe(typeof(T), listener);
         }
@@ -519,7 +519,7 @@ namespace IFramework.Modules.Message
         /// </summary>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool UnSubscribe<T>(MessageListener listener) where T : IMessagePublisher
+        public bool UnSubscribe<T>(MessageListener listener)
         {
             return UnSubscribe(typeof(T), listener);
         }
@@ -532,7 +532,7 @@ namespace IFramework.Modules.Message
         /// <param name="args"></param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public IMessage Publish<T>(IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common) where T : IMessagePublisher
+        public IMessage Publish<T>(IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common) 
         {
             return Publish(typeof(T), args, priority);
         }
@@ -544,9 +544,9 @@ namespace IFramework.Modules.Message
         /// <param name="args"></param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public IMessage Publish<T>(T t, IEventArgs args,  MessageUrgencyType priority = MessageUrgencyType.Common) where T : IMessagePublisher
+        public IMessage Publish<T>(T t, IEventArgs args,  MessageUrgencyType priority = MessageUrgencyType.Common) 
         {
-            return Publish(t.GetType(), args, priority);
+            return Publish(typeof(T), args, priority);
         }
         /// <summary>
         /// 发布消息
@@ -555,7 +555,7 @@ namespace IFramework.Modules.Message
         /// <param name="args"></param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public IMessage PublishByNumber<T>(IEventArgs args, int priority = MessageUrgency.Common) where T : IMessagePublisher
+        public IMessage PublishByNumber<T>(IEventArgs args, int priority = MessageUrgency.Common)
         {
             return PublishByNumber(typeof(T), args, priority);
         }
@@ -567,9 +567,9 @@ namespace IFramework.Modules.Message
         /// <param name="args"></param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public IMessage PublishByNumber<T>(T t, IEventArgs args, int priority = MessageUrgency.Common) where T : IMessagePublisher
+        public IMessage PublishByNumber<T>(T t, IEventArgs args, int priority = MessageUrgency.Common) 
         {
-            return PublishByNumber(t.GetType(), args, priority);
+            return PublishByNumber(typeof(T), args, priority);
         }
 
 

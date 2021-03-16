@@ -16,7 +16,7 @@ namespace IFramework
     [VersionUpdateAttribute(21, "替换可回收对象池子类型")]
     [VersionUpdateAttribute(22, "调整释放时候的成员顺序")]
     [VersionUpdateAttribute(23, "增加数据绑定器")]
-    public class FrameworkEnvironment : FrameworkObject
+    class FrameworkEnvironment : FrameworkObject, IEnvironment
     {
         private bool _inited;
         private FrameworkModules _modules;
@@ -43,7 +43,7 @@ namespace IFramework
         /// <summary>
         /// IOC容器
         /// </summary>
-        public IFrameworkContainer container { get; set; }
+        public IValuesContainer container { get; set; }
         /// <summary>
         /// 环境下自带的模块容器
         /// </summary>
@@ -108,7 +108,7 @@ namespace IFramework
             if (_inited) return;
             current = this;
             _loom = LoomModule.CreatInstance<LoomModule>(this.name, this.name);
-            container = new FrameworkContainer();
+            container = new ValuesContainer();
             _modules = new FrameworkModules(this);
             cycleCollection = new RecyclableObjectCollection();
             if (types != null)
@@ -155,10 +155,9 @@ namespace IFramework
             (cycleCollection as RecyclableObjectCollection).Dispose();
             container.Dispose();
             if (onDispose != null) onDispose();
+            _loom.Dispose();
             sw_init.Stop();
             sw_delta.Stop();
-            _loom.Dispose();
-
             _loom = null;
             container = null;
             sw_delta = null;

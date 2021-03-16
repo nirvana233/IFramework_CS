@@ -5,106 +5,107 @@ using System.Reflection;
 
 namespace IFramework.Injection
 {
-     class FrameworkContainer : IFrameworkContainer, IDisposable
-     {
-        private const string emtyty = "______empty";
-        private class Map<T1, T2, T3>
+    class ValuesContainer : IValuesContainer
+    {
+        private class Map<T>
         {
-            protected class InnerMap
+            public class Value : IValueContainer<T>
             {
-                public Dictionary<T2, T3> map = new Dictionary<T2, T3>();
+                public string key;
+                public T value { get; set; }
+            }
 
-                internal T3 GetValue(T2 key2)
+            protected List<Value> containers;
+            protected Dictionary<Type, List<int>> map;
+            public Map()
+            {
+                containers = new List<Value>();
+                map = new Dictionary<Type, List<int>>();
+            }
+            private void Set(Type super, string key, T t)
+            {
+                List<int> list;
+                if (!map.TryGetValue(super, out list))
                 {
-                    T3 inner;
-                    if (map.TryGetValue(key2, out inner))
-                    {
-                        return inner;
-                    }
-                    return default(T3);
-                }
-
-                internal void SetVakue(T2 key2, T3 value)
-                {
-                    if (map.ContainsKey(key2))
-                    {
-                        map[key2] = value;
-                    }
-                    else
-                    {
-                        map.Add(key2, value);
-                    }
+                    list = new List<int>();
+                    map.Add(super, list);
                 }
 
-            }
-            protected Dictionary<T1, InnerMap> map = new Dictionary<T1, InnerMap>();
-            protected T3 Get(T1 key1, T2 key2)
-            {
-                InnerMap inner;
-                if (map.TryGetValue(key1, out inner))
+                for (int i = list.Count - 1; i >= 0; i--)
                 {
-                    return inner.GetValue(key2);
+                    int index = list[i];
+                    var value = containers[index];
+                    if (value.key == key)
+                    {
+                        value.value = t;
+                        return;
+                    }
                 }
-                return default(T3);
+                list.Add(containers.Count);
+                containers.Add(new Value() { key = key, value = t });
             }
-            protected void Set(T1 key1, T2 key2, T3 value)
+            private T Get(Type super, string key)
             {
-                InnerMap inner;
-                if (!map.TryGetValue(key1, out inner))
+                List<int> list;
+                if (map.TryGetValue(super, out list))
                 {
-                    inner = new InnerMap();
-                    map.Add(key1, inner);
+                    for (int i = list.Count - 1; i >= 0; i--)
+                    {
+                        int index = list[i];
+                        var value = containers[index];
+                        if (value.key == key)
+                        {
+                            return value.value;
+                        }
+                    }
                 }
-                inner.SetVakue(key2, value);
+                return default(T);
             }
-            protected InnerMap Getmap(T1 key)
+
+            protected T GetByindex(int index)
             {
-                InnerMap inner;
-                if (map.TryGetValue(key, out inner))
-                {
-                    return inner;
-                }
-                return null;
+                return containers[index].value;
             }
-            internal void Clear()
+            public void Clear()
             {
                 map.Clear();
+                containers.Clear();
             }
-        }
-        private class TypeMapping : Map<Type, string, Type>
-        {
-            public Type this[Type from, string name = null]
-            {
 
+            public IEnumerable<T> Values
+            {
                 get
                 {
-                    if (string.IsNullOrEmpty(name))
+                    for (int i = 0; i < containers.Count; i++)
                     {
-                        name = emtyty;
+                        yield return GetByindex(i);
                     }
-                    return base.Get(from, name);
+                }
+            }
+            public T this[Type type, string key = null]
+            {
+                get
+                {
+                    return Get(type, key);
                 }
                 set
                 {
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        name = emtyty;
-                    }
-                    base.Set(from, name, value);
+                    Set(type, key, value);
                 }
             }
-            public IEnumerable<Type> GetValues(Type type)
+
+        }
+        private class Types : Map<Type>
+        {
+            public IEnumerable<Type> GetTypes(Type type)
             {
                 foreach (var _type in map.Keys)
                 {
                     if (type.IsAssignableFrom(_type))
                     {
-                        foreach (var it in map[type].map.Keys)
+                        foreach (var it in map[_type])
                         {
-                            if (string.IsNullOrEmpty(it))
-                            {
-                                yield return map[type].map[it];
-                            }
+                            yield return GetByindex(it);
                         }
                     }
 
@@ -112,59 +113,24 @@ namespace IFramework.Injection
 
             }
         }
-        private class TypeInstance : Map<Type, string, object>
+        private class Instances : Map<object>
         {
-            public object this[Type from, string name = null]
+            public IEnumerable<object> GetInstances(Type type)
             {
-                get
+                List<int> list;
+                if (map.TryGetValue(type, out list))
                 {
-                    if (string.IsNullOrEmpty(name))
+                    for (int i = list.Count - 1; i >= 0; i--)
                     {
-                        name = emtyty;
-                    }
-                    return base.Get(from, name);
-                }
-                set
-                {
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        name = emtyty;
-                    }
-                    base.Set(from, name, value);
-                }
-            }
-            public IEnumerable<object> GetValues(Type type)
-            {
-                InnerMap map = Getmap(type);
-                if (map != null)
-                {
-                    foreach (var item in map.map)
-                    {
-                        if (!string.IsNullOrEmpty(item.Key))
-                        {
-                            yield return item.Value;
-                        }
-                    }
-                }
-            }
-            public IEnumerable<object> Values
-            {
-                get
-                {
-                    foreach (var _map in map.Values)
-                    {
-                        foreach (var item in _map.map.Values)
-                        {
-                            yield return item;
-                        }
+                        int index = list[i];
+                        var value = containers[index];
+                        yield return value.value;
                     }
                 }
             }
         }
-
-
-        private TypeMapping TypeMap = new TypeMapping();
-        private TypeInstance Instances = new TypeInstance();
+        private Types _type = new Types();
+        private Instances _instance = new Instances();
 
         public void Dispose()
         {
@@ -173,8 +139,8 @@ namespace IFramework.Injection
 
         public void Clear()
         {
-            this.Instances.Clear();
-            this.TypeMap.Clear();
+            this._instance.Clear();
+            this._type.Clear();
         }
 
         public void Inject(object obj)
@@ -206,7 +172,7 @@ namespace IFramework.Injection
 
         public void InjectInstances()
         {
-            foreach (object instance in this.Instances.Values)
+            foreach (object instance in this._instance.Values)
             {
                 this.Inject(instance);
             }
@@ -224,37 +190,21 @@ namespace IFramework.Injection
 
         public void Subscribe(Type source, Type target, string name = null)
         {
-            this.TypeMap[source, name] = target;
+            this._type[source, name] = target;
         }
 
-        public void SubscribeInstance<Type>(Type instance) where Type : class
-        {
-            this.SubscribeInstance<Type>(instance, true);
-        }
-
-        public void SubscribeInstance<Type>(Type instance, bool inject) where Type : class
-        {
-            this.SubscribeInstance<Type>(instance, null, inject);
-        }
-
-        public void SubscribeInstance<Type>(Type instance, string name = "empty", bool inject = true) where Type : class
+        public void SubscribeInstance<Type>(Type instance, string name, bool inject = true) where Type : class
         {
             this.SubscribeInstance(typeof(Type), instance, name, inject);
         }
-
-        public void SubscribeInstance(Type baseType, object instance, bool inject = true)
-        {
-            this.SubscribeInstance(baseType, instance, null, inject);
-        }
-
-        public virtual void SubscribeInstance(Type baseType, object instance, string name = "empty", bool inject = true)
+        public void SubscribeInstance(Type baseType, object instance, string name, bool inject = true)
         {
             Type type = instance.GetType();
             if (type != baseType && !type.IsExtendInterface(baseType) && !type.IsSubclassOf(baseType))
             {
                 throw new Exception(string.Format("{0} is Not {1}", type, baseType));
             }
-            this.Instances[baseType, name] = instance;
+            this._instance[baseType, name] = instance;
             if (inject)
             {
                 this.Inject(instance);
@@ -268,13 +218,13 @@ namespace IFramework.Injection
 
         public object GetValue(Type baseType, string name = null, params object[] constructorArgs)
         {
-            object item = this.Instances[baseType, name];
+            object item = this._instance[baseType, name];
             if (item != null)
             {
                 return item;
             }
 
-            Type map = this.TypeMap[baseType, name];
+            Type map = this._type[baseType, name];
             if (map != null)
             {
                 return this.CreateInstance(map, constructorArgs);
@@ -284,13 +234,13 @@ namespace IFramework.Injection
 
         public IEnumerable<object> GetValues(Type type)
         {
-            var ie = Instances.GetValues(type); ;
+            var ie = _instance.GetInstances(type); ;
             foreach (var item in ie)
             {
                 yield return item;
             }
 
-            var ies = TypeMap.GetValues(type);
+            var ies = _type.GetTypes(type);
             foreach (var item in ies)
             {
                 object obj = Activator.CreateInstance(item);
@@ -307,7 +257,7 @@ namespace IFramework.Injection
             }
         }
 
-        public object CreateInstance(Type type, params object[] ctrArgs)
+        private object CreateInstance(Type type, params object[] ctrArgs)
         {
             if (ctrArgs != null && ctrArgs.Length != 0)
             {
@@ -348,8 +298,5 @@ namespace IFramework.Injection
             this.Inject(obj4);
             return obj4;
         }
-
-
-      
     }
 }

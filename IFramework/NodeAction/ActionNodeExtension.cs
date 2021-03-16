@@ -80,7 +80,7 @@ namespace IFramework.NodeAction
             return self;
         }
 
-        private static T Allocate<T>(FrameworkEnvironment env) where T : ActionNode
+        private static T Allocate<T>(IEnvironment env) where T : ActionNode
         {
             T t = RecyclableObject.Allocate<T>(env);
             while (t.disposed)
@@ -118,7 +118,7 @@ namespace IFramework.NodeAction
         /// <param name="autoRecyle"></param>
         /// <returns></returns>
         [RequireAttribute(typeof(FrameworkEnvironment))]
-        public static ISequenceNode Sequence(this object self, FrameworkEnvironment env, bool autoRecyle = true)
+        public static ISequenceNode Sequence(this object self, IEnvironment env, bool autoRecyle = true)
         {
             SequenceNode node = Allocate<SequenceNode>(env);
             node.Config(autoRecyle);

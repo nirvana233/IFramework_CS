@@ -32,7 +32,7 @@ namespace IFramework.Modules.Message
         /// <typeparam name="T"></typeparam>
         /// <param name="args"></param>
         /// <param name="priority"></param>
-        IMessage Publish<T>(IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common) where T : IMessagePublisher;
+        IMessage Publish<T>(IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common);
         /// <summary>
         /// 发布消息
         /// </summary>
@@ -40,7 +40,7 @@ namespace IFramework.Modules.Message
         /// <param name="t"></param>
         /// <param name="args"></param>
         /// <param name="priority"></param>
-        IMessage Publish<T>(T t, IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common) where T : IMessagePublisher;
+        IMessage Publish<T>(T t, IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common);
         /// <summary>
         /// 发布消息
         /// </summary>
@@ -48,14 +48,14 @@ namespace IFramework.Modules.Message
         /// <param name="t"></param>
         /// <param name="args"></param>
         /// <param name="priority"></param>
-        IMessage PublishByNumber<T>(T t, IEventArgs args, int priority = 512) where T : IMessagePublisher;
+        IMessage PublishByNumber<T>(T t, IEventArgs args, int priority = 512);
         /// <summary>
         /// 发布消息
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="args"></param>
         /// <param name="priority"></param>
-        IMessage PublishByNumber<T>(IEventArgs args, int priority = 512) where T : IMessagePublisher;
+        IMessage PublishByNumber<T>(IEventArgs args, int priority = 512);
         /// <summary>
         /// 发布消息
         /// </summary>
@@ -84,14 +84,14 @@ namespace IFramework.Modules.Message
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool Subscribe<T>(IMessageListener listener) where T : IMessagePublisher;
+        bool Subscribe<T>(IMessageListener listener);
         /// <summary>
         /// 注册
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool Subscribe<T>(MessageListener listener) where T : IMessagePublisher;
+        bool Subscribe<T>(MessageListener listener);
         /// <summary>
         /// 移除
         /// </summary>
@@ -112,13 +112,13 @@ namespace IFramework.Modules.Message
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribe<T>(IMessageListener listener) where T : IMessagePublisher;
+        bool UnSubscribe<T>(IMessageListener listener);
         /// <summary>
         /// 移除
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribe<T>(MessageListener listener) where T : IMessagePublisher;
+        bool UnSubscribe<T>(MessageListener listener);
     }
 }

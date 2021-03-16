@@ -58,24 +58,24 @@ namespace IFramework
         public static string Version;
         public const string Description = FrameworkName;
 
-        public static FrameworkEnvironment env0 { get; private set; }
-        public static FrameworkEnvironment env1 { get; private set; }
-        public static FrameworkEnvironment env2 { get; private set; }
-        public static FrameworkEnvironment env3 { get; private set; }
-        public static FrameworkEnvironment env4 { get; private set; }
-        public static FrameworkEnvironment env5 { get; private set; }
-        public static FrameworkEnvironment env6 { get; private set; }
-        public static FrameworkEnvironment env7 { get; private set; }
-        public static FrameworkEnvironment env8 { get; private set; }
-        public static FrameworkEnvironment env9 { get; private set; }
+        public static IEnvironment env0 { get; private set; }
+        public static IEnvironment env1 { get; private set; }
+        public static IEnvironment env2 { get; private set; }
+        public static IEnvironment env3 { get; private set; }
+        public static IEnvironment env4 { get; private set; }
+        public static IEnvironment env5 { get; private set; }
+        public static IEnvironment env6 { get; private set; }
+        public static IEnvironment env7 { get; private set; }
+        public static IEnvironment env8 { get; private set; }
+        public static IEnvironment env9 { get; private set; }
 
 
-        public static FrameworkEnvironment extra0 { get; private set; }
-        public static FrameworkEnvironment extra1 { get; private set; }
-        public static FrameworkEnvironment extra2 { get; private set; }
-        public static FrameworkEnvironment extra3 { get; private set; }
-        public static FrameworkEnvironment extra4 { get; private set; }
-
+        public static IEnvironment extra0 { get; private set; }
+        public static IEnvironment extra1 { get; private set; }
+        public static IEnvironment extra2 { get; private set; }
+        public static IEnvironment extra3 { get; private set; }
+        public static IEnvironment extra4 { get; private set; }
+        public static IEnvironment current { get { return FrameworkEnvironment.current; } }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         /// <summary>
         /// 实例化环境
@@ -83,7 +83,7 @@ namespace IFramework
         /// <param name="envName">环境名</param>
         /// <param name=" envType">环境类型</param>
         /// <returns>环境</returns>
-        public static FrameworkEnvironment CreateEnv(string envName, EnvironmentType envType)
+        public static IEnvironment CreateEnv(string envName, EnvironmentType envType)
         {
             if (GetEnv(envType)!=null)
             {
@@ -117,7 +117,7 @@ namespace IFramework
         /// </summary>
         /// <param name=" envType">环境类型</param>
         /// <returns></returns>
-        public static FrameworkEnvironment GetEnv(EnvironmentType envType)
+        public static IEnvironment GetEnv(EnvironmentType envType)
         {
             switch (envType)
             {
@@ -149,7 +149,7 @@ namespace IFramework
         /// </summary>
         /// <param name="action">方法</param>
         /// <param name="env">环境</param>
-        public static void BindEnvUpdate(this Action action, FrameworkEnvironment env)
+        public static void BindEnvUpdate(this Action action, IEnvironment env)
         {
             env.BindUpdate(action);
         }
@@ -158,7 +158,7 @@ namespace IFramework
         /// </summary>
         /// <param name="action">方法</param>
         /// <param name="env">环境</param>
-        public static void UnBindEnvUpdate(this Action action, FrameworkEnvironment env)
+        public static void UnBindEnvUpdate(this Action action, IEnvironment env)
         {
             env.UnBindUpdate ( action);
         }
@@ -167,7 +167,7 @@ namespace IFramework
         /// </summary>
         /// <param name="action">方法</param>
         /// <param name="env">环境</param>
-        public static void BindEnvDispose(this Action action, FrameworkEnvironment env)
+        public static void BindEnvDispose(this Action action, IEnvironment env)
         {
             env.BindDispose(action);
         }
@@ -176,7 +176,7 @@ namespace IFramework
         /// </summary>
         /// <param name="action">方法</param>
         /// <param name="env">环境</param>
-        public static void UnBindEnvDispose(this Action action, FrameworkEnvironment env)
+        public static void UnBindEnvDispose(this Action action, IEnvironment env)
         {
             env.UnBindDispose(action);
         }

@@ -20,6 +20,207 @@
             描述
             </summary>
         </member>
+        <member name="T:IFramework.IEnvironment">
+            <summary>
+            环境
+            </summary>
+        </member>
+        <member name="P:IFramework.IEnvironment.container">
+            <summary>
+            数据容器
+            </summary>
+        </member>
+        <member name="P:IFramework.IEnvironment.deltaTime">
+            <summary>
+            每次刷新的时间
+            </summary>
+        </member>
+        <member name="P:IFramework.IEnvironment.envType">
+            <summary>
+            环境类型
+            </summary>
+        </member>
+        <member name="P:IFramework.IEnvironment.inited">
+            <summary>
+            是否初始化完成
+            </summary>
+        </member>
+        <member name="P:IFramework.IEnvironment.modules">
+            <summary>
+            模块容器
+            </summary>
+        </member>
+        <member name="P:IFramework.IEnvironment.name">
+            <summary>
+            名字
+            </summary>
+        </member>
+        <member name="P:IFramework.IEnvironment.timeSinceInit">
+            <summary>
+            初始化-现在时间
+            </summary>
+        </member>
+        <member name="M:IFramework.IEnvironment.BindDispose(System.Action)">
+            <summary>
+            绑定 Dispose
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:IFramework.IEnvironment.BindUpdate(System.Action)">
+            <summary>
+            绑定 Update
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:IFramework.IEnvironment.Init(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            初始化
+            </summary>
+            <param name="types"></param>
+        </member>
+        <member name="M:IFramework.IEnvironment.InitWithAttribute">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="M:IFramework.IEnvironment.UnBindDispose(System.Action)">
+            <summary>
+            解绑 Dispose
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:IFramework.IEnvironment.UnBindUpdate(System.Action)">
+            <summary>
+            解绑 Update
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:IFramework.IEnvironment.Update">
+            <summary>
+            刷新
+            </summary>
+        </member>
+        <member name="M:IFramework.IEnvironment.WaitEnvironmentFrame(System.Action)">
+            <summary>
+            等待环境刷新
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="T:IFramework.Injection.IValuesContainer">
+            <summary>
+            对象注入容器
+            </summary>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.Subscribe``1(System.String)">
+            <summary>
+            注入类型
+            </summary>
+            <typeparam name="Type"></typeparam>
+            <param name="name"></param>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.Subscribe``2(System.String)">
+            <summary>
+            注入类型
+            </summary>
+            <typeparam name="BaseType"></typeparam>
+            <typeparam name="Type"></typeparam>
+            <param name="name"></param>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.Subscribe(System.Type,System.Type,System.String)">
+            <summary>
+            注入类型
+            </summary>
+            <param name="source"></param>
+            <param name="target"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.SubscribeInstance``1(``0,System.String,System.Boolean)">
+            <summary>
+            注入实例
+            </summary>
+            <typeparam name="Type"></typeparam>
+            <param name="instance"></param>
+            <param name="name"></param>
+            <param name="inject"></param>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.SubscribeInstance(System.Type,System.Object,System.String,System.Boolean)">
+            <summary>
+            注入实例
+            </summary>
+            <param name="baseType"></param>
+            <param name="instance"></param>
+            <param name="name"></param>
+            <param name="inject"></param>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.GetValue``1(System.String,System.Object[])">
+            <summary>
+            获取值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.GetValue(System.Type,System.String,System.Object[])">
+            <summary>
+            获取值
+            </summary>
+            <param name="baseType"></param>
+            <param name="name"></param>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.GetValues(System.Type)">
+            <summary>
+            获取所有值
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.GetValues``1">
+            <summary>
+            获取所有值
+            </summary>
+            <typeparam name="Type"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.Inject(System.Object)">
+            <summary>
+            注入一个对象
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.InjectInstances">
+            <summary>
+            为所有容器内实例注入
+            </summary>
+        </member>
+        <member name="M:IFramework.Injection.IValuesContainer.Clear">
+            <summary>
+            清除所有
+            </summary>
+        </member>
+        <member name="T:IFramework.Injection.InjectAttribute">
+            <summary>
+            注入标记
+            </summary>
+        </member>
+        <member name="P:IFramework.Injection.InjectAttribute.name">
+            <summary>
+            注入名
+            </summary>
+        </member>
+        <member name="M:IFramework.Injection.InjectAttribute.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.Injection.InjectAttribute.#ctor(System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="name"></param>
+        </member>
         <member name="T:IFramework.Modules.Message.IMessage">
             <summary>
             消息
@@ -410,11 +611,6 @@
             <param name="listener"></param>
             <returns></returns>
         </member>
-        <member name="T:IFramework.Modules.Message.IMessagePublisher">
-            <summary>
-            消息发送者
-            </summary>
-        </member>
         <member name="T:IFramework.Modules.Message.MessageListener">
             <summary>
             消息监听
@@ -504,11 +700,6 @@
         <member name="P:IFramework.Modules.IFrameworkModuleContainer.chunck">
             <summary>
             组
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.IFrameworkModuleContainer.env">
-            <summary>
-            环境
             </summary>
         </member>
         <member name="M:IFramework.Modules.IFrameworkModuleContainer.CreateModule(System.Type,System.String)">
@@ -918,7 +1109,7 @@
             <param name="routine">迭代器</param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleEx.StartCoroutine(System.Object,System.Collections.IEnumerator,IFramework.FrameworkEnvironment)">
+        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleEx.StartCoroutine(System.Object,System.Collections.IEnumerator,IFramework.IEnvironment)">
             <summary>
             开启一个携程
             </summary>
@@ -1757,11 +1948,6 @@
             释放
             </summary>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.Update">
-            <summary>
-            刷新
-            </summary>
-        </member>
         <member name="T:IFramework.Modules.Fsm.CompareType">
             <summary>
             比较方式
@@ -2491,6 +2677,11 @@
             环境
             </summary>
         </member>
+        <member name="T:IFramework.IContainer">
+            <summary>
+            容器
+            </summary>
+        </member>
         <member name="T:IFramework.IFrameworkObject">
             <summary>
             积累接口
@@ -2593,13 +2784,13 @@
             模型
             </summary>
         </member>
-        <member name="T:IFramework.IValueBox`1">
+        <member name="T:IFramework.IValueContainer`1">
             <summary>
             数据容器
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:IFramework.IValueBox`1.value">
+        <member name="P:IFramework.IValueContainer`1.value">
             <summary>
             数据
             </summary>
@@ -3429,121 +3620,6 @@
         <member name="M:IFramework.FrameworkObject.Dispose">
             <summary>
             释放
-            </summary>
-        </member>
-        <member name="T:IFramework.Injection.InjectAttribute">
-            <summary>
-            注入标记
-            </summary>
-        </member>
-        <member name="P:IFramework.Injection.InjectAttribute.name">
-            <summary>
-            注入名
-            </summary>
-        </member>
-        <member name="M:IFramework.Injection.InjectAttribute.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.Injection.InjectAttribute.#ctor(System.String)">
-            <summary>
-            ctor
-            </summary>
-            <param name="name"></param>
-        </member>
-        <member name="T:IFramework.Injection.IFrameworkContainer">
-            <summary>
-            对象注入容器
-            </summary>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.Subscribe``1(System.String)">
-            <summary>
-            注入类型
-            </summary>
-            <typeparam name="Type"></typeparam>
-            <param name="name"></param>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.Subscribe``2(System.String)">
-            <summary>
-            注入类型
-            </summary>
-            <typeparam name="BaseType"></typeparam>
-            <typeparam name="Type"></typeparam>
-            <param name="name"></param>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.Subscribe(System.Type,System.Type,System.String)">
-            <summary>
-            注入类型
-            </summary>
-            <param name="source"></param>
-            <param name="target"></param>
-            <param name="name"></param>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.SubscribeInstance``1(``0,System.String,System.Boolean)">
-            <summary>
-            注入实例
-            </summary>
-            <typeparam name="Type"></typeparam>
-            <param name="instance"></param>
-            <param name="name"></param>
-            <param name="inject"></param>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.SubscribeInstance(System.Type,System.Object,System.String,System.Boolean)">
-            <summary>
-            注入实例
-            </summary>
-            <param name="baseType"></param>
-            <param name="instance"></param>
-            <param name="name"></param>
-            <param name="inject"></param>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.GetValue``1(System.String,System.Object[])">
-            <summary>
-            获取值
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="name"></param>
-            <param name="args"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.GetValue(System.Type,System.String,System.Object[])">
-            <summary>
-            获取值
-            </summary>
-            <param name="baseType"></param>
-            <param name="name"></param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.GetValues(System.Type)">
-            <summary>
-            获取所有值
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.GetValues``1">
-            <summary>
-            获取所有值
-            </summary>
-            <typeparam name="Type"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.Inject(System.Object)">
-            <summary>
-            注入一个对象
-            </summary>
-            <param name="obj"></param>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.InjectInstances">
-            <summary>
-            为所有容器内实例注入
-            </summary>
-        </member>
-        <member name="M:IFramework.Injection.IFrameworkContainer.Clear">
-            <summary>
-            清除所有
             </summary>
         </member>
         <member name="T:IFramework.Net.OnReceivedHandler">
@@ -4725,7 +4801,7 @@
             <param name="autoRecyle"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.NodeAction.ActionNodeExtension.Sequence(System.Object,IFramework.FrameworkEnvironment,System.Boolean)">
+        <member name="M:IFramework.NodeAction.ActionNodeExtension.Sequence(System.Object,IFramework.IEnvironment,System.Boolean)">
             <summary>
             开启顺序节点
             </summary>
@@ -6545,7 +6621,7 @@
             <param name=" envType"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.RecyclableObject.Allocate(System.Type,IFramework.FrameworkEnvironment)">
+        <member name="M:IFramework.RecyclableObject.Allocate(System.Type,IFramework.IEnvironment)">
             <summary>
             分配一个实例
             </summary>
@@ -6561,7 +6637,7 @@
             <param name=" envType"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.RecyclableObject.Allocate``1(IFramework.FrameworkEnvironment)">
+        <member name="M:IFramework.RecyclableObject.Allocate``1(IFramework.IEnvironment)">
             <summary>
             分配一个实例
             </summary>
@@ -6569,20 +6645,20 @@
             <param name="env"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.RecyclableObject.RecyleByGuid(IFramework.FrameworkEnvironment,System.Guid)">
+        <member name="M:IFramework.RecyclableObject.RecyleByGuid(IFramework.IEnvironment,System.Guid)">
             <summary>
             通过唯一id回收对象
             </summary>
             <param name="env"></param>
             <param name="guid"></param>
         </member>
-        <member name="M:IFramework.RecyclableObject.RecyleAll(IFramework.FrameworkEnvironment)">
+        <member name="M:IFramework.RecyclableObject.RecyleAll(IFramework.IEnvironment)">
             <summary>
             回收所有实例
             </summary>
             <param name="env"></param>
         </member>
-        <member name="M:IFramework.RecyclableObject.GetFromMemory(IFramework.FrameworkEnvironment,System.Guid,IFramework.RecyclableObject@)">
+        <member name="M:IFramework.RecyclableObject.GetFromMemory(IFramework.IEnvironment,System.Guid,IFramework.RecyclableObject@)">
             <summary>
             获取没有回收的实例
             </summary>
@@ -6678,28 +6754,28 @@
             <param name=" envType">环境类型</param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Framework.BindEnvUpdate(System.Action,IFramework.FrameworkEnvironment)">
+        <member name="M:IFramework.Framework.BindEnvUpdate(System.Action,IFramework.IEnvironment)">
             <summary>
             绑顶 方法 到一个环境的 Update
             </summary>
             <param name="action">方法</param>
             <param name="env">环境</param>
         </member>
-        <member name="M:IFramework.Framework.UnBindEnvUpdate(System.Action,IFramework.FrameworkEnvironment)">
+        <member name="M:IFramework.Framework.UnBindEnvUpdate(System.Action,IFramework.IEnvironment)">
             <summary>
             解除绑顶 方法 到一个环境的 Update
             </summary>
             <param name="action">方法</param>
             <param name="env">环境</param>
         </member>
-        <member name="M:IFramework.Framework.BindEnvDispose(System.Action,IFramework.FrameworkEnvironment)">
+        <member name="M:IFramework.Framework.BindEnvDispose(System.Action,IFramework.IEnvironment)">
             <summary>
             绑顶 方法 到一个环境的 Dispose
             </summary>
             <param name="action">方法</param>
             <param name="env">环境</param>
         </member>
-        <member name="M:IFramework.Framework.UnBindEnvDispose(System.Action,IFramework.FrameworkEnvironment)">
+        <member name="M:IFramework.Framework.UnBindEnvDispose(System.Action,IFramework.IEnvironment)">
             <summary>
             解除绑顶 方法 到一个环境的 Dispose
             </summary>

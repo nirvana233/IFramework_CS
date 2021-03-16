@@ -4,9 +4,9 @@ using IFramework.Modules.Message;
 
 namespace Example
 {
-    public class MessageExample : Test, IMessagePublisher
+    public class MessageExample : Test
     {
-        public interface IPub : IMessagePublisher { }
+        public interface IPub { }
         public class Pub : IPub { }
         public class Listenner : IMessageListener
         {

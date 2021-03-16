@@ -6,7 +6,7 @@ namespace IFramework.Injection
     /// <summary>
     /// 对象注入容器
     /// </summary>
-    public interface IFrameworkContainer : IDisposable
+    public interface IValuesContainer :IContainer, IDisposable
     {
         /// <summary>
         /// 注入类型
