@@ -46,7 +46,7 @@ namespace IFramework.Modules.ECS
         /// </summary>
         protected virtual void OnModuleDispose() { }
 
-        void IExcuteSystem.Excute()
+        void ICommand.Excute()
         {
             if (_moduleDispose) return;
             var _Entitys = GetEntitys().GetEnumerator();

@@ -12,11 +12,7 @@ namespace IFramework
     /// <summary>
     /// 框架运行环境
     /// </summary>
-    [ScriptVersionAttribute(29)]
-    [VersionUpdateAttribute(21, "替换可回收对象池子类型")]
-    [VersionUpdateAttribute(22, "调整释放时候的成员顺序")]
-    [VersionUpdateAttribute(23, "增加数据绑定器")]
-    class FrameworkEnvironment : FrameworkObject, IEnvironment
+    class FrameworkEnvironment : DisposableObject, IEnvironment
     {
         private bool _inited;
         private FrameworkModules _modules;
@@ -28,10 +24,6 @@ namespace IFramework
         private event Action onDispose;
         private static LockParam _envsetlock = new LockParam();
         private static FrameworkEnvironment _current;
-        /// <summary>
-        /// 名字
-        /// </summary>
-        public string name { get; set; }
         /// <summary>
         /// 环境是否已经初始化
         /// </summary>
@@ -91,11 +83,9 @@ namespace IFramework
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="name"></param>
         /// <param name="envType"></param>
-        public FrameworkEnvironment(string name, EnvironmentType envType)
+        public FrameworkEnvironment(EnvironmentType envType)
         {
-            this.name = name;
             this._envType = envType;
         }
 
@@ -107,7 +97,6 @@ namespace IFramework
         {
             if (_inited) return;
             current = this;
-            _loom = LoomModule.CreatInstance<LoomModule>(this.name, this.name);
             container = new ValuesContainer();
             _modules = new FrameworkModules(this);
             cycleCollection = new RecyclableObjectCollection();
@@ -120,6 +109,7 @@ namespace IFramework
                         RuntimeHelpers.RunClassConstructor(type.TypeHandle);
                 }
             }
+            _loom = modules.CreateModule<LoomModule>("");
             deltaTime = TimeSpan.Zero;
             _inited = true;
             sw_delta = new Stopwatch();
@@ -155,10 +145,8 @@ namespace IFramework
             (cycleCollection as RecyclableObjectCollection).Dispose();
             container.Dispose();
             if (onDispose != null) onDispose();
-            _loom.Dispose();
             sw_init.Stop();
             sw_delta.Stop();
-            _loom = null;
             container = null;
             sw_delta = null;
             sw_init = null;
@@ -176,7 +164,6 @@ namespace IFramework
             sw_delta.Reset();
             sw_delta.Start();
             if (update != null) update();
-            _loom.Update();
             sw_delta.Stop();
             deltaTime = sw_delta.Elapsed;
         }
@@ -187,6 +174,7 @@ namespace IFramework
         /// <param name="action"></param>
         public void WaitEnvironmentFrame(Action action)
         {
+            if (disposed) return;
             _loom.RunDelay(action);
         }
 
@@ -196,6 +184,7 @@ namespace IFramework
         /// <param name="action"></param>
         public void BindUpdate(Action action)
         {
+            if (disposed) return;
             update += action;
         }
         /// <summary>
@@ -204,6 +193,7 @@ namespace IFramework
         /// <param name="action"></param>
         public void UnBindUpdate(Action action)
         {
+            if (disposed) return;
             update -= action;
         }
         /// <summary>
@@ -212,6 +202,7 @@ namespace IFramework
         /// <param name="action"></param>
         public void BindDispose(Action action)
         {
+            if (disposed) return;
             onDispose += action;
         }
         /// <summary>
@@ -220,6 +211,7 @@ namespace IFramework
         /// <param name="action"></param>
         public void UnBindDispose(Action action)
         {
+            if (disposed) return;
             onDispose -= action;
         }
     }

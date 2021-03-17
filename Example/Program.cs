@@ -4,7 +4,7 @@ using IFramework;
 
 namespace Example
 {
-    public abstract class Test : FrameworkObject
+    public abstract class Test : DisposableObject
     {
 
         public Test()
@@ -22,7 +22,6 @@ namespace Example
         {
             Stop();
             Framework.UnBindEnvUpdate(Update, EnvironmentType.Ev0);
-            base.OnDispose();
         }
     }
 
@@ -35,7 +34,7 @@ namespace Example
             timer.Start();
             Log.L("按键盘 esc 关闭测试环境 ");
             Log.L("开启  0 号环境 测试 ");
-            Framework.CreateEnv("", EnvironmentType.Ev0).InitWithAttribute();
+            Framework.CreateEnv( EnvironmentType.Ev0).InitWithAttribute();
 
             TestScripts();
             while (Console.ReadKey().Key != ConsoleKey.Escape) { }

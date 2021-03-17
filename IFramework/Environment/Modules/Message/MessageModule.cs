@@ -94,6 +94,7 @@ namespace IFramework.Modules.Message
 
         private class Message : StablePriorityQueueNode, IMessage
         {
+
             private int _code = 0;
             private Type _type;
             private IEventArgs _args;
@@ -115,10 +116,7 @@ namespace IFramework.Modules.Message
                 _module = module;
             }
 
-
-
-
-
+          
 
             private void Reset()
             {
@@ -209,6 +207,8 @@ namespace IFramework.Modules.Message
                 Reset();
                 _state = MessageState.Rest;
             }
+
+ 
         }
 
         private class MessagePool : ObjectPool<Message>

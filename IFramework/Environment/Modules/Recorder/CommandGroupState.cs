@@ -15,7 +15,7 @@ namespace IFramework.Modules.Recorder
         /// <summary>
         /// 执行
         /// </summary>
-        public override void Redo()
+        protected override void OnRedo()
         {
             for (int i = 0; i < redo.Count; i++)
             {
@@ -25,7 +25,7 @@ namespace IFramework.Modules.Recorder
         /// <summary>
         /// 撤回
         /// </summary>
-        public override void Undo()
+        protected override void OnUndo()
         {
             for (int i = 0; i < redo.Count; i++)
             {

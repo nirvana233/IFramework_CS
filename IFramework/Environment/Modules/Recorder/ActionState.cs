@@ -15,14 +15,14 @@ namespace IFramework.Modules.Recorder
         /// <summary>
         /// 执行
         /// </summary>
-        public override void Redo()
+        protected override void OnRedo()
         {
             redo();
         }
         /// <summary>
         /// 撤回
         /// </summary>
-        public override void Undo()
+        protected override void OnUndo()
         {
             undo();
         }

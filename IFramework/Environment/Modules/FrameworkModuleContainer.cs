@@ -6,23 +6,15 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块容器
     /// </summary>
-    internal class FrameworkModuleContainer : FrameworkObject, IFrameworkModuleContainer,IBelongToEnvironment
+    internal class FrameworkModuleContainer : DisposableObject, IFrameworkModuleContainer,IBelongToEnvironment
     {
-        private string _chunck;
         private bool _binded;
         private IEnvironment _env;
-        /// <summary>
-        /// 代码块
-        /// </summary>
-        public string chunck { get { return _chunck; } }
         /// <summary>
         /// 环境
         /// </summary>
         public IEnvironment env { get { return _env; } }
-        /// <summary>
-        /// 是否绑定环境
-        /// </summary>
-        public bool binded { get { return _binded; } }
+
         private LockParam _lock=new LockParam();
         private Dictionary<Type, List<FrameworkModule>> moudle_dic;
         private List<UpdateFrameworkModule> update_list;
@@ -38,7 +30,7 @@ namespace IFramework.Modules
         {
             using (new LockWait(ref _lock))
             {
-                var mou = FrameworkModule.CreatInstance(type, chunck, name);
+                var mou = FrameworkModule.CreatInstance(type, name);
                 mou.Bind(this);
                 return mou;
             }
@@ -65,7 +57,7 @@ namespace IFramework.Modules
             using (new LockWait(ref _lock))
             {
                 if (string.IsNullOrEmpty(name))
-                    name = string.Format("{0}.{1}", _chunck, type.Name);
+                    name = type.Name;
                 if (!moudle_dic.ContainsKey(type)) return null;
                 return moudle_dic[type].Find((m) => { return m.name == name; });
             }
@@ -112,14 +104,12 @@ namespace IFramework.Modules
         /// <summary>
         /// Ctor
         /// </summary>
-        /// <param name="chunck"></param>
         /// <param name="env"></param>
         /// <param name="bind"></param>
-        public FrameworkModuleContainer(string chunck, FrameworkEnvironment env, bool bind = true)
+        public FrameworkModuleContainer( FrameworkEnvironment env, bool bind = true)
         {
             using (new LockWait(ref _lock))
             {
-                _chunck = chunck;
                 this._env = env;
                 update_list = new List<UpdateFrameworkModule>();
                 moudle_dic = new Dictionary<Type, List<FrameworkModule>>();
@@ -134,7 +124,7 @@ namespace IFramework.Modules
         {
             if (_binded)
             {
-                Log.E(string.Format("Have Bind Container Type : {0} chunck : {1}", GetType(), chunck));
+                Log.E(string.Format("Have Bind Container Type : {0}", GetType()));
                 return;
             }
             _binded = true;

@@ -3,17 +3,13 @@
 namespace IFramework
 {
     /// <summary>
-    /// 积累接口
+    /// 唯一id
     /// </summary>
-    public interface IFrameworkObject:IEventArgs
+    public interface IUniqueIDObject
     {
         /// <summary>
         /// 唯一id
         /// </summary>
         Guid guid { get; }
-        /// <summary>
-        /// 是否释放
-        /// </summary>
-        bool disposed { get; }
     }
 }

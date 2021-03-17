@@ -1,19 +1,11 @@
-﻿using System;
-
-namespace IFramework
+﻿namespace IFramework
 {
     /// <summary>
     /// 基类
     /// </summary>
-    public class FrameworkObject : IDisposable, IFrameworkObject
+    public abstract class DisposableObject :  IDisposableObject
     {
         private bool _disposed;
-        private Guid _guid = Guid.NewGuid();
-        private string _name;
-        /// <summary>
-        /// 唯一id
-        /// </summary>
-        public Guid guid { get { return _guid; } }
         /// <summary>
         /// 是否已经释放
         /// </summary>
@@ -22,16 +14,14 @@ namespace IFramework
         /// <summary>
         /// 释放时
         /// </summary>
-        protected virtual void OnDispose() { }
+        protected abstract void OnDispose();
         /// <summary>
         /// 释放
         /// </summary>
         public virtual void Dispose()
         {
+            if (_disposed) return;
             OnDispose();
-
-            _name = string.Empty;
-            _guid = Guid.Empty;
             _disposed = true;
         }
 

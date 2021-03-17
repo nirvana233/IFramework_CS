@@ -12,7 +12,7 @@ namespace IFramework
     /// </summary>
     [RequireAttribute(typeof(FrameworkEnvironment))]
     [ScriptVersionAttribute(10)]
-    [VersionUpdateAttribute(8,"增加环境数量")]
+    [VersionUpdateAttribute(8, "增加环境数量")]
     [VersionUpdateAttribute(10, "改变环境为属性")]
     public static class Framework
     {
@@ -80,12 +80,11 @@ namespace IFramework
         /// <summary>
         /// 实例化环境
         /// </summary>
-        /// <param name="envName">环境名</param>
         /// <param name=" envType">环境类型</param>
         /// <returns>环境</returns>
-        public static IEnvironment CreateEnv(string envName, EnvironmentType envType)
+        public static IEnvironment CreateEnv(EnvironmentType envType)
         {
-            if (GetEnv(envType)!=null)
+            if (GetEnv(envType) != null)
             {
                 Log.E(string.Format("The EnvironmentType {0} is not null ", envType));
                 return GetEnv(envType);
@@ -93,21 +92,21 @@ namespace IFramework
 
             switch (envType)
             {
-                case EnvironmentType.Ev0: env0 = new FrameworkEnvironment(envName, envType); return env0;
-                case EnvironmentType.Ev1: env1 = new FrameworkEnvironment(envName, envType); return env1;
-                case EnvironmentType.Ev2: env2 = new FrameworkEnvironment(envName, envType); return env2;
-                case EnvironmentType.Ev3: env3 = new FrameworkEnvironment(envName, envType); return env3;
-                case EnvironmentType.Ev4: env4 = new FrameworkEnvironment(envName, envType); return env4;
-                case EnvironmentType.Ev5: env5 = new FrameworkEnvironment(envName, envType); return env5;
-                case EnvironmentType.Ev6: env6 = new FrameworkEnvironment(envName, envType); return env6;
-                case EnvironmentType.Ev7: env7 = new FrameworkEnvironment(envName, envType); return env7;
-                case EnvironmentType.Ev8: env8 = new FrameworkEnvironment(envName, envType); return env8;
-                case EnvironmentType.Ev9: env9 = new FrameworkEnvironment(envName, envType); return env9;
-                case EnvironmentType.Extra0: extra0 = new FrameworkEnvironment(envName, envType); return extra0;
-                case EnvironmentType.Extra1: extra1 = new FrameworkEnvironment(envName, envType); return extra1;
-                case EnvironmentType.Extra2: extra2 = new FrameworkEnvironment(envName, envType); return extra2;
-                case EnvironmentType.Extra3: extra3 = new FrameworkEnvironment(envName, envType); return extra3;
-                case EnvironmentType.Extra4: extra4 = new FrameworkEnvironment(envName, envType); return extra4;
+                case EnvironmentType.Ev0: env0 = new FrameworkEnvironment(envType); return env0;
+                case EnvironmentType.Ev1: env1 = new FrameworkEnvironment(envType); return env1;
+                case EnvironmentType.Ev2: env2 = new FrameworkEnvironment(envType); return env2;
+                case EnvironmentType.Ev3: env3 = new FrameworkEnvironment(envType); return env3;
+                case EnvironmentType.Ev4: env4 = new FrameworkEnvironment(envType); return env4;
+                case EnvironmentType.Ev5: env5 = new FrameworkEnvironment(envType); return env5;
+                case EnvironmentType.Ev6: env6 = new FrameworkEnvironment(envType); return env6;
+                case EnvironmentType.Ev7: env7 = new FrameworkEnvironment(envType); return env7;
+                case EnvironmentType.Ev8: env8 = new FrameworkEnvironment(envType); return env8;
+                case EnvironmentType.Ev9: env9 = new FrameworkEnvironment(envType); return env9;
+                case EnvironmentType.Extra0: extra0 = new FrameworkEnvironment(envType); return extra0;
+                case EnvironmentType.Extra1: extra1 = new FrameworkEnvironment(envType); return extra1;
+                case EnvironmentType.Extra2: extra2 = new FrameworkEnvironment(envType); return extra2;
+                case EnvironmentType.Extra3: extra3 = new FrameworkEnvironment(envType); return extra3;
+                case EnvironmentType.Extra4: extra4 = new FrameworkEnvironment(envType); return extra4;
                 default:
                     throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ", envType));
             }
@@ -160,7 +159,7 @@ namespace IFramework
         /// <param name="env">环境</param>
         public static void UnBindEnvUpdate(this Action action, IEnvironment env)
         {
-            env.UnBindUpdate ( action);
+            env.UnBindUpdate(action);
         }
         /// <summary>
         /// 绑顶 方法 到一个环境的 Dispose

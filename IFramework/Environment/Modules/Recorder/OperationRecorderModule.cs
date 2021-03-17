@@ -11,9 +11,9 @@ namespace IFramework.Modules.Recorder
         private class StatePool : BaseTypePool<BaseState> { }
         private class HeadState : BaseState
         {
-            public override void Redo() { }
+            protected override void OnRedo() { }
 
-            public override void Undo() { }
+            protected override void OnUndo() { }
 
             protected override void OnReset() { }
         }

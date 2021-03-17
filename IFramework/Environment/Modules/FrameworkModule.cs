@@ -6,7 +6,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块
     /// </summary>
-    public abstract class FrameworkModule : FrameworkObject
+    public abstract class FrameworkModule : DisposableObject
     {
         /// <summary>
         /// 阻止 New
@@ -16,26 +16,18 @@ namespace IFramework.Modules
         /// 创建实例
         /// </summary>
         /// <param name="type">模块类型</param>
-        /// <param name="chunck">代码块</param>
         /// <param name="name">模块名称</param>
         /// <returns></returns>
-        public static FrameworkModule CreatInstance(Type type, string chunck,string name="")
+        public static FrameworkModule CreatInstance(Type type,string name="")
         {
             FrameworkModule moudle = Activator.CreateInstance(type,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                 null, null, null) as FrameworkModule;
-
+           
             if (moudle != null)
             {
                 moudle._binded = false;
-                //moudle._disposed = false;
-                moudle._chunck = chunck;
-                moudle._moudleType = moudle.GetType().Name;
-                if (string.IsNullOrEmpty(name))
-                    moudle.name = string.Format("{0}.{1}", moudle._chunck, moudle._moudleType);
-                else
-                    moudle.name = name;
-
+                moudle.name = name;
                 moudle.Awake();
                 if (moudle is UpdateFrameworkModule)
                 {
@@ -50,12 +42,11 @@ namespace IFramework.Modules
         /// <summary>
         /// 创建实例
         /// </summary>
-        /// <param name="chunck">代码块</param>
         /// <param name="name">模块名称</param>
         /// <returns></returns>
-        public static T CreatInstance<T>(string chunck ,string name="") where T : FrameworkModule
+        public static T CreatInstance<T>(string name="") where T : FrameworkModule
         {
-            return CreatInstance(typeof(T), chunck,name) as T;
+            return CreatInstance(typeof(T), name) as T;
         }
 
         /// <summary>
@@ -66,15 +57,13 @@ namespace IFramework.Modules
         {
             if (this._container!=null)
             {
-                Log.E(string.Format("Have Bind One Container chunck: {0},You Can UnBind First", this._container.chunck));
+                Log.E(string.Format("Have Bind One Container chunck: You Can UnBind First"));
                 return;
             }
 
             if ((container as FrameworkModuleContainer).SubscribeModule(this))
             {
                 this._binded = true;
-                this._chunck = container.chunck;
-                //this._name = string.Format("{0}.{1}", this._chunck, this._moudleType);
                 this._container = container;
             }
             
@@ -97,22 +86,13 @@ namespace IFramework.Modules
         }
 
         private IFrameworkModuleContainer _container;
-        private string _chunck;
-        private string _moudleType;
         private bool _binded;
 
         /// <summary>
         /// 优先级（越大释放越早释放）
         /// </summary>
         public abstract int priority { get; }
-        /// <summary>
-        /// 模块类型
-        /// </summary>
-        public string moudeType { get { return _moudleType; } }
-        /// <summary>
-        /// 代码块
-        /// </summary>
-        public string chunck { get { return _chunck; } }
+
         /// <summary>
         /// 是否绑定了
         /// </summary>

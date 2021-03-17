@@ -8,15 +8,8 @@
         internal BaseState front;
         internal BaseState next;
         internal OperationRecorderModule recorder;
-        /// <summary>
-        /// 执行
-        /// </summary>
-        public abstract void Redo();
-        /// <summary>
-        /// 撤回
-        /// </summary>
-        public abstract void Undo();
-
+        internal void Redo() { OnRedo(); }
+        internal void Undo() { OnUndo(); }
         internal virtual void Reset()
         {
             front = null;
@@ -24,6 +17,16 @@
             recorder = null;
             OnReset();
         }
+
+
+        /// <summary>
+        /// 执行
+        /// </summary>
+        protected abstract void OnRedo();
+        /// <summary>
+        /// 撤回
+        /// </summary>
+        protected abstract void OnUndo();
         /// <summary>
         /// 重置数据
         /// </summary>

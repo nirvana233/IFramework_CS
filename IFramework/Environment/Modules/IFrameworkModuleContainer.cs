@@ -6,16 +6,7 @@ namespace IFramework.Modules
     /// 模块容器
     /// </summary>
     public interface IFrameworkModuleContainer:IContainer,IBelongToEnvironment
-    {
-        /// <summary>
-        /// 是否绑定
-        /// </summary>
-        bool binded { get; }
-        /// <summary>
-        /// 组
-        /// </summary>
-        string chunck { get; }
- 
+    { 
         /// <summary>
         /// 创建模块
         /// </summary>

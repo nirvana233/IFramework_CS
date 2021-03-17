@@ -6,7 +6,7 @@ namespace IFramework.FieldExtend
     /// <summary>
     /// 可以扩展字段的对象
     /// </summary>
-    public class ExtensibleObject : FrameworkObject
+    public class ExtensibleObject : DisposableObject
     {
         private ValueMap _map = new ValueMap();
         private Dictionary<string, Type> _pairs = new Dictionary<string, Type>();

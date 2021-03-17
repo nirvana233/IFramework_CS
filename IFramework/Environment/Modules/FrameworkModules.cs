@@ -26,7 +26,7 @@ namespace IFramework.Modules
 
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
-        internal FrameworkModules(FrameworkEnvironment env) : base("Framework", env, true)
+        internal FrameworkModules(FrameworkEnvironment env) : base(env, true)
         {
 
         }

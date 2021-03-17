@@ -10,7 +10,7 @@ namespace IFramework
     /// </summary>
     [ScriptVersion(20)]
     [VersionUpdate(21, "改为 抽象类")]
-    public abstract class ObservableObject : FrameworkObject
+    public abstract class ObservableObject : DisposableObject
     {
         private Dictionary<string, Action> _callmap;
         /// <summary>

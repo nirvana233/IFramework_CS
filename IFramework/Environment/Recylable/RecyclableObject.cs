@@ -8,9 +8,8 @@ namespace IFramework
     /// </summary>
     [ScriptVersionAttribute(20)]
     [VersionUpdateAttribute(20, "增加未回收实例的控制")]
-    public abstract class RecyclableObject : FrameworkObject, IRecyclable, IBelongToEnvironment
+    public abstract class RecyclableObject : DisposableObject, IRecyclable, IBelongToEnvironment, IUniqueIDObject
     {
-
         private static RecyclableObjectCollection GetCollection(IEnvironment env)
         {
             return (env as FrameworkEnvironment).cycleCollection;
@@ -131,6 +130,8 @@ namespace IFramework
         private bool _recyled;
         private bool _datadirty;
         private IEnvironment _env;
+        private Guid _guid;
+
         /// <summary>
         /// 是否被回收
         /// </summary>
@@ -143,6 +144,10 @@ namespace IFramework
         /// 当前所处环境
         /// </summary>
         public IEnvironment env { get { return _env; } internal set { _env = value; } }
+        /// <summary>
+        /// 唯一 id
+        /// </summary>
+        public Guid guid { get { return _guid; } }
 
         /// <summary>
         /// 回收
@@ -188,5 +193,12 @@ namespace IFramework
         /// 数据重置时
         /// </summary>
         protected abstract void OnDataReset();
+        /// <summary>
+        /// 释放
+        /// </summary>
+        protected override void OnDispose()
+        {
+            _guid = Guid.Empty;
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace IFramework.Injection
                 containers = new List<Value>();
                 map = new Dictionary<Type, List<int>>();
             }
-            private void Set(Type super, string key, T t)
+            public void Set(Type super, string key, T t)
             {
                 List<int> list;
                 if (!map.TryGetValue(super, out list))
@@ -44,7 +44,7 @@ namespace IFramework.Injection
                 list.Add(containers.Count);
                 containers.Add(new Value() { key = key, value = t });
             }
-            private T Get(Type super, string key)
+            public T Get(Type super, string key)
             {
                 List<int> list;
                 if (map.TryGetValue(super, out list))
@@ -82,18 +82,6 @@ namespace IFramework.Injection
                     }
                 }
             }
-            public T this[Type type, string key = null]
-            {
-                get
-                {
-                    return Get(type, key);
-                }
-                set
-                {
-                    Set(type, key, value);
-                }
-            }
-
         }
         private class Types : Map<Type>
         {
@@ -190,7 +178,7 @@ namespace IFramework.Injection
 
         public void Subscribe(Type source, Type target, string name = null)
         {
-            this._type[source, name] = target;
+            this._type.Set(source, name, target);
         }
 
         public void SubscribeInstance<Type>(Type instance, string name, bool inject = true) where Type : class
@@ -204,7 +192,7 @@ namespace IFramework.Injection
             {
                 throw new Exception(string.Format("{0} is Not {1}", type, baseType));
             }
-            this._instance[baseType, name] = instance;
+            this._instance.Set(baseType, name, instance);
             if (inject)
             {
                 this.Inject(instance);
@@ -218,13 +206,13 @@ namespace IFramework.Injection
 
         public object GetValue(Type baseType, string name = null, params object[] constructorArgs)
         {
-            object item = this._instance[baseType, name];
+            object item = _instance.Get(baseType, name);
             if (item != null)
             {
                 return item;
             }
 
-            Type map = this._type[baseType, name];
+            Type map = this._type.Get(baseType, name);
             if (map != null)
             {
                 return this.CreateInstance(map, constructorArgs);

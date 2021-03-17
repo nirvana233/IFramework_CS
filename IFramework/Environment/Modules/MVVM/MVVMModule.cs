@@ -16,7 +16,7 @@ namespace IFramework.Modules.MVVM
 
         protected override void Awake()
         {
-            _message = CreatInstance<MessageModule>(chunck, "");
+            _message = CreatInstance<MessageModule>("");
             _groupmap = new Dictionary<string, MVVMGroup>();
         }
         protected override void OnDispose()
@@ -90,7 +90,7 @@ namespace IFramework.Modules.MVVM
         /// </summary>
         protected override void OnUpdate()
         {
-           ( _message as UpdateFrameworkModule).Update();
+            (_message as UpdateFrameworkModule).Update();
         }
     }
 }

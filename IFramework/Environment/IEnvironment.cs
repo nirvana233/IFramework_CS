@@ -8,6 +8,11 @@ namespace IFramework
     /// <summary>
     /// 环境
     /// </summary>
+    [ScriptVersionAttribute(35)]
+    [VersionUpdateAttribute(21, "替换可回收对象池子类型")]
+    [VersionUpdateAttribute(22, "调整释放时候的成员顺序")]
+    [VersionUpdateAttribute(23, "增加数据绑定器")]
+    [VersionUpdateAttribute(35, "抽象化环境")]
     public interface IEnvironment: IDisposable
     {
         /// <summary>
@@ -30,10 +35,7 @@ namespace IFramework
         /// 模块容器
         /// </summary>
         IFrameworkModules modules { get; }
-        /// <summary>
-        /// 名字
-        /// </summary>
-        string name { get; set; }
+
         /// <summary>
         /// 初始化-现在时间
         /// </summary>

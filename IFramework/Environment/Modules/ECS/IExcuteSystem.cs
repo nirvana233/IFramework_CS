@@ -3,12 +3,8 @@
     /// <summary>
     /// 处理系统
     /// </summary>
-    public interface IExcuteSystem
+    public interface IExcuteSystem:ICommand
     {
-        /// <summary>
-        /// 处理
-        /// </summary>
-        void Excute();
         /// <summary>
         /// 模块释放时
         /// </summary>
