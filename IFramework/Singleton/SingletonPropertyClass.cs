@@ -1,4 +1,6 @@
-﻿namespace IFramework.Singleton
+﻿using System;
+
+namespace IFramework.Singleton
 {
     /// <summary>
     /// 单例属性类
@@ -17,17 +19,18 @@
         /// <summary>
         /// 初始化
         /// </summary>
-        protected virtual void OnSingletonInit()
-        {
-
-        }
+        protected abstract void OnSingletonInit();
         /// <summary>
         /// 注销
         /// </summary>
-        public virtual void Dispose()
+        protected abstract void OnDispose();
+
+        void IDisposable. Dispose()
         {
+            OnDispose();
             SingletonProperty<T>.Dispose();
         }
+
 
 
         void ISingleton.OnSingletonInit()

@@ -21,46 +21,68 @@ namespace IFramework
         }
         private class TypeMap<T> : ITypeMap<T>
         {
-            private Dictionary<string, T> values;
+            private class Value : IValueContainer<T>
+            {
+                public string name;
+                public T value { get; set; }
+            }
+            private List<Value> values;
             public TypeMap()
             {
-                values = new Dictionary<string, T>();
+                values = new List<Value>();
             }
             public T GetValue(string name, bool autoCreate = true)
             {
-                T t;
-                if (!values.TryGetValue(name, out t))
+                for (int i = 0; i < values.Count; i++)
                 {
-                    t = default(T);
-                    if (autoCreate)
+                    if (values[i].name==name)
                     {
-                        values.Add(name, t);
+                        return values[i].value;
                     }
+                }
+                T t = default(T);
+                if (autoCreate)
+                {
+                    values.Add(new Value()
+                    {
+                        value = t,
+                        name = name
+                    });
                 }
                 return t;
             }
             public void SetValue(string name, T obj)
             {
-                if (!values.ContainsKey(name))
+                for (int i = 0; i < values.Count; i++)
                 {
-                    values.Add(name, obj);
+                    if (values[i].name == name)
+                    {
+                        values[i].value=obj;
+                        return;
+                    }
                 }
-                else
+                values.Add(new Value()
                 {
-                    values[name] = obj;
-                }
+                    value = obj,
+                    name = name
+                });
             }
 
             public void Set(string name, object obj)
             {
-                if (!values.ContainsKey(name))
+                for (int i = 0; i < values.Count; i++)
                 {
-                    values.Add(name, (T)obj);
+                    if (values[i].name == name)
+                    {
+                        values[i].value = (T)obj;
+                        return;
+                    }
                 }
-                else
+                values.Add(new Value()
                 {
-                    values[name] = (T)obj;
-                }
+                    value = (T)obj,
+                    name = name
+                });
             }
             public object Get(string name, bool autoCreate = true)
             {
@@ -69,7 +91,14 @@ namespace IFramework
 
             public bool Exist(string name)
             {
-                return values.ContainsKey(name);
+                for (int i = 0; i < values.Count; i++)
+                {
+                    if (values[i].name == name)
+                    {
+                        return true; ;
+                    }
+                }
+                return false;
             }
         }
         private Dictionary<Type, ITypeMap> values=new Dictionary<Type, ITypeMap>();

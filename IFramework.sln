@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.UnityPlugin", "IFramework.UnityPlugin\IFramework.UnityPlugin.csproj", "{C8EE1871-F465-4E6B-B175-6F05EAC66A69}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.Fast", "IFramework.Fast\IFramework.Fast.csproj", "{D55F07B2-02B1-42A1-92E2-8142C5D26E0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C8EE1871-F465-4E6B-B175-6F05EAC66A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8EE1871-F465-4E6B-B175-6F05EAC66A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8EE1871-F465-4E6B-B175-6F05EAC66A69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D55F07B2-02B1-42A1-92E2-8142C5D26E0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D55F07B2-02B1-42A1-92E2-8142C5D26E0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D55F07B2-02B1-42A1-92E2-8142C5D26E0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D55F07B2-02B1-42A1-92E2-8142C5D26E0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

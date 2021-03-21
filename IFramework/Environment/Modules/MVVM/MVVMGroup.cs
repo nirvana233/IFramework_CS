@@ -6,7 +6,7 @@ namespace IFramework.Modules.MVVM
     /// <summary>
     /// MVVM 组结构
     /// </summary>
-    public class MVVMGroup : IDisposable
+    public class MVVMGroup : DisposableObject
     {
         private MVVMModule _module;
         internal MVVMModule module
@@ -125,7 +125,7 @@ namespace IFramework.Modules.MVVM
         /// <summary>
         /// 释放时
         /// </summary>
-        public void Dispose()
+        public override void Dispose()
         {
             OnDispose();
             if (_view != null)
@@ -139,11 +139,10 @@ namespace IFramework.Modules.MVVM
             }
             if (module != null)
                 module.RemoveGroup(name);
-
         }
         /// <summary>
         /// 释放时
         /// </summary>
-        protected virtual void OnDispose() { }
+        protected override void OnDispose() { }
     }
 }

@@ -6,13 +6,12 @@ namespace IFramework
     {
         public void Error(object messages, params object[] paras)
         {
-            Console.WriteLine(string.Format("[Error] {0}:\t{1}", DateTime.Now.ToString(), messages), paras);
+            Console.WriteLine(string.Format("[Err] {0}:\t{1}", DateTime.Now.ToString(), messages), paras);
         }
 
         public void Exception(Exception ex)
         {
-            Console.WriteLine(string.Format("[Warn] {0}:\t\t{1}", DateTime.Now.ToString(), ex.Message));
-            Console.WriteLine(ex.StackTrace);
+            throw ex;
         }
 
         public void Log(object messages, params object[] paras)

@@ -40,7 +40,7 @@ namespace IFramework.Singleton
                 pairs.Remove(type);
             }
             else
-                throw new Exception("SingletonPool dispose Err");
+                throw new Exception("SingletonPool dispose Err "+typeof(T));
         }
         /// <summary>
         /// 注销所有单例

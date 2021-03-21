@@ -1,4 +1,6 @@
-﻿namespace IFramework.Singleton
+﻿using System;
+
+namespace IFramework.Singleton
 {
     /// <summary>
     /// 单例基类
@@ -36,10 +38,15 @@
         /// <summary>
         /// 注销
         /// </summary>
-        public virtual void Dispose()
+        void IDisposable.Dispose()
         {
+            OnDispose();
             _instance = null;
         }
+        /// <summary>
+        /// 注销
+        /// </summary>
+        protected abstract void OnDispose();
 
         void ISingleton.OnSingletonInit()
         {

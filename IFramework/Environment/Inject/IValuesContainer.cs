@@ -13,21 +13,21 @@ namespace IFramework.Injection
         /// </summary>
         /// <typeparam name="Type"></typeparam>
         /// <param name="name"></param>
-        void Subscribe<Type>(string name = null);
+        void Subscribe<Type>(string name = "");
         /// <summary>
         /// 注入类型
         /// </summary>
         /// <typeparam name="BaseType"></typeparam>
         /// <typeparam name="Type"></typeparam>
         /// <param name="name"></param>
-        void Subscribe<BaseType, Type>(string name = null) where Type : BaseType;
+        void Subscribe<BaseType, Type>(string name = "") where Type : BaseType;
         /// <summary>
         /// 注入类型
         /// </summary>
         /// <param name="source"></param>
         /// <param name="target"></param>
         /// <param name="name"></param>
-        void Subscribe(Type source, Type target, string name = null);
+        void Subscribe(Type source, Type target, string name = "");
 
         /// <summary>
         /// 注入实例
@@ -54,7 +54,7 @@ namespace IFramework.Injection
         /// <param name="name"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        T GetValue<T>(string name = null, params object[] args) where T : class;
+        T GetValue<T>(string name = "", params object[] args) where T : class;
         /// <summary>
         /// 获取值
         /// </summary>
@@ -62,7 +62,7 @@ namespace IFramework.Injection
         /// <param name="name"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        object GetValue(Type baseType, string name = null, params object[] param);
+        object GetValue(Type baseType, string name = "", params object[] param);
         /// <summary>
         /// 获取所有值
         /// </summary>

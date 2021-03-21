@@ -12,7 +12,7 @@ namespace IFramework.Modules
     /// 框架提供的模块
     /// </summary>
     [ScriptVersionAttribute(6)]
-    internal class FrameworkModules : FrameworkModuleContainer, IFrameworkModules
+    class FrameworkModules : FrameworkModuleContainer, IFrameworkModules
     {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         public IFsmModule Fsm { get { return GetModule<FsmModule>("default"); } }

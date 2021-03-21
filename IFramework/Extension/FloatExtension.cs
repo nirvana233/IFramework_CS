@@ -12,7 +12,7 @@ namespace IFramework
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        public static float Clamp(this float self)
+        public static float Abs(this float self)
         {
             return Math.Abs(self);
         }

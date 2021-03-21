@@ -138,6 +138,7 @@ namespace IFramework.Injection
                 return;
             }
             MemberInfo[] members = obj.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
             for (int i = members.Length - 1; i >= 0; i--)
             {
                 MemberInfo member = members[i];
@@ -207,11 +208,7 @@ namespace IFramework.Injection
         public object GetValue(Type baseType, string name = null, params object[] constructorArgs)
         {
             object item = _instance.Get(baseType, name);
-            if (item != null)
-            {
-                return item;
-            }
-
+            if (item != null) return item;
             Type map = this._type.Get(baseType, name);
             if (map != null)
             {
