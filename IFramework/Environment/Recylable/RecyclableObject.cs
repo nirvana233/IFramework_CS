@@ -130,7 +130,7 @@ namespace IFramework
         private bool _recyled;
         private bool _datadirty;
         private IEnvironment _env;
-        private Guid _guid;
+        private Guid _guid=new Guid();
 
         /// <summary>
         /// 是否被回收
