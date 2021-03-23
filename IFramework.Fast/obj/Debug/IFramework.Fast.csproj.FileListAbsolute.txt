@@ -7,6 +7,7 @@ E:\Project\VS\IFramework\IFramework.Fast\obj\Debug\IFramework.Fast.csproj.CoreCo
 E:\Project\VS\IFramework\IFramework.Fast\obj\Debug\IFramework.Fast.csproj.CopyComplete
 E:\Project\VS\IFramework\IFramework.Fast\obj\Debug\IFramework.Fast.pdb
 E:\Project\VS\IFramework\Plugins\IFramework.Fast.xml
-E:\Project\VS\IFramework\Plugins\IFramework.Fast.dll
 E:\Project\VS\IFramework\Plugins\IFramework.Fast.pdb
+E:\Project\VS\IFramework\Plugins\IFramework.Fast.dll
 E:\Project\VS\IFramework\IFramework.Fast\obj\Debug\IFramework.Fast.dll
+E:\Project\VS\IFramework\IFramework.Fast\obj\Debug\IFramework.Fast.csprojAssemblyReference.cache

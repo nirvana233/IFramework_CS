@@ -21,7 +21,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <returns></returns>
-        protected TModel GetModel<TModel>() where TModel : class, IModel
+        public TModel GetModel<TModel>() where TModel : class, IModel
         {
            return  env.container.GetValue <TModel>(entity.flag);
         }
@@ -30,7 +30,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <returns></returns>
-        protected TModel GetRootModel<TModel>() where TModel : class, IModel
+        public TModel GetRootModel<TModel>() where TModel : class, IModel
         {
             return env.container.GetValue<TModel>(Entity.rootFlag);
         }
@@ -39,7 +39,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TUtility"></typeparam>
         /// <returns></returns>
-        protected TUtility GetUtility<TUtility>() where TUtility : class, IUtility
+        public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
             return env.container.GetValue<TUtility>(entity.flag);
         }
@@ -48,7 +48,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TUtility"></typeparam>
         /// <returns></returns>
-        protected TUtility GetRootUtility<TUtility>() where TUtility : class, IUtility
+        public TUtility GetRootUtility<TUtility>() where TUtility : class, IUtility
         {
             return env.container.GetValue<TUtility>(Entity.rootFlag);
         }

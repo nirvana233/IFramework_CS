@@ -13,5 +13,17 @@
         /// 初始化
         /// </summary>
         void Awake();
+        /// <summary>
+        /// 获取工具
+        /// </summary>
+        /// <typeparam name="TUtility"></typeparam>
+        /// <returns></returns>
+        TUtility GetUtility<TUtility>() where TUtility : class, IUtility;
+        /// <summary>
+        /// 获取跟工具
+        /// </summary>
+        /// <typeparam name="TUtility"></typeparam>
+        /// <returns></returns>
+        TUtility GetRootUtility<TUtility>() where TUtility : class, IUtility;
     }
 }

@@ -21,7 +21,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TUtility"></typeparam>
         /// <returns></returns>
-        protected TUtility GetUtility<TUtility>() where TUtility : class, IUtility
+        public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
             return env.container.GetValue<TUtility>(entity.flag);
         }
@@ -30,7 +30,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TUtility"></typeparam>
         /// <returns></returns>
-        protected TUtility GetRootUtility<TUtility>() where TUtility : class, IUtility
+        public TUtility GetRootUtility<TUtility>() where TUtility : class, IUtility
         {
             return env.container.GetValue<TUtility>(Entity.rootFlag);
         }
@@ -40,7 +40,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TModelProcessor"></typeparam>
         /// <returns></returns>
-        protected TModelProcessor GetModelProcessor<TModelProcessor>() where TModelProcessor : class, IModelProcessor
+        public TModelProcessor GetModelProcessor<TModelProcessor>() where TModelProcessor : class, IModelProcessor
         {
             return env.container.GetValue<TModelProcessor>(entity.flag);
         }
@@ -49,7 +49,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TModelProcessor"></typeparam>
         /// <returns></returns>
-        protected TModelProcessor GetRootModelProcessor<TModelProcessor>() where TModelProcessor : class, IModelProcessor
+        public TModelProcessor GetRootModelProcessor<TModelProcessor>() where TModelProcessor : class, IModelProcessor
         {
             return env.container.GetValue<TModelProcessor>(Entity.rootFlag);
         }

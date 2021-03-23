@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Instance\Entity.cs" />
     <Compile Include="Interface\IBelongToEntity.cs" />
     <Compile Include="Interface\IEntity.cs" />

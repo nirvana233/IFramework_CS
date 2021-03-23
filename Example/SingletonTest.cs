@@ -18,6 +18,10 @@ namespace Example
                 Log.L("DO");
             }
 
+            protected override void OnDispose()
+            {
+                
+            }
         }
         protected override void Start()
         {

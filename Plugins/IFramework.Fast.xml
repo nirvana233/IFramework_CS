@@ -61,6 +61,20 @@
             数据逻辑处理
             </summary>
         </member>
+        <member name="M:IFramework.Fast.IModelProcessor.GetModel``1">
+            <summary>
+            获取数据
+            </summary>
+            <typeparam name="TModel"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.IModelProcessor.GetRootModel``1">
+            <summary>
+            获取跟数据
+            </summary>
+            <typeparam name="TModel"></typeparam>
+            <returns></returns>
+        </member>
         <member name="T:IFramework.Fast.IProcessor">
             <summary>
             处理器
@@ -75,6 +89,20 @@
             <summary>
             初始化
             </summary>
+        </member>
+        <member name="M:IFramework.Fast.IProcessor.GetUtility``1">
+            <summary>
+            获取工具
+            </summary>
+            <typeparam name="TUtility"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.IProcessor.GetRootUtility``1">
+            <summary>
+            获取跟工具
+            </summary>
+            <typeparam name="TUtility"></typeparam>
+            <returns></returns>
         </member>
         <member name="T:IFramework.Fast.IRootEntity">
             <summary>
@@ -126,6 +154,20 @@
             <summary>
             界面逻辑处理
             </summary>
+        </member>
+        <member name="M:IFramework.Fast.IViewProcessor.GetModelProcessor``1">
+            <summary>
+            获取数据处理
+            </summary>
+            <typeparam name="TModelProcessor"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.IViewProcessor.GetRootModelProcessor``1">
+            <summary>
+            获取跟数据处理
+            </summary>
+            <typeparam name="TModelProcessor"></typeparam>
+            <returns></returns>
         </member>
         <member name="T:IFramework.Fast.ModelProcessor`1">
             <summary>
@@ -182,6 +224,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:IFramework.Fast.RootEntity`1.message">
+            <summary>
+            消息
+            </summary>
+        </member>
         <member name="P:IFramework.Fast.RootEntity`1.env">
             <summary>
             环境
@@ -228,15 +275,57 @@
             消灭
             </summary>
         </member>
+        <member name="M:IFramework.Fast.RootEntity`1.GetRootUtility``1">
+            <summary>
+            获取跟工具
+            </summary>
+            <typeparam name="TUtility"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.RootEntity`1.SubscribeRootMessage``1(IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            注册消息
+            </summary>
+            <typeparam name="type"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.RootEntity`1.UnSubscribeRootMessage``1(IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            取消监听
+            </summary>
+            <typeparam name="type"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.RootEntity`1.PublishRootMessage``1(IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType)">
+            <summary>
+            发布消息
+            </summary>
+            <typeparam name="Type"></typeparam>
+            <param name="args"></param>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
         <member name="T:IFramework.Fast.SubEntity`1">
             <summary>
             子实体
             </summary>
             <typeparam name="TRootEntity"></typeparam>
         </member>
+        <member name="P:IFramework.Fast.SubEntity`1.message">
+            <summary>
+            消息
+            </summary>
+        </member>
         <member name="M:IFramework.Fast.SubEntity`1.#ctor">
             <summary>
             ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.Fast.SubEntity`1.BeforeAwake">
+            <summary>
+            awake之前
             </summary>
         </member>
         <member name="M:IFramework.Fast.SubEntity`1.AfterAwake">

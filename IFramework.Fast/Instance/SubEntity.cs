@@ -8,7 +8,10 @@ namespace IFramework.Fast
     /// <typeparam name="TRootEntity"></typeparam>
     public abstract class SubEntity<TRootEntity> : Entity<TRootEntity>, ISubEntity where TRootEntity: class,IRootEntity
     {
-        private IMessageModule message { get { return root.env.modules.GetModule<MessageModule>(flag); } }
+        /// <summary>
+        /// 消息
+        /// </summary>
+        protected virtual IMessageModule message { get { return root.env.modules.GetModule<MessageModule>(flag); } }
         /// <summary>
         /// ctor
         /// </summary>
@@ -16,9 +19,19 @@ namespace IFramework.Fast
         {
             if (this is IRootEntity) return;
             container.SubscribeInstance(this.GetType(),this, "", false);
+            BeforeAwake();
             Awake();
 
             AfterAwake();
+        }
+        /// <summary>
+        /// awake之前
+        /// </summary>
+        protected virtual void BeforeAwake()
+        {
+            message.fitSubType = true;
+            message.processesPerFrame = 20;
+            message.Subscribe<ICommand>(Listen);
         }
         /// <summary>
         /// 初始化之后
@@ -26,7 +39,6 @@ namespace IFramework.Fast
         protected virtual void AfterAwake()
         {
             container.InjectInstances();
-            message.Subscribe<ICommand>(Listen);
         }
         private void Listen(IMessage message)
         {

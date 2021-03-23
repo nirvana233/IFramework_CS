@@ -60,8 +60,8 @@ namespace Example
            // new PriorityQueueTest();            //优先级队列
 
 
-             new MessageExample();            //消息模块
-            // new RecyclableObjectTest();      //可回收对象测试
+           //  new MessageExample();            //消息模块
+             new RecyclableObjectTest();      //可回收对象测试
             // new NodeActionTest();            // 节点事件
             // new RecorderTest();              //操作记录模块
             // new InjectTest();                // 依赖注入

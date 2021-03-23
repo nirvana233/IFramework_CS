@@ -37,7 +37,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TUtility"></typeparam>
         /// <returns></returns>
-        protected TUtility GetUtility<TUtility>() where TUtility : class, IUtility
+        public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
             return container.GetValue<TUtility>(entity.flag);
         }
@@ -46,7 +46,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TUtility"></typeparam>
         /// <returns></returns>
-        protected TUtility GetRootUtility<TUtility>() where TUtility : class, IUtility
+        public TUtility GetRootUtility<TUtility>() where TUtility : class, IUtility
         {
             return container.GetValue<TUtility>(Entity.rootFlag);
         }
@@ -56,7 +56,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TViewProcessor"></typeparam>
         /// <returns></returns>
-        protected TViewProcessor GetViewProcessor<TViewProcessor>() where TViewProcessor : class, IViewProcessor
+        public TViewProcessor GetViewProcessor<TViewProcessor>() where TViewProcessor : class, IViewProcessor
         {
             return container.GetValue<TViewProcessor>(entity.flag);
         }
@@ -65,7 +65,7 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TViewProcessor"></typeparam>
         /// <returns></returns>
-        protected TViewProcessor GetRootViewProcessor<TViewProcessor>() where TViewProcessor : class, IViewProcessor
+        public TViewProcessor GetRootViewProcessor<TViewProcessor>() where TViewProcessor : class, IViewProcessor
         {
             return container.GetValue<TViewProcessor>(Entity.rootFlag);
         }
