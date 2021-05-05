@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D55F07B2-02B1-42A1-92E2-8142C5D26E0A}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IFramework.Fast</RootNamespace>
     <AssemblyName>IFramework.Fast</AssemblyName>
@@ -49,21 +49,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Instance\EnvironmentEntity.cs" />
+    <Compile Include="Interface\IEvvironmentEntity.cs" />
     <Compile Include="Instance\Entity.cs" />
+    <Compile Include="Instance\SystemEntity.cs" />
     <Compile Include="Interface\IBelongToEntity.cs" />
-    <Compile Include="Interface\IEntity.cs" />
     <Compile Include="Interface\IModelProcessor.cs" />
-    <Compile Include="Interface\IProcessor.cs" />
-    <Compile Include="Interface\IRootEntity.cs" />
-    <Compile Include="Interface\ISubEntity.cs" />
+    <Compile Include="Interface\ISystemEntity.cs" />
     <Compile Include="Interface\IUtility.cs" />
-    <Compile Include="Interface\IViewProcessor.cs" />
     <Compile Include="Instance\ModelProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Instance\RootEntity.cs" />
-    <Compile Include="Instance\SubEntity.cs" />
     <Compile Include="Instance\View.cs" />
-    <Compile Include="Instance\ViewProcessor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

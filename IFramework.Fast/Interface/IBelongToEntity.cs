@@ -5,12 +5,12 @@ namespace IFramework.Fast
     /// <summary>
     /// 属于实例
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    public interface IBelongToEntity<TEntity> where TEntity : ISubEntity
+    /// <typeparam name="TSystemEntity"></typeparam>
+    public interface IBelongToEntity<TSystemEntity> where TSystemEntity : ISystemEntity
     {
         /// <summary>
         /// 实例
         /// </summary>
-        TEntity entity { get; set; }
+        TSystemEntity entity { get; set; }
     }
 }

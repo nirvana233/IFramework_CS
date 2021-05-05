@@ -5,16 +5,16 @@ namespace IFramework.Fast
     /// <summary>
     /// 界面
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TRootEntity"></typeparam>
-    public abstract class View<TEntity,TRootEntity>:Entity<TRootEntity> ,IBelongToEntity<TEntity>,IProcessor
-        where TRootEntity : class, IRootEntity
-        where TEntity:ISubEntity
+    /// <typeparam name="TSystemEntity"></typeparam>
+    /// <typeparam name="TEnvironmentEntity"></typeparam>
+    public abstract class View<TSystemEntity,TEnvironmentEntity>:Entity<TEnvironmentEntity> ,IBelongToEntity<TSystemEntity>
+        where TEnvironmentEntity : EnvironmentEntity<TEnvironmentEntity>
+        where TSystemEntity:ISystemEntity
     {
         /// <summary>
         /// 实体
         /// </summary>
-        [Inject] public TEntity entity { get; set; }
+        [Inject] public TSystemEntity entity { get; set; }
         /// <summary>
         /// 环境
         /// </summary>
@@ -24,10 +24,9 @@ namespace IFramework.Fast
         /// </summary>
         protected View()
         {
-            root.env.container.Inject(this);
+            EnvEntity.env.container.Inject(this);
             Awake();
         }
-        void IProcessor.Awake() { }
         /// <summary>
         /// 初始化
         /// </summary>
@@ -39,35 +38,26 @@ namespace IFramework.Fast
         /// <returns></returns>
         public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
-            return container.GetValue<TUtility>(entity.flag);
+            return entity.GetUtility<TUtility>();
         }
         /// <summary>
-        /// 获取跟工具
+        /// 获取数据
         /// </summary>
-        /// <typeparam name="TUtility"></typeparam>
+        /// <typeparam name="TModel"></typeparam>
         /// <returns></returns>
-        public TUtility GetRootUtility<TUtility>() where TUtility : class, IUtility
+        public TModel GetModel<TModel>() where TModel : class, IModel
         {
-            return container.GetValue<TUtility>(Entity.rootFlag);
+            return entity.GetModel<TModel>();
+        }
+        /// <summary>
+        /// 获取数据处理
+        /// </summary>
+        /// <typeparam name="TModelProcessor"></typeparam>
+        /// <returns></returns>
+        public TModelProcessor GetViewProcessor<TModelProcessor>() where TModelProcessor : class, IModelProcessor
+        {
+            return entity.GetModelProcessor<TModelProcessor>();
         }
 
-        /// <summary>
-        /// 获取界面处理
-        /// </summary>
-        /// <typeparam name="TViewProcessor"></typeparam>
-        /// <returns></returns>
-        public TViewProcessor GetViewProcessor<TViewProcessor>() where TViewProcessor : class, IViewProcessor
-        {
-            return container.GetValue<TViewProcessor>(entity.flag);
-        }
-        /// <summary>
-        /// 获取跟界面处理
-        /// </summary>
-        /// <typeparam name="TViewProcessor"></typeparam>
-        /// <returns></returns>
-        public TViewProcessor GetRootViewProcessor<TViewProcessor>() where TViewProcessor : class, IViewProcessor
-        {
-            return container.GetValue<TViewProcessor>(Entity.rootFlag);
-        }
     }
 }

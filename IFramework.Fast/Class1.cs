@@ -1,43 +1,59 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using System;
 
-//namespace IFramework.Fast
-//{
-//    class EditorEntity : RootEntity<EditorEntity>
-//    {
-//        private class UnSafaScriptEnvCheckCommand : ICommand
-//        {
-//            public void Excute()
-//            {
-//                Console.WriteLine(6654654);
-//            }
-//        }
-//        protected EditorEntity() { }
-//        protected override EnvironmentType envType { get { return EnvironmentType.Ev2; } }
+namespace IFramework.Fast
+{
+    class A
+    {
+        class ABox : EnvironmentEntity<ABox>
+        {
+            protected ABox() { }
+            protected override EnvironmentType envType => EnvironmentType.Ev0;
 
-//        protected override void Awake()
-//        {
-//            Console.WriteLine("awake");
-//            SendCommand(new UnSafaScriptEnvCheckCommand());
-//        }
 
-//        protected override void OnDispose()
-//        {
-//        }
-//    }
-//    class Class1
-//    {
-//        static void Main(string[] args)
-//        {
-//            EditorEntity.Initialize();
-//            while (true)
-//            {
-//                EditorEntity.Update();
-//            }
-//            //  EditorEntity.Destory();
-//        }
-//    }
-//}
+        }
+        class Model : IModel
+        {
+            public string value = "313221";
+        }
+        class SE : SystemEntity<ABox>
+        {
+            protected override void Awake()
+            {
+                this.SetModel(new Model());
+                this.SetModelProcessor(new MP());
+            }
+
+
+        }
+        class MP : ModelProcessor<SE>
+        {
+            [Injection.Inject(nameof(SE))] public Model model;
+            protected override void Awake()
+            {
+                Console.WriteLine("awake" + GetType());
+                Console.WriteLine(this.env.envType);
+                Console.WriteLine(model.value);
+            }
+        }
+        class V : View<SE, ABox>
+        {
+            [Injection.Inject(nameof(SE))] public Model model;
+            protected override void Awake()
+            {
+                Console.WriteLine("awake" + GetType());
+                Console.WriteLine(this.env.envType);
+                Console.WriteLine(model.value);
+            }
+        }
+        static void Main(string[] args)
+        {
+            ABox.Initialize();
+            new SE();
+            new V();
+            while (true)
+            {
+                ABox.Update();
+            }
+        }
+    }
+}

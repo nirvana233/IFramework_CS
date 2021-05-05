@@ -5,8 +5,8 @@ namespace IFramework.Fast
     /// <summary>
     /// 数据处理
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    public abstract class ModelProcessor<TEntity>: IModelProcessor,IBelongToEntity<TEntity> where TEntity:ISubEntity
+    /// <typeparam name="TSystemEntity"></typeparam>
+    public abstract class ModelProcessor<TSystemEntity>: IModelProcessor,IBelongToEntity<TSystemEntity> where TSystemEntity:ISystemEntity
     {
         /// <summary>
         /// 环境
@@ -15,7 +15,7 @@ namespace IFramework.Fast
         /// <summary>
         /// 实体
         /// </summary>
-        [Inject]public TEntity entity { get; set; }
+        [Inject]public TSystemEntity entity { get; set; }
         /// <summary>
         /// 获取数据
         /// </summary>
@@ -23,17 +23,9 @@ namespace IFramework.Fast
         /// <returns></returns>
         public TModel GetModel<TModel>() where TModel : class, IModel
         {
-           return  env.container.GetValue <TModel>(entity.flag);
+            return entity.GetModel<TModel>();
         }
-        /// <summary>
-        /// 获取跟数据
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <returns></returns>
-        public TModel GetRootModel<TModel>() where TModel : class, IModel
-        {
-            return env.container.GetValue<TModel>(Entity.rootFlag);
-        }
+
         /// <summary>
         /// 获取工具
         /// </summary>
@@ -41,18 +33,9 @@ namespace IFramework.Fast
         /// <returns></returns>
         public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
-            return env.container.GetValue<TUtility>(entity.flag);
+            return entity.GetUtility<TUtility>();
         }
-        /// <summary>
-        /// 获取跟工具
-        /// </summary>
-        /// <typeparam name="TUtility"></typeparam>
-        /// <returns></returns>
-        public TUtility GetRootUtility<TUtility>() where TUtility : class, IUtility
-        {
-            return env.container.GetValue<TUtility>(Entity.rootFlag);
-        }
-        void IProcessor.Awake()
+        void IModelProcessor.Awake()
         {
             Awake();
         }
