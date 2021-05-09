@@ -201,7 +201,7 @@
         </member>
         <member name="M:IFramework.Injection.IValuesContainer.Inject(System.Object)">
             <summary>
-            注入一个对象
+            为一个对象注入数据
             </summary>
             <param name="obj"></param>
         </member>

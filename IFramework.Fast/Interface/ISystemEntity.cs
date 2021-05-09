@@ -7,7 +7,18 @@ namespace IFramework.Fast
     /// </summary>
     public interface ISystemEntity
     {
-
+        /// <summary>
+        /// 获取值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        T GetValue<T>() where T : class;
+        /// <summary>
+        /// 设置值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        void  SetValue<T>(T t) where T : class;
         /// <summary>
         /// 获取数据
         /// </summary>
@@ -22,7 +33,7 @@ namespace IFramework.Fast
         /// 获取数据处理
         /// </summary>
         /// <typeparam name="TModelProcessor"></typeparam>
-        TModelProcessor GetModelProcessor<TModelProcessor>() where TModelProcessor : class, IModelProcessor;
+        TModelProcessor GetModelProcessor<TModelProcessor>() where TModelProcessor : class, IProcessor;
         /// <summary>
         /// 注册消息
         /// </summary>
@@ -67,6 +78,6 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TModelProcessor"></typeparam>
         /// <param name="processor"></param>
-        void SetModelProcessor<TModelProcessor>(TModelProcessor processor) where TModelProcessor : class, IModelProcessor;
+        void SetModelProcessor<TModelProcessor>(TModelProcessor processor) where TModelProcessor : class, IProcessor;
     }
 }

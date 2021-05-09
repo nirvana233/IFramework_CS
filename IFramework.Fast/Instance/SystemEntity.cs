@@ -7,7 +7,7 @@ namespace IFramework.Fast
     /// 子实体
     /// </summary>
     /// <typeparam name="TEnvironmentEnity"></typeparam>
-    public abstract class SystemEntity<TEnvironmentEnity> : Entity<TEnvironmentEnity>, ISystemEntity where TEnvironmentEnity : EnvironmentEntity<TEnvironmentEnity>
+    public abstract class SystemEntity<TEnvironmentEnity> : FastEntity<TEnvironmentEnity>, ISystemEntity where TEnvironmentEnity : EnvironmentEntity<TEnvironmentEnity>
     {
         /// <summary>
         /// 标记
@@ -16,11 +16,11 @@ namespace IFramework.Fast
         /// <summary>
         /// 数据容器
         /// </summary>
-        private IValuesContainer container { get { return EnvEntity.env.container; } }
+        private IValuesContainer container { get { return EnvironmentEntity.env.container; } }
         /// <summary>
         /// 消息
         /// </summary>
-        protected virtual IMessageModule message { get { return EnvEntity.env.modules.GetModule<MessageModule>(flag); } }
+        private IMessageModule message { get { return EnvironmentEntity.env.modules.GetModule<MessageModule>(flag); } }
         /// <summary>
         /// ctor
         /// </summary>
@@ -92,7 +92,7 @@ namespace IFramework.Fast
         /// <typeparam name="TModel"></typeparam>
         public TModel GetModel<TModel>() where TModel : class, IModel
         {
-            return  container.GetValue<TModel>( flag);
+            return  GetValue<TModel>();
         }
         /// <summary>
         /// 获取工具
@@ -100,15 +100,15 @@ namespace IFramework.Fast
         /// <typeparam name="TUtility"></typeparam>
         public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
-            return container.GetValue<TUtility>(flag);
+            return GetValue<TUtility>();
         }
         /// <summary>
         /// 获取数据处理
         /// </summary>
-        /// <typeparam name="TModelProcessor"></typeparam>
-        public TModelProcessor GetModelProcessor<TModelProcessor>() where TModelProcessor : class, IModelProcessor
+        /// <typeparam name="TProcessor"></typeparam>
+        public TProcessor GetModelProcessor<TProcessor>() where TProcessor : class, IProcessor
         {
-            return container.GetValue<TModelProcessor>(flag);
+            return GetValue<TProcessor>();
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace IFramework.Fast
         /// <param name="model"></param>
         public void SetModel<TModel>(TModel model) where TModel : class, IModel
         {
-            container.SubscribeInstance(model, flag);
+            SetValue(model);
         }
         /// <summary>
         /// 设置工具
@@ -127,18 +127,35 @@ namespace IFramework.Fast
         /// <param name="utility"></param>
         public void SetUtility<TUtility>(TUtility utility) where TUtility : class, IUtility
         {
-            container.SubscribeInstance(utility, flag);
+            SetValue(utility);
         }
         /// <summary>
         /// 设置数据处理
         /// </summary>
-        /// <typeparam name="TModelProcessor"></typeparam>
+        /// <typeparam name="TProcessor"></typeparam>
         /// <param name="processor"></param>
-        public void SetModelProcessor<TModelProcessor>(TModelProcessor processor) where TModelProcessor : class, IModelProcessor
+        public void SetModelProcessor<TProcessor>(TProcessor processor) where TProcessor : class, IProcessor
         {
-            container.SubscribeInstance(processor, flag);
+            SetValue(processor);
             processor.Awake();
         }
-
+        /// <summary>
+        /// 获取值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T GetValue<T>() where T : class
+        {
+            return container.GetValue<T>(flag);
+        }
+        /// <summary>
+        /// 设置值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        public void SetValue<T>(T t) where T : class
+        {
+            container.SubscribeInstance(t, flag);
+        }
     }
 }

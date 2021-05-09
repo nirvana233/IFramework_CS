@@ -142,9 +142,9 @@ namespace IFramework
         {
             if (disposed || !inited) return;
 
+            if (onDispose != null) onDispose();
             (cycleCollection as RecyclableObjectCollection).Dispose();
             container.Dispose();
-            if (onDispose != null) onDispose();
             sw_init.Stop();
             sw_delta.Stop();
             container = null;

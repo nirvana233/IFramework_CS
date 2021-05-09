@@ -3,7 +3,7 @@
     /// <summary>
     /// 数据逻辑处理
     /// </summary>
-    public interface IModelProcessor
+    public interface IProcessor
     {
 
         /// <summary>

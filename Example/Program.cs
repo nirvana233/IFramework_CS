@@ -10,6 +10,8 @@ namespace Example
         public Test()
         {
             Framework.BindEnvUpdate(Update, EnvironmentType.Ev0);
+            Framework.BindEnvDispose(Dispose, EnvironmentType.Ev0);
+
             Log.L("开始测试----------->" + GetType());
             Start();
         }
@@ -21,20 +23,21 @@ namespace Example
         protected override void OnDispose()
         {
             Stop();
+            Framework.UnBindEnvDispose(Dispose, EnvironmentType.Ev0);
+
             Framework.UnBindEnvUpdate(Update, EnvironmentType.Ev0);
         }
     }
-
     class Program
     {
-        private static System.Timers.Timer timer =new System.Timers.Timer(1000);
+        private static System.Timers.Timer timer = new System.Timers.Timer(1000);
         static void Main(string[] args)
         {
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
             Log.L("按键盘 esc 关闭测试环境 ");
             Log.L("开启  0 号环境 测试 ");
-            Framework.CreateEnv( EnvironmentType.Ev0).InitWithAttribute();
+            Framework.CreateEnv(EnvironmentType.Ev0).InitWithAttribute();
 
             TestScripts();
             while (Console.ReadKey().Key != ConsoleKey.Escape) { }
@@ -57,18 +60,20 @@ namespace Example
             //new NetTest();                    // 网络测试
             // new SingletonTest();             //单例测试
             // new PoolTest();                   //对象池测试
-           // new PriorityQueueTest();            //优先级队列
+            // new PriorityQueueTest();            //优先级队列
 
 
-           //  new MessageExample();            //消息模块
-             new RecyclableObjectTest();      //可回收对象测试
+            //  new MessageExample();            //消息模块
+            //new RecyclableObjectTest();      //可回收对象测试
             // new NodeActionTest();            // 节点事件
             // new RecorderTest();              //操作记录模块
             // new InjectTest();                // 依赖注入
             //  new ConfigTest();               // 配置模块
             // new CoroutineTest();             //协程 模块
             // new FsmTest();                   // 状态机模块
-           // new MouduleTest();                //自定义模块
+            // new MouduleTest();                //自定义模块
+
+            new FastTest();     //IFramework.Fast(IFramework 二次开发) 快速注入 测试
         }
 
     }

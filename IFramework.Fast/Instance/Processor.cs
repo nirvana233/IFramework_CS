@@ -6,7 +6,7 @@ namespace IFramework.Fast
     /// 数据处理
     /// </summary>
     /// <typeparam name="TSystemEntity"></typeparam>
-    public abstract class ModelProcessor<TSystemEntity>: IModelProcessor,IBelongToEntity<TSystemEntity> where TSystemEntity:ISystemEntity
+    public abstract class Processor<TSystemEntity>: IProcessor,IBelongToSystemEntity<TSystemEntity> where TSystemEntity:ISystemEntity
     {
         /// <summary>
         /// 环境
@@ -15,7 +15,7 @@ namespace IFramework.Fast
         /// <summary>
         /// 实体
         /// </summary>
-        [Inject]public TSystemEntity entity { get; set; }
+        [Inject]public TSystemEntity systemEntity { get; set; }
         /// <summary>
         /// 获取数据
         /// </summary>
@@ -23,7 +23,7 @@ namespace IFramework.Fast
         /// <returns></returns>
         public TModel GetModel<TModel>() where TModel : class, IModel
         {
-            return entity.GetModel<TModel>();
+            return systemEntity.GetModel<TModel>();
         }
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace IFramework.Fast
         /// <returns></returns>
         public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
-            return entity.GetUtility<TUtility>();
+            return systemEntity.GetUtility<TUtility>();
         }
-        void IModelProcessor.Awake()
+        void IProcessor.Awake()
         {
             Awake();
         }

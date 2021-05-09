@@ -9,3 +9,6 @@ E:\Project\VS\IFramework\Example\obj\Debug\Example.exe
 E:\Project\VS\IFramework\Example\obj\Debug\Example.pdb
 E:\Project\VS\IFramework\Example\bin\Debug\IFramework.pdb
 E:\Project\VS\IFramework\Example\obj\Debug\Example.csprojAssemblyReference.cache
+E:\Project\VS\IFramework\Example\bin\Debug\IFramework.Fast.dll
+E:\Project\VS\IFramework\Example\bin\Debug\IFramework.Fast.pdb
+E:\Project\VS\IFramework\Example\bin\Debug\IFramework.Fast.xml

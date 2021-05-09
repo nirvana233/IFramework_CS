@@ -7,24 +7,25 @@ namespace IFramework.Fast
     /// </summary>
     /// <typeparam name="TSystemEntity"></typeparam>
     /// <typeparam name="TEnvironmentEntity"></typeparam>
-    public abstract class View<TSystemEntity,TEnvironmentEntity>:Entity<TEnvironmentEntity> ,IBelongToEntity<TSystemEntity>
+    public abstract class View<TSystemEntity,TEnvironmentEntity>:FastEntity<TEnvironmentEntity>
         where TEnvironmentEntity : EnvironmentEntity<TEnvironmentEntity>
         where TSystemEntity:ISystemEntity
     {
         /// <summary>
         /// 实体
         /// </summary>
-        [Inject] public TSystemEntity entity { get; set; }
+        [Inject] public TSystemEntity systemEntity { get; set; }
         /// <summary>
         /// 环境
         /// </summary>
         [Inject] public IEnvironment env { get; set; }
+
         /// <summary>
         /// ctor
         /// </summary>
         protected View()
         {
-            EnvEntity.env.container.Inject(this);
+            this.Inject();
             Awake();
         }
         /// <summary>
@@ -38,7 +39,7 @@ namespace IFramework.Fast
         /// <returns></returns>
         public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
-            return entity.GetUtility<TUtility>();
+            return systemEntity.GetUtility<TUtility>();
         }
         /// <summary>
         /// 获取数据
@@ -47,16 +48,16 @@ namespace IFramework.Fast
         /// <returns></returns>
         public TModel GetModel<TModel>() where TModel : class, IModel
         {
-            return entity.GetModel<TModel>();
+            return systemEntity.GetModel<TModel>();
         }
         /// <summary>
         /// 获取数据处理
         /// </summary>
         /// <typeparam name="TModelProcessor"></typeparam>
         /// <returns></returns>
-        public TModelProcessor GetViewProcessor<TModelProcessor>() where TModelProcessor : class, IModelProcessor
+        public TModelProcessor GetViewProcessor<TModelProcessor>() where TModelProcessor : class, IProcessor
         {
-            return entity.GetModelProcessor<TModelProcessor>();
+            return systemEntity.GetModelProcessor<TModelProcessor>();
         }
 
     }
