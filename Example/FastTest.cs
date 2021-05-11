@@ -51,7 +51,7 @@ namespace Example
             protected override void Awake()
             {
                 Log.L("添加监听");
-                this.systemEntity.SubscribeMessage<ChangeEvent>(this);
+                SubscribeMessage<ChangeEvent>(this);
                 Log.L("Awake------------------>" + GetType());
                 Log.L($"所属环境-------------->{env.envType}");
                 Log.L($"所属 SysEntity-------->{systemEntity}");
@@ -91,15 +91,15 @@ namespace Example
                 Log.L($"所属 SysEntity-------->{systemEntity}");
                 Log.L($"注入的 model 数据----->{model.value}");
                 Log.L($"发送一个命令 TestCmd----->{model.value}");
-                this.systemEntity.SendCommand(new TestCmd());
+                SendCommand(new TestCmd());
                 Log.L("发送一数据修改个事件------------------>" + GetType());
-                this.systemEntity.PublishMessage<ChangeEvent>(new ChangeEvent("第二次修改"), MessageUrgencyType.Common).OnRecycle((msag) =>
+                PublishMessage<ChangeEvent>(new ChangeEvent("第二次修改"), MessageUrgencyType.Common).OnRecycle((msag) =>
                 {
                     Log.L("事件处理完成，来看看 model 的数据");
                     Log.L($"注入的 model 数据----->{model.value}");
 
                 });
-                this.systemEntity.PublishMessage<ChangeEvent>(new ChangeEvent("第三次修改"), MessageUrgencyType.Common).OnRecycle((msag) =>
+                PublishMessage<ChangeEvent>(new ChangeEvent("第三次修改"), MessageUrgencyType.VeryUrgent).OnRecycle((msag) =>
                 {
                     Log.L("事件处理完成，来看看 model 的数据");
                     Log.L($"注入的 model 数据----->{model.value}");

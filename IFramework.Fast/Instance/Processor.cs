@@ -1,7 +1,9 @@
 ﻿using IFramework.Injection;
+using IFramework.Modules.Message;
 
 namespace IFramework.Fast
 {
+
     /// <summary>
     /// 数据处理
     /// </summary>
@@ -34,6 +36,46 @@ namespace IFramework.Fast
         public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
             return systemEntity.GetUtility<TUtility>();
+        }
+        /// <summary>
+        /// 注册消息
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="listener"></param>
+        /// <returns></returns>
+        public bool SubscribeMessage<T>(IMessageListener listener)
+        {
+            return systemEntity.SubscribeMessage<T>(listener);
+        }
+        /// <summary>
+        /// 取消监听
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="listener"></param>
+        /// <returns></returns>
+        public bool UnSubscribeMessage<T>(IMessageListener listener)
+        {
+            return systemEntity.UnSubscribeMessage<T>(listener);
+        }
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="args"></param>
+        /// <param name="priority"></param>
+        /// <returns></returns>
+        public IMessage PublishMessage<T>(IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common)
+        {
+            return systemEntity.PublishMessage<T>(args, priority);
+        }
+        /// <summary>
+        /// 发送命令
+        /// </summary>
+        /// <param name="command"></param>
+        public void SendCommand(ICommand command)
+        {
+            systemEntity.SendCommand(command);
         }
         void IProcessor.Awake()
         {

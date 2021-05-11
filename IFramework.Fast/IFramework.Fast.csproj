@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Instance\EnvironmentEntity.cs" />
     <Compile Include="Instance\View.cs" />
-    <Compile Include="Interface\FastEntity.cs" />
+    <Compile Include="Instance\FastEntity.cs" />
     <Compile Include="Instance\Processor.cs" />
     <Compile Include="Interface\IBelongToEnvironmentEntity.cs" />
     <Compile Include="Interface\IBelongToSystemEntity.cs" />

@@ -6,10 +6,12 @@ namespace IFramework.Modules.Message
     /// <summary>
     /// 消息模块
     /// </summary>
-    [ScriptVersionAttribute(180)]
+    [ScriptVersionAttribute(200)]
     [VersionUpdateAttribute(120, "加入消息优先级以及进程等待")]
     [VersionUpdateAttribute(140, "增加子类型匹配")]
     [VersionUpdateAttribute(180, "抽象出IMessage")]
+    [VersionUpdateAttribute(200, "增加立刻处理")]
+
     public class MessageModule : UpdateFrameworkModule, IMessageModule
     {
         private interface IMessageEntity : IDisposable
@@ -361,19 +363,24 @@ namespace IFramework.Modules.Message
             for (int i = 0; i < count; i++)
             {
                 var message = _tmp.Dequeue();
-                message.Lock();
-                bool sucess = false;
-                using (new LockWait(ref _lock_entity))
-                {
-                    sucess|= EntityPublish(message);
-                }
-                using (new LockWait(ref _lock_entitydel))
-                {
-                    sucess|= DelEntityPublish(message);
-                }
-                message.SetErrorCode(sucess ? MessageErrorCode.Success : MessageErrorCode.NoneListen);
-                _pool.Set(message);
+                HandleMessage(message);
             }
+        }
+
+        private void HandleMessage(Message message)
+        {
+            message.Lock();
+            bool sucess = false;
+            using (new LockWait(ref _lock_entity))
+            {
+                sucess |= EntityPublish(message);
+            }
+            using (new LockWait(ref _lock_entitydel))
+            {
+                sucess |= DelEntityPublish(message);
+            }
+            message.SetErrorCode(sucess ? MessageErrorCode.Success : MessageErrorCode.NoneListen);
+            _pool.Set(message);
         }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         /// <summary>
@@ -595,14 +602,21 @@ namespace IFramework.Modules.Message
         {
             var message = _pool.Get();
             message.SetArgs(args).SetType(type);
-            using (new LockWait(ref _lock_message))
+            if (priority<0)
             {
-                if (_queue.count == _queue.capcity)
+                HandleMessage(message);
+            }
+            else
+            {
+                using (new LockWait(ref _lock_message))
                 {
-                    _queue.Resize(_queue.capcity * 2);
+                    if (_queue.count == _queue.capcity)
+                    {
+                        _queue.Resize(_queue.capcity * 2);
+                    }
+                    _queue.Enqueue(message, priority);
+                    _list.Add(message);
                 }
-                _queue.Enqueue(message, priority);
-                _list.Add(message);
             }
             return message;
         }

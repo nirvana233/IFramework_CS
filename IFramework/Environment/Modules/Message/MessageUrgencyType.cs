@@ -6,6 +6,10 @@
     public enum MessageUrgencyType
     {
         /// <summary>
+        /// 立刻
+        /// </summary>
+        Immediately= MessageUrgency.Immediately,
+        /// <summary>
         /// 非常紧急
         /// </summary>
         VeryUrgent = MessageUrgency.VeryUrgent,

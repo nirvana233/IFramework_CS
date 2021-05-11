@@ -29,18 +29,18 @@ namespace IFramework.Fast
             container.SubscribeInstance(this.GetType(),this, "", false);
             message.fitSubType = true;
             message.processesPerFrame = 20;
-            message.Subscribe<ICommand>(Listen);
+            //message.Subscribe<ICommand>(Listen);
             Awake();
             container.InjectInstances();
         }
 
-        private void Listen(IMessage message)
-        {
-            if (message.args.Is<ICommand>())
-            {
-                message.args.As<ICommand>().Excute();
-            }
-        }
+        //private void Listen(IMessage message)
+        //{
+        //    if (message.args.Is<ICommand>())
+        //    {
+        //        message.args.As<ICommand>().Excute();
+        //    }
+        //}
         /// <summary>
         /// 初始化
         /// </summary>
@@ -82,7 +82,7 @@ namespace IFramework.Fast
         /// <param name="command"></param>
         public void SendCommand(ICommand command)
         {
-            message.Publish<ICommand>(command);
+            command.Excute();
         }
 
 

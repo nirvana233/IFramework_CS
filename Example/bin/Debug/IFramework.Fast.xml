@@ -160,6 +160,37 @@
             初始化
             </summary>
         </member>
+        <member name="M:IFramework.Fast.View`2.SubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            注册消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.View`2.UnSubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            取消监听
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.View`2.PublishMessage``1(IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType)">
+            <summary>
+            发送消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="args"></param>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.View`2.SendCommand(IFramework.ICommand)">
+            <summary>
+            发送命令
+            </summary>
+            <param name="command"></param>
+        </member>
         <member name="M:IFramework.Fast.View`2.GetUtility``1">
             <summary>
             获取工具
@@ -172,13 +203,6 @@
             获取数据
             </summary>
             <typeparam name="TModel"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Fast.View`2.GetViewProcessor``1">
-            <summary>
-            获取数据处理
-            </summary>
-            <typeparam name="TModelProcessor"></typeparam>
             <returns></returns>
         </member>
         <member name="T:IFramework.Fast.FastEntity`1">
@@ -226,6 +250,37 @@
             </summary>
             <typeparam name="TUtility"></typeparam>
             <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.Processor`1.SubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            注册消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.Processor`1.UnSubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+            <summary>
+            取消监听
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="listener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.Processor`1.PublishMessage``1(IFramework.IEventArgs,IFramework.Modules.Message.MessageUrgencyType)">
+            <summary>
+            发送消息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="args"></param>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Fast.Processor`1.SendCommand(IFramework.ICommand)">
+            <summary>
+            发送命令
+            </summary>
+            <param name="command"></param>
         </member>
         <member name="M:IFramework.Fast.Processor`1.Awake">
             <summary>

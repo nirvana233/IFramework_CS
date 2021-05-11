@@ -632,6 +632,11 @@
             消息紧急程度
             </summary>
         </member>
+        <member name="F:IFramework.Modules.Message.MessageUrgency.Immediately">
+            <summary>
+            立刻
+            </summary>
+        </member>
         <member name="F:IFramework.Modules.Message.MessageUrgency.VeryUrgent">
             <summary>
             非常紧急
@@ -665,6 +670,11 @@
         <member name="T:IFramework.Modules.Message.MessageUrgencyType">
             <summary>
             消息紧急程度
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.Message.MessageUrgencyType.Immediately">
+            <summary>
+            立刻
             </summary>
         </member>
         <member name="F:IFramework.Modules.Message.MessageUrgencyType.VeryUrgent">
