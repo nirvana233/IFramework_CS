@@ -16,6 +16,12 @@ namespace IFramework.Fast
         {
             EnvironmentEntity.env.container.Inject(this);
         }
+
+        public IEvvironmentEntity GetEnvironmentEnitity()
+        {
+            return EnvironmentEntity;
+        }
+
         /// <summary>
         /// 所属环境实体
         /// </summary>

@@ -137,7 +137,6 @@ namespace IFramework.Fast
         public void SetModelProcessor<TProcessor>(TProcessor processor) where TProcessor : class, IProcessor
         {
             SetValue(processor);
-            processor.Awake();
         }
         /// <summary>
         /// 获取值

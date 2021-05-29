@@ -49,6 +49,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Instance\EnvironmentEntity.cs" />
+    <Compile Include="FastEx.cs" />
+    <Compile Include="Rules\ICanGetModel.cs" />
+    <Compile Include="Rules\ICanGetOtherModel.cs" />
+    <Compile Include="Rules\ICanGetOtherSystemEntity.cs" />
+    <Compile Include="Rules\ICanGetOtherUtility.cs" />
+    <Compile Include="Rules\ICanGetUtility.cs" />
+    <Compile Include="Rules\ICanListenMessage.cs" />
+    <Compile Include="Rules\ICanListenOtherMessage.cs" />
+    <Compile Include="Rules\ICanPublishMessage.cs" />
+    <Compile Include="Rules\ICanPublishOtherMessage.cs" />
+    <Compile Include="Rules\ICanSendCommand.cs" />
     <Compile Include="Instance\View.cs" />
     <Compile Include="Instance\FastEntity.cs" />
     <Compile Include="Instance\Processor.cs" />
@@ -61,5 +72,6 @@
     <Compile Include="Interface\IUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
