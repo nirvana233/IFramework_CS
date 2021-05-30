@@ -18,7 +18,7 @@ namespace IFramework.Fast
     /// 属于系统实例
     /// </summary>
     /// <typeparam name="TSystemEntity"></typeparam>
-    public interface IBelongToSystemEntity<TSystemEntity>: IBelongToSystemEntity where TSystemEntity : ISystemEntity
+    public interface IBelongToSystemEntity<TSystemEntity> where TSystemEntity : ISystemEntity
     {
         /// <summary>
         /// 实例

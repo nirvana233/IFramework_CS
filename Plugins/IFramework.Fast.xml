@@ -60,14 +60,7 @@
             <typeparam name="TUtility"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.EnvironmentEntity`1.GetModelProcessor``1">
-            <summary>
-            获取根数据处理
-            </summary>
-            <typeparam name="TModelProcessor"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Fast.EnvironmentEntity`1.SubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.EnvironmentEntity`1.SubscribeMessage``1(IFramework.Modules.Message.MessageListener)">
             <summary>
             注册根消息
             </summary>
@@ -75,7 +68,7 @@
             <param name="listener"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.EnvironmentEntity`1.UnSubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.EnvironmentEntity`1.UnSubscribeMessage``1(IFramework.Modules.Message.MessageListener)">
             <summary>
             取消监听根消息
             </summary>
@@ -111,13 +104,6 @@
             </summary>
             <typeparam name="TUtility"></typeparam>
             <param name="utility"></param>
-        </member>
-        <member name="M:IFramework.Fast.EnvironmentEntity`1.SetModelProcessor``1(``0)">
-            <summary>
-            设置根数据处理
-            </summary>
-            <typeparam name="TModelProcessor"></typeparam>
-            <param name="processor"></param>
         </member>
         <member name="M:IFramework.Fast.EnvironmentEntity`1.GetValue``1">
             <summary>
@@ -227,7 +213,7 @@
             <param name="priority"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.FastEx.SubscribeMessage``1(IFramework.Fast.ICanListenMessage,IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.FastEx.SubscribeMessage``1(IFramework.Fast.ICanListenMessage,IFramework.Modules.Message.MessageListener)">
             <summary>
             注册监听消息
             </summary>
@@ -236,7 +222,7 @@
             <param name="listener"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.FastEx.SubscribeMessage``2(IFramework.Fast.ICanListenOtherMessage,IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.FastEx.SubscribeMessage``2(IFramework.Fast.ICanListenOtherMessage,IFramework.Modules.Message.MessageListener)">
             <summary>
             注册监听其他系统消息
             </summary>
@@ -246,7 +232,7 @@
             <param name="listener"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.FastEx.SubscribeEnvironmentMessage``1(IFramework.Fast.ICanListenOtherMessage,IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.FastEx.SubscribeEnvironmentMessage``1(IFramework.Fast.ICanListenOtherMessage,IFramework.Modules.Message.MessageListener)">
             <summary>
             注册监听根消息
             </summary>
@@ -255,7 +241,7 @@
             <param name="listener"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.FastEx.UnSubscribeMessage``1(IFramework.Fast.ICanListenMessage,IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.FastEx.UnSubscribeMessage``1(IFramework.Fast.ICanListenMessage,IFramework.Modules.Message.MessageListener)">
             <summary>
             取消监听消息
             </summary>
@@ -264,7 +250,7 @@
             <param name="listener"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.FastEx.UnSubscribeMessage``2(IFramework.Fast.ICanListenOtherMessage,IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.FastEx.UnSubscribeMessage``2(IFramework.Fast.ICanListenOtherMessage,IFramework.Modules.Message.MessageListener)">
             <summary>
             取消监听其它系统消息
             </summary>
@@ -274,7 +260,7 @@
             <param name="listener"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.FastEx.UnSubscribeEnvironmentMessage``1(IFramework.Fast.ICanListenOtherMessage,IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.FastEx.UnSubscribeEnvironmentMessage``1(IFramework.Fast.ICanListenOtherMessage,IFramework.Modules.Message.MessageListener)">
             <summary>
             取消监听根消息
             </summary>
@@ -359,6 +345,12 @@
             注入
             </summary>
         </member>
+        <member name="M:IFramework.Fast.FastEntity`1.GetEnvironmentEnitity">
+            <summary>
+            获取根实例
+            </summary>
+            <returns></returns>
+        </member>
         <member name="P:IFramework.Fast.FastEntity`1.EnvironmentEntity">
             <summary>
             所属环境实体
@@ -402,6 +394,12 @@
             属于环境实例
             </summary>
         </member>
+        <member name="M:IFramework.Fast.IBelongToEnvironmentEntity.GetEnvironmentEnitity">
+            <summary>
+            获取环境实例
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:IFramework.Fast.IBelongToEnvironmentEntity`1">
             <summary>
             属于环境实例
@@ -441,7 +439,7 @@
             </summary>
             <typeparam name="TEnvironmentEnity"></typeparam>
         </member>
-        <member name="P:IFramework.Fast.SystemEntity`1.flag">
+        <member name="P:IFramework.Fast.SystemEntity`1.name">
             <summary>
             标记
             </summary>
@@ -466,7 +464,7 @@
             初始化
             </summary>
         </member>
-        <member name="M:IFramework.Fast.SystemEntity`1.SubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.SystemEntity`1.SubscribeMessage``1(IFramework.Modules.Message.MessageListener)">
             <summary>
             注册消息
             </summary>
@@ -474,7 +472,7 @@
             <param name="listener"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.SystemEntity`1.UnSubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.SystemEntity`1.UnSubscribeMessage``1(IFramework.Modules.Message.MessageListener)">
             <summary>
             取消监听
             </summary>
@@ -509,12 +507,6 @@
             </summary>
             <typeparam name="TUtility"></typeparam>
         </member>
-        <member name="M:IFramework.Fast.SystemEntity`1.GetModelProcessor``1">
-            <summary>
-            获取数据处理
-            </summary>
-            <typeparam name="TProcessor"></typeparam>
-        </member>
         <member name="M:IFramework.Fast.SystemEntity`1.SetModel``1(``0)">
             <summary>
             设置数据
@@ -528,13 +520,6 @@
             </summary>
             <typeparam name="TUtility"></typeparam>
             <param name="utility"></param>
-        </member>
-        <member name="M:IFramework.Fast.SystemEntity`1.SetModelProcessor``1(``0)">
-            <summary>
-            设置数据处理
-            </summary>
-            <typeparam name="TProcessor"></typeparam>
-            <param name="processor"></param>
         </member>
         <member name="M:IFramework.Fast.SystemEntity`1.GetValue``1">
             <summary>
@@ -565,6 +550,11 @@
             子实例
             </summary>
         </member>
+        <member name="P:IFramework.Fast.ISystemEntity.name">
+            <summary>
+            名字
+            </summary>
+        </member>
         <member name="M:IFramework.Fast.ISystemEntity.GetValue``1">
             <summary>
             获取值
@@ -591,13 +581,7 @@
             </summary>
             <typeparam name="TUtility"></typeparam>
         </member>
-        <member name="M:IFramework.Fast.ISystemEntity.GetModelProcessor``1">
-            <summary>
-            获取数据处理
-            </summary>
-            <typeparam name="TModelProcessor"></typeparam>
-        </member>
-        <member name="M:IFramework.Fast.ISystemEntity.SubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.ISystemEntity.SubscribeMessage``1(IFramework.Modules.Message.MessageListener)">
             <summary>
             注册消息
             </summary>
@@ -605,7 +589,7 @@
             <param name="listener"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Fast.ISystemEntity.UnSubscribeMessage``1(IFramework.Modules.Message.IMessageListener)">
+        <member name="M:IFramework.Fast.ISystemEntity.UnSubscribeMessage``1(IFramework.Modules.Message.MessageListener)">
             <summary>
             取消监听
             </summary>
@@ -641,13 +625,6 @@
             </summary>
             <typeparam name="TUtility"></typeparam>
             <param name="utility"></param>
-        </member>
-        <member name="M:IFramework.Fast.ISystemEntity.SetModelProcessor``1(``0)">
-            <summary>
-            设置数据处理
-            </summary>
-            <typeparam name="TModelProcessor"></typeparam>
-            <param name="processor"></param>
         </member>
         <member name="T:IFramework.Fast.IUtility">
             <summary>

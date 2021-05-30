@@ -20,19 +20,24 @@ namespace Example
             }
 
         }
-        class TestModel : IModel
+
+        private class TestModel : ObservableValue<string>, IModel
         {
-            public string value = "313221";
+            //public string _value = "313221";
+
+            //public string value { get { return GetProperty(ref _value); } set { SetProperty(ref _value, value); } }
+            public TestModel(string value) : base(value)
+            {
+            }
         }
         class TestSysEntity : SystemEntity<Ev02Entity>
         {
             protected override void Awake()
             {
-                this.SetModel(new TestModel());
-                this.SetModelProcessor(new TestProcessor());
+                this.SetModel(new TestModel("313221"));
             }
         }
-        class TestProcessor : Processor<TestSysEntity, Ev02Entity>, IMessageListener
+        class TestProcessor : Processor<TestSysEntity, Ev02Entity>
         {
             [Inject(nameof(TestSysEntity))] public TestModel model;
 
@@ -51,7 +56,7 @@ namespace Example
             protected override void Awake()
             {
                 Log.L("添加监听");
-                this.SubscribeMessage<ChangeEvent>(this);
+                this.SubscribeMessage<ChangeEvent>(this.Listen);
                 Log.L("Awake------------------>" + GetType());
                 Log.L($"所属环境-------------->{env.envType}");
                 Log.L($"所属 SysEntity-------->{systemEntity}");
@@ -84,6 +89,10 @@ namespace Example
             [Inject(nameof(TestSysEntity))] public TestModel model;
             protected override void Awake()
             {
+                model.Subscribe(() => {
+                    Log.L("通过数据绑定监听到变化 to------->" + model.value);
+                });
+
                 Log.L("");
 
                 Log.L("Awake------------------>" + GetType());
@@ -111,6 +120,7 @@ namespace Example
         {
             Ev02Entity.Initialize();
             new TestSysEntity();
+            new TestProcessor();
             new TestView();
         }
 

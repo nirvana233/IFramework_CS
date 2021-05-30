@@ -12,7 +12,7 @@ namespace IFramework.Fast
     {
         private class RootSystemEntity : SystemEntity<TEnvironmentEntity>
         {
-            protected override string flag => "";
+            public override string name => "";
             protected override void Awake()
             {
 
@@ -42,6 +42,8 @@ namespace IFramework.Fast
         /// 环境
         /// </summary>
         public IEnvironment env { get; private set; }
+
+         string  ISystemEntity.name { get { return _sys.name; } }
 
         /// <summary>
         /// 初始化
@@ -96,22 +98,14 @@ namespace IFramework.Fast
         {
             return self.GetUtility<TUtility>();
         }
-        /// <summary>
-        /// 获取根数据处理
-        /// </summary>
-        /// <typeparam name="TModelProcessor"></typeparam>
-        /// <returns></returns>
-        public static TModelProcessor GetModelProcessor<TModelProcessor>() where TModelProcessor : class, IProcessor
-        {
-            return self.GetModelProcessor<TModelProcessor>();
-        }
+
         /// <summary>
         /// 注册根消息
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool SubscribeMessage<T1>(IMessageListener listener)
+        public static bool SubscribeMessage<T1>(MessageListener listener)
         {
             return self.SubscribeMessage<T1>(listener);
         }
@@ -121,7 +115,7 @@ namespace IFramework.Fast
         /// <typeparam name="T1"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool UnSubscribeMessage<T1>(IMessageListener listener)
+        public static bool UnSubscribeMessage<T1>(MessageListener listener)
         {
             return self.UnSubscribeMessage<T1>(listener);
         }
@@ -162,15 +156,7 @@ namespace IFramework.Fast
         {
             self.SetUtility<TUtility>(utility);
         }
-        /// <summary>
-        /// 设置根数据处理
-        /// </summary>
-        /// <typeparam name="TModelProcessor"></typeparam>
-        /// <param name="processor"></param>
-        public static void SetModelProcessor<TModelProcessor>(TModelProcessor processor) where TModelProcessor : class, IProcessor
-        {
-            self.SetModelProcessor<TModelProcessor>(processor);
-        }
+
         /// <summary>
         /// 获取根数据
         /// </summary>
@@ -215,17 +201,14 @@ namespace IFramework.Fast
             return _sys.GetUtility<TUtility>();
         }
 
-        TModelProcessor ISystemEntity.GetModelProcessor<TModelProcessor>()
-        {
-            return _sys.GetModelProcessor<TModelProcessor>();
-        }
 
-        bool ISystemEntity.SubscribeMessage<T1>(IMessageListener listener)
+
+        bool ISystemEntity.SubscribeMessage<T1>(MessageListener listener)
         {
             return _sys.SubscribeMessage<T1>(listener);
         }
 
-        bool ISystemEntity.UnSubscribeMessage<T1>(IMessageListener listener)
+        bool ISystemEntity.UnSubscribeMessage<T1>(MessageListener listener)
         {
             return _sys.UnSubscribeMessage<T1>(listener);
         }
@@ -250,10 +233,7 @@ namespace IFramework.Fast
             _sys.SetUtility<TUtility>(utility);
         }
 
-        void ISystemEntity.SetModelProcessor<TModelProcessor>(TModelProcessor processor)
-        {
-            _sys.SetModelProcessor<TModelProcessor>(processor);
-        }
+
 
         void IDisposable.Dispose()
         {

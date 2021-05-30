@@ -12,7 +12,7 @@ namespace IFramework.Fast
         /// <summary>
         /// 标记
         /// </summary>
-        protected virtual string flag { get { return GetType().Name; } }
+        public virtual string name { get { return GetType().Name; } }
         /// <summary>
         /// 数据容器
         /// </summary>
@@ -20,7 +20,7 @@ namespace IFramework.Fast
         /// <summary>
         /// 消息
         /// </summary>
-        private IMessageModule message { get { return EnvironmentEntity.env.modules.GetModule<MessageModule>(flag); } }
+        private IMessageModule message { get { return EnvironmentEntity.env.modules.GetModule<MessageModule>(name); } }
         /// <summary>
         /// ctor
         /// </summary>
@@ -28,7 +28,7 @@ namespace IFramework.Fast
         {
             container.SubscribeInstance(this.GetType(),this, "", false);
             message.fitSubType = true;
-            message.processesPerFrame = 20;
+            message.processesPerFrame = 100;
             //message.Subscribe<ICommand>(Listen);
             Awake();
             container.InjectInstances();
@@ -51,7 +51,7 @@ namespace IFramework.Fast
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool SubscribeMessage<T>(IMessageListener listener)
+        public bool SubscribeMessage<T>(MessageListener listener)
         {
             return message.Subscribe<T>(listener);
         }
@@ -61,7 +61,7 @@ namespace IFramework.Fast
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool UnSubscribeMessage<T>(IMessageListener listener)
+        public bool UnSubscribeMessage<T>(MessageListener listener)
         {
             return message.UnSubscribe<T>(listener);
         }
@@ -102,14 +102,7 @@ namespace IFramework.Fast
         {
             return GetValue<TUtility>();
         }
-        /// <summary>
-        /// 获取数据处理
-        /// </summary>
-        /// <typeparam name="TProcessor"></typeparam>
-        public TProcessor GetModelProcessor<TProcessor>() where TProcessor : class, IProcessor
-        {
-            return GetValue<TProcessor>();
-        }
+
 
         /// <summary>
         /// 设置数据
@@ -129,15 +122,7 @@ namespace IFramework.Fast
         {
             SetValue(utility);
         }
-        /// <summary>
-        /// 设置数据处理
-        /// </summary>
-        /// <typeparam name="TProcessor"></typeparam>
-        /// <param name="processor"></param>
-        public void SetModelProcessor<TProcessor>(TProcessor processor) where TProcessor : class, IProcessor
-        {
-            SetValue(processor);
-        }
+
         /// <summary>
         /// 获取值
         /// </summary>
@@ -145,7 +130,7 @@ namespace IFramework.Fast
         /// <returns></returns>
         public T GetValue<T>() where T : class
         {
-            return container.GetValue<T>(flag);
+            return container.GetValue<T>(name);
         }
         /// <summary>
         /// 设置值
@@ -154,7 +139,7 @@ namespace IFramework.Fast
         /// <param name="t"></param>
         public void SetValue<T>(T t) where T : class
         {
-            container.SubscribeInstance(t, flag);
+            container.SubscribeInstance(t, name);
         }
     }
 }

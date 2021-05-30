@@ -1,5 +1,6 @@
 ﻿using IFramework.Injection;
 using IFramework.Modules.Message;
+using System;
 
 namespace IFramework.Fast
 {
@@ -10,8 +11,8 @@ namespace IFramework.Fast
     /// <typeparam name="TSystemEntity"></typeparam>
     /// <typeparam name="TEnvironmentEntity"></typeparam>
     public abstract class Processor<TSystemEntity, TEnvironmentEntity> : FastEntity<TEnvironmentEntity>,IProcessor,
-        IBelongToSystemEntity<TSystemEntity>,
-        ICanGetModel, ICanPublishMessage, ICanListenMessage, ICanSendCommand, ICanGetUtility
+        IBelongToSystemEntity<TSystemEntity>, IBelongToSystemEntity,
+        ICanGetModel, ICanPublishMessage, ICanListenMessage , ICanGetUtility
         where TEnvironmentEntity : EnvironmentEntity<TEnvironmentEntity>
         where TSystemEntity : ISystemEntity
     {
@@ -45,5 +46,8 @@ namespace IFramework.Fast
         {
             return systemEntity;
         }
+     
+
     }
+
 }

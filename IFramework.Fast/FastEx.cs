@@ -130,7 +130,7 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool SubscribeMessage<T>(this ICanListenMessage obj,IMessageListener listener)
+        public static bool SubscribeMessage<T>(this ICanListenMessage obj,MessageListener listener)
         {
             return obj.GetSystemEntity().SubscribeMessage<T>(listener);
         }
@@ -142,7 +142,7 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool SubscribeMessage<TSystemEntity, T>(this ICanListenOtherMessage obj , IMessageListener listener) where TSystemEntity : class, ISystemEntity
+        public static bool SubscribeMessage<TSystemEntity, T>(this ICanListenOtherMessage obj , MessageListener listener) where TSystemEntity : class, ISystemEntity
         {
             return obj.GetOtherSystemEntity<TSystemEntity>().SubscribeMessage<T>(listener);
         }
@@ -153,7 +153,7 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool SubscribeEnvironmentMessage<T>(this ICanListenOtherMessage obj, IMessageListener listener)
+        public static bool SubscribeEnvironmentMessage<T>(this ICanListenOtherMessage obj, MessageListener listener)
         {
             return obj.GetEnvironmentEnitity().SubscribeMessage<T>(listener);
         }
@@ -164,7 +164,7 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool UnSubscribeMessage<T>(this ICanListenMessage obj, IMessageListener listener)
+        public static bool UnSubscribeMessage<T>(this ICanListenMessage obj, MessageListener listener)
         {
             return obj.GetSystemEntity().UnSubscribeMessage<T>(listener);
         }
@@ -176,7 +176,7 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool UnSubscribeMessage<TSystemEntity, T>(this ICanListenOtherMessage obj, IMessageListener listener) where TSystemEntity : class, ISystemEntity
+        public static bool UnSubscribeMessage<TSystemEntity, T>(this ICanListenOtherMessage obj, MessageListener listener) where TSystemEntity : class, ISystemEntity
         {
             return obj.GetOtherSystemEntity<TSystemEntity>().UnSubscribeMessage<T>(listener);
         }
@@ -187,7 +187,7 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool UnSubscribeEnvironmentMessage<T>(this ICanListenOtherMessage obj, IMessageListener listener)
+        public static bool UnSubscribeEnvironmentMessage<T>(this ICanListenOtherMessage obj, MessageListener listener)
         {
             return obj.GetEnvironmentEnitity().UnSubscribeMessage<T>(listener);
         }

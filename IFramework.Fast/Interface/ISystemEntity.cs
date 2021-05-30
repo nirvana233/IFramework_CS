@@ -8,6 +8,10 @@ namespace IFramework.Fast
     public interface ISystemEntity
     {
         /// <summary>
+        /// 名字
+        /// </summary>
+        string name { get; }
+        /// <summary>
         /// 获取值
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -29,25 +33,21 @@ namespace IFramework.Fast
         /// </summary>
         /// <typeparam name="TUtility"></typeparam>
         TUtility GetUtility<TUtility>() where TUtility : class, IUtility;
-        /// <summary>
-        /// 获取数据处理
-        /// </summary>
-        /// <typeparam name="TModelProcessor"></typeparam>
-        TModelProcessor GetModelProcessor<TModelProcessor>() where TModelProcessor : class, IProcessor;
+
         /// <summary>
         /// 注册消息
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool SubscribeMessage<T>(IMessageListener listener);
+        bool SubscribeMessage<T>(MessageListener listener);
         /// <summary>
         /// 取消监听
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribeMessage<T>(IMessageListener listener);
+        bool UnSubscribeMessage<T>(MessageListener listener);
         /// <summary>
         /// 发布消息
         /// </summary>
@@ -73,11 +73,6 @@ namespace IFramework.Fast
         /// <typeparam name="TUtility"></typeparam>
         /// <param name="utility"></param>
         void SetUtility<TUtility>(TUtility utility) where TUtility : class, IUtility;
-        /// <summary>
-        /// 设置数据处理
-        /// </summary>
-        /// <typeparam name="TModelProcessor"></typeparam>
-        /// <param name="processor"></param>
-        void SetModelProcessor<TModelProcessor>(TModelProcessor processor) where TModelProcessor : class, IProcessor;
+
     }
 }

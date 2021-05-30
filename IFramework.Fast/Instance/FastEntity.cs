@@ -7,7 +7,8 @@ namespace IFramework.Fast
     /// 快速实体
     /// </summary>
     /// <typeparam name="TEnvironmentEntity"></typeparam>
-    public class FastEntity<TEnvironmentEntity> : IBelongToEnvironmentEntity<TEnvironmentEntity> where TEnvironmentEntity : EnvironmentEntity<TEnvironmentEntity>
+    public class FastEntity<TEnvironmentEntity> : IBelongToEnvironmentEntity<TEnvironmentEntity>, IBelongToEnvironmentEntity
+        where TEnvironmentEntity : EnvironmentEntity<TEnvironmentEntity>
     {
         /// <summary>
         /// 注入
@@ -16,7 +17,10 @@ namespace IFramework.Fast
         {
             EnvironmentEntity.env.container.Inject(this);
         }
-
+        /// <summary>
+        /// 获取根实例
+        /// </summary>
+        /// <returns></returns>
         public IEvvironmentEntity GetEnvironmentEnitity()
         {
             return EnvironmentEntity;
