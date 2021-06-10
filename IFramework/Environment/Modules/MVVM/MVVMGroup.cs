@@ -21,8 +21,8 @@ namespace IFramework.Modules.MVVM
                 }
                 else
                 {
-                    OnRemoveMessage(message);
-                    message = null;
+                    //OnRemoveMessage(message);
+                    //message = null;
                 }
                 _module = value;
             }
@@ -100,10 +100,11 @@ namespace IFramework.Modules.MVVM
         /// 移除消息转发时
         /// </summary>
         /// <param name="message"></param>
-        protected virtual void OnRemoveMessage(IMessageModule message)
-        {
-            (_viewModel as IViewModel).UnSubscribeMessage();
-        }
+        //protected virtual void OnRemoveMessage(IMessageModule message)
+        //{
+        //    if (disposed) return;
+        //    (_viewModel as IViewModel).UnSubscribeMessage();
+        //}
         /// <summary>
         /// 设置消息转发时
         /// </summary>
@@ -127,7 +128,8 @@ namespace IFramework.Modules.MVVM
         /// </summary>
         public override void Dispose()
         {
-            OnDispose();
+            if (disposed) return;
+            base.Dispose();
             if (_view != null)
             {
                 _view.Dispose();

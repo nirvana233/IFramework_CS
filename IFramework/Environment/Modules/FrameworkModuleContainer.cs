@@ -108,7 +108,7 @@ namespace IFramework.Modules
         /// <param name="bind"></param>
         public FrameworkModuleContainer( FrameworkEnvironment env, bool bind = true)
         {
-            using (new LockWait(ref _lock))
+           // using (new LockWait(ref _lock))
             {
                 this._env = env;
                 update_list = new List<UpdateFrameworkModule>();
@@ -155,7 +155,7 @@ namespace IFramework.Modules
         /// </summary>
         protected override void OnDispose()
         {
-            using (new LockWait(ref _lock))
+           // using (new LockWait(ref _lock))
             {
                 UnBindEnv(false);
                 List<FrameworkModule> list = new List<FrameworkModule>();

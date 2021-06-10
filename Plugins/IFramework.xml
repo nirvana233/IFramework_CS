@@ -2466,12 +2466,6 @@
             <param name="viewModel"></param>
             <param name="model"></param>
         </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMGroup.OnRemoveMessage(IFramework.Modules.Message.IMessageModule)">
-            <summary>
-            移除消息转发时
-            </summary>
-            <param name="message"></param>
-        </member>
         <member name="M:IFramework.Modules.MVVM.MVVMGroup.OnSetMessage(IFramework.Modules.Message.IMessageModule)">
             <summary>
             设置消息转发时
