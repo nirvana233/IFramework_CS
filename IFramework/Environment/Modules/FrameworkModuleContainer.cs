@@ -108,7 +108,7 @@ namespace IFramework.Modules
         /// <param name="bind"></param>
         public FrameworkModuleContainer( FrameworkEnvironment env, bool bind = true)
         {
-           // using (new LockWait(ref _lock))
+            using (new LockWait(ref _lock))
             {
                 this._env = env;
                 update_list = new List<UpdateFrameworkModule>();

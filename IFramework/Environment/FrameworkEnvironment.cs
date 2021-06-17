@@ -109,7 +109,7 @@ namespace IFramework
                         RuntimeHelpers.RunClassConstructor(type.TypeHandle);
                 }
             }
-            _loom = modules.CreateModule<LoomModule>("");
+            _loom = LoomModule.CreatInstance<LoomModule>("");
             deltaTime = TimeSpan.Zero;
             _inited = true;
             sw_delta = new Stopwatch();
@@ -145,6 +145,7 @@ namespace IFramework
             if (onDispose != null) onDispose();
             (cycleCollection as RecyclableObjectCollection).Dispose();
             container.Dispose();
+            _loom.Dispose();
             sw_init.Stop();
             sw_delta.Stop();
             container = null;
@@ -163,6 +164,7 @@ namespace IFramework
             current = this;
             sw_delta.Reset();
             sw_delta.Start();
+            _loom.Update();
             if (update != null) update();
             sw_delta.Stop();
             deltaTime = sw_delta.Elapsed;
