@@ -5,7 +5,7 @@ namespace IFramework.NodeAction
     /// <summary>
     /// 节点
     /// </summary>
-    public abstract class ActionNode : RecyclableObject, IActionNode
+     abstract class ActionNode : RecyclableObject, IActionNode
     {
         private bool mOnBeginCalled;
 
