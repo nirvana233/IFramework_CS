@@ -91,8 +91,6 @@
     <Compile Include="Environment\Modules\Recorder\OperationRecorderModule.cs" />
     <Compile Include="__Interfaces\IRecyclable.cs" />
     <Compile Include="Environment\Recylable\RecyclableObjectCollection.cs" />
-    <Compile Include="Extension\FieldExtend\ExtensibleObject.cs" />
-    <Compile Include="Extension\FieldExtend\ObjectEX.cs" />
     <Compile Include="Extension\FloatExtension.cs" />
     <Compile Include="FrameworkBitConverter.cs" />
     <Compile Include="Environment\FrameworkEnvironment.cs" />
@@ -243,19 +241,6 @@
     <Compile Include="Queue\SimplePriorityQueue.cs" />
     <Compile Include="Queue\StablePriorityQueue.cs" />
     <Compile Include="Queue\StablePriorityQueueNode.cs" />
-    <Compile Include="Resources\Group\FileResourceGroup.cs" />
-    <Compile Include="Resources\Group\HttpResourceGroup.cs" />
-    <Compile Include="Resources\Resource.cs" />
-    <Compile Include="Resources\Loader\ResourceLoader.cs" />
-    <Compile Include="Resources\Loader\File\AsyncFileBytesLoader.cs" />
-    <Compile Include="Resources\Loader\File\AsyncFileTextLoader.cs" />
-    <Compile Include="Resources\Loader\AsyncResourceLoader.cs" />
-    <Compile Include="Resources\Loader\Http\AsyncHttpBytesLoader.cs" />
-    <Compile Include="Resources\Loader\Http\AsyncHttpTextLoader.cs" />
-    <Compile Include="Resources\Loader\Http\HttpBytesLoader.cs" />
-    <Compile Include="Resources\Loader\Http\HttpTextLoader.cs" />
-    <Compile Include="Resources\Loader\File\FileBytesLoader.cs" />
-    <Compile Include="Resources\Loader\File\FileTextLoader.cs" />
     <Compile Include="Environment\Modules\UpdateFrameworkModule.cs" />
     <Compile Include="Observable\BindableObject.cs" />
     <Compile Include="Observable\BindableObjectHandler.cs" />
@@ -285,8 +270,6 @@
     <Compile Include="Extension\StringExtension_Regex.cs" />
     <Compile Include="Extension\TypeExtension.cs" />
     <Compile Include="Environment\Modules\Fsm\Condition\Condition.cs" />
-    <Compile Include="Resources\Group\IResourceGroup.cs" />
-    <Compile Include="Resources\Group\ResourceGroup.cs" />
     <Compile Include="Serialization\DataTable\DataColumn.cs" />
     <Compile Include="Serialization\DataTable\DataColumnIndexAttribute.cs" />
     <Compile Include="Serialization\DataTable\DataColumnNameAttribute.cs" />
