@@ -11,7 +11,7 @@ namespace IFramework.Modules.Message
         /// <summary>
         /// 发送消息类型
         /// </summary>
-        Type type { get; }
+        Type subject { get; }
         /// <summary>
         /// 承载消息内容
         /// </summary>
