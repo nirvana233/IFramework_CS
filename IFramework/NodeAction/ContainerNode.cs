@@ -34,6 +34,8 @@ namespace IFramework.NodeAction
         /// <param name="node"></param>
         public virtual void Append(ActionNode node)
         {
+            node.depth = this.depth + 1;
+            node.parent = this;
             nodeList.Add(node);
             SetDataDirty();
         }

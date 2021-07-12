@@ -236,7 +236,7 @@
             消息
             </summary>
         </member>
-        <member name="P:IFramework.Modules.Message.IMessage.type">
+        <member name="P:IFramework.Modules.Message.IMessage.subject">
             <summary>
             发送消息类型
             </summary>

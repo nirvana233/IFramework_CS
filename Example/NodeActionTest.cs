@@ -6,13 +6,22 @@ namespace Example
 {
     public class NodeActionTest : Test
     {
+        ISequenceNode s;
         protected override void Start()
         {
-            this.Sequence(EnvironmentType.Ev0)
+            Dosth();
+        }
+        void Dosth()
+        {
+            if (s!=null)
+            {
+                s.Recyle();
+            }
+            s = this.Sequence(EnvironmentType.Ev0)
                 .Repeat((r) => {
                     r.Sequence((s) =>
                     {
-                        s.TimeSpan(new TimeSpan(0, 0, 1))
+                        s.TimeSpan(TimeSpan.FromSeconds(0.2f))
                          .Event(() => { Log.L("Event"); })
                          .OnCompelete(() => { Log.L("Inner OnCompelete"); })
                          .OnBegin(() => { Log.L("Inner OnBegin"); });
@@ -25,13 +34,16 @@ namespace Example
                 .OnRecyle(() => { Log.L("OnRecyle"); })
                 .Run();
         }
-
         protected override void Stop()
         {
         }
 
         protected override void Update()
         {
+            if (Console.ReadKey().Key== ConsoleKey.Spacebar)
+            {
+                Dosth();
+            }
         }
     }
 }

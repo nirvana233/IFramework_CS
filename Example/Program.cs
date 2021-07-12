@@ -30,7 +30,7 @@ namespace Example
     }
     class Program
     {
-        private static System.Timers.Timer timer = new System.Timers.Timer(1000);
+        private static System.Timers.Timer timer = new System.Timers.Timer(1);
         static void Main(string[] args)
         {
             timer.Elapsed += Timer_Elapsed;
@@ -65,15 +65,15 @@ namespace Example
 
             //  new MessageExample();            //消息模块
             //new RecyclableObjectTest();      //可回收对象测试
-            // new NodeActionTest();            // 节点事件
+             new NodeActionTest();            // 节点事件
             // new RecorderTest();              //操作记录模块
-            // new InjectTest();                // 依赖注入
+         //    new InjectTest();                // 依赖注入
             //  new ConfigTest();               // 配置模块
             // new CoroutineTest();             //协程 模块
             // new FsmTest();                   // 状态机模块
             // new MouduleTest();                //自定义模块
 
-            new FastTest();     //IFramework.Fast(IFramework 二次开发) 快速注入 测试
+           // new FastTest();     //IFramework.Fast(IFramework 二次开发) 快速注入 测试
         }
 
     }

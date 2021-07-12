@@ -21,6 +21,11 @@
             if (_curIndex >= count) return false;
             return true;
         }
+        protected override void OnBegin()
+        {
+            base.OnBegin();
+            _curIndex = 0;
+        }
         protected override void OnDataReset()
         {
             base.OnDataReset();
