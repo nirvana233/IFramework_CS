@@ -3,7 +3,7 @@
     /// <summary>
     /// 基类
     /// </summary>
-    public abstract class DisposableObject :  IDisposableObject
+    public abstract class Unit :  IUnit
     {
         private bool _disposed;
         /// <summary>

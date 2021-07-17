@@ -9,7 +9,7 @@ namespace IFramework
     /// <summary>
     /// 文件扩展
     /// </summary>
-    public static partial class IO
+    public static partial class IOEx
     {
         /// <summary>
         /// 文件大小等级
@@ -341,6 +341,18 @@ namespace IFramework
         {
             path = path.ToRegularPath();
             return path.Contains("://") ? path : ("file:///" + path).Replace("file:////", "file:///");
+        }
+
+        /// <summary>
+        /// 如果文件夹不存在则创建
+        /// </summary>
+        /// <param name="path"></param>
+        public static void MakeDirectoryExist(this string path)
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
     }
 

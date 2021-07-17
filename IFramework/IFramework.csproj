@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\TipAttribute.cs" />
-    <Compile Include="DisposableObject.cs" />
+    <Compile Include="BitConverterEx.cs" />
     <Compile Include="Environment\IEnvironment.cs" />
     <Compile Include="Environment\Inject\IValuesContainer.cs" />
     <Compile Include="Environment\Inject\ValuesContainer.cs" />
@@ -65,15 +65,26 @@
     <Compile Include="Environment\Modules\Message\MessageErrorCode.cs" />
     <Compile Include="Environment\Modules\Message\MessageModule.cs" />
     <Compile Include="Environment\Modules\Message\MessageState.cs" />
+    <Compile Include="Environment\Modules\Recorder\ValueState.cs" />
+    <Compile Include="Extension\FloatEx.cs" />
+    <Compile Include="Extension\IEnumerableEx.cs" />
+    <Compile Include="Extension\IntEx.cs" />
+    <Compile Include="Extension\IOEx.cs" />
+    <Compile Include="Extension\ObjectEx.cs" />
+    <Compile Include="Extension\StringEx.cs" />
+    <Compile Include="Extension\StringEx_Regex.cs" />
+    <Compile Include="Extension\TypeEx.cs" />
+    <Compile Include="Unit.cs" />
+    <Compile Include="Utility\SimpleReference.cs" />
     <Compile Include="__Interfaces\IBelongToEnvironment.cs" />
     <Compile Include="__Interfaces\IContainer.cs" />
     <Compile Include="__Interfaces\Awaitable\IAwaitable.cs" />
     <Compile Include="__Interfaces\Awaitable\IAwaiter.cs" />
     <Compile Include="__Interfaces\Awaitable\ICriticalAwaiter.cs" />
     <Compile Include="__Interfaces\IDescription.cs" />
-    <Compile Include="__Interfaces\IDisposableObject.cs" />
     <Compile Include="__Interfaces\IModel.cs" />
     <Compile Include="__Interfaces\IUniqueIDObject.cs" />
+    <Compile Include="__Interfaces\IUnit.cs" />
     <Compile Include="__Interfaces\IValueContainer.cs" />
     <Compile Include="__Interfaces\IVersion.cs" />
     <Compile Include="Attributes\RequireAttribute.cs" />
@@ -91,8 +102,6 @@
     <Compile Include="Environment\Modules\Recorder\OperationRecorderModule.cs" />
     <Compile Include="__Interfaces\IRecyclable.cs" />
     <Compile Include="Environment\Recylable\RecyclableObjectCollection.cs" />
-    <Compile Include="Extension\FloatExtension.cs" />
-    <Compile Include="FrameworkBitConverter.cs" />
     <Compile Include="Environment\FrameworkEnvironment.cs" />
     <Compile Include="Environment\Modules\Config\ConfigModule.cs" />
     <Compile Include="Environment\Modules\Config\IConfigModule.cs" />
@@ -256,19 +265,12 @@
     <Compile Include="Environment\Modules\Fsm\ConditionValue.cs" />
     <Compile Include="Environment\Modules\Fsm\Transition.cs" />
     <Compile Include="Environment\Modules\Fsm\IState.cs" />
-    <Compile Include="Extension\IEnumerableExtension.cs" />
-    <Compile Include="Extension\IntExtension.cs" />
-    <Compile Include="Extension\IO.cs" />
     <Compile Include="__Interfaces\IEventArgs.cs" />
     <Compile Include="LockWait.cs" />
     <Compile Include="Log\CSLogger.cs" />
     <Compile Include="Log\ILoger.cs" />
     <Compile Include="Log\Log.cs" />
-    <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="Pool\ObjectPool.cs" />
-    <Compile Include="Extension\StringExtension.cs" />
-    <Compile Include="Extension\StringExtension_Regex.cs" />
-    <Compile Include="Extension\TypeExtension.cs" />
     <Compile Include="Environment\Modules\Fsm\Condition\Condition.cs" />
     <Compile Include="Serialization\DataTable\DataColumn.cs" />
     <Compile Include="Serialization\DataTable\DataColumnIndexAttribute.cs" />
@@ -328,11 +330,10 @@
     <Compile Include="Utility\Encryption\RsaEncryption.cs" />
     <Compile Include="Utility\Encryption\TripleEncryption.cs" />
     <Compile Include="Utility\Encryption\XorEncryption.cs" />
-    <Compile Include="Utility\IReference.cs" />
+    <Compile Include="__Interfaces\IReference.cs" />
     <Compile Include="Utility\Point2.cs" />
     <Compile Include="Utility\Point3.cs" />
     <Compile Include="Utility\ProcessUtil.cs" />
-    <Compile Include="Utility\ValueCurve.cs" />
     <Compile Include="Utility\Verifier.cs" />
     <Compile Include="ValueMap.cs" />
   </ItemGroup>

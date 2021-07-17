@@ -7,7 +7,7 @@ namespace IFramework
     /// <summary>
     /// 集合静态扩展
     /// </summary>
-    public static partial class IEnumerableExtension
+    public static partial class IEnumerableEx
     {
         /// <summary>
         /// 遍历集合

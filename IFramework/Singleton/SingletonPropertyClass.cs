@@ -6,7 +6,7 @@ namespace IFramework.Singleton
     /// 单例属性类
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class SingletonPropertyClass<T> : ISingleton where T : SingletonPropertyClass<T>
+    public abstract class SingletonPropertyClass<T> : Unit, ISingleton where T : SingletonPropertyClass<T>
     {
         /// <summary>
         /// 实例
@@ -20,15 +20,17 @@ namespace IFramework.Singleton
         /// 初始化
         /// </summary>
         protected abstract void OnSingletonInit();
+
         /// <summary>
         /// 注销
         /// </summary>
-        protected abstract void OnDispose();
-
-        void IDisposable. Dispose()
+        public override void Dispose()
         {
-            OnDispose();
-            SingletonProperty<T>.Dispose();
+            base.Dispose();
+            if (!disposed)
+            {
+                SingletonProperty<T>.Dispose();
+            }
         }
 
 

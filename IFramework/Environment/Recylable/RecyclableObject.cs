@@ -8,7 +8,7 @@ namespace IFramework
     /// </summary>
     [ScriptVersionAttribute(20)]
     [VersionUpdateAttribute(20, "增加未回收实例的控制")]
-    public abstract class RecyclableObject : DisposableObject, IRecyclable, IBelongToEnvironment, IUniqueIDObject
+    public abstract class RecyclableObject : Unit, IRecyclable, IBelongToEnvironment, IUniqueIDObject
     {
         private static RecyclableObjectCollection GetCollection(IEnvironment env)
         {

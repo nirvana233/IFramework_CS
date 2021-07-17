@@ -4,7 +4,7 @@
     class SpawnNode : ContainerNode, ISpawnNode
     {
         private int _mFinishCount;
-
+        
         protected override void OnDataReset()
         {
             base.OnDataReset();

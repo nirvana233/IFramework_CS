@@ -39,11 +39,8 @@ namespace IFramework
             {
                 return (Object)Activator.CreateInstance(objType);
             }
-            /// <summary>
-            /// 释放时
-            /// </summary>
-           
 
+          
         }
         private Dictionary<Type, IBaseTypeInnerPool> _poolMap;
         /// <summary>

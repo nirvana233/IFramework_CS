@@ -5,7 +5,7 @@ namespace IFramework
     /// <summary>
     /// 静态扩展
     /// </summary>
-    public static class FloatExtension
+    public static class FloatEx
     {
         /// <summary>
         ///         取绝对值

@@ -140,6 +140,7 @@ namespace IFramework.Modules.Recorder
         {
             return t.Allocate<ActionGroupState>();
         }
+
         /// <summary>
         /// 设置值
         /// </summary>

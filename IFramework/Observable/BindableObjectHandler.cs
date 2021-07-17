@@ -7,7 +7,7 @@ namespace IFramework
     /// 绑定器
     /// </summary>
     [ScriptVersion(11)]
-    public class BindableObjectHandler : DisposableObject
+    public class BindableObjectHandler : Unit
     {
         struct BindEntity
         {

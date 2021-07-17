@@ -7,7 +7,7 @@ namespace IFramework
     /// <summary>
     /// object 静态扩展
     /// </summary>
-    public static partial class ObjectExtension
+    public static partial class ObjectEx
     {
         ///// <summary>
         ///// 是否继承接口

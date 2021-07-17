@@ -8,7 +8,7 @@ namespace IFramework
     /// </summary>
     [ScriptVersion(11)]
     [VersionUpdate(11, "继承 FrameworkObject")]
-    public class ObservableObjectHandler : DisposableObject
+    public class ObservableObjectHandler : Unit
     {
         struct ObserveEntity
         {

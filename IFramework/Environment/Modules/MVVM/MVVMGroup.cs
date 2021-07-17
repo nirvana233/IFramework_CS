@@ -6,7 +6,7 @@ namespace IFramework.Modules.MVVM
     /// <summary>
     /// MVVM 组结构
     /// </summary>
-    public class MVVMGroup : DisposableObject
+    public class MVVMGroup : Unit
     {
         private MVVMModule _module;
         internal MVVMModule module

@@ -8,7 +8,7 @@ namespace IFramework
     /// <summary>
     /// Type静态扩展
     /// </summary>
-    public static partial class TypeExtension
+    public static partial class TypeEx
     {
         /// <summary>
         /// 获取当前程序集中的类型的子类，3.5有问题

@@ -16,7 +16,7 @@ namespace IFramework.Serialization.DataTable
     /// 数据表读者
     /// </summary>
     [RequireAttribute(typeof(StringConvert))]
-    internal class DataReader : IDataReader
+    internal class DataReader : Unit, IDataReader
     {
         private List<List<DataColumn>> _rows;
         private IDataRow _rowReader;
@@ -65,16 +65,20 @@ namespace IFramework.Serialization.DataTable
                 _rows.Add(cols);
             });
         }
+
         /// <summary>
         /// 释放
         /// </summary>
-        public void Dispose()
+        protected override void OnDispose()
         {
-            _rows.Clear();
-            if (_streamReader!=null)
+            if (!disposed)
             {
-                _streamReader.Close();
-                _streamReader.Dispose();
+                _rows.Clear();
+                if (_streamReader != null)
+                {
+                    _streamReader.Close();
+                    _streamReader.Dispose();
+                }
             }
         }
         /// <summary>

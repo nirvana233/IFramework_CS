@@ -7,13 +7,13 @@ namespace IFramework
     /// 基础对象池
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ObjectPool<T> : IDisposable
+    public abstract class ObjectPool<T> : Unit, IDisposable
     {
         /// <summary>
         /// 数据容器
         /// </summary>
         protected Queue<T> pool { get { return _lazy.Value; } }
-        private Lazy<Queue<T>> _lazy=new Lazy<Queue<T>>(()=> { return new Queue<T>(); },true);
+        private Lazy<Queue<T>> _lazy = new Lazy<Queue<T>>(() => { return new Queue<T>(); }, true);
         /// <summary>
         /// 自旋锁
         /// </summary>
@@ -31,20 +31,13 @@ namespace IFramework
         /// Ctor
         /// </summary>
         protected ObjectPool() { lockParam = new LockParam(); }
-        /// <summary>
-        /// 释放
-        /// </summary>
-        public void Dispose()
-        {
-            OnDispose();
-            _lazy = null;
-            lockParam = null;
-        }
+
         /// <summary>
         /// 释放时
         /// </summary>
-        protected virtual void OnDispose() {
-            while (pool.Count>0)
+        protected override void OnDispose()
+        {
+            while (pool.Count > 0)
             {
                 IDisposable dispose = pool.Dequeue() as IDisposable;
                 if (dispose != null)

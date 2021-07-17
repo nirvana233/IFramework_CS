@@ -6,7 +6,7 @@ namespace IFramework
     /// <summary>
     /// string静态扩展
     /// </summary>
-    public static partial class StringExtension
+    public static partial class StringEx
     {
         /// <summary>
         /// 替换第一个符合的字符串

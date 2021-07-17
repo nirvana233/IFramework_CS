@@ -12,7 +12,7 @@ namespace IFramework
     /// <summary>
     /// 框架运行环境
     /// </summary>
-    class FrameworkEnvironment : DisposableObject, IEnvironment
+    class FrameworkEnvironment : Unit, IEnvironment
     {
         private bool _inited;
         private FrameworkModules _modules;

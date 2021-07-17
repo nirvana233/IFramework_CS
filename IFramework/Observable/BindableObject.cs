@@ -9,7 +9,7 @@ namespace IFramework
     /// 绑定对象
     /// </summary>
     [ScriptVersion(11)]
-    public abstract class BindableObject : DisposableObject
+    public abstract class BindableObject : Unit
     {
         /// <summary>
         /// 绑定方式

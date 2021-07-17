@@ -6,18 +6,14 @@ namespace Example
 {
     public class NodeActionTest : Test
     {
-        ISequenceNode s;
         protected override void Start()
         {
             Dosth();
         }
         void Dosth()
         {
-            if (s!=null)
-            {
-                s.Recyle();
-            }
-            s = this.Sequence(EnvironmentType.Ev0)
+
+            this.Sequence(EnvironmentType.Ev0)
                 .Repeat((r) => {
                     r.Sequence((s) =>
                     {

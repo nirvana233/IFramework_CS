@@ -5,7 +5,7 @@ namespace IFramework
     /// <summary>
     /// 正则
     /// </summary>
-    public static partial class StringExtension_Regex
+    public static partial class StringEx_Regex
     {
         /// <summary>
         /// 是否是邮箱

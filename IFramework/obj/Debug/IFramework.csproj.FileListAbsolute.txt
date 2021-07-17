@@ -4,4 +4,3 @@ E:\Project\VS\IFramework\Plugins\IFramework.pdb
 E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csproj.CoreCompileInputs.cache
 E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.dll
 E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.pdb
-E:\Project\VS\IFramework\IFramework\obj\Debug\IFramework.csprojAssemblyReference.cache

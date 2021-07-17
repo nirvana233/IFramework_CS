@@ -7,7 +7,7 @@ namespace IFramework
     /// <summary>
     /// byte[]转换
     /// </summary>
-    public static class FrameworkBitConverter
+    public static class BitConverterEx
     {
         private static readonly uint[] ByteToHexCharLookupLowerCase = CreateByteToHexLookup(false);
         private static readonly uint[] ByteToHexCharLookupUpperCase = CreateByteToHexLookup(true);

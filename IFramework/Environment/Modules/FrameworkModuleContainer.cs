@@ -6,7 +6,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块容器
     /// </summary>
-    class FrameworkModuleContainer : DisposableObject, IFrameworkModuleContainer,IBelongToEnvironment
+    class FrameworkModuleContainer : Unit, IFrameworkModuleContainer,IBelongToEnvironment
     {
         private bool _binded;
         private IEnvironment _env;

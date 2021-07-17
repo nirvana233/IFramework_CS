@@ -5,7 +5,7 @@ namespace IFramework
     /// <summary>
     /// int 静态扩展
     /// </summary>
-    public static class IntExtension
+    public static class IntEx
     {
         /// <summary>
         /// 是不是素数
