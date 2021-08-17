@@ -6,10 +6,12 @@ namespace IFramework.Modules.Message
     /// <summary>
     /// 消息模块
     /// </summary>
-    [ScriptVersionAttribute(180)]
+    [ScriptVersionAttribute(230)]
     [VersionUpdateAttribute(120, "加入消息优先级以及进程等待")]
     [VersionUpdateAttribute(140, "增加子类型匹配")]
     [VersionUpdateAttribute(180, "抽象出IMessage")]
+    [VersionUpdateAttribute(200, "增加立刻处理")]
+    [VersionUpdateAttribute(230, "注册延时处理")]
     public class MessageModule : UpdateFrameworkModule, IMessageModule
     {
         private interface IMessageEntity : IDisposable
@@ -17,12 +19,12 @@ namespace IFramework.Modules.Message
             Type listenType { get; }
             bool Publish(IMessage message);
         }
-        private class MessageEntity : IMessageEntity
+        private class MessageSubject : IMessageEntity
         {
             private readonly Type _listenType;
             public Type listenType { get { return _listenType; } }
             private List<IMessageListener> _listeners;
-            public MessageEntity(Type listenType)
+            public MessageSubject(Type listenType)
             {
                 this._listenType = listenType;
                 _listeners = new List<IMessageListener>();
@@ -54,12 +56,12 @@ namespace IFramework.Modules.Message
                 _listeners = null;
             }
         }
-        private class DelgateMessageEntity : IMessageEntity
+        private class DelgateMessageSubject : IMessageEntity
         {
             private readonly Type _listenType;
             public Type listenType { get { return _listenType; } }
             private List<MessageListener> _listeners;
-            public DelgateMessageEntity(Type listenType)
+            public DelgateMessageSubject(Type listenType)
             {
                 this._listenType = listenType;
                 _listeners = new List<MessageListener>();
@@ -96,7 +98,7 @@ namespace IFramework.Modules.Message
         {
 
             private int _code = 0;
-            private Type _type;
+            private Type _subject;
             private IEventArgs _args;
             private MessageModule _module;
             private MessageState _state;
@@ -106,7 +108,7 @@ namespace IFramework.Modules.Message
 
 
             public int code { get { return _code; } }
-            public Type type { get { return _type; } }
+            public Type subject { get { return _subject; } }
             public IEventArgs args { get { return _args; } }
             public MessageState state { get { return _state; } }
             public MessageErrorCode errorCode { get { return _errCode; } }
@@ -123,7 +125,7 @@ namespace IFramework.Modules.Message
                 this._errCode =  MessageErrorCode.None;
                 _code = int.MinValue;
                 _args = null;
-                _type = null;
+                _subject = null;
                 onRecycle = null;
             }
             internal void Begin()
@@ -133,7 +135,7 @@ namespace IFramework.Modules.Message
             }
             internal Message SetType(Type type)
             {
-                this._type = type;
+                this._subject = type;
                 return this;
             }
             internal Message SetArgs(IEventArgs args)
@@ -236,9 +238,49 @@ namespace IFramework.Modules.Message
             }
         }
 
+        private class SubscribeContainer<T>:IValueContainer<T>
+        {
+            public Type type;
+            public T value { get; set; }
+        }
+        private class ObjectSubscribe : SubscribeContainer<IMessageListener> { }
+        private class DelegateSubscribe : SubscribeContainer<MessageListener> { }
+        private class ObjectSubscribePool : ObjectPool<ObjectSubscribe>
+        {
+            protected override ObjectSubscribe CreatNew(IEventArgs arg)
+            {
+                return new ObjectSubscribe();
+            }
+            protected override bool OnSet(ObjectSubscribe t, IEventArgs arg)
+            {
+                t.type = null;
+                t.value = null;
+                return base.OnSet(t, arg);
+            }
+        }
+        private class DelegateSubscribePool : ObjectPool<DelegateSubscribe>
+        {
+            protected override DelegateSubscribe CreatNew(IEventArgs arg)
+            {
+                return new DelegateSubscribe();
+            }
+            protected override bool OnSet(DelegateSubscribe t, IEventArgs arg)
+            {
+                t.type = null;
+                t.value = null;
+                return base.OnSet(t, arg);
+            }
+        }
 
-        private List<MessageEntity> _entitys;
-        private List<DelgateMessageEntity> _delEntitys;
+
+        private ObjectSubscribePool _subscribePool_object;
+        private DelegateSubscribePool _subscribePool_delegate;
+        private Queue<DelegateSubscribe> _subscribeQueue_delegate, _unsubscribeQueue_delegate;
+        private Queue<ObjectSubscribe> _subscribeQueue_object, _unsubscribeQueue_object;
+
+
+        private List<MessageSubject> _entitys;
+        private List<DelgateMessageSubject> _delEntitys;
         private Dictionary<Type, int> _entityMap;
         private Dictionary<Type, int> _delEntityMap;
 
@@ -252,7 +294,7 @@ namespace IFramework.Modules.Message
 
         private Queue<Message> _tmp = new Queue<Message>();
 
-        private int _processesPerFrame = 20;
+        private int _processesPerFrame = 40;
         private bool _fitSubType = true;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
@@ -268,18 +310,32 @@ namespace IFramework.Modules.Message
             for (int i = 0; i < _delEntitys.Count; i++) _delEntitys[i].Dispose();
             _delEntitys.Clear();
             _delEntityMap.Clear();
+
+            _subscribePool_object.Dispose();
+            _subscribePool_delegate.Dispose();
+            _subscribeQueue_delegate.Clear();
+            _unsubscribeQueue_delegate.Clear();
+            _subscribeQueue_object.Clear();
+            _unsubscribeQueue_object.Clear();
             _entitys = null;
             _delEntitys = null;
         }
         protected override void Awake()
         {
-            _entitys = new List<MessageEntity>();
-            _delEntitys = new List<DelgateMessageEntity>();
+            _entitys = new List<MessageSubject>();
+            _delEntitys = new List<DelgateMessageSubject>();
             _queue = new StablePriorityQueue<Message>();
             _pool = new MessagePool(this);
             _list = new List<Message>();
             _entityMap = new Dictionary<Type, int>();
             _delEntityMap = new Dictionary<Type, int>();
+
+            _subscribePool_object = new ObjectSubscribePool();
+            _subscribePool_delegate = new DelegateSubscribePool();
+            _subscribeQueue_delegate = new Queue<DelegateSubscribe>();
+            _unsubscribeQueue_delegate = new Queue<DelegateSubscribe>();
+            _subscribeQueue_object = new Queue<ObjectSubscribe>();
+            _unsubscribeQueue_object = new Queue<ObjectSubscribe>();
         }
         private void UpdateMessagePriority(Message message, int priority)
         {
@@ -293,7 +349,7 @@ namespace IFramework.Modules.Message
         private bool EntityPublish(IMessage message)
         {
             bool success=false;
-            var type = message.type;
+            var type = message.subject;
             if (fitSubType)
             {
                 foreach (var _listenType in _entityMap.Keys)
@@ -316,7 +372,7 @@ namespace IFramework.Modules.Message
         private bool DelEntityPublish(IMessage message)
         {
             bool success = false;
-            var type = message.type;
+            var type = message.subject;
             if (fitSubType)
             {
                 foreach (var _listenType in _delEntityMap.Keys)
@@ -340,6 +396,80 @@ namespace IFramework.Modules.Message
         protected override void OnUpdate()
         {
             int count = 0;
+
+            using (new LockWait(ref _lock_entity))
+            {
+                int index = 0;
+                Type type = null;
+                count = _subscribeQueue_object.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var value = _subscribeQueue_object.Dequeue();
+                    type = value.type;
+                    MessageSubject en;
+                    if (!_entityMap.TryGetValue(type, out index))
+                    {
+                        index = _entitys.Count;
+                        en = new MessageSubject(type);
+                        _entityMap.Add(type, index);
+                        _entitys.Add(en);
+                    }
+                    else
+                    {
+                        en = _entitys[_entityMap[type]];
+                    }
+                    en.Subscribe(value.value);
+                    _subscribePool_object.Set(value);
+                }
+                count = _unsubscribeQueue_object.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var value = _unsubscribeQueue_object.Dequeue();
+                    type = value.type;
+                    if (_entityMap.TryGetValue(type, out index))
+                    {
+                        _entitys[_entityMap[type]].UnSubscribe(value.value);
+                    }
+                    _subscribePool_object.Set(value);
+                }
+            }
+            using (new LockWait(ref _lock_entitydel))
+            {
+                int index = 0;
+                Type type = null;
+                count = _subscribeQueue_delegate.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var value = _subscribeQueue_delegate.Dequeue();
+                    type = value.type;
+                    DelgateMessageSubject en;
+                    if (!_delEntityMap.TryGetValue(type, out index))
+                    {
+                        index = _delEntitys.Count;
+                        en = new DelgateMessageSubject(type);
+                        _delEntityMap.Add(type, index);
+                        _delEntitys.Add(en);
+                    }
+                    else
+                    {
+                        en = _delEntitys[_delEntityMap[type]];
+                    }
+                    en.Subscribe(value.value);
+                    _subscribePool_delegate.Set(value);
+                }
+                count = _unsubscribeQueue_delegate.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var value = _unsubscribeQueue_delegate.Dequeue();
+                    type = value.type;
+                    if (_delEntityMap.TryGetValue(type, out index))
+                    {
+                        _delEntitys[_delEntityMap[type]].UnSubscribe(value.value);
+                    }
+                    _subscribePool_delegate.Set(value);
+                }
+            }
+            count = 0;
             using (new LockWait(ref _lock_message))
             {
                 count = Math.Min(processesPerFrame, _queue.count);
@@ -361,19 +491,18 @@ namespace IFramework.Modules.Message
             for (int i = 0; i < count; i++)
             {
                 var message = _tmp.Dequeue();
-                message.Lock();
-                bool sucess = false;
-                using (new LockWait(ref _lock_entity))
-                {
-                    sucess|= EntityPublish(message);
-                }
-                using (new LockWait(ref _lock_entitydel))
-                {
-                    sucess|= DelEntityPublish(message);
-                }
-                message.SetErrorCode(sucess ? MessageErrorCode.Success : MessageErrorCode.NoneListen);
-                _pool.Set(message);
+                HandleMessage(message);
             }
+        }
+
+        private void HandleMessage(Message message)
+        {
+            message.Lock();
+            bool sucess = false;
+            sucess |= EntityPublish(message);
+            sucess |= DelEntityPublish(message);
+            message.SetErrorCode(sucess ? MessageErrorCode.Success : MessageErrorCode.NoneListen);
+            _pool.Set(message);
         }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         /// <summary>
@@ -399,24 +528,14 @@ namespace IFramework.Modules.Message
         /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Subscribe(Type type, IMessageListener listener)
+        public void Subscribe(Type type, IMessageListener listener)
         {
             using (new LockWait(ref _lock_entity))
             {
-                int index;
-                MessageEntity en;
-                if (!_entityMap.TryGetValue(type, out index))
-                {
-                    index = _entitys.Count;
-                    en = new MessageEntity(type);
-                    _entityMap.Add(type, index);
-                    _entitys.Add(en);
-                }
-                else
-                {
-                    en = _entitys[_entityMap[type]];
-                }
-                return en.Subscribe(listener);
+                var s = _subscribePool_object.Get();
+                s.type = type;
+                s.value = listener;
+                _subscribeQueue_object.Enqueue(s);
             }
         }
         /// <summary>
@@ -425,9 +544,9 @@ namespace IFramework.Modules.Message
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Subscribe<T>(IMessageListener listener)
+        public void Subscribe<T>(IMessageListener listener)
         {
-            return Subscribe(typeof(T), listener);
+            Subscribe(typeof(T), listener);
         }
         /// <summary>
         /// 解除注册监听
@@ -435,13 +554,14 @@ namespace IFramework.Modules.Message
         /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool UnSubscribe(Type type, IMessageListener listener)
+        public void UnSubscribe(Type type, IMessageListener listener)
         {
             using (new LockWait(ref _lock_entity))
             {
-                int index;
-                if (!_entityMap.TryGetValue(type, out index)) return false;
-                return _entitys[_entityMap[type]].UnSubscribe(listener);
+                var s = _subscribePool_object.Get();
+                s.type = type;
+                s.value = listener;
+                _unsubscribeQueue_object.Enqueue(s);
             }
         }
         /// <summary>
@@ -449,9 +569,9 @@ namespace IFramework.Modules.Message
         /// </summary>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool UnSubscribe<T>(IMessageListener listener)
+        public void UnSubscribe<T>(IMessageListener listener)
         {
-            return UnSubscribe(typeof(T), listener);
+             UnSubscribe(typeof(T), listener);
         }
 
 
@@ -462,24 +582,14 @@ namespace IFramework.Modules.Message
         /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Subscribe(Type type, MessageListener listener)
+        public void Subscribe(Type type, MessageListener listener)
         {
             using (new LockWait(ref _lock_entitydel))
             {
-                int index;
-                DelgateMessageEntity en;
-                if (!_delEntityMap.TryGetValue(type, out index))
-                {
-                    index = _delEntitys.Count;
-                    en = new DelgateMessageEntity(type);
-                    _delEntityMap.Add(type, index);
-                    _delEntitys.Add(en);
-                }
-                else
-                {
-                    en = _delEntitys[_delEntityMap[type]];
-                }
-                return en.Subscribe(listener);
+                var s = _subscribePool_delegate.Get();
+                s.type = type;
+                s.value = listener;
+                _subscribeQueue_delegate.Enqueue(s);
             }
         }
         /// <summary>
@@ -488,9 +598,9 @@ namespace IFramework.Modules.Message
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool Subscribe<T>(MessageListener listener) 
+        public void Subscribe<T>(MessageListener listener) 
         {
-            return Subscribe(typeof(T), listener);
+            Subscribe(typeof(T), listener);
         }
         /// <summary>
         /// 解除注册监听
@@ -498,19 +608,14 @@ namespace IFramework.Modules.Message
         /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool UnSubscribe(Type type, MessageListener listener)
+        public void UnSubscribe(Type type, MessageListener listener)
         {
             using (new LockWait(ref _lock_entitydel))
             {
-                int index;
-                if (!_delEntityMap.TryGetValue(type, out index))
-                {
-                    return false;
-                }
-                else
-                {
-                    return _delEntitys[_delEntityMap[type]].UnSubscribe(listener);
-                }
+                var s = _subscribePool_delegate.Get();
+                s.type = type;
+                s.value = listener;
+                _unsubscribeQueue_delegate.Enqueue(s);
             }
 
         }
@@ -519,9 +624,9 @@ namespace IFramework.Modules.Message
         /// </summary>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool UnSubscribe<T>(MessageListener listener)
+        public void UnSubscribe<T>(MessageListener listener)
         {
-            return UnSubscribe(typeof(T), listener);
+            UnSubscribe(typeof(T), listener);
         }
 
 
@@ -595,14 +700,21 @@ namespace IFramework.Modules.Message
         {
             var message = _pool.Get();
             message.SetArgs(args).SetType(type);
-            using (new LockWait(ref _lock_message))
+            if (priority<0)
             {
-                if (_queue.count == _queue.capcity)
+                HandleMessage(message);
+            }
+            else
+            {
+                using (new LockWait(ref _lock_message))
                 {
-                    _queue.Resize(_queue.capcity * 2);
+                    if (_queue.count == _queue.capcity)
+                    {
+                        _queue.Resize(_queue.capcity * 2);
+                    }
+                    _queue.Enqueue(message, priority);
+                    _list.Add(message);
                 }
-                _queue.Enqueue(message, priority);
-                _list.Add(message);
             }
             return message;
         }

@@ -19,7 +19,6 @@ namespace IFramework.Singleton
             {
                 if (instance == null)
                 {
-                    Log.L("Create");
                     instance = MonoSingletonCreator.CreateMonoSingleton<T>();
                     SingletonCollection.Set(instance);
                 }

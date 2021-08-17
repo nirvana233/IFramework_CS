@@ -6,7 +6,7 @@ namespace IFramework.NodeAction
     /// 容器节点
     /// </summary>
     [ScriptVersion(3)]
-    public abstract class ContainerNode : ActionNode, IContainerNode
+     abstract class ContainerNode : ActionNode, IContainerNode
     {
         /// <summary>
         /// 子级节点个数
@@ -34,6 +34,8 @@ namespace IFramework.NodeAction
         /// <param name="node"></param>
         public virtual void Append(ActionNode node)
         {
+            node.depth = this.depth + 1;
+            node.parent = this;
             nodeList.Add(node);
             SetDataDirty();
         }

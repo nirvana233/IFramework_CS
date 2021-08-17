@@ -43,13 +43,16 @@ namespace Example
         }
         protected override void Start()
         {
+            Log.L("Single direction");
+
             //单向
             Observable_Test();
+            Log.L("---------------------------------------");
 
-
+            Log.L("Double direction");
 
             //双向
-           // Bind_Test();
+            Bind_Test();
         }
 
         private void Observable_Test()

@@ -20,6 +20,11 @@ namespace IFramework.Modules
         }
         private class Pool : ObjectPool<DelayedTask>
         {
+            protected override bool OnSet(DelayedTask t, IEventArgs arg)
+            {
+                t.action = null;
+                return base.OnSet(t, arg);
+            }
             protected override DelayedTask CreatNew(IEventArgs arg)
             {
                 return new DelayedTask();
@@ -34,6 +39,7 @@ namespace IFramework.Modules
         /// <param name="action"></param>
         public void RunDelay(Action action)
         {
+            if (action == null) return;
             lock (_delay)
             {
                 _delay.Enqueue(_pool.Get().Config(action));

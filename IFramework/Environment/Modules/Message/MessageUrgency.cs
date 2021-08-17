@@ -6,6 +6,10 @@
     public static class MessageUrgency
     {
         /// <summary>
+        /// 立刻
+        /// </summary>
+        public const int Immediately = -1;
+        /// <summary>
         /// 非常紧急
         /// </summary>
         public const int VeryUrgent =32;

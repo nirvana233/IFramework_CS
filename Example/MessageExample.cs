@@ -18,7 +18,7 @@ namespace Example
             }
             public void Listen(IMessage message)
             {
-                Log.L(string.Format("Recieve code {0} by type {1}", message.code, message.type));
+                Log.L(string.Format("Recieve code {0} by type {1}", message.code, message.subject));
             }
         }
 

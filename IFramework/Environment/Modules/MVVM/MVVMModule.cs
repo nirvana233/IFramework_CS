@@ -73,7 +73,6 @@ namespace IFramework.Modules.MVVM
                 throw new Exception("Have not Add Group " + name);
             else
             {
-                _group.module = null;
                 _groupmap.Remove(name);
             }
         }

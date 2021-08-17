@@ -22,9 +22,17 @@ namespace IFramework.NodeAction
             if (nodeList.Count >= 1)
                 Log.E("RepeatNode Can Have One Inner Node");
             else
+            {
+                node.depth = this.depth + 1;
+                node.parent = this;
                 nodeList.Add(node);
+            }
         }
-
+        protected override void OnBegin()
+        {
+            base.OnBegin();
+            _curRepeat = 0;
+        }
         protected override bool OnMoveNext()
         {
             if (_repeat == -1)
@@ -56,6 +64,7 @@ namespace IFramework.NodeAction
             base.OnNodeReset();
             _curRepeat = 0;
         }
+       
     }
 
 }

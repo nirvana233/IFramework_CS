@@ -5,10 +5,11 @@ namespace IFramework.NodeAction
     /// <summary>
     /// 节点
     /// </summary>
-    public abstract class ActionNode : RecyclableObject, IActionNode
+     abstract class ActionNode : RecyclableObject, IActionNode
     {
         private bool mOnBeginCalled;
-
+        public ActionNode parent;
+        public int depth;
         private bool _isDone;
         private bool _autoRecyle;
         /// <summary>
@@ -85,6 +86,8 @@ namespace IFramework.NodeAction
         /// </summary>
         protected override void OnDataReset()
         {
+            parent = null;
+            depth = 0;
             mOnBeginCalled = false;
             _isDone = false;
             onBegin = null;

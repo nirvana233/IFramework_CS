@@ -6,7 +6,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块
     /// </summary>
-    public abstract class FrameworkModule : DisposableObject
+    public abstract class FrameworkModule : Unit
     {
         /// <summary>
         /// 阻止 New
@@ -20,9 +20,7 @@ namespace IFramework.Modules
         /// <returns></returns>
         public static FrameworkModule CreatInstance(Type type,string name="")
         {
-            FrameworkModule moudle = Activator.CreateInstance(type,
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
-                null, null, null) as FrameworkModule;
+            FrameworkModule moudle = Activator.CreateInstance(type) as FrameworkModule;
            
             if (moudle != null)
             {

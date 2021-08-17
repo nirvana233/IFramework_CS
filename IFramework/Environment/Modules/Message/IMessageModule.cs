@@ -70,55 +70,55 @@ namespace IFramework.Modules.Message
         /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool Subscribe(Type type, IMessageListener listener);
+        void Subscribe(Type type, IMessageListener listener);
         /// <summary>
         /// 注册
         /// </summary>
         /// <param name="tyoe"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool Subscribe(Type tyoe, MessageListener listener);
+        void Subscribe(Type tyoe, MessageListener listener);
         /// <summary>
         /// 注册
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool Subscribe<T>(IMessageListener listener);
+        void Subscribe<T>(IMessageListener listener);
         /// <summary>
         /// 注册
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool Subscribe<T>(MessageListener listener);
+        void Subscribe<T>(MessageListener listener);
         /// <summary>
         /// 移除
         /// </summary>
         /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribe(Type type, IMessageListener listener);
+        void UnSubscribe(Type type, IMessageListener listener);
         /// <summary>
         /// 移除
         /// </summary>
         /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribe(Type type, MessageListener listener);
+        void UnSubscribe(Type type, MessageListener listener);
         /// <summary>
         /// 移除
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribe<T>(IMessageListener listener);
+        void UnSubscribe<T>(IMessageListener listener);
         /// <summary>
         /// 移除
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribe<T>(MessageListener listener);
+        void UnSubscribe<T>(MessageListener listener);
     }
 }

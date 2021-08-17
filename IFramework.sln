@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework", "IFramework\IFramework.csproj", "{CC07690F-50EE-492C-B67F-632B074A8AF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.Serialization", "IFramework.Serialization\IFramework.Serialization.csproj", "{516080A9-080F-4DA8-8C2C-E314B76F1E64}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{A26FFA53-1C22-4871-93B2-ADE332BEB037}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.UnityPlugin", "IFramework.UnityPlugin\IFramework.UnityPlugin.csproj", "{C8EE1871-F465-4E6B-B175-6F05EAC66A69}"
@@ -23,10 +21,6 @@ Global
 		{CC07690F-50EE-492C-B67F-632B074A8AF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC07690F-50EE-492C-B67F-632B074A8AF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC07690F-50EE-492C-B67F-632B074A8AF0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{516080A9-080F-4DA8-8C2C-E314B76F1E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{516080A9-080F-4DA8-8C2C-E314B76F1E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{516080A9-080F-4DA8-8C2C-E314B76F1E64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{516080A9-080F-4DA8-8C2C-E314B76F1E64}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Release|Any CPU.ActiveCfg = Release|Any CPU

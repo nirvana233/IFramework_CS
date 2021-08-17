@@ -78,7 +78,7 @@ namespace IFramework.Injection
 
 
         /// <summary>
-        /// 注入一个对象
+        /// 为一个对象注入数据
         /// </summary>
         /// <param name="obj"></param>
         void Inject(object obj);

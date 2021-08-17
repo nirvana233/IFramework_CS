@@ -40,6 +40,9 @@
     <Reference Include="IFramework">
       <HintPath>..\Plugins\IFramework.dll</HintPath>
     </Reference>
+    <Reference Include="IFramework.Fast">
+      <HintPath>..\Plugins\IFramework.Fast.dll</HintPath>
+    </Reference>
     <Reference Include="IFramework.Serialization">
       <HintPath>..\Plugins\IFramework.Serialization.dll</HintPath>
     </Reference>
@@ -57,6 +60,7 @@
     <Compile Include="ConfigTest.cs" />
     <Compile Include="CoroutineTest.cs" />
     <Compile Include="DataTableTest.cs" />
+    <Compile Include="FastTest.cs" />
     <Compile Include="FsmTest.cs" />
     <Compile Include="InjectTest.cs" />
     <Compile Include="MessageExample.cs" />

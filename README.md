@@ -4,22 +4,6 @@ Interface | Inject | Interesting | Increase  C#
 while(true)
     Console.Write("Thanks For EveryOne Who Used It Once !")
 ```
-## 整体内容
-* 数据绑定
-* 配置绑定
-* 迭代器协程
-* 具有优先级的消息转发
-* 操作记录与撤销
-* 可观察对象
-* 可回收对象
-* Packet（自定义数据协议）
-* NodeAction（节点事件）
-* Net（TCP，UDP，WS，Http，kcp）
-* Serialization（string版本【主要用于csv】，二进制版本【支持简单的数据结构】）
-* Singleton（通用单例）
- * Utility（工具）
-
-
 
 ## 例子们
 * [A星寻路](https://github.com/OnClick9927/IFramework_CS/blob/master/Example/AstarTest.cs)
@@ -37,8 +21,8 @@ while(true)
 * [配置表模块](https://github.com/OnClick9927/IFramework_CS/blob/master/Example/ConfigTest.cs)
 * [协程模块](https://github.com/OnClick9927/IFramework_CS/blob/master/Example/CoroutineTest.cs)
 * [状态机模块](https://github.com/OnClick9927/IFramework_CS/blob/master/Example/FsmTest.cs)
-* [扩展自己的模块](https://github.com/OnClick9927/IFramework_CS/tree/master/Example)
-
+* [扩展自己的模块](https://github.com/OnClick9927/IFramework_CS/blob/master/Example/MouduleTest.cs)
+* [快速开发测试](https://github.com/OnClick9927/IFramework_CS/blob/master/Example/FastTest.cs)
 
 
 

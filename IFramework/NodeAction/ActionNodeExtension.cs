@@ -20,17 +20,17 @@ namespace IFramework.NodeAction
             public void Config(IActionNode node)
             {
                 this._node = node as ActionNode;
-                this.env.BindUpdate(MoveNext);
                 SetDataDirty();
+                this.env.BindUpdate(MoveNext);
             }
             private void MoveNext()
             {
                 if (recyled) return;
-                bool bo = _node.MoveNext();
+                bool bo = _node.depth == 0 && _node.MoveNext();
                 if (!bo)
                 {
-                    Recyle();
                     this.env.UnBindUpdate(MoveNext);
+                    Recyle();
                 }
             }
 

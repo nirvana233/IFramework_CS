@@ -66,9 +66,12 @@ namespace Example
         }
         protected override void Start()
         {
-              FastExample();
-           // NormalTest();
-           // MutiTest();
+            Log.L("--------------------------");
+            FastExample();
+            Log.L("--------------------------");
+            NormalTest();
+            Log.L("--------------------------");
+            MutiTest();
         }
 
         protected override void Stop()

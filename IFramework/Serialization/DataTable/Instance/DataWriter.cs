@@ -17,7 +17,7 @@ namespace IFramework.Serialization.DataTable
     /// 数据写入者
     /// </summary>
     [RequireAttribute(typeof(StringConvert))]
-    internal class DataWriter : IDataWriter
+    internal class DataWriter : Unit, IDataWriter
     {
         private IDataExplainer _explainer;
         private TextWriter _streamWriter;
@@ -47,12 +47,15 @@ namespace IFramework.Serialization.DataTable
         /// <summary>
         /// 释放
         /// </summary>
-        public void Dispose()
+        protected override void OnDispose()
         {
-            if (_streamWriter != null)
+            if (!disposed)
             {
-                _streamWriter.Flush();
-                _streamWriter.Close();
+                if (_streamWriter != null)
+                {
+                    _streamWriter.Flush();
+                    _streamWriter.Close();
+                }
             }
         }
         /// <summary>
