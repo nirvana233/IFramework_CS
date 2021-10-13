@@ -1,0 +1,10 @@
+E:\Project\VS\IFramework\Core\IFramework\obj\Debug\netcoreapp2.1\IFramework.GeneratedMSBuildEditorConfig.editorconfig
+E:\Project\VS\IFramework\Core\IFramework\obj\Debug\netcoreapp2.1\IFramework.AssemblyInfoInputs.cache
+E:\Project\VS\IFramework\Core\IFramework\obj\Debug\netcoreapp2.1\IFramework.AssemblyInfo.cs
+E:\Project\VS\IFramework\Core\IFramework\obj\Debug\netcoreapp2.1\IFramework.csproj.CoreCompileInputs.cache
+E:\Project\VS\IFramework\Plugins.Core\netcoreapp2.1\IFramework.deps.json
+E:\Project\VS\IFramework\Plugins.Core\netcoreapp2.1\IFramework.dll
+E:\Project\VS\IFramework\Plugins.Core\netcoreapp2.1\IFramework.pdb
+E:\Project\VS\IFramework\Plugins.Core\netcoreapp2.1\IFramework.xml
+E:\Project\VS\IFramework\Core\IFramework\obj\Debug\netcoreapp2.1\IFramework.dll
+E:\Project\VS\IFramework\Core\IFramework\obj\Debug\netcoreapp2.1\IFramework.pdb

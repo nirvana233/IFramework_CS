@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CC07690F-50EE-492C-B67F-632B074A8AF0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IFramework</RootNamespace>
+    <AssemblyName>IFramework</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>..\Plugins\IFramework.xml</DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <NoWarn>
+    </NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\TipAttribute.cs" />
+    <Compile Include="BitConverterEx.cs" />
+    <Compile Include="Environment\IEnvironment.cs" />
+    <Compile Include="Environment\Inject\IValuesContainer.cs" />
+    <Compile Include="Environment\Inject\ValuesContainer.cs" />
+    <Compile Include="Environment\Modules\Message\IMessage.cs" />
+    <Compile Include="Environment\Modules\Message\MessageErrorCode.cs" />
+    <Compile Include="Environment\Modules\Message\MessageModule.cs" />
+    <Compile Include="Environment\Modules\Message\MessageState.cs" />
+    <Compile Include="Environment\Modules\Recorder\ValueState.cs" />
+    <Compile Include="Extension\FloatEx.cs" />
+    <Compile Include="Extension\IEnumerableEx.cs" />
+    <Compile Include="Extension\IntEx.cs" />
+    <Compile Include="Extension\IOEx.cs" />
+    <Compile Include="Extension\ObjectEx.cs" />
+    <Compile Include="Extension\StringEx.cs" />
+    <Compile Include="Extension\StringEx_Regex.cs" />
+    <Compile Include="Extension\TypeEx.cs" />
+    <Compile Include="Unit.cs" />
+    <Compile Include="Utility\SimpleReference.cs" />
+    <Compile Include="__Interfaces\IBelongToEnvironment.cs" />
+    <Compile Include="__Interfaces\IContainer.cs" />
+    <Compile Include="__Interfaces\Awaitable\IAwaitable.cs" />
+    <Compile Include="__Interfaces\Awaitable\IAwaiter.cs" />
+    <Compile Include="__Interfaces\Awaitable\ICriticalAwaiter.cs" />
+    <Compile Include="__Interfaces\IDescription.cs" />
+    <Compile Include="__Interfaces\IModel.cs" />
+    <Compile Include="__Interfaces\IUniqueIDObject.cs" />
+    <Compile Include="__Interfaces\IUnit.cs" />
+    <Compile Include="__Interfaces\IValueContainer.cs" />
+    <Compile Include="__Interfaces\IVersion.cs" />
+    <Compile Include="Attributes\RequireAttribute.cs" />
+    <Compile Include="Attributes\ScriptVersionAttribute.cs" />
+    <Compile Include="Attributes\VersionUpdateAttribute.cs" />
+    <Compile Include="Environment\EnvironmentType.cs" />
+    <Compile Include="Environment\Modules\IFrameworkModuleContainer.cs" />
+    <Compile Include="Environment\Modules\Recorder\ActionGroupState.cs" />
+    <Compile Include="Environment\Modules\Recorder\ActionState.cs" />
+    <Compile Include="Environment\Modules\Recorder\BaseState.cs" />
+    <Compile Include="Environment\Modules\Recorder\CommandGroupState.cs" />
+    <Compile Include="Environment\Modules\Recorder\CommandState.cs" />
+    <Compile Include="__Interfaces\ICommand.cs" />
+    <Compile Include="Environment\Modules\Recorder\IOperationRecorderModule.cs" />
+    <Compile Include="Environment\Modules\Recorder\OperationRecorderModule.cs" />
+    <Compile Include="__Interfaces\IRecyclable.cs" />
+    <Compile Include="Environment\Recylable\RecyclableObjectCollection.cs" />
+    <Compile Include="Environment\FrameworkEnvironment.cs" />
+    <Compile Include="Environment\Modules\Config\ConfigModule.cs" />
+    <Compile Include="Environment\Modules\Config\IConfigModule.cs" />
+    <Compile Include="Environment\Modules\FrameworkModules.cs" />
+    <Compile Include="Environment\Inject\InjectAttribute.cs" />
+    <Compile Include="Log\ILogRecorder.cs" />
+    <Compile Include="Environment\Modules\Coroutine\CoroutineModuleEx.cs" />
+    <Compile Include="Environment\Modules\Coroutine\ICoroutine.cs" />
+    <Compile Include="Environment\Modules\Coroutine\ICoroutineModule.cs" />
+    <Compile Include="Environment\Modules\ECS\IECSModule.cs" />
+    <Compile Include="Environment\Modules\ECS\IEntity.cs" />
+    <Compile Include="Environment\Modules\Coroutine\Coroutine.cs" />
+    <Compile Include="Environment\Modules\Coroutine\CoroutineInstruction.cs" />
+    <Compile Include="Environment\Modules\Coroutine\CoroutineModule.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitForDays.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitForFrame.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitForFrames.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitForHours.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitForMilliseconds.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitForMinutes.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitForSeconds.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitForTicks.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitForTimeSpan.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitUtil.cs" />
+    <Compile Include="Environment\Modules\Coroutine\WaitWhile.cs" />
+    <Compile Include="Environment\Modules\ECS\ECSModule.cs" />
+    <Compile Include="Environment\Modules\ECS\Entity.cs" />
+    <Compile Include="Environment\Modules\ECS\ExcuteSystem.cs" />
+    <Compile Include="Environment\Modules\ECS\IComponent.cs" />
+    <Compile Include="Environment\Modules\ECS\IExcuteSystem.cs" />
+    <Compile Include="Environment\Modules\FrameworkModule.cs" />
+    <Compile Include="Environment\Modules\FrameworkModuleContainer.cs" />
+    <Compile Include="Environment\Modules\Fsm\Condition\BoolCondition.cs" />
+    <Compile Include="Environment\Modules\Fsm\Condition\CompareType.cs" />
+    <Compile Include="Environment\Modules\Fsm\Condition\FloatCondition.cs" />
+    <Compile Include="Environment\Modules\Fsm\Condition\ICondition.cs" />
+    <Compile Include="Environment\Modules\Fsm\Condition\IntCondition.cs" />
+    <Compile Include="Environment\Modules\Fsm\IFsmModule.cs" />
+    <Compile Include="Environment\Modules\IFrameworkModules.cs" />
+    <Compile Include="Environment\Modules\LoomModule.cs" />
+    <Compile Include="Environment\Modules\Message\IMessageListener.cs" />
+    <Compile Include="Environment\Modules\Message\IMessageModule.cs" />
+    <Compile Include="Environment\Modules\Message\MessageListener.cs" />
+    <Compile Include="Environment\Modules\Message\MessageUrgency.cs" />
+    <Compile Include="Environment\Modules\Message\MessageUrgencyType.cs" />
+    <Compile Include="Environment\Modules\MVVM\EmptyDataModel.cs" />
+    <Compile Include="Environment\Modules\MVVM\IMVVMModule.cs" />
+    <Compile Include="Environment\Modules\MVVM\MVVMGroup.cs" />
+    <Compile Include="Environment\Modules\MVVM\MVVMModule.cs" />
+    <Compile Include="Environment\Modules\MVVM\View.cs" />
+    <Compile Include="Environment\Modules\MVVM\ViewModel.cs" />
+    <Compile Include="Net\Base\ChannelProviderType.cs" />
+    <Compile Include="Net\Base\Crypt.cs" />
+    <Compile Include="Net\Base\DelegateHandler.cs" />
+    <Compile Include="Net\Base\SocketToken.cs" />
+    <Compile Include="Net\Base\Structures.cs" />
+    <Compile Include="Net\Http\HttpClient.cs" />
+    <Compile Include="Net\Http\HttpGet.cs" />
+    <Compile Include="Net\Http\HttpGzip.cs" />
+    <Compile Include="Net\Http\HttpHeader.cs" />
+    <Compile Include="Net\Http\HttpPost.cs" />
+    <Compile Include="Net\Http\HttpServer.cs" />
+    <Compile Include="Net\Http\HttpUri.cs" />
+    <Compile Include="Net\Http\IHttpServer.cs" />
+    <Compile Include="Net\KCP\BufferQueue.cs" />
+    <Compile Include="Net\KCP\IKcpSocket.cs" />
+    <Compile Include="Net\KCP\ISessionListener.cs" />
+    <Compile Include="Net\KCP\Kcp.cs" />
+    <Compile Include="Net\KCP\KcpClient.cs" />
+    <Compile Include="Net\KCP\KcpSession.cs" />
+    <Compile Include="Net\KCP\KcpSocket.cs" />
+    <Compile Include="Net\KCP\KcpTool.cs" />
+    <Compile Include="Net\KCP\UDPSession.cs" />
+    <Compile Include="Net\NetTool.cs" />
+    <Compile Include="Net\Pools\SocketBufferManager.cs" />
+    <Compile Include="Net\Pools\SocketTokenManager.cs" />
+    <Compile Include="Net\Pools\TokenConnectionManager.cs" />
+    <Compile Include="Net\Providers\INetPacketProvider.cs" />
+    <Compile Include="Net\Providers\INetProtocolProvider.cs" />
+    <Compile Include="Net\Providers\INetTokenPoolProvider.cs" />
+    <Compile Include="Net\Providers\NetPacketProvider.cs" />
+    <Compile Include="Net\Providers\NetProtocolProvider.cs" />
+    <Compile Include="Net\Providers\NetTokenPoolProvider.cs" />
+    <Compile Include="Net\Tcp\ITcpClientProvider.cs" />
+    <Compile Include="Net\Tcp\ITcpServerProvider.cs" />
+    <Compile Include="Net\Tcp\TcpClientProvider.cs" />
+    <Compile Include="Net\Tcp\TcpServerProvider.cs" />
+    <Compile Include="Net\Tcp\TcpSocket.cs" />
+    <Compile Include="Net\Udp\IUdpClientProvider.cs" />
+    <Compile Include="Net\Udp\IUdpServerProvider.cs" />
+    <Compile Include="Net\Udp\SocketReceive.cs" />
+    <Compile Include="Net\Udp\SocketSend.cs" />
+    <Compile Include="Net\Udp\UdpClientProvider.cs" />
+    <Compile Include="Net\Udp\UdpServerProvider.cs" />
+    <Compile Include="Net\Udp\UdpSocket.cs" />
+    <Compile Include="Net\WebSocket\IWSClientProvider.cs" />
+    <Compile Include="Net\WebSocket\IWSServerProvider.cs" />
+    <Compile Include="Net\WebSocket\Protocols\AcceptInfo.cs" />
+    <Compile Include="Net\WebSocket\Protocols\AccessInfo.cs" />
+    <Compile Include="Net\WebSocket\Protocols\DataFrame.cs" />
+    <Compile Include="Net\WebSocket\Protocols\WebsocketFrame.cs" />
+    <Compile Include="Net\WebSocket\SslHelper.cs" />
+    <Compile Include="Net\WebSocket\WSClientProvider.cs" />
+    <Compile Include="Net\WebSocket\WSConnectionItem.cs" />
+    <Compile Include="Net\WebSocket\WSServerProvider.cs" />
+    <Compile Include="NodeAction\ActionNode.cs" />
+    <Compile Include="NodeAction\ActionNodeExtension.cs" />
+    <Compile Include="NodeAction\ConditionNode.cs" />
+    <Compile Include="NodeAction\ContainerNode.cs" />
+    <Compile Include="NodeAction\DoWhileNode.cs" />
+    <Compile Include="NodeAction\EventNode.cs" />
+    <Compile Include="NodeAction\ForNode.cs" />
+    <Compile Include="NodeAction\FrameNode.cs" />
+    <Compile Include="NodeAction\Interface\IActionNode.cs" />
+    <Compile Include="NodeAction\Interface\IConditionNode.cs" />
+    <Compile Include="NodeAction\Interface\IContainerNode.cs" />
+    <Compile Include="NodeAction\Interface\IDoWhileNode.cs" />
+    <Compile Include="NodeAction\Interface\IEventNode.cs" />
+    <Compile Include="NodeAction\Interface\IForNode.cs" />
+    <Compile Include="NodeAction\Interface\IFrameNode.cs" />
+    <Compile Include="NodeAction\Interface\IRepeatNode.cs" />
+    <Compile Include="NodeAction\Interface\ISequenceNode.cs" />
+    <Compile Include="NodeAction\Interface\ISpawnNode.cs" />
+    <Compile Include="NodeAction\Interface\ITimeSpanNode.cs" />
+    <Compile Include="NodeAction\Interface\IUntilNode.cs" />
+    <Compile Include="NodeAction\Interface\IWhileNode.cs" />
+    <Compile Include="NodeAction\RepeatNode.cs" />
+    <Compile Include="NodeAction\SequenceNode.cs" />
+    <Compile Include="NodeAction\SpawnNode.cs" />
+    <Compile Include="NodeAction\TimeSpanNode.cs" />
+    <Compile Include="NodeAction\UntilNode.cs" />
+    <Compile Include="NodeAction\WhileNode.cs" />
+    <Compile Include="Packet\CycQueue.cs" />
+    <Compile Include="Packet\Extension\ByteExtension.cs" />
+    <Compile Include="Packet\Packet.cs" />
+    <Compile Include="Packet\PacketHeader.cs" />
+    <Compile Include="Packet\PacketQueue.cs" />
+    <Compile Include="Packet\PacketReader.cs" />
+    <Compile Include="Pool\AutoCreatePool.cs" />
+    <Compile Include="Queue\FastPriorityQueue.cs" />
+    <Compile Include="Queue\FastPriorityQueueNode.cs" />
+    <Compile Include="Queue\GenericPriorityQueue.cs" />
+    <Compile Include="Queue\GenericPriorityQueueNode.cs" />
+    <Compile Include="Queue\IFixedSizePriorityQueue.cs" />
+    <Compile Include="Queue\IPriorityQueue.cs" />
+    <Compile Include="Queue\SimplePriorityQueue.cs" />
+    <Compile Include="Queue\StablePriorityQueue.cs" />
+    <Compile Include="Queue\StablePriorityQueueNode.cs" />
+    <Compile Include="Environment\Modules\UpdateFrameworkModule.cs" />
+    <Compile Include="Observable\BindableObject.cs" />
+    <Compile Include="Observable\BindableObjectHandler.cs" />
+    <Compile Include="Observable\ObservableObject.cs" />
+    <Compile Include="Environment\OnEnvironmentInitAttribute.cs" />
+    <Compile Include="Observable\ObservableObjectHandler.cs" />
+    <Compile Include="Observable\ObservableValue.cs" />
+    <Compile Include="Pool\BaseTypePool.cs" />
+    <Compile Include="Pool\CapicityPool.cs" />
+    <Compile Include="Environment\Recylable\RecyclableObject.cs" />
+    <Compile Include="Framework.cs" />
+    <Compile Include="Environment\Modules\Fsm\FsmModule.cs" />
+    <Compile Include="Environment\Modules\Fsm\ConditionValue.cs" />
+    <Compile Include="Environment\Modules\Fsm\Transition.cs" />
+    <Compile Include="Environment\Modules\Fsm\IState.cs" />
+    <Compile Include="__Interfaces\IEventArgs.cs" />
+    <Compile Include="LockWait.cs" />
+    <Compile Include="Log\CSLogger.cs" />
+    <Compile Include="Log\ILoger.cs" />
+    <Compile Include="Log\Log.cs" />
+    <Compile Include="Pool\ObjectPool.cs" />
+    <Compile Include="Environment\Modules\Fsm\Condition\Condition.cs" />
+    <Compile Include="Serialization\DataTable\DataColumn.cs" />
+    <Compile Include="Serialization\DataTable\DataColumnIndexAttribute.cs" />
+    <Compile Include="Serialization\DataTable\DataColumnNameAttribute.cs" />
+    <Compile Include="Serialization\DataTable\DataIgnoreAttribute.cs" />
+    <Compile Include="Serialization\DataTable\DataTableTool.cs" />
+    <Compile Include="Serialization\DataTable\Instance\DataExplainer.cs" />
+    <Compile Include="Serialization\DataTable\Instance\DataReader.cs" />
+    <Compile Include="Serialization\DataTable\Instance\DataRow.cs" />
+    <Compile Include="Serialization\DataTable\Instance\DataWriter.cs" />
+    <Compile Include="Serialization\DataTable\Interface\IDataExplainer.cs" />
+    <Compile Include="Serialization\DataTable\Interface\IDataReader.cs" />
+    <Compile Include="Serialization\DataTable\Interface\IDataRow.cs" />
+    <Compile Include="Serialization\DataTable\Interface\IDataWriter.cs" />
+    <Compile Include="Serialization\String\BoolStringConverter.cs" />
+    <Compile Include="Serialization\String\ByteArrayStringConverter.cs" />
+    <Compile Include="Serialization\String\ByteStringConverter.cs" />
+    <Compile Include="Serialization\String\CharStringConverter.cs" />
+    <Compile Include="Serialization\String\DateTimeStringConverter.cs" />
+    <Compile Include="Serialization\String\DecimalStringConverter.cs" />
+    <Compile Include="Serialization\String\DoubleStringConverter.cs" />
+    <Compile Include="Serialization\String\EnumStringConverter.cs" />
+    <Compile Include="Serialization\String\FloatStringConverter.cs" />
+    <Compile Include="Serialization\String\IntStringConverter.cs" />
+    <Compile Include="Serialization\String\LongStringConverter.cs" />
+    <Compile Include="Serialization\String\Point2StringConverter.cs" />
+    <Compile Include="Serialization\String\Point3StringConverter.cs" />
+    <Compile Include="Serialization\String\SByteStringConverter.cs" />
+    <Compile Include="Serialization\String\ShortStringConverter.cs" />
+    <Compile Include="Serialization\String\StringConvert.cs" />
+    <Compile Include="Serialization\String\StringConverter.cs" />
+    <Compile Include="Serialization\String\StringStringConverter.cs" />
+    <Compile Include="Serialization\String\TimeSpanStringConverter.cs" />
+    <Compile Include="Serialization\String\UInt16StringConverter.cs" />
+    <Compile Include="Serialization\String\UInt32StringConverter.cs" />
+    <Compile Include="Serialization\String\UInt64StringConverter.cs" />
+    <Compile Include="Serialization\Xml.cs" />
+    <Compile Include="Singleton\ISingleton.cs" />
+    <Compile Include="Singleton\Singleton.cs" />
+    <Compile Include="Singleton\SingletonCollection.cs" />
+    <Compile Include="Singleton\SingletonCreator.cs" />
+    <Compile Include="Singleton\SingletonProperty.cs" />
+    <Compile Include="Singleton\SingletonPropertyClass.cs" />
+    <Compile Include="Utility\Astar\AStarMap2X.cs" />
+    <Compile Include="Utility\Astar\AStarMap3X.cs" />
+    <Compile Include="Utility\Astar\AStarNode2X.cs" />
+    <Compile Include="Utility\Astar\AStarNode3X.cs" />
+    <Compile Include="Utility\Astar\AStarNodeType.cs" />
+    <Compile Include="Utility\Astar\AStarSeacher.cs" />
+    <Compile Include="Utility\Astar\IAstarMap.cs" />
+    <Compile Include="Utility\Astar\IAStarNode.cs" />
+    <Compile Include="Utility\Astar\IAStarSearcher.cs" />
+    <Compile Include="Utility\DeepCopy.cs" />
+    <Compile Include="Utility\Encryption\AesEncryption.cs" />
+    <Compile Include="Utility\Encryption\DesEncryption.cs" />
+    <Compile Include="Utility\Encryption\HashEncode.cs" />
+    <Compile Include="Utility\Encryption\RsaEncryption.cs" />
+    <Compile Include="Utility\Encryption\TripleEncryption.cs" />
+    <Compile Include="Utility\Encryption\XorEncryption.cs" />
+    <Compile Include="__Interfaces\IReference.cs" />
+    <Compile Include="Utility\Point2.cs" />
+    <Compile Include="Utility\Point3.cs" />
+    <Compile Include="Utility\ProcessUtil.cs" />
+    <Compile Include="Utility\Verifier.cs" />
+    <Compile Include="ValueMap.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
