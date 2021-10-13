@@ -1,11 +1,11 @@
-# IFramework_CS
+# IFramework(Framework4.5+Core2.1)
 Interface | Inject | Interesting | Increase  C#
 ``` csharp
 while(true)
     Console.Write("Thanks For EveryOne Who Used It Once !")
 ```
 
-## 例子们
+## 例子们(Framework4.5)
 * [A星寻路](https://github.com/OnClick9927/IFramework_CS/blob/master/Example/AstarTest.cs)
 * [节点事件](https://github.com/OnClick9927/IFramework_CS/blob/master/Example/NodeActionTest.cs)
 * [依赖注入](https://github.com/OnClick9927/IFramework_CS/blob/master/Example/InjectTest.cs)
