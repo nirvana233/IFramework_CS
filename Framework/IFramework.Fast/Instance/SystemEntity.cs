@@ -51,9 +51,9 @@ namespace IFramework.Fast
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool SubscribeMessage<T>(MessageListener listener)
+        public void SubscribeMessage<T>(MessageListener listener)
         {
-            return message.Subscribe<T>(listener);
+            message.Subscribe<T>(listener);
         }
         /// <summary>
         /// 取消监听
@@ -61,9 +61,9 @@ namespace IFramework.Fast
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public bool UnSubscribeMessage<T>(MessageListener listener)
+        public void UnSubscribeMessage<T>(MessageListener listener)
         {
-            return message.UnSubscribe<T>(listener);
+            message.UnSubscribe<T>(listener);
         }
         /// <summary>
         /// 发布消息

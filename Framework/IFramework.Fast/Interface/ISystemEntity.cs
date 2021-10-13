@@ -40,14 +40,14 @@ namespace IFramework.Fast
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool SubscribeMessage<T>(MessageListener listener);
+        void SubscribeMessage<T>(MessageListener listener);
         /// <summary>
         /// 取消监听
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        bool UnSubscribeMessage<T>(MessageListener listener);
+        void UnSubscribeMessage<T>(MessageListener listener);
         /// <summary>
         /// 发布消息
         /// </summary>

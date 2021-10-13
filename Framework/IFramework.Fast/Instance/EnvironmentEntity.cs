@@ -105,9 +105,9 @@ namespace IFramework.Fast
         /// <typeparam name="T1"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool SubscribeMessage<T1>(MessageListener listener)
+        public static void SubscribeMessage<T1>(MessageListener listener)
         {
-            return self.SubscribeMessage<T1>(listener);
+            self.SubscribeMessage<T1>(listener);
         }
         /// <summary>
         /// 取消监听根消息
@@ -115,9 +115,9 @@ namespace IFramework.Fast
         /// <typeparam name="T1"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool UnSubscribeMessage<T1>(MessageListener listener)
+        public static void UnSubscribeMessage<T1>(MessageListener listener)
         {
-            return self.UnSubscribeMessage<T1>(listener);
+            self.UnSubscribeMessage<T1>(listener);
         }
         /// <summary>
         /// 发布根消息
@@ -203,14 +203,14 @@ namespace IFramework.Fast
 
 
 
-        bool ISystemEntity.SubscribeMessage<T1>(MessageListener listener)
+        void ISystemEntity.SubscribeMessage<T1>(MessageListener listener)
         {
-            return _sys.SubscribeMessage<T1>(listener);
+            _sys.SubscribeMessage<T1>(listener);
         }
 
-        bool ISystemEntity.UnSubscribeMessage<T1>(MessageListener listener)
+        void ISystemEntity.UnSubscribeMessage<T1>(MessageListener listener)
         {
-            return _sys.UnSubscribeMessage<T1>(listener);
+            _sys.UnSubscribeMessage<T1>(listener);
         }
 
         IMessage ISystemEntity.PublishMessage<T1>(IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common)

@@ -130,9 +130,9 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool SubscribeMessage<T>(this ICanListenMessage obj,MessageListener listener)
+        public static void SubscribeMessage<T>(this ICanListenMessage obj,MessageListener listener)
         {
-            return obj.GetSystemEntity().SubscribeMessage<T>(listener);
+            obj.GetSystemEntity().SubscribeMessage<T>(listener);
         }
         /// <summary>
         /// 注册监听其他系统消息
@@ -142,9 +142,9 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool SubscribeMessage<TSystemEntity, T>(this ICanListenOtherMessage obj , MessageListener listener) where TSystemEntity : class, ISystemEntity
+        public static void SubscribeMessage<TSystemEntity, T>(this ICanListenOtherMessage obj , MessageListener listener) where TSystemEntity : class, ISystemEntity
         {
-            return obj.GetOtherSystemEntity<TSystemEntity>().SubscribeMessage<T>(listener);
+             obj.GetOtherSystemEntity<TSystemEntity>().SubscribeMessage<T>(listener);
         }
         /// <summary>
         /// 注册监听根消息
@@ -153,9 +153,9 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool SubscribeEnvironmentMessage<T>(this ICanListenOtherMessage obj, MessageListener listener)
+        public static void SubscribeEnvironmentMessage<T>(this ICanListenOtherMessage obj, MessageListener listener)
         {
-            return obj.GetEnvironmentEnitity().SubscribeMessage<T>(listener);
+             obj.GetEnvironmentEnitity().SubscribeMessage<T>(listener);
         }
         /// <summary>
         /// 取消监听消息
@@ -164,9 +164,9 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool UnSubscribeMessage<T>(this ICanListenMessage obj, MessageListener listener)
+        public static void UnSubscribeMessage<T>(this ICanListenMessage obj, MessageListener listener)
         {
-            return obj.GetSystemEntity().UnSubscribeMessage<T>(listener);
+             obj.GetSystemEntity().UnSubscribeMessage<T>(listener);
         }
         /// <summary>
         /// 取消监听其它系统消息
@@ -176,9 +176,9 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool UnSubscribeMessage<TSystemEntity, T>(this ICanListenOtherMessage obj, MessageListener listener) where TSystemEntity : class, ISystemEntity
+        public static void UnSubscribeMessage<TSystemEntity, T>(this ICanListenOtherMessage obj, MessageListener listener) where TSystemEntity : class, ISystemEntity
         {
-            return obj.GetOtherSystemEntity<TSystemEntity>().UnSubscribeMessage<T>(listener);
+             obj.GetOtherSystemEntity<TSystemEntity>().UnSubscribeMessage<T>(listener);
         }
         /// <summary>
         /// 取消监听根消息
@@ -187,9 +187,9 @@ namespace IFramework.Fast
         /// <param name="obj"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public static bool UnSubscribeEnvironmentMessage<T>(this ICanListenOtherMessage obj, MessageListener listener)
+        public static void UnSubscribeEnvironmentMessage<T>(this ICanListenOtherMessage obj, MessageListener listener)
         {
-            return obj.GetEnvironmentEnitity().UnSubscribeMessage<T>(listener);
+             obj.GetEnvironmentEnitity().UnSubscribeMessage<T>(listener);
         }
         /// <summary>
         /// 发送命令

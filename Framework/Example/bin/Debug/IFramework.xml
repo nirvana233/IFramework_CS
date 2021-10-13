@@ -3205,6 +3205,12 @@
             <param name="path"></param>
             <returns></returns>
         </member>
+        <member name="M:IFramework.IOEx.MakeDirectoryExist(System.String)">
+            <summary>
+            如果文件夹不存在则创建
+            </summary>
+            <param name="path"></param>
+        </member>
         <member name="T:IFramework.ObjectEx">
             <summary>
             object 静态扩展
