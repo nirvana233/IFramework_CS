@@ -7,7 +7,7 @@ namespace Example
     {
         protected override void Start()
         {
-            Framework.env0.modules.Coroutine.StartCoroutine(wait2());
+            Framework.GetEnv(EnvironmentType.Ev0).modules.Coroutine.StartCoroutine(wait2());
         }
         IEnumerator wait()
         {

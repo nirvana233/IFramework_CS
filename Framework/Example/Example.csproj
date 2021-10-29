@@ -38,10 +38,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IFramework">
-      <HintPath>..\Plugins\IFramework.dll</HintPath>
+      <HintPath>..\..\Plugins\IFramework.dll</HintPath>
     </Reference>
     <Reference Include="IFramework.Fast">
-      <HintPath>..\Plugins\IFramework.Fast.dll</HintPath>
+      <HintPath>..\..\Plugins\IFramework.Fast.dll</HintPath>
     </Reference>
     <Reference Include="IFramework.Serialization">
       <HintPath>..\Plugins\IFramework.Serialization.dll</HintPath>

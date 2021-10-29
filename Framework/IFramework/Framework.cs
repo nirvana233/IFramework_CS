@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-
+using System.Collections.Generic;
 [assembly: AssemblyVersion("0.0.0.2")]
 namespace IFramework { }
 namespace IFramework
@@ -20,7 +20,6 @@ namespace IFramework
         {
             CalcVersion();
         }
-
         private static string CalcVersion()
         {
             int sum = 0;
@@ -57,24 +56,9 @@ namespace IFramework
         public const string Author = "OnClick";
         public static string Version;
         public const string Description = FrameworkName;
+        private static Dictionary<int, IEnvironment> envs = new Dictionary<int, IEnvironment>();
+        private static LockParam _lock = new LockParam();
 
-        public static IEnvironment env0 { get; private set; }
-        public static IEnvironment env1 { get; private set; }
-        public static IEnvironment env2 { get; private set; }
-        public static IEnvironment env3 { get; private set; }
-        public static IEnvironment env4 { get; private set; }
-        public static IEnvironment env5 { get; private set; }
-        public static IEnvironment env6 { get; private set; }
-        public static IEnvironment env7 { get; private set; }
-        public static IEnvironment env8 { get; private set; }
-        public static IEnvironment env9 { get; private set; }
-
-
-        public static IEnvironment extra0 { get; private set; }
-        public static IEnvironment extra1 { get; private set; }
-        public static IEnvironment extra2 { get; private set; }
-        public static IEnvironment extra3 { get; private set; }
-        public static IEnvironment extra4 { get; private set; }
         public static IEnvironment current { get { return FrameworkEnvironment.current; } }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         /// <summary>
@@ -84,31 +68,19 @@ namespace IFramework
         /// <returns>环境</returns>
         public static IEnvironment CreateEnv(EnvironmentType envType)
         {
-            if (GetEnv(envType) != null)
+            using (new LockWait(ref _lock))
             {
-                Log.E(string.Format("The EnvironmentType {0} is not null ", envType));
-                return GetEnv(envType);
-            }
-
-            switch (envType)
-            {
-                case EnvironmentType.Ev0: env0 = new FrameworkEnvironment(envType); return env0;
-                case EnvironmentType.Ev1: env1 = new FrameworkEnvironment(envType); return env1;
-                case EnvironmentType.Ev2: env2 = new FrameworkEnvironment(envType); return env2;
-                case EnvironmentType.Ev3: env3 = new FrameworkEnvironment(envType); return env3;
-                case EnvironmentType.Ev4: env4 = new FrameworkEnvironment(envType); return env4;
-                case EnvironmentType.Ev5: env5 = new FrameworkEnvironment(envType); return env5;
-                case EnvironmentType.Ev6: env6 = new FrameworkEnvironment(envType); return env6;
-                case EnvironmentType.Ev7: env7 = new FrameworkEnvironment(envType); return env7;
-                case EnvironmentType.Ev8: env8 = new FrameworkEnvironment(envType); return env8;
-                case EnvironmentType.Ev9: env9 = new FrameworkEnvironment(envType); return env9;
-                case EnvironmentType.Extra0: extra0 = new FrameworkEnvironment(envType); return extra0;
-                case EnvironmentType.Extra1: extra1 = new FrameworkEnvironment(envType); return extra1;
-                case EnvironmentType.Extra2: extra2 = new FrameworkEnvironment(envType); return extra2;
-                case EnvironmentType.Extra3: extra3 = new FrameworkEnvironment(envType); return extra3;
-                case EnvironmentType.Extra4: extra4 = new FrameworkEnvironment(envType); return extra4;
-                default:
-                    throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ", envType));
+                IEnvironment env;
+                if (envs.TryGetValue((int)envType, out env))
+                {
+                    throw new Exception(string.Format("The EnvironmentType {0} is not null ", envType));
+                }
+                else
+                {
+                    env = new FrameworkEnvironment(envType);
+                    envs.Add((int)envType, env);
+                    return env;
+                }
             }
         }
         /// <summary>
@@ -118,29 +90,39 @@ namespace IFramework
         /// <returns></returns>
         public static IEnvironment GetEnv(EnvironmentType envType)
         {
-            switch (envType)
+            using(new LockWait(ref _lock))
             {
-                case EnvironmentType.Ev0: return env0;
-                case EnvironmentType.Ev1: return env1;
-                case EnvironmentType.Ev2: return env3;
-                case EnvironmentType.Ev3: return env3;
-                case EnvironmentType.Ev4: return env4;
-                case EnvironmentType.Ev5: return env5;
-                case EnvironmentType.Ev6: return env6;
-                case EnvironmentType.Ev7: return env7;
-                case EnvironmentType.Ev8: return env8;
-                case EnvironmentType.Ev9: return env9;
-                case EnvironmentType.Extra0: return extra0;
-                case EnvironmentType.Extra1: return extra1;
-                case EnvironmentType.Extra2: return extra2;
-                case EnvironmentType.Extra3: return extra3;
-                case EnvironmentType.Extra4: return extra4;
-                default:
-                    throw new Exception(string.Format("The EnvironmentType {0} Error,Please Check ", envType));
+                IEnvironment env;
+                if (envs.TryGetValue((int)envType, out env))
+                {
+                    return env;
+                }
+                else
+                {
+                    throw new Exception(string.Format("The EnvironmentType {0} Error Not Find ,Please Check ", envType));
+                }
             }
         }
-
-
+        /// <summary>
+        /// 释放环境
+        /// </summary>
+        /// <param name="envType"></param>
+        public static void DisposeEnv(EnvironmentType envType)
+        {
+            using (new LockWait(ref _lock))
+            {
+                IEnvironment env;
+                if (envs.TryGetValue((int)envType, out env))
+                {
+                    envs.Remove((int)envType);
+                    env.Dispose();
+                }
+                else
+                {
+                    throw new Exception(string.Format("The EnvironmentType {0} Error Not Find ,Please Check ", envType));
+                }
+            }
+        }
 
 
         /// <summary>

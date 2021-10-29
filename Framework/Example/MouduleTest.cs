@@ -42,8 +42,8 @@ namespace Example
         {
             Log.L("Create An module ");
 
-            Framework.env0.modules.CreateModule<MyModule>();
-            var module= Framework.env0.modules.FindModule<MyModule>();
+            Framework.GetEnv(EnvironmentType.Ev0).modules.CreateModule<MyModule>();
+            var module= Framework.GetEnv(EnvironmentType.Ev0).modules.FindModule<MyModule>();
             Log.L("the module id "+module);
             Log.L("say ");
 
@@ -56,7 +56,7 @@ namespace Example
             Log.L("Get An other ");
             for (int i = 0; i < 10; i++)
             {
-               Log.L(Framework.env0.modules.GetModule<MyModule>("XXL"));
+               Log.L(Framework.GetEnv(EnvironmentType.Ev0).modules.GetModule<MyModule>("XXL"));
             }
         }
 

@@ -6,7 +6,7 @@ namespace Example
     public class ConfigTest : Test
     {
 
-        IConfigModule module { get { return Framework.env0.modules.Config; } }
+        IConfigModule module { get { return Framework.GetEnv(EnvironmentType.Ev0).modules.Config; } }
 
         class Binder_A : BindableObject
         {

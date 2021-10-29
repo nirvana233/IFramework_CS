@@ -24,7 +24,7 @@ namespace Example
         }
         public class State1 : State { }
         public class State2 : State { }
-        IFsmModule fsm { get { return Framework.env0.modules.Fsm; } }
+        IFsmModule fsm { get { return Framework.GetEnv(EnvironmentType.Ev0).modules.Fsm; } }
         protected override void Start()
         {
             Log.L("按下  A/D   切换状态");

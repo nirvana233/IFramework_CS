@@ -6,7 +6,7 @@ namespace Example
 {
     public class RecorderTest : Test
     {
-        IOperationRecorderModule module { get { return Framework.env0.modules.Recoder; } }
+        IOperationRecorderModule module { get { return Framework.GetEnv(EnvironmentType.Ev0).modules.Recoder; } }
        int value = 0;
         protected override void Start()
         {

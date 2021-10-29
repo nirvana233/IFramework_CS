@@ -112,6 +112,8 @@ namespace IFramework.Modules.MVVM
         protected virtual void OnSetMessage(IMessageModule message)
         {
             (_viewModel as IViewModel).SubscribeMessage();
+            (_view).OnSetMessage();
+
         }
         /// <summary>
         /// 发布model数据发生变化

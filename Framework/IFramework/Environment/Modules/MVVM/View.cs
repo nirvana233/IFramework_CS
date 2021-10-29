@@ -60,6 +60,11 @@ namespace IFramework.Modules.MVVM
         /// 释放时
         /// </summary>
         protected virtual void OnDispose() { }
+
+        /// <summary>
+        /// 消息发布已经设置
+        /// </summary>
+        public virtual void OnSetMessage() { }
     }
     /// <summary>
     /// 方便书写

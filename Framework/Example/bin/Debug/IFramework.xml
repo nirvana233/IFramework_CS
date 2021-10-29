@@ -2762,6 +2762,11 @@
             释放时
             </summary>
         </member>
+        <member name="M:IFramework.Modules.MVVM.View.OnSetMessage">
+            <summary>
+            消息发布已经设置
+            </summary>
+        </member>
         <member name="T:IFramework.Modules.MVVM.View`1">
             <summary>
             方便书写
@@ -7215,6 +7220,12 @@
             </summary>
             <param name=" envType">环境类型</param>
             <returns></returns>
+        </member>
+        <member name="M:IFramework.Framework.DisposeEnv(IFramework.EnvironmentType)">
+            <summary>
+            释放环境
+            </summary>
+            <param name="envType"></param>
         </member>
         <member name="M:IFramework.Framework.BindEnvUpdate(System.Action,IFramework.IEnvironment)">
             <summary>

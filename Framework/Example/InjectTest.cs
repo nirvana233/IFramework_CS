@@ -20,10 +20,10 @@ namespace Example
         public ITestObject _object;
         protected override void Start()
         {
-            Framework.env0.container.Subscribe<ITestObject, TestObject>();
+            Framework.GetEnv(EnvironmentType.Ev0).container.Subscribe<ITestObject, TestObject>();
 
             //Framework.env0.container.SubscribeInstance<ITestObject>(new TestObject());
-            Framework.env0.container.Inject(this);
+            Framework.GetEnv(EnvironmentType.Ev0).container.Inject(this);
             _object.ToDo();
         }
 
