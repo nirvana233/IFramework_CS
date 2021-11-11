@@ -25,5 +25,6 @@ while(true)
 * [快速开发测试](https://github.com/OnClick9927/IFramework_CS/blob/master/Framework/Example/FastTest.cs)
 
 
+[![Stargazers over time](https://starchart.cc/OnClick9927/IFramework.svg)](https://starchart.cc/OnClick9927/IFramework)
 
 
