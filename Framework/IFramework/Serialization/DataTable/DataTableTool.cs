@@ -50,7 +50,7 @@ namespace IFramework.Serialization.DataTable
         {
             Dictionary<MemberInfo, string> members = new Dictionary<MemberInfo, string>();
             type.GetFields(/*BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static*/)
-                .ToList().FindAll((field) => { return !field.IsDefined(typeof(DataIgnoreAttribute), false); })
+                .ToList().FindAll((field) => { return !field.IsNotSerialized && !field.IsDefined(typeof(DataIgnoreAttribute), false); ; })
                  .ForEach((field) => {
                      if (field.IsDefined(typeof(DataColumnNameAttribute), false))
                          members.Add(field, (field.GetCustomAttributes(typeof(DataColumnNameAttribute),false)[0] 
@@ -59,7 +59,7 @@ namespace IFramework.Serialization.DataTable
                          members.Add(field, field.Name);
                  });
             type.GetProperties(/*BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static*/)
-               .ToList().FindAll((property) => { return !property.IsDefined(typeof(DataIgnoreAttribute), false); })
+               .ToList().FindAll((property) => { return !property.IsDefined(typeof(DataIgnoreAttribute), false) && property.CanWrite && property.CanRead; })
                .ForEach((property) => {
                    if (property.IsDefined(typeof(DataColumnNameAttribute), false))
                        members.Add(property, (property.GetCustomAttributes(typeof(DataColumnNameAttribute), false)[0]

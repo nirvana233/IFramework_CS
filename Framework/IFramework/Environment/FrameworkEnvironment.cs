@@ -2,7 +2,6 @@
 using IFramework.Modules;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -16,14 +15,13 @@ namespace IFramework
     {
         private bool _inited;
         private FrameworkModules _modules;
-        private Stopwatch sw_init;
-        private Stopwatch sw_delta;
         private EnvironmentType _envType;
         private LoomModule _loom;
         private event Action update;
         private event Action onDispose;
         private static LockParam _envsetlock = new LockParam();
         private static FrameworkEnvironment _current;
+        private TimeCalculator _time;
         /// <summary>
         /// 环境是否已经初始化
         /// </summary>
@@ -45,24 +43,6 @@ namespace IFramework
         /// </summary>
         public EnvironmentType envType { get { return _envType; } }
 
-        /// <summary>
-        /// 最近一次 Update 方法用时
-        /// </summary>
-        public TimeSpan deltaTime { get; private set; }
-        /// <summary>
-        /// 初始化之后的时间
-        /// </summary>
-        public TimeSpan timeSinceInit
-        {
-            get
-            {
-                if (sw_init == null) return TimeSpan.Zero;
-                sw_init.Stop();
-                var span = sw_init.Elapsed;
-                sw_init.Start();
-                return span;
-            }
-        }
 
 
         /// <summary>
@@ -79,6 +59,8 @@ namespace IFramework
                 }
             }
         }
+
+        public ITimeCalculator time { get { return _time; } }
 
         /// <summary>
         /// ctor
@@ -110,11 +92,8 @@ namespace IFramework
                 }
             }
             _loom = LoomModule.CreatInstance<LoomModule>("");
-            deltaTime = TimeSpan.Zero;
+            _time = new TimeCalculator();
             _inited = true;
-            sw_delta = new Stopwatch();
-            sw_init = new Stopwatch();
-            sw_init.Start();
         }
         /// <summary>
         /// 初始化环境，4.X 使用
@@ -146,11 +125,9 @@ namespace IFramework
             (cycleCollection as RecyclableObjectCollection).Dispose();
             container.Dispose();
             _loom.Dispose();
-            sw_init.Stop();
-            sw_delta.Stop();
+            _modules.Dispose();
+            _time.Dispose();
             container = null;
-            sw_delta = null;
-            sw_init = null;
             _modules = null;
             update = null;
             onDispose = null;
@@ -162,12 +139,11 @@ namespace IFramework
         {
             if (disposed) return;
             current = this;
-            sw_delta.Reset();
-            sw_delta.Start();
+            _time.BeginDelta();
             _loom.Update();
+            _modules.Update();
             if (update != null) update();
-            sw_delta.Stop();
-            deltaTime = sw_delta.Elapsed;
+            _time.EndDelta();
         }
 
         /// <summary>

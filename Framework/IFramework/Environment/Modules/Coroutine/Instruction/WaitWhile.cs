@@ -6,7 +6,7 @@ namespace IFramework.Modules.Coroutine
     /// <summary>
     /// 等待条件不成立
     /// </summary>
-    public class WaitWhile : CoroutineInstruction
+    public class WaitWhile : YieldInstruction
     {
         /// <summary>
         /// Ctor
@@ -22,13 +22,9 @@ namespace IFramework.Modules.Coroutine
         /// override
         /// </summary>
         /// <returns></returns>
-        protected override IEnumerator InnerLogoc()
+        protected override bool IsCompelete()
         {
-            while (_condition.Invoke())
-            {
-                yield return false;
-            }
-            yield return true;
+            return !_condition.Invoke();
         }
     }
 }

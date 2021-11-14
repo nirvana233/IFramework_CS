@@ -7,22 +7,24 @@ namespace Example
     {
         protected override void Start()
         {
-            Framework.GetEnv(EnvironmentType.Ev0).modules.Coroutine.StartCoroutine(wait2());
+            Dosth();
+        }
+        async void Dosth()
+        {
+            await Framework.GetEnv(EnvironmentType.Ev0).modules.Coroutine.StartCoroutine(wait2());
+            Log.L("all end");
         }
         IEnumerator wait()
         {
             Log.L("wait Go");
-
             yield return new IFramework.Modules.Coroutine.WaitForSeconds(2);
             Log.L("wait end");
-
         }
         IEnumerator wait1()
         {
             Log.L("wait1 Go");
             yield return wait();
             Log.L("wait1 end");
-
         }
         IEnumerator wait2()
         {

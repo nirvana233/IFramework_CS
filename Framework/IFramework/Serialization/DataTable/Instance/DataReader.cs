@@ -22,7 +22,10 @@ namespace IFramework.Serialization.DataTable
         private IDataRow _rowReader;
         private IDataExplainer _explainer;
         private TextReader _streamReader;
+        private List<string> _headNames;
+        public List<string> headNames { get { return _headNames; } }
 
+        public List<List<DataColumn>> rows { get { return _rows; } }
         /// <summary>
         /// Ctor
         /// </summary>
@@ -55,7 +58,7 @@ namespace IFramework.Serialization.DataTable
             List<string> rowValues = str.Replace("\r\n", "\n").Split('\n').ToList();
             string HeadStr = rowValues[0];
             rowValues.RemoveAt(0);
-            List<string> headNames = _rowReader.ReadHeadLine(HeadStr);
+            _headNames = _rowReader.ReadHeadLine(HeadStr);
 
 
             if (string.IsNullOrEmpty(rowValues.Last())) rowValues.RemoveAt(rowValues.Count - 1);
@@ -73,6 +76,7 @@ namespace IFramework.Serialization.DataTable
         {
             if (!disposed)
             {
+                _headNames.Clear();
                 _rows.Clear();
                 if (_streamReader != null)
                 {

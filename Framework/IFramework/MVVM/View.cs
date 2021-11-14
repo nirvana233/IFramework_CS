@@ -1,7 +1,7 @@
 ﻿using IFramework.Modules.Message;
 using System;
 
-namespace IFramework.Modules.MVVM
+namespace IFramework.MVVM
 {
     /// <summary>
     /// 界面
@@ -9,14 +9,6 @@ namespace IFramework.Modules.MVVM
     [ScriptVersion(12)]
     public abstract class View : IDisposable
     {
-        internal MVVMGroup group { get; set; }
-        private bool _inited;
-        /// <summary>
-        /// 消息转发
-        /// </summary>
-        protected IMessageModule message { get { return group.message; } }
-
-
         private ObservableValue<ViewModel> _context = new ObservableValue<ViewModel>(null);
         /// <summary>
         /// 数据绑定
@@ -30,14 +22,16 @@ namespace IFramework.Modules.MVVM
             get { return _context; }
             set
             {
-                if (!_inited)
-                {
-                    handler = new ObservableObjectHandler();
-                    _context.Subscribe(BindProperty);
-                    _inited = true;
-                }
                 _context.value = value;
             }
+        }
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public View()
+        {
+            handler = new ObservableObjectHandler();
+            _context.Subscribe(BindProperty);
         }
 
         /// <summary>
@@ -54,7 +48,6 @@ namespace IFramework.Modules.MVVM
         {
             OnDispose();
             handler.UnSubscribe();
-            //_context.Dispose();
         }
         /// <summary>
         /// 释放时
@@ -62,9 +55,15 @@ namespace IFramework.Modules.MVVM
         protected virtual void OnDispose() { }
 
         /// <summary>
-        /// 消息发布已经设置
+        /// 发布消息
         /// </summary>
-        public virtual void OnSetMessage() { }
+        /// <param name="message"></param>
+        protected void Publish(IEventArgs message)
+        {
+            (context as IViewModel).Listen(message);
+        }
+
+        
     }
     /// <summary>
     /// 方便书写

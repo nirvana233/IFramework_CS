@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Timers;
 using IFramework;
 
@@ -51,29 +52,66 @@ namespace Example
         {
             Framework.GetEnv(EnvironmentType.Ev0).Update();
         }
+        public const char dot = ',';
+        public const char leftBound = '{';
+        public const char rightBound = '}';
+        public const char midLeftBound = '[';
+        public const char midRightBound = ']';
+        public const char colon = ':';
+        private static int BeginRead(string value, int start)
+        {
+            int depth = 0;
+
+            for (int i = start; i < value.Length; i++)
+            {
+                char data = value[i];
+                if (data == leftBound || data == midLeftBound)
+                {
+                    depth++;
+                }
+                else if (data == rightBound || data == midRightBound)
+                {
+                    depth--;
+                }
+                if (depth==0)
+                {
+                    for (int j = i; j < value.Length; j++)
+                    {
+                        if (value[j] == dot)
+                        {
+                            return j;
+                        }
+                    }
+                    return value.Length - 1;
+                }
+            }
+            return - 1;
+
+        }
 
         private static void TestScripts()
         {
+    
             // new AstarTest();                 //  A 星寻路
-            // new DataTableTest();             // 数据表 CSV
+             // new SerializationTest();             // 数据表 CSV
             //  new BindTest();                   //数据绑定 （单向/数据变化监听，双向/数值同步变化）
             //new NetTest();                    // 网络测试
             //   new SingletonTest();             //单例测试
             //   new PoolTest();                   //对象池测试
             // new PriorityQueueTest();            //优先级队列
 
-            new MvvmTest();
-             // new MessageExample();            //消息模块
+            // new MvvmTest();
+            //  new MessageExample();            //消息模块
             //new RecyclableObjectTest();      //可回收对象测试
-           //  new NodeActionTest();            // 节点事件
+            //  new NodeActionTest();            // 节点事件
             // new RecorderTest();              //操作记录模块
             // new InjectTest();                // 依赖注入
             //  new ConfigTest();               // 配置模块
-            // new CoroutineTest();             //协程 模块
+            new CoroutineTest();             //协程 模块
             // new FsmTest();                   // 状态机模块
             // new MouduleTest();                //自定义模块
 
-           // new FastTest();     //IFramework.Fast(IFramework 二次开发) 快速注入 测试
+            // new FastTest();     //IFramework.Fast(IFramework 二次开发) 快速注入 测试
         }
 
     }

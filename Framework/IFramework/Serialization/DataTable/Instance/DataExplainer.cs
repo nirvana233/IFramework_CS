@@ -39,9 +39,9 @@ namespace IFramework.Serialization.DataTable
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        protected T CreatInstance<T>()
+        protected object CreatInstance(Type type)
         {
-            return Activator.CreateInstance<T>();
+            return Activator.CreateInstance(type);
         }
         /// <summary>
         /// 根据格子反序列化一个实例
@@ -52,24 +52,24 @@ namespace IFramework.Serialization.DataTable
         /// <returns></returns>
         public T CreatInstance<T>(List<DataColumn> cols, Dictionary<MemberInfo, string> membersDic)
         {
-            T t = CreatInstance<T>();
+            object t = CreatInstance(typeof(T));
             foreach (var pair in membersDic)
             {
                 MemberInfo m = pair.Key;
                 string csvName = pair.Value;
                 DataColumn column;
-                if (m.IsDefined(typeof(DataColumnIndexAttribute), false))
+                if (m.IsDefined(typeof(DataReadColumnIndexAttribute), false))
                 {
-                    DataColumnIndexAttribute attr = m.GetCustomAttributes(typeof(DataColumnIndexAttribute), false)[0] as DataColumnIndexAttribute;
+                    DataReadColumnIndexAttribute attr = m.GetCustomAttributes(typeof(DataReadColumnIndexAttribute), false)[0] as DataReadColumnIndexAttribute;
                     if (attr.index >= cols.Count)
                         throw new Exception(string.Format("index {0} is too Large Then colums  {1}", attr.index, cols.Count));
                     column = cols[attr.index];
                 }
                 else
                 {
-                    column = cols.Find((c) => { return c.headLineName == csvName; });
+                    column = cols.Find((c) => { return c.headNameForRead == csvName; });
                 }
-                string str = FitterCsv_CreatInstance(column.strValue);
+                string str = FitterCsv_CreatInstance(column.value);
                 if (m is PropertyInfo)
                 {
                     PropertyInfo info = m as PropertyInfo;
@@ -77,7 +77,7 @@ namespace IFramework.Serialization.DataTable
                     if (StringConvert.TryConvert(str, info.PropertyType, ref obj))
                         info.SetValue(t, obj, null);
                     else
-                        throw new Exception(string.Format("Convert Err Type {0} Name {1} Value {2}", typeof(T), csvName, column.strValue));
+                        throw new Exception(string.Format("Convert Err Type {0} Name {1} Value {2}", typeof(T), csvName, column.value));
                 }
                 else
                 {
@@ -86,10 +86,10 @@ namespace IFramework.Serialization.DataTable
                     if (StringConvert.TryConvert(str, info.FieldType, ref obj))
                         info.SetValue(t, obj);
                     else
-                        throw new Exception(string.Format("Convert Err Type {0} Name {1} Value {2}", typeof(T), csvName, column.strValue));
+                        throw new Exception(string.Format("Convert Err Type {0} Name {1} Value {2}", typeof(T), csvName, column.value));
                 }
             }
-            return t;
+            return (T)t;
         }
         /// <summary>
         /// 根据 具体类型 获取单个数据格子数据
@@ -117,10 +117,7 @@ namespace IFramework.Serialization.DataTable
                 }
                 columns.Add(new DataColumn()
                 {
-                    headLineName = member.Value,
-                    //StrValue = val
-                    strValue = FitterCsv_GetColum(val)
-
+                    value = FitterCsv_GetColum(val)
                 });
             }
             return columns;

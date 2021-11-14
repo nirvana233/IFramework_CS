@@ -3,7 +3,7 @@
     /// <summary>
     /// 协程实体
     /// </summary>
-    public interface ICoroutine
+    public interface ICoroutine:IAwaitable<CoroutineAwaiter>
     {
         /// <summary>
         /// 是否结束

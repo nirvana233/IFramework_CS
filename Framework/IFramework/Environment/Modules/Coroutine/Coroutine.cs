@@ -6,7 +6,7 @@ namespace IFramework.Modules.Coroutine
     /// <summary>
     /// 携程 模拟
     /// </summary>
-    internal class Coroutine : ICoroutine
+    internal class Coroutine : YieldInstruction,ICoroutine
     {
         internal CoroutineModule _module;
         internal IEnumerator _routine;
@@ -15,7 +15,7 @@ namespace IFramework.Modules.Coroutine
         /// <summary>
         /// 是否完成
         /// </summary>
-        public bool isDone
+        public override bool isDone
         {
             get { return _isDone; }
             internal set
@@ -27,6 +27,7 @@ namespace IFramework.Modules.Coroutine
                     {
                         if (onCompelete != null)
                             onCompelete();
+                        onCompelete = null;
                     }
                 }
             }
@@ -40,7 +41,7 @@ namespace IFramework.Modules.Coroutine
         /// </summary>
         public void Compelete()
         {
-            _isDone = true;
+            isDone = true;
             _innerAction = null;
             _routine = null;
             _module.Set(this);
@@ -58,21 +59,49 @@ namespace IFramework.Modules.Coroutine
 
         private void Update()
         {
+            IsCompelete();
+            
+        }
+        private IEnumerator IsCompete(Coroutine coroutine)
+        {
+            while (!coroutine.isDone)
+            {
+                yield return false;
+            }
+            yield return true;
+        }
+
+        private IEnumerator IsCompete(YieldInstruction instruction)
+        {
+            while (!instruction.isDone)
+            {
+                yield return false;
+            }
+            yield return true;
+        }
+
+        public CoroutineAwaiter GetAwaiter()
+        {
+            return new CoroutineAwaiter(this);
+        }
+
+        protected override bool IsCompelete()
+        {
             if (_innerAction == null)
             {
                 if (!_routine.MoveNext())
                 {
                     Compelete();
                 }
-                if (_isDone) return;
+                if (_isDone) return true;
                 if (_routine.Current != null)
                 {
-                    if (_routine.Current is CoroutineInstruction)
-                        _innerAction = _module.Get(IsFinish(_routine.Current as CoroutineInstruction));
+                    if (_routine.Current is YieldInstruction)
+                        _innerAction = _module.Get(IsCompete(_routine.Current as YieldInstruction));
                     else if (_routine.Current is IEnumerator)
                         _innerAction = _module.Get(_routine.Current as IEnumerator);
                     else if (_routine.Current is Coroutine)
-                        _innerAction = _module.Get(IsFinish(_routine.Current as Coroutine));
+                        _innerAction = _module.Get(IsCompete(_routine.Current as Coroutine));
                 }
             }
             if (_innerAction != null)
@@ -84,23 +113,8 @@ namespace IFramework.Modules.Coroutine
                         _innerAction = null;
                 }
             }
-        }
-        private IEnumerator IsFinish(Coroutine coroutine)
-        {
-            while (!coroutine.isDone)
-            {
-                yield return false;
-            }
-            yield return true;
-        }
 
-        private IEnumerator IsFinish(CoroutineInstruction CoroutineActionInstruction)
-        {
-            while (!CoroutineActionInstruction.isDone)
-            {
-                yield return false;
-            }
-            yield return true;
+            return false;
         }
     }
 }

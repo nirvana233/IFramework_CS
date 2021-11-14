@@ -6,522 +6,470 @@ namespace IFramework.Modules.Message
     /// <summary>
     /// 消息模块
     /// </summary>
-    [ScriptVersionAttribute(230)]
-    [VersionUpdateAttribute(120, "加入消息优先级以及进程等待")]
-    [VersionUpdateAttribute(140, "增加子类型匹配")]
-    [VersionUpdateAttribute(180, "抽象出IMessage")]
-    [VersionUpdateAttribute(200, "增加立刻处理")]
-    [VersionUpdateAttribute(230, "注册延时处理")]
+    [ScriptVersion(230)]
+    [VersionUpdate(120, "加入消息优先级以及进程等待")]
+    [VersionUpdate(140, "增加子类型匹配")]
+    [VersionUpdate(180, "抽象出IMessage")]
+    [VersionUpdate(200, "增加立刻处理")]
+    [VersionUpdate(230, "注册延时处理")]
     public class MessageModule : UpdateFrameworkModule, IMessageModule
     {
-        private interface IMessageEntity : IDisposable
+        private class MessageQueue : IDisposable
         {
-            Type listenType { get; }
-            bool Publish(IMessage message);
-        }
-        private class MessageSubject : IMessageEntity
-        {
-            private readonly Type _listenType;
-            public Type listenType { get { return _listenType; } }
-            private List<IMessageListener> _listeners;
-            public MessageSubject(Type listenType)
+            private class Message : IMessage
             {
-                this._listenType = listenType;
-                _listeners = new List<IMessageListener>();
-            }
-            public bool Subscribe(IMessageListener listener)
-            {
-                if (_listeners.Contains(listener)) return false;
-                else _listeners.Add(listener); return true;
-            }
-            public bool UnSubscribe(IMessageListener listener)
-            {
-                if (!_listeners.Contains(listener)) return false;
-                else _listeners.Remove(listener); return true;
-            }
-            public bool Publish(IMessage message)
-            {
-                if (_listeners.Count == 0) return false;
-                for (int i = _listeners.Count - 1; i >= 0; i--)
+
+                private int _code = 0;
+                private Type _subject;
+                private IEventArgs _args;
+                private MessageState _state;
+                private MessageErrorCode _errCode;
+                private event Action<IMessage> onRecycle;
+
+                public int code { get { return _code; } }
+                public Type subject { get { return _subject; } }
+                public IEventArgs args { get { return _args; } }
+                public MessageState state { get { return _state; } }
+                public MessageErrorCode errorCode { get { return _errCode; } }
+
+                private void Reset()
                 {
-                    var listener = _listeners[i];
-                    if (listener != null) listener.Listen(message);
-                    else _listeners.Remove(listener);
+                    this._errCode = MessageErrorCode.None;
+                    _code = int.MinValue;
+                    _args = null;
+                    _subject = null;
+                    onRecycle = null;
                 }
-                return true;
-            }
-            public void Dispose()
-            {
-                _listeners.Clear();
-                _listeners = null;
-            }
-        }
-        private class DelgateMessageSubject : IMessageEntity
-        {
-            private readonly Type _listenType;
-            public Type listenType { get { return _listenType; } }
-            private List<MessageListener> _listeners;
-            public DelgateMessageSubject(Type listenType)
-            {
-                this._listenType = listenType;
-                _listeners = new List<MessageListener>();
-            }
-            public bool Subscribe(MessageListener listener)
-            {
-                if (_listeners.Contains(listener)) return false;
-                else _listeners.Add(listener); return true;
-            }
-            public bool UnSubscribe(MessageListener listener)
-            {
-                if (!_listeners.Contains(listener)) return false;
-                else _listeners.Remove(listener); return true;
-            }
-            public bool Publish(IMessage message)
-            {
-                if (_listeners.Count == 0) return false;
-                for (int i = _listeners.Count - 1; i >= 0; i--)
+                internal void Begin()
                 {
-                    var listener = _listeners[i];
-                    if (listener != null) listener.Invoke(message);
-                    else _listeners.Remove(listener);
+                    Reset();
+                    _state = MessageState.Wait;
                 }
-                return true;
-            }
-            public void Dispose()
-            {
-                _listeners.Clear();
-                _listeners = null;
-            }
-        }
-
-        private class Message : StablePriorityQueueNode, IMessage
-        {
-
-            private int _code = 0;
-            private Type _subject;
-            private IEventArgs _args;
-            private MessageModule _module;
-            private MessageState _state;
-            private MessageErrorCode _errCode;
-            private event Action<IMessage> onRecycle;
-
-
-
-            public int code { get { return _code; } }
-            public Type subject { get { return _subject; } }
-            public IEventArgs args { get { return _args; } }
-            public MessageState state { get { return _state; } }
-            public MessageErrorCode errorCode { get { return _errCode; } }
-
-            public Message(MessageModule module)
-            {
-                _module = module;
-            }
-
-          
-
-            private void Reset()
-            {
-                this._errCode =  MessageErrorCode.None;
-                _code = int.MinValue;
-                _args = null;
-                _subject = null;
-                onRecycle = null;
-            }
-            internal void Begin()
-            {
-                Reset();
-                _state = MessageState.Wait;
-            }
-            internal Message SetType(Type type)
-            {
-                this._subject = type;
-                return this;
-            }
-            internal Message SetArgs(IEventArgs args)
-            {
-                this._args = args;
-                return this;
-            }
-            public IMessage SetCode(int code)
-            {
-                if (_state != MessageState.Wait)
+                internal Message SetType(Type type)
                 {
-                    Log.E(string.Format("you can not set the code now, the state is {0}", _state));
+                    this._subject = type;
                     return this;
                 }
-                this._code = code;
-                return this;
-            }
-            public IMessage SetPriority(int priority)
-            {
-                if (_state != MessageState.Wait)
+                internal Message SetArgs(IEventArgs args)
                 {
-                    Log.E(string.Format("you can not set the priority now, the state is {0}", _state));
+                    this._args = args;
                     return this;
                 }
-                if (this.priority == priority) return this;
-                _module.UpdateMessagePriority(this, priority);
-                return this;
-            }
-            public IMessage OnRecycle(Action<IMessage> action)
-            {
-                if (_state != MessageState.Wait)
+                public IMessage SetCode(int code)
                 {
-                    Log.E(string.Format("you can not bind the action now, the state is {0}", _state));
+                    if (_state != MessageState.Wait)
+                    {
+                        Log.E(string.Format("you can not set the code now, the state is {0}", _state));
+                        return this;
+                    }
+                    this._code = code;
                     return this;
                 }
-                onRecycle += action;
-                return this;
-            }
-            internal void Lock()
-            {
-                if (_state== MessageState.Wait)
+
+                public IMessage OnCompelete(Action<IMessage> action)
                 {
-                    _state = MessageState.Lock;
+                    if (_state != MessageState.Wait)
+                    {
+                        Log.E(string.Format("you can not bind the action now, the state is {0}", _state));
+                        return this;
+                    }
+                    onRecycle += action;
+                    return this;
+                }
+                internal void Lock()
+                {
+                    if (_state == MessageState.Wait)
+                    {
+                        _state = MessageState.Lock;
+                    }
+                    else
+                    {
+                        Log.E("unknown Exception occured with this message");
+                    }
+                }
+                internal void SetErrorCode(MessageErrorCode code)
+                {
+                    if (_state == MessageState.Lock)
+                    {
+                        this._errCode = code;
+                    }
+                    else
+                    {
+                        Log.E("unknown Exception occured with this message");
+                    }
+                }
+                internal void End()
+                {
+                    if (_state != MessageState.Lock)
+                    {
+                        Log.E("unknown Exception occured with this message");
+                    }
+                    _state = MessageState.Rest;
+                    if (onRecycle != null)
+                    {
+                        onRecycle.Invoke(this);
+                    }
+                    Reset();
+                }
+
+                public MessageAwaiter GetAwaiter()
+                {
+                    return new MessageAwaiter(this);
+                }
+            }
+            private class MessagePool : ObjectPool<Message>
+            {
+                protected override Message CreatNew(IEventArgs arg)
+                {
+                    return new Message();
+                }
+
+                protected override void OnGet(Message t, IEventArgs arg)
+                {
+                   // t.Begin();
+                }
+                protected override bool OnSet(Message t, IEventArgs arg)
+                {
+                   // t.End();
+                    return true;
+                }
+            }
+            private class StablePriorityQueueNodePool : ActivatorCreatePool<StablePriorityQueueNode> { }
+            public int count
+            {
+                get
+                {
+                    using (new LockWait(ref _lock_message))
+                    {
+                        return _queue.count;
+                    }
+                }
+            }
+
+            private readonly MessageModule module;
+            private MessagePool _pool;
+            private LockParam _lock_message = new LockParam();
+            private StablePriorityQueueNodePool nodePool;
+            private StablePriorityQueue<StablePriorityQueueNode> _queue;
+            private List<StablePriorityQueueNode> _list;
+            private Queue<Message> _tmp = new Queue<Message>();
+            private int _processesPerFrame=-1;
+
+
+            private Dictionary<StablePriorityQueueNode, Message> excuteMap;
+            public int processesPerFrame { get { return _processesPerFrame; } set { _processesPerFrame = value; } }
+
+            public MessageQueue(MessageModule module)
+            {
+                nodePool = new StablePriorityQueueNodePool();
+                excuteMap = new Dictionary<StablePriorityQueueNode, Message>();
+                _pool = new MessagePool();
+                _queue = new StablePriorityQueue<StablePriorityQueueNode>();
+                _list = new List<StablePriorityQueueNode>();
+                _tmp = new Queue<Message>();
+                this.module = module;
+            }
+            public IMessage PublishByNumber(Type type, IEventArgs args, int priority = MessageUrgency.Common)
+            {
+                var message = _pool.Get();
+                message.Begin();
+                message.SetArgs(args).SetType(type);
+                if (priority < 0)
+                {
+                    HandleMessage(message);
                 }
                 else
                 {
-                    Log.E("unknown Exception occured with this message");
+                    using (new LockWait(ref _lock_message))
+                    {
+                        if (_queue.count == _queue.capcity)
+                        {
+                            _queue.Resize(_queue.capcity * 2);
+                        }
+                        var node = nodePool.Get();
+                        _queue.Enqueue(node, priority);
+                        excuteMap.Add(node, message);
+                        _list.Add(node);
+                    }
+                }
+                return message;
+            }
+
+
+
+
+            private void HandleMessage(Message message)
+            {
+                message.Lock();
+                bool sucess = false;
+                sucess |= module.handlers.Publish(message);
+                message.SetErrorCode(sucess ? MessageErrorCode.Success : MessageErrorCode.NoneListen);
+                message.End();
+                _pool.Set(message);
+            }
+            public void Update()
+            {
+                int count = 0;
+                using (new LockWait(ref _lock_message))
+                {
+                    count = processesPerFrame==-1? _queue.count : Math.Min(processesPerFrame, _queue.count);
+                    if (count == 0) return;
+                    for (int i = 0; i < count; i++)
+                    {
+                        var node = _queue.Dequeue();
+                        _list.Remove(node);
+                        Message message;
+                        if (excuteMap.TryGetValue(node, out message))
+                        {
+                            _tmp.Enqueue(message);
+                        }
+                    }
+                    if (_list.Count > 0)
+                    {
+                        for (int i = _list.Count - 1; i >= 0; i--)
+                        {
+                            _queue.UpdatePriority(_list[i], _list[i].priority - 1);
+                        }
+                    }
+                }
+                for (int i = 0; i < count; i++)
+                {
+                    var message = _tmp.Dequeue();
+                    HandleMessage(message);
+
                 }
             }
-            internal void SetErrorCode(MessageErrorCode code)
+           
+
+            public void Dispose()
             {
-                if (_state == MessageState.Lock)
+                _queue.Clear();
+                _pool.Clear();
+                _list.Clear();
+            }
+        }
+        private class HandlerQueue:IDisposable
+        {
+            private class Subject : IDisposable
+            {
+                private readonly Type _listenType;
+                public Type listenType { get { return _listenType; } }
+                private List<MessageListener> _listeners;
+                public Subject(Type listenType)
                 {
-                    this._errCode = code;
+                    this._listenType = listenType;
+                    _listeners = new List<MessageListener>();
+                }
+                public bool Subscribe(MessageListener listener)
+                {
+                    if (_listeners.Contains(listener)) return false;
+                    else _listeners.Add(listener); return true;
+                }
+                public bool UnSubscribe(MessageListener listener)
+                {
+                    if (!_listeners.Contains(listener)) return false;
+                    else _listeners.Remove(listener); return true;
+                }
+                public bool Publish(IMessage message)
+                {
+                    if (_listeners.Count == 0) return false;
+                    for (int i = _listeners.Count - 1; i >= 0; i--)
+                    {
+                        var listener = _listeners[i];
+                        if (listener != null) listener.Invoke(message);
+                        else _listeners.Remove(listener);
+                    }
+                    return true;
+                }
+                public void Dispose()
+                {
+                    _listeners.Clear();
+                    _listeners = null;
+                }
+            }
+
+            private class DelegateSubscribe : IValueContainer<MessageListener> {
+                public Type type;
+                public MessageListener value { get; set; }
+            }
+            private class DelegateSubscribePool : ObjectPool<DelegateSubscribe>
+            {
+                protected override DelegateSubscribe CreatNew(IEventArgs arg)
+                {
+                    return new DelegateSubscribe();
+                }
+                protected override bool OnSet(DelegateSubscribe t, IEventArgs arg)
+                {
+                    t.type = null;
+                    t.value = null;
+                    return base.OnSet(t, arg);
+                }
+            }
+            private DelegateSubscribePool _pool;
+            private Queue<DelegateSubscribe> _subscribeQueue, _unsubscribeQueue;
+            private LockParam _lock = new LockParam();
+            private List<Subject> subjects;
+            private Dictionary<Type, int> subjectMap;
+            private bool _fitSubType=false;
+
+            public bool fitSubType { get { return _fitSubType; } set { _fitSubType = value; } }
+
+            public HandlerQueue()
+            {
+                _pool = new DelegateSubscribePool();
+                _subscribeQueue = new Queue<DelegateSubscribe>();
+                _unsubscribeQueue = new Queue<DelegateSubscribe>();
+                subjects = new List<Subject>();
+                subjectMap = new Dictionary<Type, int>();
+            }
+            public void Subscribe(Type type, MessageListener listener)
+            {
+                using (new LockWait(ref _lock))
+                {
+                    var s = _pool.Get();
+                    s.type = type;
+                    s.value = listener;
+                    _subscribeQueue.Enqueue(s);
+                }
+            }
+            public void UnSubscribe(Type type, MessageListener listener)
+            {
+                using (new LockWait(ref _lock))
+                {
+                    var s = _pool.Get();
+                    s.type = type;
+                    s.value = listener;
+                    _unsubscribeQueue.Enqueue(s);
+                }
+
+            }
+
+            public bool Publish(IMessage message)
+            {
+                bool success = false;
+                var type = message.subject;
+                if (fitSubType)
+                {
+                    foreach (var _listenType in subjectMap.Keys)
+                    {
+                        if (type.IsExtendInterface(_listenType) || type.IsSubclassOf(_listenType) || type == _listenType)
+                        {
+                            success |= subjects[subjectMap[_listenType]].Publish(message);
+                        }
+                    }
                 }
                 else
                 {
-                    Log.E("unknown Exception occured with this message");
+                    if (subjectMap.ContainsKey(type))
+                    {
+                        success |= subjects[subjectMap[type]].Publish(message);
+                    }
                 }
+                return success;
             }
-            internal void End()
+            public void Update()
             {
-                if (_state != MessageState.Lock)
+                int count = 0;
+
+                using (new LockWait(ref _lock))
                 {
-                    Log.E("unknown Exception occured with this message");
+                    int index = 0;
+                    Type type = null;
+                    count = _subscribeQueue.Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        var value = _subscribeQueue.Dequeue();
+                        type = value.type;
+                        Subject en;
+                        if (!subjectMap.TryGetValue(type, out index))
+                        {
+                            index = subjects.Count;
+                            en = new Subject(type);
+                            subjectMap.Add(type, index);
+                            subjects.Add(en);
+                        }
+                        else
+                        {
+                            en = subjects[subjectMap[type]];
+                        }
+                        en.Subscribe(value.value);
+                        _pool.Set(value);
+                    }
+                    count = _unsubscribeQueue.Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        var value = _unsubscribeQueue.Dequeue();
+                        type = value.type;
+                        if (subjectMap.TryGetValue(type, out index))
+                        {
+                            subjects[subjectMap[type]].UnSubscribe(value.value);
+                        }
+                        _pool.Set(value);
+                    }
                 }
-                if (onRecycle != null)
-                {
-                    onRecycle.Invoke(this);
-                }
-                Reset();
-                _state = MessageState.Rest;
+
             }
 
- 
-        }
-
-        private class MessagePool : ObjectPool<Message>
-        {
-            private MessageModule _module;
-
-            public MessagePool(MessageModule module)
+            public void Dispose()
             {
-                this._module = module;
-            }
-
-            protected override Message CreatNew(IEventArgs arg)
-            {
-                return new Message(_module);
-            }
-
-            protected override void OnGet(Message t, IEventArgs arg)
-            {
-                t.Begin();
-            }
-            protected override bool OnSet(Message t, IEventArgs arg)
-            {
-                t.End();
-                return true;
+        
+                for (int i = 0; i < subjects.Count; i++) subjects[i].Dispose();
+                subjects.Clear();
+                subjectMap.Clear();
+                _pool.Dispose();
+                _subscribeQueue.Clear();
+                _unsubscribeQueue.Clear();
+       
+                subjects = null;
             }
         }
 
-        private class SubscribeContainer<T>:IValueContainer<T>
-        {
-            public Type type;
-            public T value { get; set; }
-        }
-        private class ObjectSubscribe : SubscribeContainer<IMessageListener> { }
-        private class DelegateSubscribe : SubscribeContainer<MessageListener> { }
-        private class ObjectSubscribePool : ObjectPool<ObjectSubscribe>
-        {
-            protected override ObjectSubscribe CreatNew(IEventArgs arg)
-            {
-                return new ObjectSubscribe();
-            }
-            protected override bool OnSet(ObjectSubscribe t, IEventArgs arg)
-            {
-                t.type = null;
-                t.value = null;
-                return base.OnSet(t, arg);
-            }
-        }
-        private class DelegateSubscribePool : ObjectPool<DelegateSubscribe>
-        {
-            protected override DelegateSubscribe CreatNew(IEventArgs arg)
-            {
-                return new DelegateSubscribe();
-            }
-            protected override bool OnSet(DelegateSubscribe t, IEventArgs arg)
-            {
-                t.type = null;
-                t.value = null;
-                return base.OnSet(t, arg);
-            }
-        }
-
-
-        private ObjectSubscribePool _subscribePool_object;
-        private DelegateSubscribePool _subscribePool_delegate;
-        private Queue<DelegateSubscribe> _subscribeQueue_delegate, _unsubscribeQueue_delegate;
-        private Queue<ObjectSubscribe> _subscribeQueue_object, _unsubscribeQueue_object;
-
-
-        private List<MessageSubject> _entitys;
-        private List<DelgateMessageSubject> _delEntitys;
-        private Dictionary<Type, int> _entityMap;
-        private Dictionary<Type, int> _delEntityMap;
-
-
-        private StablePriorityQueue<Message> _queue;
-        private MessagePool _pool;
-        private List<Message> _list;
-        private LockParam _lock_message = new LockParam();
-        private LockParam _lock_entity = new LockParam();
-        private LockParam _lock_entitydel = new LockParam();
-
-        private Queue<Message> _tmp = new Queue<Message>();
-
-        private int _processesPerFrame = 40;
-        private bool _fitSubType = true;
+        private MessageQueue messages;
+        private HandlerQueue handlers;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         public override int priority { get { return 20; } }
         protected override void OnDispose()
         {
-            _queue.Clear();
-            _pool.Clear();
-            _list.Clear();
-            for (int i = 0; i < _entitys.Count; i++) _entitys[i].Dispose();
-            _entitys.Clear();
-            _entityMap.Clear();
-            for (int i = 0; i < _delEntitys.Count; i++) _delEntitys[i].Dispose();
-            _delEntitys.Clear();
-            _delEntityMap.Clear();
-
-            _subscribePool_object.Dispose();
-            _subscribePool_delegate.Dispose();
-            _subscribeQueue_delegate.Clear();
-            _unsubscribeQueue_delegate.Clear();
-            _subscribeQueue_object.Clear();
-            _unsubscribeQueue_object.Clear();
-            _entitys = null;
-            _delEntitys = null;
+            handlers.Dispose();
+            messages.Dispose();
         }
         protected override void Awake()
         {
-            _entitys = new List<MessageSubject>();
-            _delEntitys = new List<DelgateMessageSubject>();
-            _queue = new StablePriorityQueue<Message>();
-            _pool = new MessagePool(this);
-            _list = new List<Message>();
-            _entityMap = new Dictionary<Type, int>();
-            _delEntityMap = new Dictionary<Type, int>();
+            messages = new MessageQueue(this);
+            handlers = new HandlerQueue();
+        }
 
-            _subscribePool_object = new ObjectSubscribePool();
-            _subscribePool_delegate = new DelegateSubscribePool();
-            _subscribeQueue_delegate = new Queue<DelegateSubscribe>();
-            _unsubscribeQueue_delegate = new Queue<DelegateSubscribe>();
-            _subscribeQueue_object = new Queue<ObjectSubscribe>();
-            _unsubscribeQueue_object = new Queue<ObjectSubscribe>();
-        }
-        private void UpdateMessagePriority(Message message, int priority)
-        {
-            using (new LockWait(ref _lock_message))
-            {
-                if (!_list.Contains(message)) return;
-                if (message.priority == priority) return;
-                _queue.UpdatePriority(message, priority);
-            }
-        }
-        private bool EntityPublish(IMessage message)
-        {
-            bool success=false;
-            var type = message.subject;
-            if (fitSubType)
-            {
-                foreach (var _listenType in _entityMap.Keys)
-                {
-                    if (type.IsExtendInterface(_listenType) || type.IsSubclassOf(_listenType) || type == _listenType)
-                    {
-                        success |= _entitys[_entityMap[_listenType]].Publish(message);
-                    }
-                }
-            }
-            else
-            {
-                if (_entityMap.ContainsKey(type))
-                {
-                    success |= _entitys[_entityMap[type]].Publish(message);
-                }
-            }
-            return success;
-        }
-        private bool DelEntityPublish(IMessage message)
-        {
-            bool success = false;
-            var type = message.subject;
-            if (fitSubType)
-            {
-                foreach (var _listenType in _delEntityMap.Keys)
-                {
-                    if (type.IsExtendInterface(_listenType) || type.IsSubclassOf(_listenType) || type == _listenType)
-                    {
-                        success |= _delEntitys[_delEntityMap[_listenType]].Publish(message);
-                    }
-                }
-            }
-            else
-            {
-                if (_delEntityMap.ContainsKey(type))
-                {
-                    success |= _delEntitys[_delEntityMap[type]].Publish(message);
-                }
-            }
-            return success;
-        }
 
         protected override void OnUpdate()
         {
-            int count = 0;
-
-            using (new LockWait(ref _lock_entity))
-            {
-                int index = 0;
-                Type type = null;
-                count = _subscribeQueue_object.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    var value = _subscribeQueue_object.Dequeue();
-                    type = value.type;
-                    MessageSubject en;
-                    if (!_entityMap.TryGetValue(type, out index))
-                    {
-                        index = _entitys.Count;
-                        en = new MessageSubject(type);
-                        _entityMap.Add(type, index);
-                        _entitys.Add(en);
-                    }
-                    else
-                    {
-                        en = _entitys[_entityMap[type]];
-                    }
-                    en.Subscribe(value.value);
-                    _subscribePool_object.Set(value);
-                }
-                count = _unsubscribeQueue_object.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    var value = _unsubscribeQueue_object.Dequeue();
-                    type = value.type;
-                    if (_entityMap.TryGetValue(type, out index))
-                    {
-                        _entitys[_entityMap[type]].UnSubscribe(value.value);
-                    }
-                    _subscribePool_object.Set(value);
-                }
-            }
-            using (new LockWait(ref _lock_entitydel))
-            {
-                int index = 0;
-                Type type = null;
-                count = _subscribeQueue_delegate.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    var value = _subscribeQueue_delegate.Dequeue();
-                    type = value.type;
-                    DelgateMessageSubject en;
-                    if (!_delEntityMap.TryGetValue(type, out index))
-                    {
-                        index = _delEntitys.Count;
-                        en = new DelgateMessageSubject(type);
-                        _delEntityMap.Add(type, index);
-                        _delEntitys.Add(en);
-                    }
-                    else
-                    {
-                        en = _delEntitys[_delEntityMap[type]];
-                    }
-                    en.Subscribe(value.value);
-                    _subscribePool_delegate.Set(value);
-                }
-                count = _unsubscribeQueue_delegate.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    var value = _unsubscribeQueue_delegate.Dequeue();
-                    type = value.type;
-                    if (_delEntityMap.TryGetValue(type, out index))
-                    {
-                        _delEntitys[_delEntityMap[type]].UnSubscribe(value.value);
-                    }
-                    _subscribePool_delegate.Set(value);
-                }
-            }
-            count = 0;
-            using (new LockWait(ref _lock_message))
-            {
-                count = Math.Min(processesPerFrame, _queue.count);
-                if (count == 0) return;
-                for (int i = 0; i < count; i++)
-                {
-                    var message = _queue.Dequeue();
-                    _tmp.Enqueue(message);
-                    _list.Remove(message);
-                }
-                if (_list.Count > 0)
-                {
-                    for (int i = _list.Count - 1; i >= 0; i--)
-                    {
-                        _queue.UpdatePriority(_list[i], _list[i].priority - 1);
-                    }
-                }
-            }
-            for (int i = 0; i < count; i++)
-            {
-                var message = _tmp.Dequeue();
-                HandleMessage(message);
-            }
+            handlers.Update();
+            messages.Update();
         }
 
-        private void HandleMessage(Message message)
-        {
-            message.Lock();
-            bool sucess = false;
-            sucess |= EntityPublish(message);
-            sucess |= DelEntityPublish(message);
-            message.SetErrorCode(sucess ? MessageErrorCode.Success : MessageErrorCode.NoneListen);
-            _pool.Set(message);
-        }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
         /// <summary>
         /// 剩余消息数目
         /// </summary>
-        public int count { get {
-                using (new LockWait(ref _lock_message))
-                {
-                    return _queue.count;
-                }
-            } }
+        public int count
+        {
+            get
+            {
+                return messages.count;
+            }
+        }
         /// <summary>
         /// 适配子类型
         /// </summary>
-        public bool fitSubType { get { return _fitSubType; } set { _fitSubType = value; } }
+        public bool fitSubType { get { return handlers.fitSubType; } set { handlers.fitSubType = value; } }
         /// <summary>
         /// 每帧处理消息个数
         /// </summary>
-        public int processesPerFrame { get { return _processesPerFrame; } set { _processesPerFrame = value; } }
+        public int processesPerFrame { get { return messages.processesPerFrame; } set { messages.processesPerFrame = value; } }
+      
+        
+        
+        
         /// <summary>
         /// 注册监听
         /// </summary>
@@ -530,13 +478,7 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public void Subscribe(Type type, IMessageListener listener)
         {
-            using (new LockWait(ref _lock_entity))
-            {
-                var s = _subscribePool_object.Get();
-                s.type = type;
-                s.value = listener;
-                _subscribeQueue_object.Enqueue(s);
-            }
+            Subscribe(type, listener.Listen);
         }
         /// <summary>
         /// 注册监听
@@ -556,13 +498,7 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public void UnSubscribe(Type type, IMessageListener listener)
         {
-            using (new LockWait(ref _lock_entity))
-            {
-                var s = _subscribePool_object.Get();
-                s.type = type;
-                s.value = listener;
-                _unsubscribeQueue_object.Enqueue(s);
-            }
+            UnSubscribe(type, listener.Listen);
         }
         /// <summary>
         /// 解除注册监听
@@ -584,13 +520,7 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public void Subscribe(Type type, MessageListener listener)
         {
-            using (new LockWait(ref _lock_entitydel))
-            {
-                var s = _subscribePool_delegate.Get();
-                s.type = type;
-                s.value = listener;
-                _subscribeQueue_delegate.Enqueue(s);
-            }
+            handlers.Subscribe(type, listener);
         }
         /// <summary>
         /// 注册监听
@@ -610,14 +540,7 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public void UnSubscribe(Type type, MessageListener listener)
         {
-            using (new LockWait(ref _lock_entitydel))
-            {
-                var s = _subscribePool_delegate.Get();
-                s.type = type;
-                s.value = listener;
-                _unsubscribeQueue_delegate.Enqueue(s);
-            }
-
+            handlers.UnSubscribe(type, listener);
         }
         /// <summary>
         /// 解除注册监听
@@ -676,8 +599,6 @@ namespace IFramework.Modules.Message
         {
             return PublishByNumber(typeof(T), args, priority);
         }
-
-
         /// <summary>
         /// 发布消息
         /// </summary>
@@ -698,25 +619,7 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public IMessage PublishByNumber(Type type, IEventArgs args,int priority = MessageUrgency.Common)
         {
-            var message = _pool.Get();
-            message.SetArgs(args).SetType(type);
-            if (priority<0)
-            {
-                HandleMessage(message);
-            }
-            else
-            {
-                using (new LockWait(ref _lock_message))
-                {
-                    if (_queue.count == _queue.capcity)
-                    {
-                        _queue.Resize(_queue.capcity * 2);
-                    }
-                    _queue.Enqueue(message, priority);
-                    _list.Add(message);
-                }
-            }
-            return message;
+           return messages.PublishByNumber(type, args, priority);
         }
     }
 }

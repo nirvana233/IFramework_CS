@@ -9,6 +9,10 @@ namespace IFramework.Modules
     public abstract class FrameworkModule : Unit
     {
         /// <summary>
+        /// 默认名字
+        /// </summary>
+        public const string defaultName = "default";
+        /// <summary>
         /// 阻止 New
         /// </summary>
         protected FrameworkModule() { }
@@ -18,7 +22,7 @@ namespace IFramework.Modules
         /// <param name="type">模块类型</param>
         /// <param name="name">模块名称</param>
         /// <returns></returns>
-        public static FrameworkModule CreatInstance(Type type,string name="")
+        public static FrameworkModule CreatInstance(Type type,string name= defaultName)
         {
             FrameworkModule moudle = Activator.CreateInstance(type) as FrameworkModule;
            
@@ -42,7 +46,7 @@ namespace IFramework.Modules
         /// </summary>
         /// <param name="name">模块名称</param>
         /// <returns></returns>
-        public static T CreatInstance<T>(string name="") where T : FrameworkModule
+        public static T CreatInstance<T>(string name= defaultName) where T : FrameworkModule
         {
             return CreatInstance(typeof(T), name) as T;
         }

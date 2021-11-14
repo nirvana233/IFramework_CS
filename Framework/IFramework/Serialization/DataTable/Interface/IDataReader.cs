@@ -6,7 +6,7 @@ namespace IFramework.Serialization.DataTable
     /// <summary>
     /// 数据读取器
     /// </summary>
-    public interface IDataReader:IDisposable
+    public interface IDataReader : IDisposable
     {
         /// <summary>
         /// 获取
@@ -14,5 +14,13 @@ namespace IFramework.Serialization.DataTable
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         List<T> Get<T>();
+        /// <summary>
+        /// 标题栏
+        /// </summary>
+        List<string> headNames { get; }
+        /// <summary>
+        /// 行
+        /// </summary>
+        List<List<DataColumn>> rows { get; }
     }
 }

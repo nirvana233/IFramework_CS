@@ -6,7 +6,7 @@ namespace IFramework.Modules.Coroutine
     /// <summary>
     /// 等待时间
     /// </summary>
-    public class WaitForTimeSpan : CoroutineInstruction
+    public class WaitForTimeSpan : YieldInstruction
     {
         private DateTime _setTime;
         /// <summary>
@@ -21,14 +21,9 @@ namespace IFramework.Modules.Coroutine
         /// override
         /// </summary>
         /// <returns></returns>
-        protected override IEnumerator InnerLogoc()
+        protected override bool IsCompelete()
         {
-            while (DateTime.Now < _setTime)
-            {
-                yield return false;
-            }
-            yield return true;
+            return DateTime.Now >= _setTime;
         }
-
     }
 }

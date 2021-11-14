@@ -14,10 +14,25 @@ namespace IFramework.Serialization
 
     public class StringStringConverter : StringConverter<string>
     {
+        const string flag="\"";
         public override bool TryConvert(string self, out string result)
         {
-            result = self;
-            return true;
+            if (!self.StartsWith(flag) || !self.EndsWith(flag)) 
+            {
+                result = MakeDefault();
+                return false;
+            }
+            else
+            {
+                self = self.Remove(0, 1);
+                self = self.Remove(self.Length - 1, 1);
+                result = self;
+                return true;
+            }
+        }
+        public override string ConvertToString(string t)
+        {
+            return $"{flag}{t}{flag}";
         }
     }
 

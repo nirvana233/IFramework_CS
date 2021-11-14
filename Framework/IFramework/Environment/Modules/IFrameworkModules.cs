@@ -3,7 +3,6 @@ using IFramework.Modules.Coroutine;
 using IFramework.Modules.ECS;
 using IFramework.Modules.Fsm;
 using IFramework.Modules.Message;
-using IFramework.Modules.MVVM;
 using IFramework.Modules.Recorder;
 
 namespace IFramework.Modules
@@ -29,10 +28,7 @@ namespace IFramework.Modules
         /// 消息
         /// </summary>
         IMessageModule Message { get; }
-        /// <summary>
-        /// mvvm
-        /// </summary>
-        IMVVMModule MVVM { get; }
+
         /// <summary>
         /// config
         /// </summary>

@@ -13,5 +13,11 @@ namespace IFramework.Modules.Coroutine
         /// <param name="routine"></param>
         /// <returns></returns>
         ICoroutine StartCoroutine(IEnumerator routine);
+        /// <summary>
+        /// 结束
+        /// </summary>
+        /// <param name="routine"></param>
+        void StaopCoroutine(ICoroutine routine);
+
     }
 }

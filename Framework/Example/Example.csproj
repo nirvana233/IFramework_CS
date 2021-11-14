@@ -59,12 +59,13 @@
     <Compile Include="BindTest.cs" />
     <Compile Include="ConfigTest.cs" />
     <Compile Include="CoroutineTest.cs" />
-    <Compile Include="DataTableTest.cs" />
+    <Compile Include="SerializationTest.cs" />
     <Compile Include="FastTest.cs" />
     <Compile Include="FsmTest.cs" />
     <Compile Include="InjectTest.cs" />
     <Compile Include="MessageExample.cs" />
     <Compile Include="MouduleTest.cs" />
+    <Compile Include="MvvmTest.cs" />
     <Compile Include="NetTest.cs" />
     <Compile Include="NodeActionTest.cs" />
     <Compile Include="PoolTest.cs" />

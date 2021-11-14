@@ -5,7 +5,7 @@ namespace IFramework.Modules.Coroutine
     /// <summary>
     /// 等待帧数
     /// </summary>
-    public class WaitForFrames : CoroutineInstruction
+    public class WaitForFrames : YieldInstruction
     {
         /// <summary>
         /// Ctor
@@ -18,17 +18,15 @@ namespace IFramework.Modules.Coroutine
         }
         private int _curCount;
         private int _count { get; }
+
         /// <summary>
-        /// override
+        /// over
         /// </summary>
         /// <returns></returns>
-        protected override IEnumerator InnerLogoc()
+        protected override bool IsCompelete()
         {
-            while (_curCount++ < _count)
-            {
-                yield return false;
-            }
-            yield return true;
+            _curCount++;
+            return _curCount >= _count;
         }
     }
 }

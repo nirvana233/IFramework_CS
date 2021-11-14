@@ -10,10 +10,9 @@ namespace IFramework.Serialization
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     [System.Runtime.InteropServices.ComVisible(false)]
-
     public class Point3StringConverter:StringConverter<Point3>
     {
-        private static StringConverter<float> _innner = Get<float>();
+        private static StringConverter<float> _innner = Get(typeof(float)) as StringConverter<float>;
         public override bool TryConvert(string self, out Point3 result)
         {
             var bo = self.StartsWith(leftBound.ToString()) && self.EndsWith(rightBound.ToString()) && self.Contains(dot.ToString());
@@ -36,7 +35,7 @@ namespace IFramework.Serialization
         }
         public override string ConvertToString(Point3 t)
         {
-            return string.Format("{0}{1}{2}{3}{4}{5}{6})",
+            return string.Format("{0}{1}{2}{3}{4}{5}{6}",
                 leftBound,
                  t.x,
                  dot,

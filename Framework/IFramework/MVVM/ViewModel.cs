@@ -1,11 +1,11 @@
 ﻿using IFramework.Modules.Message;
-namespace IFramework.Modules.MVVM
+namespace IFramework.MVVM
 {
     internal interface IViewModel
     {
-        void SubscribeMessage();
-        void UnSubscribeMessage();
+        void Initialize();
         void SyncModelValue();
+        void Listen(IEventArgs message);
     }
     /// <summary>
     /// VM
@@ -15,51 +15,41 @@ namespace IFramework.Modules.MVVM
     {
         internal MVVMGroup group { get; set; }
         /// <summary>
-        /// 消息转发
-        /// </summary>
-        protected IMessageModule message { get { return group.message; } }
-        /// <summary>
         /// 数据
         /// </summary>
         protected IModel model { get { return group.model; } }
 
-        void IViewModel.SubscribeMessage()
-        {
-            SyncModelValue();
-            Initialize();
-            SubscribeMessage();
-        }
-        void IViewModel.UnSubscribeMessage()
-        {
-            UnSubscribeMessage();
-        }
         void IViewModel.SyncModelValue()
         {
             SyncModelValue();
         }
-
+        void IViewModel.Initialize()
+        {
+            Initialize();
+        }
+        void IViewModel.Listen(IEventArgs message)
+        {
+            Listen(message);
+        }
         /// <summary>
         /// 初始化
         /// </summary>
-        protected virtual void Initialize() { }
+        protected abstract void Initialize();
         /// <summary>
         /// 同步model数据
         /// </summary>
         protected abstract void SyncModelValue();
         /// <summary>
-        /// 注册消息监听
+        /// 来自于view的消息
         /// </summary>
-        protected virtual void SubscribeMessage() { }
-        /// <summary>
-        /// 取消消息监听
-        /// </summary>
-        protected virtual void UnSubscribeMessage() { }
-
+        /// <param name="message"></param>
+        protected abstract void Listen(IEventArgs message);
         /// <summary>
         /// 释放时
         /// </summary>
         protected override void OnDispose() { }
 
+       
     }
     /// <summary>
     /// 方便书写

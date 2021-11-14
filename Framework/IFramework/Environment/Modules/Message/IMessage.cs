@@ -1,12 +1,13 @@
 ﻿using System;
+
 namespace IFramework.Modules.Message
 {
     /// <summary>
     /// 消息
     /// </summary>
-    [Tip("如果需要缓存此类型的引用，必须绑定回收事件OnRecycle，并制空引用,以防出错")]
+    [Tip("如果需要缓存此类型的引用，必须绑定回收事件OnCompelete，并制空引用,以防出错")]
     [Tip("部分 Api 只在特殊时期有效")]
-    public interface IMessage
+    public interface IMessage:IAwaitable<MessageAwaiter>
     {
         /// <summary>
         /// 发送消息类型
@@ -34,39 +35,21 @@ namespace IFramework.Modules.Message
 
 
         #region 仅在 state 为 MessageState.Wait时有效
-        /// <summary>
-        /// 优先级 
-        /// 仅在 state 为 MessageState.Wait时有效
-        /// </summary>
-        float priority { get; }
-        /// <summary>
-        /// 所在位置 
-        /// 仅在 state 为 MessageState.Wait时有效
-        /// </summary>
-        int position { get; }
+
         /// <summary>
         /// 设置Code，
         /// 仅在 state 为 MessageState.Wait时有效
         /// </summary>
         /// <param name="code"></param>
         IMessage SetCode(int code);
-        /// <summary>
-        /// 设置优先级 
-        /// 仅在 state 为 MessageState.Wait时有效
-        /// </summary>
-        /// <param name="priority"></param>
-        /// <returns></returns>
-        IMessage SetPriority(int priority);
+
 
         /// <summary>
         /// 仅在 state 为 MessageState.Wait时有效
-        /// 实例被回收时的引用
-        /// 消息发布完成，回收时候触发
-        /// 回收后，此回调内部会制空，即只会触发一次
-        /// 如果缓存了引用，记得制空引用
+        /// 消息发布完成时的引用
         /// </summary>
         /// <param name="action"></param>
-        IMessage OnRecycle(Action<IMessage> action);
+        IMessage OnCompelete(Action<IMessage> action);
         #endregion
     }
 }

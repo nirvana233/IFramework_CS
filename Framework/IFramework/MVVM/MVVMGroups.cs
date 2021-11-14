@@ -1,24 +1,18 @@
-﻿using IFramework.Modules.Message;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IFramework.Modules.MVVM
+namespace IFramework.MVVM
 {
     /// <summary>
     /// MVVM 模块
     /// </summary>
     [ScriptVersion(56)]
-    public class MVVMModule : UpdateFrameworkModule, IMVVMModule
+    public class MVVMGroups : Unit
     {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        public override int priority { get { return 70; } }
-
-        protected override void Awake()
-        {
-            _message = CreatInstance<MessageModule>("");
-            _groupmap = new Dictionary<string, MVVMGroup>();
-        }
+        /// <summary>
+        /// 注销
+        /// </summary>
         protected override void OnDispose()
         {
             var em = _groupmap.Values.ToList();
@@ -27,14 +21,9 @@ namespace IFramework.Modules.MVVM
                 e.Dispose();
             });
             _groupmap = null;
-            (_message as FrameworkModule).Dispose();
-            _message = null;
         }
 
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
-        internal IMessageModule _message;
-        private Dictionary<string, MVVMGroup> _groupmap;
+        private Dictionary<string, MVVMGroup> _groupmap=new Dictionary<string, MVVMGroup>();
 
         /// <summary>
         /// 查找组
@@ -57,8 +46,6 @@ namespace IFramework.Modules.MVVM
                 throw new Exception("Have Add Group " + group.name);
             else
             {
-                group.module = this;
-                //  group.message = _message;
                 _groupmap.Add(group.name, group);
             }
         }
@@ -84,12 +71,6 @@ namespace IFramework.Modules.MVVM
         {
             RemoveGroup(group.name);
         }
-        /// <summary>
-        /// 刷新
-        /// </summary>
-        protected override void OnUpdate()
-        {
-            (_message as UpdateFrameworkModule).Update();
-        }
+       
     }
 }

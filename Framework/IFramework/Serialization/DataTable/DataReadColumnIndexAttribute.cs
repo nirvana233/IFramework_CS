@@ -14,7 +14,7 @@ namespace IFramework.Serialization.DataTable
     /// 数据列
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class DataColumnIndexAttribute:Attribute
+    public class DataReadColumnIndexAttribute:Attribute
     {
         /// <summary>
         /// 所在列
@@ -24,7 +24,7 @@ namespace IFramework.Serialization.DataTable
         /// ctor
         /// </summary>
         /// <param name="index"></param>
-        public DataColumnIndexAttribute(int index)
+        public DataReadColumnIndexAttribute(int index)
         {
             this.index = index;
         }

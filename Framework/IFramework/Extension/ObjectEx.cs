@@ -50,13 +50,13 @@ namespace IFramework
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static T As<T>(this object obj)
+        public static T As<T>(this object obj)where T : class
         {
             if (obj==null)
             {
                 return default(T);
             }
-            return (T)obj;
+            return obj as T;
         }
         /// <summary>
         /// 对象是否是该类型

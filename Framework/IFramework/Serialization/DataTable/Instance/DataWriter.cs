@@ -61,6 +61,32 @@ namespace IFramework.Serialization.DataTable
         /// <summary>
         /// 写入到string
         /// </summary>
+        /// <param name="headNames"></param>
+        /// <param name="rows"></param>
+        /// <returns></returns>
+        public string WriteString(List<string> headNames, List<List<DataColumn>> rows)
+        {
+            string result = string.Empty;
+            result = result.Append(_rowWriter.WriteHeadLine(headNames)).Append("\r\n");
+            for (int i = 0; i < rows.Count; i++)
+            {
+                result = result.Append(_rowWriter.WriteLine(rows[i])).Append("\r\n");
+            }
+            return result;
+        }
+        /// <summary>
+        /// 写入文件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="headNames"></param>
+        /// <param name="rows"></param>
+        public void Write(List<string> headNames, List<List<DataColumn>> rows)
+        {
+            _streamWriter.Write(WriteString(headNames,rows));
+        }
+        /// <summary>
+        /// 写入到string
+        /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source">数据</param>
         /// <returns></returns>
@@ -72,12 +98,7 @@ namespace IFramework.Serialization.DataTable
                 var row = _explainer.GetColumns<T>(t, members);
                 rows.Add(row);
             });
-            string result = string.Empty;
-            result = result.Append(_rowWriter.WriteHeadLine(members.Values.ToList())).Append("\r\n");
-            rows.ForEach((row) => {
-                result = result.Append(_rowWriter.WriteLine(row)).Append("\r\n");
-            });
-            return result;
+            return WriteString(members.Values.ToList(), rows);
         }
         /// <summary>
         /// 写入一个表
@@ -88,6 +109,7 @@ namespace IFramework.Serialization.DataTable
         {
             _streamWriter.Write(WriteString(source));
         }
+
     }
 
 }

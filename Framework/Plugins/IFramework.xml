@@ -245,11 +245,6 @@
             数据容器
             </summary>
         </member>
-        <member name="P:IFramework.IEnvironment.deltaTime">
-            <summary>
-            每次刷新的时间
-            </summary>
-        </member>
         <member name="P:IFramework.IEnvironment.envType">
             <summary>
             环境类型
@@ -265,9 +260,9 @@
             模块容器
             </summary>
         </member>
-        <member name="P:IFramework.IEnvironment.timeSinceInit">
+        <member name="P:IFramework.IEnvironment.time">
             <summary>
-            初始化-现在时间
+            时间
             </summary>
         </member>
         <member name="M:IFramework.IEnvironment.BindDispose(System.Action)">
@@ -426,6 +421,290 @@
             </summary>
             <param name="name"></param>
         </member>
+        <member name="T:IFramework.ITimeCalculator">
+            <summary>
+            时间计算
+            </summary>
+        </member>
+        <member name="P:IFramework.ITimeCalculator.deltaTime">
+            <summary>
+            每次刷新的时间
+            </summary>
+        </member>
+        <member name="P:IFramework.ITimeCalculator.timeSinceInit">
+            <summary>
+            初始化-现在时间
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.CoroutineModuleEx">
+            <summary>
+            协程模块扩展
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleEx.StartCoroutine(System.Object,System.Collections.IEnumerator,IFramework.EnvironmentType)">
+            <summary>
+            开启一个携程
+            </summary>
+            <param name="obj"></param>
+            <param name=" envType"></param>
+            <param name="routine">迭代器</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleEx.StartCoroutine(System.Object,System.Collections.IEnumerator,IFramework.IEnvironment)">
+            <summary>
+            开启一个携程
+            </summary>
+            <param name="obj"></param>
+            <param name="env"></param>
+            <param name="routine">迭代器</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleEx.StopCoroutine(System.Object,IFramework.Modules.Coroutine.ICoroutine)">
+            <summary>
+            结束一个携程
+            </summary>
+            <param name="obj"></param>
+            <param name="routine">迭代器</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleEx.OnCompelete(IFramework.Modules.Coroutine.ICoroutine,System.Action)">
+            <summary>
+            结束回调
+            </summary>
+            <param name="self"></param>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.ICoroutine">
+            <summary>
+            协程实体
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Coroutine.ICoroutine.isDone">
+            <summary>
+            是否结束
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.ICoroutine.Compelete">
+            <summary>
+            手动结束
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.ICoroutineModule">
+            <summary>
+            协程模块
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.ICoroutineModule.StartCoroutine(System.Collections.IEnumerator)">
+            <summary>
+            开启一个协程
+            </summary>
+            <param name="routine"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.ICoroutineModule.StaopCoroutine(IFramework.Modules.Coroutine.ICoroutine)">
+            <summary>
+            结束
+            </summary>
+            <param name="routine"></param>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.Coroutine">
+            <summary>
+            携程 模拟
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Coroutine.Coroutine.isDone">
+            <summary>
+            是否完成
+            </summary>
+        </member>
+        <member name="E:IFramework.Modules.Coroutine.Coroutine.onCompelete">
+            <summary>
+            携程完成时候回调
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.Coroutine.Compelete">
+            <summary>
+            手动结束携程
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.YieldInstruction">
+            <summary>
+            所有等待类的基类
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Coroutine.YieldInstruction.isDone">
+            <summary>
+            是否结束
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.YieldInstruction.IsCompelete">
+            <summary>
+            是否结束
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.CoroutineModule">
+            <summary>
+            携程模块
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.CoroutineModule.StartCoroutine(System.Collections.IEnumerator)">
+            <summary>
+            开启一个携程
+            </summary>
+            <param name="routine"></param>
+            <returns></returns>
+        </member>
+        <member name="P:IFramework.Modules.Coroutine.CoroutineModule.priority">
+            <summary>
+            优先级
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForDays">
+            <summary>
+            等待日子
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForDays.#ctor(System.Double)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="days">天数</param>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForFrame">
+            <summary>
+            等一帧
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForFrame.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForFrames">
+            <summary>
+            等待帧数
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForFrames.#ctor(System.Int32)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="count">帧数 </param>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForFrames.IsCompelete">
+            <summary>
+            over
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForHours">
+            <summary>
+            等待小时
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForHours.#ctor(System.Double)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="hours">小时</param>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForMilliseconds">
+            <summary>
+            等待毫秒
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForMilliseconds.#ctor(System.Double)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="milliseconds">毫秒</param>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForMinutes">
+            <summary>
+            等待分钟
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForMinutes.#ctor(System.Double)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="minutes">等待分钟数</param>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForSeconds">
+            <summary>
+            等待秒
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForSeconds.#ctor(System.Double)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="seconds">等待秒数</param>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForTicks">
+            <summary>
+            等待trick
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForTicks.#ctor(System.Int64)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="ticks">等待帧数</param>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForTimeSpan">
+            <summary>
+            等待时间
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForTimeSpan.#ctor(System.TimeSpan)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="span"> 等待时间</param>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForTimeSpan.IsCompelete">
+            <summary>
+            override
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitUtil">
+            <summary>
+            等待条件成立
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitUtil.#ctor(System.Func{System.Boolean})">
+            <summary>
+            Ctor
+            </summary>
+            <param name="condition">等待成立条件</param>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitUtil.IsCompelete">
+            <summary>
+            override
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitWhile">
+            <summary>
+            等待条件不成立
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitWhile.#ctor(System.Func{System.Boolean})">
+            <summary>
+            Ctor
+            </summary>
+            <param name="condition">等待不成立条件</param>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitWhile.IsCompelete">
+            <summary>
+            override
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:IFramework.Modules.Message.IMessage">
             <summary>
             消息
@@ -456,18 +735,6 @@
             消息发送结果
             </summary>
         </member>
-        <member name="P:IFramework.Modules.Message.IMessage.priority">
-            <summary>
-            优先级 
-            仅在 state 为 MessageState.Wait时有效
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Message.IMessage.position">
-            <summary>
-            所在位置 
-            仅在 state 为 MessageState.Wait时有效
-            </summary>
-        </member>
         <member name="M:IFramework.Modules.Message.IMessage.SetCode(System.Int32)">
             <summary>
             设置Code，
@@ -475,21 +742,10 @@
             </summary>
             <param name="code"></param>
         </member>
-        <member name="M:IFramework.Modules.Message.IMessage.SetPriority(System.Int32)">
-            <summary>
-            设置优先级 
-            仅在 state 为 MessageState.Wait时有效
-            </summary>
-            <param name="priority"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Message.IMessage.OnRecycle(System.Action{IFramework.Modules.Message.IMessage})">
+        <member name="M:IFramework.Modules.Message.IMessage.OnCompelete(System.Action{IFramework.Modules.Message.IMessage})">
             <summary>
             仅在 state 为 MessageState.Wait时有效
-            实例被回收时的引用
-            消息发布完成，回收时候触发
-            回收后，此回调内部会制空，即只会触发一次
-            如果缓存了引用，记得制空引用
+            消息发布完成时的引用
             </summary>
             <param name="action"></param>
         </member>
@@ -1311,261 +1567,6 @@
             框架提供的模块
             </summary>
         </member>
-        <member name="T:IFramework.Modules.Coroutine.CoroutineModuleEx">
-            <summary>
-            协程模块扩展
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleEx.StartCoroutine(System.Object,System.Collections.IEnumerator,IFramework.EnvironmentType)">
-            <summary>
-            开启一个携程
-            </summary>
-            <param name="obj"></param>
-            <param name=" envType"></param>
-            <param name="routine">迭代器</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleEx.StartCoroutine(System.Object,System.Collections.IEnumerator,IFramework.IEnvironment)">
-            <summary>
-            开启一个携程
-            </summary>
-            <param name="obj"></param>
-            <param name="env"></param>
-            <param name="routine">迭代器</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleEx.OnCompelete(IFramework.Modules.Coroutine.ICoroutine,System.Action)">
-            <summary>
-            结束回调
-            </summary>
-            <param name="self"></param>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.ICoroutine">
-            <summary>
-            协程实体
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Coroutine.ICoroutine.isDone">
-            <summary>
-            是否结束
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.ICoroutine.Compelete">
-            <summary>
-            手动结束
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.ICoroutineModule">
-            <summary>
-            协程模块
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.ICoroutineModule.StartCoroutine(System.Collections.IEnumerator)">
-            <summary>
-            开启一个协程
-            </summary>
-            <param name="routine"></param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.Coroutine">
-            <summary>
-            携程 模拟
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.Coroutine.Coroutine.isDone">
-            <summary>
-            是否完成
-            </summary>
-        </member>
-        <member name="E:IFramework.Modules.Coroutine.Coroutine.onCompelete">
-            <summary>
-            携程完成时候回调
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.Coroutine.Compelete">
-            <summary>
-            手动结束携程
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.CoroutineInstruction">
-            <summary>
-            所有等待类的基类
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.CoroutineInstruction.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.CoroutineInstruction.InnerLogoc">
-            <summary>
-            等待逻辑，返回 True 结束
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.CoroutineModule">
-            <summary>
-            携程模块
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.CoroutineModule.StartCoroutine(System.Collections.IEnumerator)">
-            <summary>
-            开启一个携程
-            </summary>
-            <param name="routine"></param>
-            <returns></returns>
-        </member>
-        <member name="P:IFramework.Modules.Coroutine.CoroutineModule.priority">
-            <summary>
-            优先级
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForDays">
-            <summary>
-            等待日子
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForDays.#ctor(System.Double)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="days">天数</param>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForFrame">
-            <summary>
-            等一帧
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForFrame.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForFrames">
-            <summary>
-            等待帧数
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForFrames.#ctor(System.Int32)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="count">帧数 </param>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForFrames.InnerLogoc">
-            <summary>
-            override
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForHours">
-            <summary>
-            等待小时
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForHours.#ctor(System.Double)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="hours">小时</param>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForMilliseconds">
-            <summary>
-            等待毫秒
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForMilliseconds.#ctor(System.Double)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="milliseconds">毫秒</param>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForMinutes">
-            <summary>
-            等待分钟
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForMinutes.#ctor(System.Double)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="minutes">等待分钟数</param>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForSeconds">
-            <summary>
-            等待秒
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForSeconds.#ctor(System.Double)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="seconds">等待秒数</param>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForTicks">
-            <summary>
-            等待trick
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForTicks.#ctor(System.Int64)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="ticks">等待帧数</param>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForTimeSpan">
-            <summary>
-            等待时间
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForTimeSpan.#ctor(System.TimeSpan)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="span"> 等待时间</param>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForTimeSpan.InnerLogoc">
-            <summary>
-            override
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitUtil">
-            <summary>
-            等待条件成立
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitUtil.#ctor(System.Func{System.Boolean})">
-            <summary>
-            Ctor
-            </summary>
-            <param name="condition">等待成立条件</param>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitUtil.InnerLogoc">
-            <summary>
-            override
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitWhile">
-            <summary>
-            等待条件不成立
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitWhile.#ctor(System.Func{System.Boolean})">
-            <summary>
-            Ctor
-            </summary>
-            <param name="condition">等待不成立条件</param>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitWhile.InnerLogoc">
-            <summary>
-            override
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:IFramework.Modules.ECS.IECSModule">
             <summary>
             Ecs模块
@@ -1993,6 +1994,11 @@
             模块
             </summary>
         </member>
+        <member name="F:IFramework.Modules.FrameworkModule.defaultName">
+            <summary>
+            默认名字
+            </summary>
+        </member>
         <member name="M:IFramework.Modules.FrameworkModule.#ctor">
             <summary>
             阻止 New
@@ -2113,25 +2119,16 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.#ctor(IFramework.FrameworkEnvironment,System.Boolean)">
+        <member name="M:IFramework.Modules.FrameworkModuleContainer.#ctor(IFramework.FrameworkEnvironment)">
             <summary>
             Ctor
             </summary>
             <param name="env"></param>
-            <param name="bind"></param>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.BindEnv">
+        <member name="M:IFramework.Modules.FrameworkModuleContainer.OnDispose">
             <summary>
             绑定环境
             </summary>
-        </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.UnBindEnv(System.Boolean)">
-            <summary>
-            解绑环境
-            </summary>
-            <param name="dispose"></param>
-        </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.OnDispose">
             <summary>
             释放
             </summary>
@@ -2572,11 +2569,6 @@
             消息
             </summary>
         </member>
-        <member name="P:IFramework.Modules.IFrameworkModules.MVVM">
-            <summary>
-            mvvm
-            </summary>
-        </member>
         <member name="P:IFramework.Modules.IFrameworkModules.Config">
             <summary>
             config
@@ -2597,236 +2589,6 @@
             在主线程跑一个方法
             </summary>
             <param name="action"></param>
-        </member>
-        <member name="T:IFramework.Modules.MVVM.EmptyDataModel">
-            <summary>
-            空数据模型
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVVM.IMVVMModule">
-            <summary>
-            MVVM 模块
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.IMVVMModule.AddGroup(IFramework.Modules.MVVM.MVVMGroup)">
-            <summary>
-            添加组
-            </summary>
-            <param name="group"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.IMVVMModule.FindGroup(System.String)">
-            <summary>
-            找到组
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.IMVVMModule.RemoveGroup(IFramework.Modules.MVVM.MVVMGroup)">
-            <summary>
-            移除组
-            </summary>
-            <param name="group"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.IMVVMModule.RemoveGroup(System.String)">
-            <summary>
-            移除组
-            </summary>
-            <param name="name"></param>
-        </member>
-        <member name="T:IFramework.Modules.MVVM.MVVMGroup">
-            <summary>
-            MVVM 组结构
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.MVVMGroup.name">
-            <summary>
-            组名
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.MVVMGroup.view">
-            <summary>
-            界面
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.MVVMGroup.model">
-            <summary>
-            数据
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.MVVMGroup.message">
-            <summary>
-            消息转发
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.MVVMGroup.viewModel">
-            <summary>
-            VM
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMGroup.#ctor(System.String,IFramework.Modules.MVVM.View,IFramework.Modules.MVVM.ViewModel,IFramework.IModel)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="name"></param>
-            <param name="view"></param>
-            <param name="viewModel"></param>
-            <param name="model"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMGroup.OnSetMessage(IFramework.Modules.Message.IMessageModule)">
-            <summary>
-            设置消息转发时
-            </summary>
-            <param name="message"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMGroup.PublishModelDirty">
-            <summary>
-            发布model数据发生变化
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMGroup.Dispose">
-            <summary>
-            释放时
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMGroup.OnDispose">
-            <summary>
-            释放时
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVVM.MVVMModule">
-            <summary>
-            MVVM 模块
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMModule.FindGroup(System.String)">
-            <summary>
-            查找组
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMModule.AddGroup(IFramework.Modules.MVVM.MVVMGroup)">
-            <summary>
-            注册一个 MVVM
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMModule.RemoveGroup(System.String)">
-            <summary>
-            移除组
-            </summary>
-            <param name="name"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMModule.RemoveGroup(IFramework.Modules.MVVM.MVVMGroup)">
-            <summary>
-            移除组
-            </summary>
-            <param name="group"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.MVVMModule.OnUpdate">
-            <summary>
-            刷新
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVVM.View">
-            <summary>
-            界面
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.View.message">
-            <summary>
-            消息转发
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.MVVM.View.handler">
-            <summary>
-            数据绑定
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.View.context">
-            <summary>
-            VM
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.View.BindProperty">
-            <summary>
-            绑定数据
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.View.Dispose">
-            <summary>
-            释放
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.View.OnDispose">
-            <summary>
-            释放时
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.View.OnSetMessage">
-            <summary>
-            消息发布已经设置
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVVM.View`1">
-            <summary>
-            方便书写
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.View`1.Tcontext">
-            <summary>
-            方便书写
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVVM.ViewModel">
-            <summary>
-            VM
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.ViewModel.message">
-            <summary>
-            消息转发
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.ViewModel.model">
-            <summary>
-            数据
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.ViewModel.Initialize">
-            <summary>
-            初始化
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.ViewModel.SyncModelValue">
-            <summary>
-            同步model数据
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.ViewModel.SubscribeMessage">
-            <summary>
-            注册消息监听
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.ViewModel.UnSubscribeMessage">
-            <summary>
-            取消消息监听
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVVM.ViewModel.OnDispose">
-            <summary>
-            释放时
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVVM.ViewModel`1">
-            <summary>
-            方便书写
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVVM.ViewModel`1.Tmodel">
-            <summary>
-            方便书写
-            </summary>
         </member>
         <member name="T:IFramework.Modules.UpdateFrameworkModule">
             <summary>
@@ -3506,6 +3268,372 @@
             </summary>
             <param name="self"></param>
             <param name="assembly"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataColumn">
+            <summary>
+            每一个格子
+            </summary>
+        </member>
+        <member name="F:IFramework.Serialization.DataTable.DataColumn.headNameForRead">
+            <summary>
+            标题名称
+            </summary>
+        </member>
+        <member name="F:IFramework.Serialization.DataTable.DataColumn.value">
+            <summary>
+            string 数据
+            </summary>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataReadColumnIndexAttribute">
+            <summary>
+            数据列
+            </summary>
+        </member>
+        <member name="P:IFramework.Serialization.DataTable.DataReadColumnIndexAttribute.index">
+            <summary>
+            所在列
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataReadColumnIndexAttribute.#ctor(System.Int32)">
+            <summary>
+            ctor
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataColumnNameAttribute">
+            <summary>
+            设置数据表标题
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataColumnNameAttribute.#ctor(System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="name">名称</param>
+        </member>
+        <member name="P:IFramework.Serialization.DataTable.DataColumnNameAttribute.name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataIgnoreAttribute">
+            <summary>
+            数据表忽略的成员
+            </summary>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataTableTool">
+            <summary>
+            DataTable
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataTableTool.CreateReader(System.IO.TextReader,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            创建数据读取器
+            </summary>
+            <param name="streamReader"></param>
+            <param name="rowReader"></param>
+            <param name="explainer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataTableTool.CreateReader(System.String,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            创建数据读取器
+            </summary>
+            <param name="text"></param>
+            <param name="rowReader"></param>
+            <param name="explainer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataTableTool.CreateWriter(System.IO.TextWriter,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            创建数据写入器
+            </summary>
+            <param name="streamWriter"></param>
+            <param name="rowWriter"></param>
+            <param name="explainer"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataExplainer">
+            <summary>
+            string 解释器
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataExplainer.#ctor(System.String,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="dot">替换逗号的字符</param>
+            <param name="quotes">替换双引号的字符</param>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance(System.Type)">
+            <summary>
+            创建实例
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance``1(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn},System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
+            <summary>
+            根据格子反序列化一个实例
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cols"></param>
+            <param name="membersDic">需要反序列化的成员</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataExplainer.GetColumns``1(``0,System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
+            <summary>
+            根据 具体类型 获取单个数据格子数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="membersDic">需要序列化的成员</param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataReader">
+            <summary>
+            数据表读者
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataReader.#ctor(System.IO.TextReader,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="streamReader">流读者</param>
+            <param name="rowReader">行读者</param>
+            <param name="explainer">数据解释器</param>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataReader.#ctor(System.String,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="text">数据表字符串</param>
+            <param name="rowReader">行读者</param>
+            <param name="explainer">数据解释器</param>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataReader.OnDispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataReader.Get``1">
+            <summary>
+            获取一张表数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataRow">
+            <summary>
+            数据行
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.ReadLine(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            读取一行
+            </summary>
+            <param name="val">行String</param>
+            <param name="headNames">标题行</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.SpilitRow(System.String)">
+            <summary>
+            切割一行
+            </summary>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.ReadHeadLine(System.String)">
+            <summary>
+            读取标题行
+            </summary>
+            <param name="val">行String</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.WriteLine(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn})">
+            <summary>
+            写入一行
+            </summary>
+            <param name="cols">写入的信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.WriteHeadLine(System.Collections.Generic.List{System.String})">
+            <summary>
+            写入标题行
+            </summary>
+            <param name="headNames">写入的标题</param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataWriter">
+            <summary>
+            数据写入者
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataWriter.#ctor(System.IO.TextWriter,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="streamWriter">流写者</param>
+            <param name="rowWriter">行写者</param>
+            <param name="explainer">数据解释器</param>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataWriter.#ctor(IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="rowWriter">行写者</param>
+            <param name="explainer">数据解释器</param>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataWriter.OnDispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataWriter.WriteString(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn}})">
+            <summary>
+            写入到string
+            </summary>
+            <param name="headNames"></param>
+            <param name="rows"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataWriter.Write(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn}})">
+            <summary>
+            写入文件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="headNames"></param>
+            <param name="rows"></param>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataWriter.WriteString``1(System.Collections.Generic.List{``0})">
+            <summary>
+            写入到string
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataWriter.Write``1(System.Collections.Generic.List{``0})">
+            <summary>
+            写入一个表
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.IDataExplainer">
+            <summary>
+            string 解释器
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataExplainer.CreatInstance``1(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn},System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
+            <summary>
+            根据格子反序列化一个实例
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cols"></param>
+            <param name="membersDic">需要反序列化的成员</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataExplainer.GetColumns``1(``0,System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
+            <summary>
+            根据 具体类型 获取单个数据格子数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="membersDic">需要序列化的成员</param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.IDataReader">
+            <summary>
+            数据读取器
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataReader.Get``1">
+            <summary>
+            获取
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:IFramework.Serialization.DataTable.IDataReader.headNames">
+            <summary>
+            标题栏
+            </summary>
+        </member>
+        <member name="P:IFramework.Serialization.DataTable.IDataReader.rows">
+            <summary>
+            行
+            </summary>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.IDataRow">
+            <summary>
+            数据行
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataRow.ReadLine(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            读取一行
+            </summary>
+            <param name="val">行String</param>
+            <param name="headNames">标题行</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataRow.ReadHeadLine(System.String)">
+            <summary>
+            读取标题行
+            </summary>
+            <param name="val">行String</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataRow.WriteLine(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn})">
+            <summary>
+            写入一行
+            </summary>
+            <param name="cols">写入的信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataRow.WriteHeadLine(System.Collections.Generic.List{System.String})">
+            <summary>
+            写入标题行
+            </summary>
+            <param name="headNames">写入的标题</param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.IDataWriter">
+            <summary>
+            数据写入器
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataWriter.Write``1(System.Collections.Generic.List{``0})">
+            <summary>
+            写入
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataWriter.WriteString``1(System.Collections.Generic.List{``0})">
+            <summary>
+            写入文件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataWriter.WriteString(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn}})">
+            <summary>
+            写入
+            </summary>
+            <param name="headNames"></param>
+            <param name="rows"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.IDataWriter.Write(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn}})">
+            <summary>
+            写入文件
+            </summary>
+            <param name="headNames"></param>
+            <param name="rows"></param>
             <returns></returns>
         </member>
         <member name="T:IFramework.Unit">
@@ -4393,16 +4521,6 @@
             环境类型
             </summary>
         </member>
-        <member name="P:IFramework.FrameworkEnvironment.deltaTime">
-            <summary>
-            最近一次 Update 方法用时
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.timeSinceInit">
-            <summary>
-            初始化之后的时间
-            </summary>
-        </member>
         <member name="P:IFramework.FrameworkEnvironment.current">
             <summary>
             当前环境
@@ -4464,6 +4582,187 @@
             移除绑定dispose
             </summary>
             <param name="action"></param>
+        </member>
+        <member name="T:IFramework.MVVM.EmptyDataModel">
+            <summary>
+            空数据模型
+            </summary>
+        </member>
+        <member name="T:IFramework.MVVM.MVVMGroup">
+            <summary>
+            MVVM 组结构
+            </summary>
+        </member>
+        <member name="P:IFramework.MVVM.MVVMGroup.name">
+            <summary>
+            组名
+            </summary>
+        </member>
+        <member name="P:IFramework.MVVM.MVVMGroup.view">
+            <summary>
+            界面
+            </summary>
+        </member>
+        <member name="P:IFramework.MVVM.MVVMGroup.model">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="P:IFramework.MVVM.MVVMGroup.viewModel">
+            <summary>
+            VM
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.MVVMGroup.#ctor(System.String,IFramework.MVVM.View,IFramework.MVVM.ViewModel,IFramework.IModel)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="name"></param>
+            <param name="view"></param>
+            <param name="viewModel"></param>
+            <param name="model"></param>
+        </member>
+        <member name="M:IFramework.MVVM.MVVMGroup.PublishModelDirty">
+            <summary>
+            发布model数据发生变化
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.MVVMGroup.Dispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.MVVMGroup.OnDispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="T:IFramework.MVVM.MVVMGroups">
+            <summary>
+            MVVM 模块
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.MVVMGroups.OnDispose">
+            <summary>
+            注销
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.MVVMGroups.FindGroup(System.String)">
+            <summary>
+            查找组
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.MVVM.MVVMGroups.AddGroup(IFramework.MVVM.MVVMGroup)">
+            <summary>
+            注册一个 MVVM
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.MVVMGroups.RemoveGroup(System.String)">
+            <summary>
+            移除组
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:IFramework.MVVM.MVVMGroups.RemoveGroup(IFramework.MVVM.MVVMGroup)">
+            <summary>
+            移除组
+            </summary>
+            <param name="group"></param>
+        </member>
+        <member name="T:IFramework.MVVM.View">
+            <summary>
+            界面
+            </summary>
+        </member>
+        <member name="F:IFramework.MVVM.View.handler">
+            <summary>
+            数据绑定
+            </summary>
+        </member>
+        <member name="P:IFramework.MVVM.View.context">
+            <summary>
+            VM
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.View.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.View.BindProperty">
+            <summary>
+            绑定数据
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.View.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.View.OnDispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.View.Publish(IFramework.IEventArgs)">
+            <summary>
+            发布消息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="T:IFramework.MVVM.View`1">
+            <summary>
+            方便书写
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.MVVM.View`1.Tcontext">
+            <summary>
+            方便书写
+            </summary>
+        </member>
+        <member name="T:IFramework.MVVM.ViewModel">
+            <summary>
+            VM
+            </summary>
+        </member>
+        <member name="P:IFramework.MVVM.ViewModel.model">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.ViewModel.Initialize">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.ViewModel.SyncModelValue">
+            <summary>
+            同步model数据
+            </summary>
+        </member>
+        <member name="M:IFramework.MVVM.ViewModel.Listen(IFramework.IEventArgs)">
+            <summary>
+            来自于view的消息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:IFramework.MVVM.ViewModel.OnDispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="T:IFramework.MVVM.ViewModel`1">
+            <summary>
+            方便书写
+            </summary>
+        </member>
+        <member name="P:IFramework.MVVM.ViewModel`1.Tmodel">
+            <summary>
+            方便书写
+            </summary>
         </member>
         <member name="T:IFramework.Net.OnReceivedHandler">
             <summary>
@@ -7408,330 +7707,6 @@
             </summary>
             <param name="t"></param>
             <param name="arg"></param>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataColumn">
-            <summary>
-            每一个格子
-            </summary>
-        </member>
-        <member name="F:IFramework.Serialization.DataTable.DataColumn.headLineName">
-            <summary>
-            标题名称
-            </summary>
-        </member>
-        <member name="F:IFramework.Serialization.DataTable.DataColumn.strValue">
-            <summary>
-            string 数据
-            </summary>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataColumnIndexAttribute">
-            <summary>
-            数据列
-            </summary>
-        </member>
-        <member name="P:IFramework.Serialization.DataTable.DataColumnIndexAttribute.index">
-            <summary>
-            所在列
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataColumnIndexAttribute.#ctor(System.Int32)">
-            <summary>
-            ctor
-            </summary>
-            <param name="index"></param>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataColumnNameAttribute">
-            <summary>
-            设置数据表标题
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataColumnNameAttribute.#ctor(System.String)">
-            <summary>
-            ctor
-            </summary>
-            <param name="name">名称</param>
-        </member>
-        <member name="P:IFramework.Serialization.DataTable.DataColumnNameAttribute.name">
-            <summary>
-            名称
-            </summary>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataIgnoreAttribute">
-            <summary>
-            数据表忽略的成员
-            </summary>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataTableTool">
-            <summary>
-            DataTable
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataTableTool.CreateReader(System.IO.TextReader,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            创建数据读取器
-            </summary>
-            <param name="streamReader"></param>
-            <param name="rowReader"></param>
-            <param name="explainer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataTableTool.CreateReader(System.String,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            创建数据读取器
-            </summary>
-            <param name="text"></param>
-            <param name="rowReader"></param>
-            <param name="explainer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataTableTool.CreateWriter(System.IO.TextWriter,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            创建数据写入器
-            </summary>
-            <param name="streamWriter"></param>
-            <param name="rowWriter"></param>
-            <param name="explainer"></param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataExplainer">
-            <summary>
-            string 解释器
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataExplainer.#ctor(System.String,System.String)">
-            <summary>
-            ctor
-            </summary>
-            <param name="dot">替换逗号的字符</param>
-            <param name="quotes">替换双引号的字符</param>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance``1">
-            <summary>
-            创建实例
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance``1(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn},System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
-            <summary>
-            根据格子反序列化一个实例
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="cols"></param>
-            <param name="membersDic">需要反序列化的成员</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataExplainer.GetColumns``1(``0,System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
-            <summary>
-            根据 具体类型 获取单个数据格子数据
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="t"></param>
-            <param name="membersDic">需要序列化的成员</param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataReader">
-            <summary>
-            数据表读者
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataReader.#ctor(System.IO.TextReader,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="streamReader">流读者</param>
-            <param name="rowReader">行读者</param>
-            <param name="explainer">数据解释器</param>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataReader.#ctor(System.String,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="text">数据表字符串</param>
-            <param name="rowReader">行读者</param>
-            <param name="explainer">数据解释器</param>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataReader.OnDispose">
-            <summary>
-            释放
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataReader.Get``1">
-            <summary>
-            获取一张表数据
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataRow">
-            <summary>
-            数据行
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.ReadLine(System.String,System.Collections.Generic.List{System.String})">
-            <summary>
-            读取一行
-            </summary>
-            <param name="val">行String</param>
-            <param name="headNames">标题行</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.SpilitRow(System.String)">
-            <summary>
-            切割一行
-            </summary>
-            <param name="val"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.ReadHeadLine(System.String)">
-            <summary>
-            读取标题行
-            </summary>
-            <param name="val">行String</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.WriteLine(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn})">
-            <summary>
-            写入一行
-            </summary>
-            <param name="cols">写入的信息</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.WriteHeadLine(System.Collections.Generic.List{System.String})">
-            <summary>
-            写入标题行
-            </summary>
-            <param name="headNames">写入的标题</param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataWriter">
-            <summary>
-            数据写入者
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataWriter.#ctor(System.IO.TextWriter,IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="streamWriter">流写者</param>
-            <param name="rowWriter">行写者</param>
-            <param name="explainer">数据解释器</param>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataWriter.#ctor(IFramework.Serialization.DataTable.IDataRow,IFramework.Serialization.DataTable.IDataExplainer)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="rowWriter">行写者</param>
-            <param name="explainer">数据解释器</param>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataWriter.OnDispose">
-            <summary>
-            释放
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataWriter.WriteString``1(System.Collections.Generic.List{``0})">
-            <summary>
-            写入到string
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source">数据</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataWriter.Write``1(System.Collections.Generic.List{``0})">
-            <summary>
-            写入一个表
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.IDataExplainer">
-            <summary>
-            string 解释器
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.IDataExplainer.CreatInstance``1(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn},System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
-            <summary>
-            根据格子反序列化一个实例
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="cols"></param>
-            <param name="membersDic">需要反序列化的成员</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.IDataExplainer.GetColumns``1(``0,System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
-            <summary>
-            根据 具体类型 获取单个数据格子数据
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="t"></param>
-            <param name="membersDic">需要序列化的成员</param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.IDataReader">
-            <summary>
-            数据读取器
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.IDataReader.Get``1">
-            <summary>
-            获取
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.IDataRow">
-            <summary>
-            数据行
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.IDataRow.ReadLine(System.String,System.Collections.Generic.List{System.String})">
-            <summary>
-            读取一行
-            </summary>
-            <param name="val">行String</param>
-            <param name="headNames">标题行</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.IDataRow.ReadHeadLine(System.String)">
-            <summary>
-            读取标题行
-            </summary>
-            <param name="val">行String</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.IDataRow.WriteLine(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn})">
-            <summary>
-            写入一行
-            </summary>
-            <param name="cols">写入的信息</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.IDataRow.WriteHeadLine(System.Collections.Generic.List{System.String})">
-            <summary>
-            写入标题行
-            </summary>
-            <param name="headNames">写入的标题</param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.IDataWriter">
-            <summary>
-            数据写入器
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.IDataWriter.Write``1(System.Collections.Generic.List{``0})">
-            <summary>
-            写入
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.IDataWriter.WriteString``1(System.Collections.Generic.List{``0})">
-            <summary>
-            写入
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <returns></returns>
         </member>
         <member name="T:IFramework.Singleton.ISingleton">
             <summary>

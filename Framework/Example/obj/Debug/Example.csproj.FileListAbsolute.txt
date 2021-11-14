@@ -25,3 +25,4 @@ E:\Project\VS\IFramework\Framework\Example\obj\Debug\Example.exe
 E:\Project\VS\IFramework\Framework\Example\obj\Debug\Example.pdb
 E:\Project\VS\IFramework\Framework\Example\obj\Debug\Example.csproj.AssemblyReference.cache
 E:\Project\VS\IFramework\Framework\Example\bin\Debug\IFramework.dll
+E:\Project\VS\IFramework\Framework\Example\obj\Debug\Example.csproj.CopyComplete

@@ -19,10 +19,7 @@ namespace IFramework
         /// 数据容器
         /// </summary>
         IValuesContainer container { get; set; }
-        /// <summary>
-        /// 每次刷新的时间
-        /// </summary>
-        TimeSpan deltaTime { get; }
+
         /// <summary>
         /// 环境类型
         /// </summary>
@@ -35,12 +32,10 @@ namespace IFramework
         /// 模块容器
         /// </summary>
         IFrameworkModules modules { get; }
-
         /// <summary>
-        /// 初始化-现在时间
+        /// 时间
         /// </summary>
-        TimeSpan timeSinceInit { get; }
-
+        ITimeCalculator time { get; }
         /// <summary>
         /// 绑定 Dispose
         /// </summary>

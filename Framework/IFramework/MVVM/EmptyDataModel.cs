@@ -1,4 +1,4 @@
-﻿namespace IFramework.Modules.MVVM
+﻿namespace IFramework.MVVM
 {
     /// <summary>
     /// 空数据模型

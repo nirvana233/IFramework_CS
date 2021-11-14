@@ -31,24 +31,22 @@ namespace IFramework.Serialization
             { typeof(char),typeof(CharStringConverter)},
             { typeof(byte),typeof(ByteStringConverter)},
             { typeof(DateTime),typeof(DateTimeStringConverter)},
-            { typeof(byte[]),typeof(ByteArrayStringConverter)},
             { typeof(TimeSpan),typeof(TimeSpanStringConverter)},
             { typeof(sbyte),typeof(SByteStringConverter)},
             { typeof(Point2),typeof(Point2StringConverter)},
             { typeof(Point3),typeof(Point3StringConverter)},
         };
-        private static Dictionary<Type, StringConverter> _ins = new Dictionary<Type, StringConverter>();
-        public static void SubscribeConverter<T>(StringConverter<T> converter)
+        private static Dictionary<Type, Type> _genMap = new Dictionary<Type, Type>()
         {
-            if (!_ins.ContainsKey(typeof(T)))
-            {
-                _ins.Add(typeof(T), converter);
-            }
-            else
-            {
-                _ins[typeof(T)] = converter;
-            }
-        }
+            {(typeof(List<>)),typeof(ListStringConverter<>) } ,
+            {(typeof(Dictionary<,>)),typeof(DictionaryStringConverter<,>) } ,
+            {(typeof(Stack<>)),typeof(StackStringConverter<>) } ,
+            {(typeof(Queue<>)),typeof(QueueStringConverter<>) } ,
+            {(typeof(LinkedList<>)),typeof(LinkedListStringConverter<>) } ,
+
+        };
+        private static Dictionary<Type, StringConverter> _ins = new Dictionary<Type, StringConverter>();
+
         public static void SubscribeConverter<T>(Type converter)
         {
             if (!_map.ContainsKey(typeof(T)))
@@ -61,40 +59,80 @@ namespace IFramework.Serialization
             }
         }
 
+        public static void SubscribeGenericConverter(Type key,Type converter)
+        {
+            if (!_genMap.ContainsKey(key))
+            {
+                _genMap.Add(key, converter);
+            }
+            else
+            {
+                _genMap[key] = converter;
+            }
+        }
+
         public abstract string ConvertToString( object t);
         public abstract bool TryConvertObject( string str, out object result);
 
         public static StringConverter Get(Type type)
         {
-            if (type.IsEnum)
-            {
-                return  Activator.CreateInstance(typeof(EnumStringConverter<>).MakeGenericType(type)) as StringConverter;
-            }
             StringConverter c;
-            if (!_ins.TryGetValue(type,out c ))
+            if (!_ins.TryGetValue(type,out c))
             {
                 Type t;
                 if (!_map.TryGetValue(type, out t))
                 {
-                    throw new Exception("Could not Convert Type " + type);
+                    c = CreateExtra(type);
                 }
                 else
                 {
-                    StringConverter sc = Activator.CreateInstance(t) as StringConverter;
-                    _ins.Add(type, sc);
-                    return sc;
+                    c = Create(t);
+                }
+                if (c!=null)
+                {
+                    _ins.Add(type, c);
+                }
+                else
+                {
+                    throw new Exception($"None StringConverter with Type {type}");
                 }
             }
             return c;
         }
-        public static StringConverter<T> Get<T>()
+        public static StringConverter Create(Type type)
         {
-            return Get(typeof(T)) as StringConverter<T>;
+            return Activator.CreateInstance(type) as StringConverter;
+        }
+        public static StringConverter CreateExtra(Type type)
+        {
+            if (type.IsSubclassOf(typeof(Delegate)))
+                return null;
+            if (type.IsEnum)
+                return Activator.CreateInstance(typeof(EnumStringConverter<>).MakeGenericType(type)) as StringConverter;
+            if (type.IsArray)
+                return Activator.CreateInstance(typeof(ArrayStringConverter<>).MakeGenericType(type.GetElementType())) as StringConverter;
+            if (type.IsGenericType)
+            {
+                foreach (var item in _genMap.Keys)
+                {
+                    if (type.IsSubclassOfGeneric(item))
+                    {
+                        return Activator.CreateInstance(_genMap[item].MakeGenericType(type.GetGenericArguments())) as StringConverter;
+                    }
+                }
+                return null;
+            }
+            else
+            {
+                return Activator.CreateInstance(typeof(ObjectStringConverter<>).MakeGenericType(type)) as StringConverter;
+            }
         }
 
         public const char dot = ',';
-        public const char leftBound = '[';
-        public const char rightBound = ']';
+        public const char leftBound = '{';
+        public const char rightBound = '}';
+        public const char midLeftBound = '[';
+        public const char midRightBound = ']';
         public const char colon = ':';
     }
     public abstract class StringConverter<T> : StringConverter
@@ -129,7 +167,4 @@ namespace IFramework.Serialization
             return default(T);
         }
     }
-
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
 }

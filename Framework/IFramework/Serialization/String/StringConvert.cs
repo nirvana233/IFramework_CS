@@ -16,7 +16,7 @@ namespace IFramework.Serialization
     {
         public static string ConvertToString<T>(this T self)
         {
-           return  StringConverter.Get<T>().ConvertToString(self);
+            return ConvertToString(self,typeof(T));
         }
         public static string ConvertToString(this object self, Type type)
         {
@@ -27,13 +27,22 @@ namespace IFramework.Serialization
 
         public static bool TryConvert<T>(this string self, out T t)
         {
-            return StringConverter.Get<T>().TryConvert(self,out t);
+            object t1=null;
+            if (TryConvert(self, typeof(T), ref t1))
+            {
+                t = (T)t1;
+                return true;
+            }
+            t = default(T);
+            return false;
         }
         public static bool TryConvert(this string self, Type type, ref object obj)
         {
             if (string.IsNullOrEmpty(self)) return false;
             return StringConverter.Get(type).TryConvertObject(self, out obj);
         }
+
+
     }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 

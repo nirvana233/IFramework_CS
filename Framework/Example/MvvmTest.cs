@@ -1,6 +1,5 @@
 ﻿using IFramework;
-using IFramework.Modules.Message;
-using IFramework.Modules.MVVM;
+using IFramework.MVVM;
 
 namespace Example
 {
@@ -8,7 +7,7 @@ namespace Example
     {
         class MyModel : IModel
         {
-            public int value;
+            public int value=2;
         }
         class MyViewModel : ViewModel<MyModel>
         {
@@ -18,20 +17,22 @@ namespace Example
                     Tmodel.value = value;
                     SetProperty(ref _value, value); } }
 
+            protected override void Initialize()
+            {
+                value = 5;
+            }
+
+            protected override void Listen(IEventArgs message)
+            {
+                Log.E("Message rec");
+            }
+
             protected override void SyncModelValue()
             {
                 value = Tmodel.value;
                 this.value++;
             }
-            protected override void SubscribeMessage()
-            {
-                message.Subscribe<MyView>(Listen);
-            }
 
-            private void Listen(IMessage message)
-            {
-                Log.E("Message rec");
-            }
         }
         class MyView : View<MyViewModel>
         {
@@ -43,18 +44,13 @@ namespace Example
                     Log.E(value);
                 });
                 Log.E("Message pub");
-
+                Publish(null);
             }
-            public override void OnSetMessage()
-            {
-                message.Publish<MyView>(null);
-            }
+           
         }
         protected override void Start()
         {
-            Framework.GetEnv(EnvironmentType.Ev0).modules.MVVM
-                .AddGroup(new MVVMGroup("name", new MyView(), new MyViewModel(), new MyModel()));
-
+            new MVVMGroup("name", new MyView(), new MyViewModel(), new MyModel());
         }
 
         protected override void Stop()

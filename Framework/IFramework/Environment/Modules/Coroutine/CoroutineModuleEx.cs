@@ -34,6 +34,17 @@ namespace IFramework.Modules.Coroutine
             return env.modules.Coroutine.StartCoroutine(routine);
         }
         /// <summary>
+        /// 结束一个携程
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="routine">迭代器</param>
+        /// <returns></returns>
+        public static void StopCoroutine(this object obj, ICoroutine routine)
+        {
+            routine.Compelete();
+        }
+
+        /// <summary>
         /// 结束回调
         /// </summary>
         /// <param name="self"></param>

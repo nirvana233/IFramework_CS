@@ -102,13 +102,13 @@ namespace Example
                 Log.L($"发送一个命令 TestCmd----->{model.value}");
                 this.SendCommand(new TestCmd());
                 Log.L("发送一数据修改个事件------------------>" + GetType());
-                this.PublishMessage<ChangeEvent>(new ChangeEvent("第二次修改"), MessageUrgencyType.Common).OnRecycle((msag) =>
+                this.PublishMessage<ChangeEvent>(new ChangeEvent("第二次修改"), MessageUrgencyType.Common).OnCompelete((msag) =>
                 {
                     Log.L("事件处理完成，来看看 model 的数据");
                     Log.L($"注入的 model 数据----->{model.value}");
 
                 });
-                this.PublishMessage<ChangeEvent>(new ChangeEvent("第三次修改"), MessageUrgencyType.VeryUrgent).OnRecycle((msag) =>
+                this.PublishMessage<ChangeEvent>(new ChangeEvent("第三次修改"), MessageUrgencyType.VeryUrgent).OnCompelete((msag) =>
                 {
                     Log.L("事件处理完成，来看看 model 的数据");
                     Log.L($"注入的 model 数据----->{model.value}");

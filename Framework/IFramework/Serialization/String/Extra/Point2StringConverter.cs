@@ -13,7 +13,7 @@ namespace IFramework.Serialization
 
     public class Point2StringConverter : StringConverter<Point2>
     {
-        private static StringConverter<float> _innner = Get<float>();
+        private static StringConverter<float> _innner = Get(typeof(float)) as StringConverter<float>;
 
         public override bool TryConvert(string self, out Point2 result)
         {
@@ -36,7 +36,7 @@ namespace IFramework.Serialization
         }
         public override string ConvertToString(Point2 t)
         {
-            return string.Format("{0}{1}{2}{3}{4})",
+            return string.Format("{0}{1}{2}{3}{4}",
                 leftBound,
                  t.x,
                  dot,
