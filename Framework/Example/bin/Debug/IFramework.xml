@@ -480,11 +480,6 @@
             协程实体
             </summary>
         </member>
-        <member name="P:IFramework.Modules.Coroutine.ICoroutine.isDone">
-            <summary>
-            是否结束
-            </summary>
-        </member>
         <member name="M:IFramework.Modules.Coroutine.ICoroutine.Compelete">
             <summary>
             手动结束
@@ -502,7 +497,7 @@
             <param name="routine"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.Coroutine.ICoroutineModule.StaopCoroutine(IFramework.Modules.Coroutine.ICoroutine)">
+        <member name="M:IFramework.Modules.Coroutine.ICoroutineModule.StopCoroutine(IFramework.Modules.Coroutine.ICoroutine)">
             <summary>
             结束
             </summary>
@@ -556,7 +551,7 @@
             <param name="routine"></param>
             <returns></returns>
         </member>
-        <member name="P:IFramework.Modules.Coroutine.CoroutineModule.priority">
+        <member name="M:IFramework.Modules.Coroutine.CoroutineModule.OnGetDefaulyPriority">
             <summary>
             优先级
             </summary>
@@ -1158,6 +1153,51 @@
             可有可无的
             </summary>
         </member>
+        <member name="T:IFramework.Modules.ModulePriorities">
+            <summary>
+            默认的模块的优先级
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.ModulePriorities.Config">
+            <summary>
+            配置表
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.ModulePriorities.Loom">
+            <summary>
+            环境等待
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.ModulePriorities.Recorder">
+            <summary>
+            undo
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.ModulePriorities.Message">
+            <summary>
+            消息转发
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.ModulePriorities.Coroutine">
+            <summary>
+            协程
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.ModulePriorities.ECS">
+            <summary>
+            ecs
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.ModulePriorities.FSM">
+            <summary>
+            fsm
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.ModulePriorities.Custom">
+            <summary>
+            其他
+            </summary>
+        </member>
         <member name="T:IFramework.Modules.Recorder.ValueState`1">
             <summary>
             包含数值的状态
@@ -1413,28 +1453,30 @@
             <param name="redo"></param>
             <returns></returns>
         </member>
-        <member name="T:IFramework.Modules.IFrameworkModuleContainer">
+        <member name="T:IFramework.Modules.IModuleContainer">
             <summary>
             模块容器
             </summary>
         </member>
-        <member name="M:IFramework.Modules.IFrameworkModuleContainer.CreateModule(System.Type,System.String)">
+        <member name="M:IFramework.Modules.IModuleContainer.CreateModule(System.Type,System.String,System.Int32)">
             <summary>
             创建模块
             </summary>
             <param name="type"></param>
             <param name="name"></param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.IFrameworkModuleContainer.CreateModule``1(System.String)">
+        <member name="M:IFramework.Modules.IModuleContainer.CreateModule``1(System.String,System.Int32)">
             <summary>
             创建模块
             </summary>
             <typeparam name="T"></typeparam>
             <param name="name"></param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.IFrameworkModuleContainer.GetModule(System.Type,System.String)">
+        <member name="M:IFramework.Modules.IModuleContainer.GetModule(System.Type,System.String)">
             <summary>
             获取模块
             </summary>
@@ -1442,7 +1484,7 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.IFrameworkModuleContainer.GetModule``1(System.String)">
+        <member name="M:IFramework.Modules.IModuleContainer.GetModule``1(System.String)">
             <summary>
             获取模块
             </summary>
@@ -1450,7 +1492,7 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.IFrameworkModuleContainer.FindModule(System.Type,System.String)">
+        <member name="M:IFramework.Modules.IModuleContainer.FindModule(System.Type,System.String)">
             <summary>
             查找模块
             </summary>
@@ -1458,7 +1500,7 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.IFrameworkModuleContainer.FindModule``1(System.String)">
+        <member name="M:IFramework.Modules.IModuleContainer.FindModule``1(System.String)">
             <summary>
             查找模块
             </summary>
@@ -1562,7 +1604,7 @@
             <param name="getter"></param>
             <returns></returns>
         </member>
-        <member name="T:IFramework.Modules.FrameworkModules">
+        <member name="T:IFramework.Modules.Modules">
             <summary>
             框架提供的模块
             </summary>
@@ -1989,105 +2031,115 @@
             模块释放时
             </summary>
         </member>
-        <member name="T:IFramework.Modules.FrameworkModule">
+        <member name="T:IFramework.Modules.Module">
             <summary>
             模块
             </summary>
         </member>
-        <member name="F:IFramework.Modules.FrameworkModule.defaultName">
+        <member name="F:IFramework.Modules.Module.defaultName">
             <summary>
             默认名字
             </summary>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModule.#ctor">
+        <member name="M:IFramework.Modules.Module.#ctor">
             <summary>
             阻止 New
             </summary>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModule.CreatInstance(System.Type,System.String)">
+        <member name="M:IFramework.Modules.Module.CreatInstance(System.Type,System.String,System.Int32)">
             <summary>
             创建实例
             </summary>
             <param name="type">模块类型</param>
             <param name="name">模块名称</param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModule.CreatInstance``1(System.String)">
+        <member name="M:IFramework.Modules.Module.OnGetDefaulyPriority">
+            <summary>
+            设置优先级
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Module.CreatInstance``1(System.String,System.Int32)">
             <summary>
             创建实例
             </summary>
             <param name="name">模块名称</param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModule.Bind(IFramework.Modules.IFrameworkModuleContainer)">
+        <member name="M:IFramework.Modules.Module.Bind(IFramework.Modules.IModuleContainer)">
             <summary>
             绑定模块容器
             </summary>
             <param name="container"></param>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModule.UnBind(System.Boolean)">
+        <member name="M:IFramework.Modules.Module.UnBind(System.Boolean)">
             <summary>
             解除绑定模块容器
             </summary>
             <param name="dispose"></param>
         </member>
-        <member name="P:IFramework.Modules.FrameworkModule.priority">
+        <member name="P:IFramework.Modules.Module.priority">
             <summary>
-            优先级（越大释放越早释放）
+            优先级（越大释放越早释放,越小越先 update）
             </summary>
         </member>
-        <member name="P:IFramework.Modules.FrameworkModule.binded">
+        <member name="P:IFramework.Modules.Module.binded">
             <summary>
             是否绑定了
             </summary>
         </member>
-        <member name="P:IFramework.Modules.FrameworkModule.container">
+        <member name="P:IFramework.Modules.Module.container">
             <summary>
             模块所处的容器
             </summary>
         </member>
-        <member name="P:IFramework.Modules.FrameworkModule.name">
+        <member name="P:IFramework.Modules.Module.name">
             <summary>
             名字
             </summary>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModule.Dispose">
+        <member name="M:IFramework.Modules.Module.Dispose">
             <summary>
             释放
             </summary>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModule.Awake">
+        <member name="M:IFramework.Modules.Module.Awake">
             <summary>
             初始化
             </summary>
         </member>
-        <member name="T:IFramework.Modules.FrameworkModuleContainer">
+        <member name="T:IFramework.Modules.ModuleContainer">
             <summary>
             模块容器
             </summary>
         </member>
-        <member name="P:IFramework.Modules.FrameworkModuleContainer.env">
+        <member name="P:IFramework.Modules.ModuleContainer.env">
             <summary>
             环境
             </summary>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.CreateModule(System.Type,System.String)">
+        <member name="M:IFramework.Modules.ModuleContainer.CreateModule(System.Type,System.String,System.Int32)">
             <summary>
             创建一个模块，创建完了自动绑定
             </summary>
             <param name="type"></param>
             <param name="name"></param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.CreateModule``1(System.String)">
+        <member name="M:IFramework.Modules.ModuleContainer.CreateModule``1(System.String,System.Int32)">
             <summary>
             创建模块
             </summary>
             <typeparam name="T"></typeparam>
             <param name="name"></param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.FindModule(System.Type,System.String)">
+        <member name="M:IFramework.Modules.ModuleContainer.FindModule(System.Type,System.String)">
             <summary>
             查找模块
             </summary>
@@ -2095,7 +2147,7 @@
             <param name="name">模块名称</param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.GetModule(System.Type,System.String)">
+        <member name="M:IFramework.Modules.ModuleContainer.GetModule(System.Type,System.String)">
             <summary>
             获取模块
             </summary>
@@ -2103,7 +2155,7 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.FindModule``1(System.String)">
+        <member name="M:IFramework.Modules.ModuleContainer.FindModule``1(System.String)">
             <summary>
             查找模块
             </summary>
@@ -2111,7 +2163,7 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.GetModule``1(System.String)">
+        <member name="M:IFramework.Modules.ModuleContainer.GetModule``1(System.String)">
             <summary>
             获取模块
             </summary>
@@ -2119,13 +2171,13 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.#ctor(IFramework.FrameworkEnvironment)">
+        <member name="M:IFramework.Modules.ModuleContainer.#ctor(IFramework.FrameworkEnvironment)">
             <summary>
             Ctor
             </summary>
             <param name="env"></param>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModuleContainer.OnDispose">
+        <member name="M:IFramework.Modules.ModuleContainer.OnDispose">
             <summary>
             绑定环境
             </summary>
@@ -2544,37 +2596,37 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:IFramework.Modules.IFrameworkModules">
+        <member name="T:IFramework.Modules.IModules">
             <summary>
             模块组
             </summary>
         </member>
-        <member name="P:IFramework.Modules.IFrameworkModules.Coroutine">
+        <member name="P:IFramework.Modules.IModules.Coroutine">
             <summary>
             协程
             </summary>
         </member>
-        <member name="P:IFramework.Modules.IFrameworkModules.ECS">
+        <member name="P:IFramework.Modules.IModules.ECS">
             <summary>
             ecs
             </summary>
         </member>
-        <member name="P:IFramework.Modules.IFrameworkModules.Fsm">
+        <member name="P:IFramework.Modules.IModules.Fsm">
             <summary>
             fsm
             </summary>
         </member>
-        <member name="P:IFramework.Modules.IFrameworkModules.Message">
+        <member name="P:IFramework.Modules.IModules.Message">
             <summary>
             消息
             </summary>
         </member>
-        <member name="P:IFramework.Modules.IFrameworkModules.Config">
+        <member name="P:IFramework.Modules.IModules.Config">
             <summary>
             config
             </summary>
         </member>
-        <member name="P:IFramework.Modules.IFrameworkModules.Recoder">
+        <member name="P:IFramework.Modules.IModules.Recoder">
             <summary>
             操作记录
             </summary>
@@ -2590,28 +2642,28 @@
             </summary>
             <param name="action"></param>
         </member>
-        <member name="T:IFramework.Modules.UpdateFrameworkModule">
+        <member name="T:IFramework.Modules.UpdateModule">
             <summary>
             OnUpdate OnEnable OnDisable
             </summary>
         </member>
-        <member name="P:IFramework.Modules.UpdateFrameworkModule.enable">
+        <member name="P:IFramework.Modules.UpdateModule.enable">
             <summary>
             开启关闭 Update
             </summary>
         </member>
-        <member name="M:IFramework.Modules.UpdateFrameworkModule.SetActive(System.Boolean)">
+        <member name="M:IFramework.Modules.UpdateModule.SetActive(System.Boolean)">
             <summary>
             改变 enable
             </summary>
             <param name="enable"></param>
         </member>
-        <member name="M:IFramework.Modules.UpdateFrameworkModule.Dispose">
+        <member name="M:IFramework.Modules.UpdateModule.Dispose">
             <summary>
             释放
             </summary>
         </member>
-        <member name="M:IFramework.Modules.UpdateFrameworkModule.Update">
+        <member name="M:IFramework.Modules.UpdateModule.Update">
             <summary>
             刷新
             </summary>

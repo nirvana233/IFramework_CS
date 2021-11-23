@@ -3,17 +3,22 @@ using System.Collections;
 
 namespace IFramework.Modules.Coroutine
 {
+
     /// <summary>
     /// 携程模块
     /// </summary>
     [ScriptVersionAttribute(8)]
-    public class CoroutineModule : UpdateFrameworkModule, ICoroutineModule
+    public class CoroutineModule : UpdateModule, ICoroutineModule
     {
         class CoroutinePool : ObjectPool<Coroutine>
         {
             protected override Coroutine CreatNew(IEventArgs arg)
             {
                 return new Coroutine();
+            }
+            protected override void OnGet(Coroutine t, IEventArgs arg)
+            {
+                t.OnGet();
             }
         }
 
@@ -37,7 +42,6 @@ namespace IFramework.Modules.Coroutine
         {
             var coroutine = _pool.Get();
             coroutine._routine = routine;
-            coroutine.isDone = false;
             coroutine._module = this;
             return coroutine;
         }
@@ -50,8 +54,10 @@ namespace IFramework.Modules.Coroutine
         /// <summary>
         /// 优先级
         /// </summary>
-        public override int priority { get { return 40; } }
-
+        protected override int OnGetDefaulyPriority()
+        {
+            return ModulePriorities.Coroutine;
+        }
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override void OnUpdate()
         {
@@ -68,7 +74,7 @@ namespace IFramework.Modules.Coroutine
             _pool = new CoroutinePool();
         }
 
-        public void StaopCoroutine(ICoroutine routine)
+        public void StopCoroutine(ICoroutine routine)
         {
             routine.Compelete();
         }

@@ -10,7 +10,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块组
     /// </summary>
-    public interface IFrameworkModules:IFrameworkModuleContainer
+    public interface IModules:IModuleContainer
     {
         /// <summary>
         /// 协程

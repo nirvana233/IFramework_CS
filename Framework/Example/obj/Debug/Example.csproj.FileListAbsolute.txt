@@ -16,13 +16,9 @@ E:\Project\VS\IFramework\Framework\Example\obj\Debug\Example.csproj.CoreCompileI
 E:\Project\VS\IFramework\Framework\Example\bin\Debug\Example.exe.config
 E:\Project\VS\IFramework\Framework\Example\bin\Debug\Example.exe
 E:\Project\VS\IFramework\Framework\Example\bin\Debug\Example.pdb
-E:\Project\VS\IFramework\Framework\Example\bin\Debug\IFramework.Fast.dll
 E:\Project\VS\IFramework\Framework\Example\bin\Debug\IFramework.pdb
 E:\Project\VS\IFramework\Framework\Example\bin\Debug\IFramework.xml
-E:\Project\VS\IFramework\Framework\Example\bin\Debug\IFramework.Fast.pdb
-E:\Project\VS\IFramework\Framework\Example\bin\Debug\IFramework.Fast.xml
 E:\Project\VS\IFramework\Framework\Example\obj\Debug\Example.exe
 E:\Project\VS\IFramework\Framework\Example\obj\Debug\Example.pdb
-E:\Project\VS\IFramework\Framework\Example\obj\Debug\Example.csproj.AssemblyReference.cache
 E:\Project\VS\IFramework\Framework\Example\bin\Debug\IFramework.dll
 E:\Project\VS\IFramework\Framework\Example\obj\Debug\Example.csproj.CopyComplete

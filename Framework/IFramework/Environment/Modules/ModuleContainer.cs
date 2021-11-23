@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using IFramework.Queue;
 namespace IFramework.Modules
 {
     /// <summary>
     /// 模块容器
     /// </summary>
-    class FrameworkModuleContainer : Unit, IFrameworkModuleContainer, IBelongToEnvironment
+    class ModuleContainer : Unit, IModuleContainer, IBelongToEnvironment
     {
+
         private IEnvironment _env;
         /// <summary>
         /// 环境
@@ -15,18 +16,21 @@ namespace IFramework.Modules
         public IEnvironment env { get { return _env; } }
 
         private LockParam _lock = new LockParam();
-        private Dictionary<Type, Dictionary<string, FrameworkModule>> moudle_dic;
-        private List<UpdateFrameworkModule> update_list;
+        private Dictionary<Type, Dictionary<string, Module>> _dic;
+
+        private SimplePriorityQueue<Module, int> _queue;
+
 
         /// <summary>
         /// 创建一个模块，创建完了自动绑定
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        public FrameworkModule CreateModule(Type type, string name = FrameworkModule.defaultName)
+        public Module CreateModule(Type type, string name = Module.defaultName, int priority = 0)
         {
-            var mou = FrameworkModule.CreatInstance(type, name);
+            var mou = Module.CreatInstance(type, name, priority);
             mou.Bind(this);
             return mou;
         }
@@ -35,10 +39,11 @@ namespace IFramework.Modules
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        public T CreateModule<T>(string name = FrameworkModule.defaultName) where T : FrameworkModule
+        public T CreateModule<T>(string name = Module.defaultName, int priority = 0) where T : Module
         {
-            return CreateModule(typeof(T), name) as T;
+            return CreateModule(typeof(T), name, priority) as T;
         }
 
 
@@ -48,13 +53,13 @@ namespace IFramework.Modules
         /// <param name="type">模块类型</param>
         /// <param name="name">模块名称</param>
         /// <returns></returns>
-        public FrameworkModule FindModule(Type type, string name = FrameworkModule.defaultName)
+        public Module FindModule(Type type, string name = Module.defaultName)
         {
             if (string.IsNullOrEmpty(name))
                 name = type.Name;
-            if (!moudle_dic.ContainsKey(type)) return null;
-            if (!moudle_dic[type].ContainsKey(name)) return null;
-            var module = moudle_dic[type][name];
+            if (!_dic.ContainsKey(type)) return null;
+            if (!_dic[type].ContainsKey(name)) return null;
+            var module = _dic[type][name];
             return module;
 
         }
@@ -64,7 +69,7 @@ namespace IFramework.Modules
         /// <param name="type"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public FrameworkModule GetModule(Type type, string name = FrameworkModule.defaultName)
+        public Module GetModule(Type type, string name = Module.defaultName)
         {
             var tmp = FindModule(type, name);
             if (tmp == null)
@@ -81,7 +86,7 @@ namespace IFramework.Modules
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        public T FindModule<T>(string name = FrameworkModule.defaultName) where T : FrameworkModule
+        public T FindModule<T>(string name = Module.defaultName) where T : Module
         {
             return FindModule(typeof(T), name) as T;
         }
@@ -91,7 +96,7 @@ namespace IFramework.Modules
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        public T GetModule<T>(string name = FrameworkModule.defaultName) where T : FrameworkModule
+        public T GetModule<T>(string name = Module.defaultName) where T : Module
         {
             return GetModule(typeof(T), name) as T;
         }
@@ -100,11 +105,11 @@ namespace IFramework.Modules
         /// Ctor
         /// </summary>
         /// <param name="env"></param>
-        public FrameworkModuleContainer(FrameworkEnvironment env)
+        public ModuleContainer(FrameworkEnvironment env)
         {
             this._env = env;
-            update_list = new List<UpdateFrameworkModule>();
-            moudle_dic = new Dictionary<Type, Dictionary<string, FrameworkModule>>();
+            _dic = new Dictionary<Type, Dictionary<string, Module>>();
+            _queue = new SimplePriorityQueue<Module, int>();
         }
         /// <summary>
         /// 绑定环境
@@ -117,45 +122,43 @@ namespace IFramework.Modules
         {
             // using (new LockWait(ref _lock))
             {
-                List<FrameworkModule> list = new List<FrameworkModule>();
-                foreach (var item in moudle_dic.Values)
+                int count = _queue.count;
+                Stack<Module> _modules = new Stack<Module>();
+                foreach (var item in _queue)
                 {
-                    foreach (var _item in item.Values)
-                    {
-                        list.Add(_item);
-                    }
+                    _modules.Push(item);
                 }
-                list.Sort((x, y) => { return y.priority.CompareTo(x.priority); });
-                for (int i = 0; i < list.Count; i++)
+                for (int i = 0; i < count; i++)
                 {
-                    list[i].Dispose();
+                    _modules.Pop().Dispose();
                 }
-                update_list.Clear();
-                moudle_dic.Clear();
-                update_list = null;
-                moudle_dic = null;
+   
+                _queue = null;
+                _dic.Clear();
+                _dic = null;
             }
         }
         internal void Update()
         {
-            //  using (new LockWait(ref _lock))
+            foreach (var item in _queue)
             {
-                for (int i = 0; i < update_list.Count; i++)
+                if (item is UpdateModule)
                 {
-                    update_list[i].Update();
+                    (item as UpdateModule).Update();
                 }
             }
+
         }
 
 
-        internal bool SubscribeModule(FrameworkModule moudle)
+        internal bool SubscribeModule(Module moudle)
         {
             using (new LockWait(ref _lock))
             {
                 Type type = moudle.GetType();
-                if (!moudle_dic.ContainsKey(type))
-                    moudle_dic.Add(type, new Dictionary<string, FrameworkModule>());
-                var list = moudle_dic[type];
+                if (!_dic.ContainsKey(type))
+                    _dic.Add(type, new Dictionary<string, Module>());
+                var list = _dic[type];
                 if (list.ContainsKey(moudle.name))
                 {
                     Log.E(string.Format("Have Bind Module | Type {0}  Name {1}", type, moudle.name));
@@ -164,29 +167,27 @@ namespace IFramework.Modules
                 else
                 {
                     list.Add(moudle.name, moudle);
-                    if (moudle is UpdateFrameworkModule)
-                    {
-                        update_list.Add(moudle as UpdateFrameworkModule);
-                    }
+
+                    _queue.Enqueue(moudle, moudle.priority);
                     return true;
                 }
             }
 
 
         }
-        internal bool UnSubscribeBindModule(FrameworkModule moudle)
+        internal bool UnSubscribeBindModule(Module moudle)
         {
             using (new LockWait(ref _lock))
             {
                 Type type = moudle.GetType();
-                if (!moudle_dic.ContainsKey(type))
+                if (!_dic.ContainsKey(type))
                 {
                     Log.E(string.Format("01,Have Not Bind Module | Type {0}  Name {1}", type, moudle.name));
                     return false;
                 }
                 else
                 {
-                    var list = moudle_dic[type];
+                    var list = _dic[type];
 
                     if (!list.ContainsKey(moudle.name))
                     {
@@ -195,11 +196,8 @@ namespace IFramework.Modules
                     }
                     else
                     {
-                        if (moudle is UpdateFrameworkModule)
-                        {
-                            update_list.Remove(moudle as UpdateFrameworkModule);
-                        }
-                        moudle_dic[type].Remove(moudle.name);
+                        _dic[type].Remove(moudle.name);
+                        _queue.Remove(moudle);
                         return true;
                     }
                 }

@@ -6,7 +6,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 线程反馈模块
     /// </summary>
-    class LoomModule : UpdateFrameworkModule
+    class LoomModule : UpdateModule
     {
         private class DelayedTask
         {
@@ -46,8 +46,10 @@ namespace IFramework.Modules
             }
         }
 
-        public override int priority { get { return 10; } }
-
+        protected override int OnGetDefaulyPriority()
+        {
+            return ModulePriorities.Loom;
+        }
         protected override void OnUpdate()
         {
             int count = 0;

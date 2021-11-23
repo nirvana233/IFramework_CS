@@ -15,23 +15,16 @@ namespace IFramework.Modules.Coroutine
         /// <summary>
         /// 是否完成
         /// </summary>
-        public override bool isDone
+        internal override bool isDone
         {
             get { return _isDone; }
-            internal set
-            {
-                if (value != _isDone)
-                {
-                    _isDone = value;
-                    if (value)
-                    {
-                        if (onCompelete != null)
-                            onCompelete();
-                        onCompelete = null;
-                    }
-                }
-            }
         }
+
+        internal void OnGet()
+        {
+            _isDone = false;
+        }
+
         /// <summary>
         /// 携程完成时候回调
         /// </summary>
@@ -41,11 +34,20 @@ namespace IFramework.Modules.Coroutine
         /// </summary>
         public void Compelete()
         {
-            isDone = true;
+
+            _isDone = true;
+            if (_innerAction!=null)
+            {
+                _innerAction.Compelete();
+            }
+            if (onCompelete != null)
+                onCompelete();
+
+            onCompelete = null;
             _innerAction = null;
             _routine = null;
-            _module.Set(this);
             _module.update -= Update;
+            _module.Set(this);
         }
 
 
@@ -59,8 +61,10 @@ namespace IFramework.Modules.Coroutine
 
         private void Update()
         {
-            IsCompelete();
-            
+            if (IsCompelete())
+            {
+                Compelete();
+            } 
         }
         private IEnumerator IsCompete(Coroutine coroutine)
         {
@@ -91,9 +95,8 @@ namespace IFramework.Modules.Coroutine
             {
                 if (!_routine.MoveNext())
                 {
-                    Compelete();
+                    return true;
                 }
-                if (_isDone) return true;
                 if (_routine.Current != null)
                 {
                     if (_routine.Current is YieldInstruction)

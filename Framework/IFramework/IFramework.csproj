@@ -25,7 +25,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\Plugins\IFramework.xml</DocumentationFile>
+    <DocumentationFile>..\..\Plugins\IFramework.xml</DocumentationFile>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <NoWarn>
     </NoWarn>
@@ -68,6 +68,7 @@
     <Compile Include="Environment\Modules\Message\MessageErrorCode.cs" />
     <Compile Include="Environment\Modules\Message\MessageModule.cs" />
     <Compile Include="Environment\Modules\Message\MessageState.cs" />
+    <Compile Include="Environment\Modules\ModulePriorities.cs" />
     <Compile Include="Environment\Modules\Recorder\ValueState.cs" />
     <Compile Include="Environment\TimeCalculator.cs" />
     <Compile Include="Extension\FloatEx.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="Attributes\ScriptVersionAttribute.cs" />
     <Compile Include="Attributes\VersionUpdateAttribute.cs" />
     <Compile Include="Environment\EnvironmentType.cs" />
-    <Compile Include="Environment\Modules\IFrameworkModuleContainer.cs" />
+    <Compile Include="Environment\Modules\IModuleContainer.cs" />
     <Compile Include="Environment\Modules\Recorder\ActionGroupState.cs" />
     <Compile Include="Environment\Modules\Recorder\ActionState.cs" />
     <Compile Include="Environment\Modules\Recorder\BaseState.cs" />
@@ -116,7 +117,7 @@
     <Compile Include="Environment\FrameworkEnvironment.cs" />
     <Compile Include="Environment\Modules\Config\ConfigModule.cs" />
     <Compile Include="Environment\Modules\Config\IConfigModule.cs" />
-    <Compile Include="Environment\Modules\FrameworkModules.cs" />
+    <Compile Include="Environment\Modules\Modules.cs" />
     <Compile Include="Environment\Inject\InjectAttribute.cs" />
     <Compile Include="Log\ILogRecorder.cs" />
     <Compile Include="Environment\Modules\Coroutine\CoroutineModuleEx.cs" />
@@ -143,15 +144,15 @@
     <Compile Include="Environment\Modules\ECS\ExcuteSystem.cs" />
     <Compile Include="Environment\Modules\ECS\IComponent.cs" />
     <Compile Include="Environment\Modules\ECS\IExcuteSystem.cs" />
-    <Compile Include="Environment\Modules\FrameworkModule.cs" />
-    <Compile Include="Environment\Modules\FrameworkModuleContainer.cs" />
+    <Compile Include="Environment\Modules\Module.cs" />
+    <Compile Include="Environment\Modules\ModuleContainer.cs" />
     <Compile Include="Environment\Modules\Fsm\Condition\BoolCondition.cs" />
     <Compile Include="Environment\Modules\Fsm\Condition\CompareType.cs" />
     <Compile Include="Environment\Modules\Fsm\Condition\FloatCondition.cs" />
     <Compile Include="Environment\Modules\Fsm\Condition\ICondition.cs" />
     <Compile Include="Environment\Modules\Fsm\Condition\IntCondition.cs" />
     <Compile Include="Environment\Modules\Fsm\IFsmModule.cs" />
-    <Compile Include="Environment\Modules\IFrameworkModules.cs" />
+    <Compile Include="Environment\Modules\IModules.cs" />
     <Compile Include="Environment\Modules\LoomModule.cs" />
     <Compile Include="Environment\Modules\Message\IMessageListener.cs" />
     <Compile Include="Environment\Modules\Message\IMessageModule.cs" />
@@ -260,7 +261,7 @@
     <Compile Include="Queue\SimplePriorityQueue.cs" />
     <Compile Include="Queue\StablePriorityQueue.cs" />
     <Compile Include="Queue\StablePriorityQueueNode.cs" />
-    <Compile Include="Environment\Modules\UpdateFrameworkModule.cs" />
+    <Compile Include="Environment\Modules\UpdateModule.cs" />
     <Compile Include="Observable\BindableObject.cs" />
     <Compile Include="Observable\BindableObjectHandler.cs" />
     <Compile Include="Observable\ObservableObject.cs" />

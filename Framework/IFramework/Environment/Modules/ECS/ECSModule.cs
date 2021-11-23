@@ -10,13 +10,15 @@ namespace IFramework.Modules.ECS
     [ScriptVersionAttribute(633)]
     [VersionUpdateAttribute(552,"IComponent 采用Array统一管理")]
     [VersionUpdateAttribute(633, "内部代码上锁")]
-    public class ECSModule : UpdateFrameworkModule, IECSModule
+    public class ECSModule : UpdateModule, IECSModule
     {
         private Systems _systems;
         private Entitys _entitys;
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        public override int priority { get { return 50; } }
-
+        protected override int OnGetDefaulyPriority()
+        {
+            return ModulePriorities.ECS;
+        }
         protected override void Awake()
         {
             _systems = new Systems();

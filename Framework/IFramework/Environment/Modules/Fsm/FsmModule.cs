@@ -7,7 +7,7 @@ namespace IFramework.Modules.Fsm
     /// 状态机
     /// </summary>
     [ScriptVersion(66)]
-    public class FsmModule : UpdateFrameworkModule, IFsmModule
+    public class FsmModule : UpdateModule, IFsmModule
     {
         private class StateInfo
         {
@@ -83,8 +83,10 @@ namespace IFramework.Modules.Fsm
         private Dictionary<Type, Dictionary<string, IConditionValue>> _conditionValues;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        public override int priority { get { return 60; } }
-
+        protected override int OnGetDefaulyPriority()
+        {
+            return ModulePriorities.FSM;
+        }
         protected override void Awake()
         {
             enable = false;

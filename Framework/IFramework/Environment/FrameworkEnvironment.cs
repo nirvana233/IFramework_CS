@@ -14,7 +14,7 @@ namespace IFramework
     class FrameworkEnvironment : Unit, IEnvironment
     {
         private bool _inited;
-        private FrameworkModules _modules;
+        private Modules.Modules _modules;
         private EnvironmentType _envType;
         private LoomModule _loom;
         private event Action update;
@@ -37,7 +37,7 @@ namespace IFramework
         /// <summary>
         /// 环境下自带的模块容器
         /// </summary>
-        public IFrameworkModules modules { get { return _modules; } }
+        public IModules modules { get { return _modules; } }
         /// <summary>
         /// 环境类型
         /// </summary>
@@ -80,7 +80,7 @@ namespace IFramework
             if (_inited) return;
             current = this;
             container = new ValuesContainer();
-            _modules = new FrameworkModules(this);
+            _modules = new Modules.Modules(this);
             cycleCollection = new RecyclableObjectCollection();
             if (types != null)
             {

@@ -5,49 +5,51 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块容器
     /// </summary>
-    public interface IFrameworkModuleContainer:IContainer,IBelongToEnvironment
-    { 
+    public interface IModuleContainer:IContainer,IBelongToEnvironment
+    {
         /// <summary>
         /// 创建模块
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        FrameworkModule CreateModule(Type type, string name = FrameworkModule.defaultName);
+        Module CreateModule(Type type, string name = Module.defaultName,int priority = 0);
         /// <summary>
         /// 创建模块
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        T CreateModule<T>(string name = FrameworkModule.defaultName) where T : FrameworkModule;
+        T CreateModule<T>(string name = Module.defaultName, int priority = 0) where T : Module;
         /// <summary>
         /// 获取模块
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        FrameworkModule GetModule(Type type, string name = FrameworkModule.defaultName);
+        Module GetModule(Type type, string name = Module.defaultName);
         /// <summary>
         /// 获取模块
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        T GetModule<T>(string name = FrameworkModule.defaultName) where T : FrameworkModule;
+        T GetModule<T>(string name = Module.defaultName) where T : Module;
         /// <summary>
         /// 查找模块
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        FrameworkModule FindModule(Type type, string name = FrameworkModule.defaultName);
+        Module FindModule(Type type, string name = Module.defaultName);
         /// <summary>
         /// 查找模块
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        T FindModule<T>(string name = FrameworkModule.defaultName) where T : FrameworkModule;
+        T FindModule<T>(string name = Module.defaultName) where T : Module;
     }
 }

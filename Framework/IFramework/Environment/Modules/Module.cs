@@ -6,7 +6,7 @@ namespace IFramework.Modules
     /// <summary>
     /// 模块
     /// </summary>
-    public abstract class FrameworkModule : Unit
+    public abstract class Module : Unit
     {
         /// <summary>
         /// 默认名字
@@ -15,25 +15,26 @@ namespace IFramework.Modules
         /// <summary>
         /// 阻止 New
         /// </summary>
-        protected FrameworkModule() { }
+        protected Module() { }
         /// <summary>
         /// 创建实例
         /// </summary>
         /// <param name="type">模块类型</param>
         /// <param name="name">模块名称</param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        public static FrameworkModule CreatInstance(Type type,string name= defaultName)
+        public static Module CreatInstance(Type type,string name= defaultName,int priority=0)
         {
-            FrameworkModule moudle = Activator.CreateInstance(type) as FrameworkModule;
-           
+            Module moudle = Activator.CreateInstance(type) as Module;
             if (moudle != null)
             {
                 moudle._binded = false;
                 moudle.name = name;
+                moudle._priority = moudle.OnGetDefaulyPriority()+ priority;
                 moudle.Awake();
-                if (moudle is UpdateFrameworkModule)
+                if (moudle is UpdateModule)
                 {
-                    (moudle as UpdateFrameworkModule).enable = true;
+                    (moudle as UpdateModule).enable = true;
                 }
             }
             else
@@ -42,20 +43,30 @@ namespace IFramework.Modules
             return moudle;
         }
         /// <summary>
+        /// 设置优先级
+        /// </summary>
+        /// <returns></returns>
+        protected virtual int OnGetDefaulyPriority()
+        {
+            return ModulePriorities.Custom;
+        }
+
+        /// <summary>
         /// 创建实例
         /// </summary>
         /// <param name="name">模块名称</param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        public static T CreatInstance<T>(string name= defaultName) where T : FrameworkModule
+        public static T CreatInstance<T>(string name= defaultName, int priority = 0) where T : Module
         {
-            return CreatInstance(typeof(T), name) as T;
+            return CreatInstance(typeof(T), name,priority) as T;
         }
 
         /// <summary>
         /// 绑定模块容器
         /// </summary>
         /// <param name="container"></param>
-        public void Bind(IFrameworkModuleContainer container)
+        public void Bind(IModuleContainer container)
         {
             if (this._container!=null)
             {
@@ -63,7 +74,7 @@ namespace IFramework.Modules
                 return;
             }
 
-            if ((container as FrameworkModuleContainer).SubscribeModule(this))
+            if ((container as ModuleContainer).SubscribeModule(this))
             {
                 this._binded = true;
                 this._container = container;
@@ -79,7 +90,7 @@ namespace IFramework.Modules
             if (!binded) return;
             if (binded && this._container != null)
             {
-                (this._container as FrameworkModuleContainer).UnSubscribeBindModule(this);
+                (this._container as ModuleContainer).UnSubscribeBindModule(this);
                 this._binded = false;
                 this._container = null;
             }
@@ -87,13 +98,14 @@ namespace IFramework.Modules
                 Dispose();
         }
 
-        private IFrameworkModuleContainer _container;
+        private IModuleContainer _container;
         private bool _binded;
+        private int _priority;
 
         /// <summary>
-        /// 优先级（越大释放越早释放）
+        /// 优先级（越大释放越早释放,越小越先 update）
         /// </summary>
-        public abstract int priority { get; }
+        public int priority { get { return _priority; } }
 
         /// <summary>
         /// 是否绑定了
@@ -102,7 +114,7 @@ namespace IFramework.Modules
         /// <summary>
         /// 模块所处的容器
         /// </summary>
-        public IFrameworkModuleContainer container { get { return _container; } }
+        public IModuleContainer container { get { return _container; } }
         /// <summary>
         /// 名字
         /// </summary>

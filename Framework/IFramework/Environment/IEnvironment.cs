@@ -31,7 +31,7 @@ namespace IFramework
         /// <summary>
         /// 模块容器
         /// </summary>
-        IFrameworkModules modules { get; }
+        IModules modules { get; }
         /// <summary>
         /// 时间
         /// </summary>

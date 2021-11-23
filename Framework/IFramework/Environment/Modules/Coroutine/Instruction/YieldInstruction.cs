@@ -9,13 +9,12 @@
         /// <summary>
         /// 是否结束
         /// </summary>
-        public virtual bool isDone
+        internal virtual bool isDone
         {
             get
             {
                 return IsCompelete();
             }
-            internal set { }
         }
 
         /// <summary>

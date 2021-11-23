@@ -4,9 +4,8 @@ namespace Example
 {
     public class MouduleTest : Test
     {
-        private class MyModule : IFramework.Modules.UpdateFrameworkModule
+        private class MyModule : IFramework.Modules.UpdateModule
         {
-            public override int priority => 300;
 
             protected override void Awake()
             {

@@ -12,7 +12,7 @@ namespace IFramework.Modules.Message
     [VersionUpdate(180, "抽象出IMessage")]
     [VersionUpdate(200, "增加立刻处理")]
     [VersionUpdate(230, "注册延时处理")]
-    public class MessageModule : UpdateFrameworkModule, IMessageModule
+    public class MessageModule : UpdateModule, IMessageModule
     {
         private class MessageQueue : IDisposable
         {
@@ -428,7 +428,10 @@ namespace IFramework.Modules.Message
         private HandlerQueue handlers;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        public override int priority { get { return 20; } }
+        protected override int OnGetDefaulyPriority()
+        {
+            return ModulePriorities.Message;
+        }
         protected override void OnDispose()
         {
             handlers.Dispose();

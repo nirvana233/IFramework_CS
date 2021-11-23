@@ -6,7 +6,7 @@ namespace IFramework.Modules.Recorder
     /// <summary>
     /// 操作记录
     /// </summary>
-    public class OperationRecorderModule : FrameworkModule, IOperationRecorderModule
+    public class OperationRecorderModule : Module, IOperationRecorderModule
     {
         private class StatePool : BaseTypePool<BaseState> { }
         private class HeadState : BaseState
@@ -23,7 +23,10 @@ namespace IFramework.Modules.Recorder
         private BaseState _current;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        public override int priority { get { return 1; } }
+        protected override int OnGetDefaulyPriority()
+        {
+            return ModulePriorities.Recorder;
+        }
         protected override void Awake()
         {
             _head = new HeadState();

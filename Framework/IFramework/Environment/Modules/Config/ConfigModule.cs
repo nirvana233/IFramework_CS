@@ -5,12 +5,15 @@ namespace IFramework.Modules.Config
     /// <summary>
     /// config 模块
     /// </summary>
-    public class ConfigModule : FrameworkModule, IConfigModule
+    public class ConfigModule : Module, IConfigModule
     {
         private BindableObjectHandler _binder;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        public override int priority { get { return 0; } }
+        protected override int OnGetDefaulyPriority()
+        {
+            return ModulePriorities.Config;
+        }
         protected override void Awake()
         {
             _binder = new BindableObjectHandler();

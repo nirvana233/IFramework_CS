@@ -12,7 +12,7 @@ namespace IFramework.Modules
     /// 框架提供的模块
     /// </summary>
     [ScriptVersionAttribute(6)]
-    class FrameworkModules : FrameworkModuleContainer, IFrameworkModules
+    class Modules : ModuleContainer, IModules
     {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         public ICoroutineModule Coroutine { get { return GetModule<CoroutineModule>(); } }
@@ -23,7 +23,7 @@ namespace IFramework.Modules
         public IECSModule ECS { get { return GetModule<ECSModule>(); } }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
-        internal FrameworkModules(FrameworkEnvironment env) : base(env)
+        internal Modules(FrameworkEnvironment env) : base(env)
         {
 
         }

@@ -6,12 +6,12 @@ namespace IFramework.Modules.Coroutine
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
     public struct CoroutineAwaiter : IAwaiter, ICriticalAwaiter
     {
-        private ICoroutine cor;
+        private Coroutine cor;
         private Queue<Action> calls;
 
         public CoroutineAwaiter(ICoroutine cor)
         {
-            this.cor = cor;
+            this.cor = cor as Coroutine;
             calls = new Queue<Action>();
             this.cor.OnCompelete(Task_completed);
         }

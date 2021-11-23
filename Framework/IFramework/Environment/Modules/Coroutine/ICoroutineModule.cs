@@ -17,7 +17,7 @@ namespace IFramework.Modules.Coroutine
         /// 结束
         /// </summary>
         /// <param name="routine"></param>
-        void StaopCoroutine(ICoroutine routine);
+        void StopCoroutine(ICoroutine routine);
 
     }
 }

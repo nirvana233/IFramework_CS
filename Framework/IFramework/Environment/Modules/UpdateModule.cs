@@ -3,7 +3,7 @@
     /// <summary>
     /// OnUpdate OnEnable OnDisable
     /// </summary>
-    public abstract class UpdateFrameworkModule: FrameworkModule
+    public abstract class UpdateModule: Module
     {
         private bool _enable;
         /// <summary>
