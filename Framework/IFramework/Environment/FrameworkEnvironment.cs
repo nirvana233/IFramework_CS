@@ -122,10 +122,10 @@ namespace IFramework
             if (disposed || !inited) return;
 
             if (onDispose != null) onDispose();
+            _modules.Dispose();
             (cycleCollection as RecyclableObjectCollection).Dispose();
             container.Dispose();
             _loom.Dispose();
-            _modules.Dispose();
             _time.Dispose();
             container = null;
             _modules = null;

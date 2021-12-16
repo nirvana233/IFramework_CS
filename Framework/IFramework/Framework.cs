@@ -109,19 +109,16 @@ namespace IFramework
         /// <param name="envType"></param>
         public static void DisposeEnv(EnvironmentType envType)
         {
-            using (new LockWait(ref _lock))
+            var env = GetEnv(envType);
+            if (env!=null)
             {
-                IEnvironment env;
-                if (envs.TryGetValue((int)envType, out env))
+                env.Dispose();
+                using (new LockWait(ref _lock))
                 {
                     envs.Remove((int)envType);
-                    env.Dispose();
-                }
-                else
-                {
-                    throw new Exception(string.Format("The EnvironmentType {0} Error Not Find ,Please Check ", envType));
                 }
             }
+           
         }
 
 
