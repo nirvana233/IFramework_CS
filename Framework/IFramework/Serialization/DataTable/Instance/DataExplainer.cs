@@ -37,7 +37,7 @@ namespace IFramework.Serialization.DataTable
         /// <summary>
         /// 创建实例
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
         /// <returns></returns>
         protected object CreatInstance(Type type)
         {

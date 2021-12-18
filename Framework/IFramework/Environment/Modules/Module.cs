@@ -23,14 +23,14 @@ namespace IFramework.Modules
         /// <param name="name">模块名称</param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public static Module CreatInstance(Type type,string name= defaultName,int priority=0)
+        public static Module CreatInstance(Type type, string name = defaultName, int priority = 0)
         {
             Module moudle = Activator.CreateInstance(type) as Module;
             if (moudle != null)
             {
                 moudle._binded = false;
                 moudle.name = name;
-                moudle._priority = moudle.OnGetDefaulyPriority()+ priority;
+                moudle._priority = moudle.OnGetDefaulyPriority().value + priority;
                 moudle.Awake();
                 if (moudle is UpdateModule)
                 {
@@ -46,9 +46,9 @@ namespace IFramework.Modules
         /// 设置优先级
         /// </summary>
         /// <returns></returns>
-        protected virtual int OnGetDefaulyPriority()
+        protected virtual ModulePriority OnGetDefaulyPriority()
         {
-            return ModulePriorities.Custom;
+            return ModulePriority.Custom;
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace IFramework.Modules
         /// <param name="name">模块名称</param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public static T CreatInstance<T>(string name= defaultName, int priority = 0) where T : Module
+        public static T CreatInstance<T>(string name = defaultName, int priority = 0) where T : Module
         {
-            return CreatInstance(typeof(T), name,priority) as T;
+            return CreatInstance(typeof(T), name, priority) as T;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace IFramework.Modules
         /// <param name="container"></param>
         public void Bind(IModuleContainer container)
         {
-            if (this._container!=null)
+            if (this._container != null)
             {
                 Log.E(string.Format("Have Bind One Container chunck: You Can UnBind First"));
                 return;
@@ -79,13 +79,13 @@ namespace IFramework.Modules
                 this._binded = true;
                 this._container = container;
             }
-            
+
         }
         /// <summary>
         /// 解除绑定模块容器
         /// </summary>
         /// <param name="dispose"></param>
-        public void UnBind(bool dispose=true)
+        public void UnBind(bool dispose = true)
         {
             if (!binded) return;
             if (binded && this._container != null)

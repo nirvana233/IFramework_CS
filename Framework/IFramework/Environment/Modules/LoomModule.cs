@@ -46,9 +46,9 @@ namespace IFramework.Modules
             }
         }
 
-        protected override int OnGetDefaulyPriority()
+        protected override ModulePriority OnGetDefaulyPriority()
         {
-            return ModulePriorities.Loom;
+            return ModulePriority.Loom;
         }
         protected override void OnUpdate()
         {

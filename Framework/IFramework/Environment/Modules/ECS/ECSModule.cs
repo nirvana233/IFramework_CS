@@ -15,9 +15,9 @@ namespace IFramework.Modules.ECS
         private Systems _systems;
         private Entitys _entitys;
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        protected override int OnGetDefaulyPriority()
+        protected override ModulePriority OnGetDefaulyPriority()
         {
-            return ModulePriorities.ECS;
+            return ModulePriority.ECS;
         }
         protected override void Awake()
         {

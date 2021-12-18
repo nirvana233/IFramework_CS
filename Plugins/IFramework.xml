@@ -1153,50 +1153,89 @@
             可有可无的
             </summary>
         </member>
-        <member name="T:IFramework.Modules.ModulePriorities">
+        <member name="T:IFramework.Modules.ModulePriority">
             <summary>
             默认的模块的优先级
             </summary>
         </member>
-        <member name="F:IFramework.Modules.ModulePriorities.Config">
+        <member name="F:IFramework.Modules.ModulePriority.Config">
             <summary>
             配置表
             </summary>
         </member>
-        <member name="F:IFramework.Modules.ModulePriorities.Loom">
+        <member name="F:IFramework.Modules.ModulePriority.Loom">
             <summary>
             环境等待
             </summary>
         </member>
-        <member name="F:IFramework.Modules.ModulePriorities.Recorder">
+        <member name="F:IFramework.Modules.ModulePriority.Recorder">
             <summary>
             undo
             </summary>
         </member>
-        <member name="F:IFramework.Modules.ModulePriorities.Message">
-            <summary>
-            消息转发
-            </summary>
-        </member>
-        <member name="F:IFramework.Modules.ModulePriorities.Coroutine">
+        <member name="F:IFramework.Modules.ModulePriority.Coroutine">
             <summary>
             协程
             </summary>
         </member>
-        <member name="F:IFramework.Modules.ModulePriorities.ECS">
+        <member name="F:IFramework.Modules.ModulePriority.Message">
+            <summary>
+            消息转发
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.ModulePriority.ECS">
             <summary>
             ecs
             </summary>
         </member>
-        <member name="F:IFramework.Modules.ModulePriorities.FSM">
+        <member name="F:IFramework.Modules.ModulePriority.FSM">
             <summary>
             fsm
             </summary>
         </member>
-        <member name="F:IFramework.Modules.ModulePriorities.Custom">
+        <member name="F:IFramework.Modules.ModulePriority.Custom">
             <summary>
             其他
             </summary>
+        </member>
+        <member name="M:IFramework.Modules.ModulePriority.#ctor(System.Int32)">
+            <summary>
+            ctor
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="P:IFramework.Modules.ModulePriority.value">
+            <summary>
+            具体的值
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.ModulePriority.op_Implicit(IFramework.Modules.ModulePriority)~System.Int32">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:IFramework.Modules.ModulePriority.op_Implicit(System.Int32)~IFramework.Modules.ModulePriority">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:IFramework.Modules.ModulePriority.op_Addition(IFramework.Modules.ModulePriority,IFramework.Modules.ModulePriority)">
+            <summary>
+            
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ModulePriority.op_Subtraction(IFramework.Modules.ModulePriority,IFramework.Modules.ModulePriority)">
+            <summary>
+            
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
         </member>
         <member name="T:IFramework.Modules.Recorder.ValueState`1">
             <summary>
@@ -3422,7 +3461,7 @@
             <summary>
             创建实例
             </summary>
-            <typeparam name="T"></typeparam>
+            <param name="type"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance``1(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn},System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">

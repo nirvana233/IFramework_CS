@@ -54,9 +54,9 @@ namespace IFramework.Modules.Coroutine
         /// <summary>
         /// 优先级
         /// </summary>
-        protected override int OnGetDefaulyPriority()
+        protected override ModulePriority OnGetDefaulyPriority()
         {
-            return ModulePriorities.Coroutine;
+            return ModulePriority.Coroutine;
         }
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
         protected override void OnUpdate()

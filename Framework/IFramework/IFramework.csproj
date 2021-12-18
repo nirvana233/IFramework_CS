@@ -68,7 +68,7 @@
     <Compile Include="Environment\Modules\Message\MessageErrorCode.cs" />
     <Compile Include="Environment\Modules\Message\MessageModule.cs" />
     <Compile Include="Environment\Modules\Message\MessageState.cs" />
-    <Compile Include="Environment\Modules\ModulePriorities.cs" />
+    <Compile Include="Environment\Modules\ModulePriority.cs" />
     <Compile Include="Environment\Modules\Recorder\ValueState.cs" />
     <Compile Include="Environment\TimeCalculator.cs" />
     <Compile Include="Extension\FloatEx.cs" />

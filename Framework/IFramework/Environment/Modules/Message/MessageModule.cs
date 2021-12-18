@@ -428,9 +428,9 @@ namespace IFramework.Modules.Message
         private HandlerQueue handlers;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        protected override int OnGetDefaulyPriority()
+        protected override ModulePriority OnGetDefaulyPriority()
         {
-            return ModulePriorities.Message;
+            return ModulePriority.Message;
         }
         protected override void OnDispose()
         {
