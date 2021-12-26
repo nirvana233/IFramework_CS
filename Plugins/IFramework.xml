@@ -1515,20 +1515,22 @@
             <param name="priority"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.IModuleContainer.GetModule(System.Type,System.String)">
+        <member name="M:IFramework.Modules.IModuleContainer.GetModule(System.Type,System.String,System.Int32)">
             <summary>
             获取模块
             </summary>
             <param name="type"></param>
             <param name="name"></param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.IModuleContainer.GetModule``1(System.String)">
+        <member name="M:IFramework.Modules.IModuleContainer.GetModule``1(System.String,System.Int32)">
             <summary>
             获取模块
             </summary>
             <typeparam name="T"></typeparam>
             <param name="name"></param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.Modules.IModuleContainer.FindModule(System.Type,System.String)">
@@ -2186,12 +2188,13 @@
             <param name="name">模块名称</param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.ModuleContainer.GetModule(System.Type,System.String)">
+        <member name="M:IFramework.Modules.ModuleContainer.GetModule(System.Type,System.String,System.Int32)">
             <summary>
             获取模块
             </summary>
             <param name="type"></param>
             <param name="name"></param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.Modules.ModuleContainer.FindModule``1(System.String)">
@@ -2202,12 +2205,13 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.ModuleContainer.GetModule``1(System.String)">
+        <member name="M:IFramework.Modules.ModuleContainer.GetModule``1(System.String,System.Int32)">
             <summary>
             获取模块
             </summary>
             <typeparam name="T"></typeparam>
             <param name="name"></param>
+            <param name="priority"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.Modules.ModuleContainer.#ctor(IFramework.FrameworkEnvironment)">

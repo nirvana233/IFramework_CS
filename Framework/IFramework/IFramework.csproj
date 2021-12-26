@@ -271,7 +271,7 @@
     <Compile Include="Pool\BaseTypePool.cs" />
     <Compile Include="Pool\CapicityPool.cs" />
     <Compile Include="Environment\Recylable\RecyclableObject.cs" />
-    <Compile Include="Framework.cs" />
+    <Compile Include="Environment\Framework.cs" />
     <Compile Include="Environment\Modules\Fsm\FsmModule.cs" />
     <Compile Include="Environment\Modules\Fsm\ConditionValue.cs" />
     <Compile Include="Environment\Modules\Fsm\Transition.cs" />

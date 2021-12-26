@@ -68,13 +68,14 @@ namespace IFramework.Modules
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        public Module GetModule(Type type, string name = Module.defaultName)
+        public Module GetModule(Type type, string name = Module.defaultName, int priority = 0)
         {
             var tmp = FindModule(type, name);
             if (tmp == null)
             {
-                tmp = CreateModule(type, name);
+                tmp = CreateModule(type, name, priority);
             }
             return tmp;
         }
@@ -95,10 +96,11 @@ namespace IFramework.Modules
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        public T GetModule<T>(string name = Module.defaultName) where T : Module
+        public T GetModule<T>(string name = Module.defaultName, int priority = 0) where T : Module
         {
-            return GetModule(typeof(T), name) as T;
+            return GetModule(typeof(T), name, priority) as T;
         }
 
         /// <summary>
@@ -124,15 +126,20 @@ namespace IFramework.Modules
             {
                 int count = _queue.count;
                 Stack<Module> _modules = new Stack<Module>();
-                foreach (var item in _queue)
-                {
-                    _modules.Push(item);
-                }
                 for (int i = 0; i < count; i++)
                 {
-                    _modules.Pop().Dispose();
+                    var item = _queue.Dequeue();
+
+                    _modules.Push(item);
+
                 }
-   
+
+                for (int i = 0; i < count; i++)
+                {
+                    var item = _modules.Pop();
+                    item.Dispose();
+                }
+
                 _queue = null;
                 _dic.Clear();
                 _dic = null;
@@ -197,7 +204,8 @@ namespace IFramework.Modules
                     else
                     {
                         _dic[type].Remove(moudle.name);
-                        _queue.Remove(moudle);
+                        if (_queue.Contains(moudle))
+                            _queue.Remove(moudle);
                         return true;
                     }
                 }

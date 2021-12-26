@@ -28,15 +28,17 @@ namespace IFramework.Modules
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        Module GetModule(Type type, string name = Module.defaultName);
+        Module GetModule(Type type, string name = Module.defaultName,int priority = 0);
         /// <summary>
         /// 获取模块
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        T GetModule<T>(string name = Module.defaultName) where T : Module;
+        T GetModule<T>(string name = Module.defaultName,int priority = 0) where T : Module;
         /// <summary>
         /// 查找模块
         /// </summary>
