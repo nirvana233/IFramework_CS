@@ -1,4 +1,6 @@
 # IFramework(Framework4.5+Core2.1)
+[![Stargazers over time](https://starchart.cc/OnClick9927/IFramework.svg)](https://starchart.cc/OnClick9927/IFramework)
+
 Interface | Inject | Interesting | Increase  C#
 ``` csharp
 while(true)
@@ -32,9 +34,7 @@ while(true)
 * [配置表模块](https://github.com/OnClick9927/IFramework_CS/blob/master/Framework/Example/ConfigTest.cs)
 * [状态机模块](https://github.com/OnClick9927/IFramework_CS/blob/master/Framework/Example/FsmTest.cs)
 * [扩展自己的模块](https://github.com/OnClick9927/IFramework_CS/blob/master/Framework/Example/MouduleTest.cs)
-* [快速开发测试](https://github.com/OnClick9927/IFramework_CS/blob/master/Framework/Example/FastTest.cs)
 * [A星寻路](https://github.com/OnClick9927/IFramework_CS/blob/master/Framework/Example/AstarTest.cs)
-
-[![Stargazers over time](https://starchart.cc/OnClick9927/IFramework.svg)](https://starchart.cc/OnClick9927/IFramework)
+  * 支持 2D/3D
 
 
