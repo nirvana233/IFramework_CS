@@ -1,11 +1,11 @@
-# IFramework(Framework4.5+Core2.1)
-[![Stargazers over time](https://starchart.cc/OnClick9927/IFramework.svg)](https://starchart.cc/OnClick9927/IFramework)
+# IFramework [Doc](https://blog.csdn.net/qq_37221502/category_10284376.html?spm=1001.2014.3001.5482)
 
-Interface | Inject | Interesting | Increase  C#
+Interface | Inject | Interesting | Increase  C# 
 ``` csharp
 while(true)
     Console.Write("Thanks For EveryOne Who Used It Once !")
 ```
+[![Stargazers over time](https://starchart.cc/OnClick9927/IFramework.svg)](https://starchart.cc/OnClick9927/IFramework)
 
 ## 例子们(Framework4.5)
 * [序列化](https://github.com/OnClick9927/IFramework_CS/blob/master/Framework/Example/SerializationTest.cs)
