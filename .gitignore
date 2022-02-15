@@ -1,3 +1,7 @@
 /.vs
 /IFramework/Properties
 /IFramework/bin
+Framework/.vs/
+Framework/Example/bin/
+Plugins/
+Framework/IFramework/obj/
