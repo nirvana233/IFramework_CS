@@ -86,6 +86,7 @@ namespace IFramework
         /// <param name="type"></param>
         /// <param name="arg"></param>
         /// <returns></returns>
+        [Tip("少用,内部反射")]
         public RecyclableObject Get(Type type, IEventArgs arg = null)
         {
             var obj = _createPool.Get(type, arg);
@@ -111,10 +112,11 @@ namespace IFramework
         /// <param name="type"></param>
         /// <param name="t"></param>
         /// <param name="arg"></param>
+        [Tip("少用,内部反射")]
         public void Set(Type type, RecyclableObject t, IEventArgs arg = null)
         {
             _memory.Remove(t.guid);
-            _createPool.Set(t.GetType(), t, arg);
+            _createPool.Set(type, t, arg);
         }
         /// <summary>
         /// 回收一个实例
@@ -124,7 +126,8 @@ namespace IFramework
         /// <param name="arg"></param>
         public void Set<Object>(Object t, IEventArgs arg = null) where Object : RecyclableObject
         {
-            Set(t.GetType(), t, arg);
+            _memory.Remove(t.guid);
+            _createPool.Set<Object>(t, arg);
         }
 
         /// <summary>

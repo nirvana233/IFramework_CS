@@ -75,7 +75,7 @@ namespace IFramework.Modules.Recorder
                 var now = state;
                 state = state.next;
                 now.Reset();
-                _pool.Set(now.GetType(),now);
+                _pool.Set(now);
             } while (state!=null);
         }
         /// <summary>

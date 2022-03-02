@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31911.196
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework", "IFramework\IFramework.csproj", "{CC07690F-50EE-492C-B67F-632B074A8AF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{A26FFA53-1C22-4871-93B2-ADE332BEB037}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFramework.UnityPlugin", "IFramework.UnityPlugin\IFramework.UnityPlugin.csproj", "{C8EE1871-F465-4E6B-B175-6F05EAC66A69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A26FFA53-1C22-4871-93B2-ADE332BEB037}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8EE1871-F465-4E6B-B175-6F05EAC66A69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8EE1871-F465-4E6B-B175-6F05EAC66A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8EE1871-F465-4E6B-B175-6F05EAC66A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8EE1871-F465-4E6B-B175-6F05EAC66A69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,6 +20,7 @@ namespace IFramework
         /// <param name="type">类型</param>
         /// <param name=" envType"></param>
         /// <returns></returns>
+        [Tip("少用,内部反射")]
         public static RecyclableObject Allocate(Type type, EnvironmentType envType)
         {
             var _env = Framework.GetEnv(envType);
@@ -31,6 +32,7 @@ namespace IFramework
         /// <param name="type"></param>
         /// <param name="env"></param>
         /// <returns></returns>
+        [Tip("少用,内部反射")]
         public static RecyclableObject Allocate(Type type, IEnvironment env)
         {
             RecyclableObject t = GetCollection(env).Get(type) as RecyclableObject;

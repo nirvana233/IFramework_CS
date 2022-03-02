@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace IFramework
 {
@@ -9,97 +10,96 @@ namespace IFramework
     /// <typeparam name="T">基础类型</typeparam>
     public abstract class BaseTypePool<T> : IDisposable
     {
-        interface IBaseTypeInnerPool { }
-        /// <summary>
-        /// 内部池子
-        /// </summary>
-        /// <typeparam name="Object"></typeparam>
-        public class BaseTypeInnerPool<Object> : ObjectPool<Object>, IBaseTypeInnerPool where Object : T
-        {
-            /// <summary>
-            /// ctor
-            /// </summary>
-            /// <param name="objType"></param>
-            public BaseTypeInnerPool(Type objType)
-            {
-                this.objType = objType;
-            }
+        private Dictionary<Type, IObjectPool> _poolMap;
 
-            private Type objType;
-            /// <summary>
-            /// 池子内部实际对象类型
-            /// </summary>
-            public override Type type { get { return objType; } }
-            /// <summary>
-            /// 创建实例
-            /// </summary>
-            /// <param name="arg"></param>
-            /// <returns></returns>
-            protected override Object CreatNew(IEventArgs arg)
-            {
-                return (Object)Activator.CreateInstance(objType);
-            }
+        private MethodInfo _getMethodInfo;
+        private MethodInfo _setMethodInfo;
+        private Dictionary<Type, MethodInfo> _getpools;
+        private Dictionary<Type, MethodInfo> _setpools;
 
-          
-        }
-        private Dictionary<Type, IBaseTypeInnerPool> _poolMap;
         /// <summary>
         /// 自旋锁
         /// </summary>
         protected LockParam para = new LockParam();
-        /// <summary>
-        /// 索引
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public BaseTypeInnerPool<T> this[Type type]
-        {
-            get { return GetPool(type); }
-            set { SetPool(type, value); }
-        }
+
         /// <summary>
         /// Ctor
         /// </summary>
         public BaseTypePool()
         {
-            _poolMap = new Dictionary<Type, IBaseTypeInnerPool>();
+            _poolMap = new Dictionary<Type, IObjectPool>();
+            _getMethodInfo = GetType().GetMethod(nameof(Get), new Type[] { typeof(IEventArgs) });
+            _setMethodInfo = GetType().GetMethod(nameof(Set), new Type[] { typeof(IEventArgs) });
+            _getpools = new Dictionary<Type, MethodInfo>();
+            _setpools = new Dictionary<Type, MethodInfo>();
+        }
+        /// <summary>
+        /// 设置内部对象池
+        /// </summary>
+        /// <typeparam name="Object"></typeparam>
+        /// <param name="pool"></param>
+        public void SetPool<Object>(ObjectPool<Object> pool) where Object : T
+        {
+            SetPool(typeof(Object), pool);
+        }
+        /// <summary>
+        /// 获取内部对象池
+        /// </summary>
+        /// <typeparam name="Object"></typeparam>
+        public ObjectPool<Object> GetPool<Object>() where Object : T
+        {
+            return GetPool(typeof(Object)) as ObjectPool<Object>;
         }
         /// <summary>
         /// 设置内部对象池
         /// </summary>
         /// <param name="type"></param>
         /// <param name="pool"></param>
-        public virtual void SetPool(Type type, BaseTypeInnerPool<T> pool)
+        public virtual void SetPool(Type type, IObjectPool pool)
         {
-            if (!_poolMap.ContainsKey(type))
-                _poolMap.Add(type, pool);
-            else
-                _poolMap[type] = pool;
+            using (new LockWait(ref para))
+            {
+                if (!_poolMap.ContainsKey(type))
+                    _poolMap.Add(type, pool);
+                else
+                    _poolMap[type] = pool;
+            }
         }
         /// <summary>
         /// 获取内部对象池
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual BaseTypeInnerPool<T> GetPool(Type type)
+        public virtual IObjectPool GetPool(Type type)
         {
             using (new LockWait(ref para))
             {
                 if (!_poolMap.ContainsKey(type))
-                    _poolMap.Add(type, new BaseTypeInnerPool<T>(type));
-                return _poolMap[type] as BaseTypeInnerPool<T>;
+                {
+                    var pooType = typeof(ActivatorCreatePool<>).MakeGenericType(type);
+                    var pool = Activator.CreateInstance(pooType, null) as IObjectPool;
+                    _poolMap.Add(type, pool);
+                }
+                return _poolMap[type];
             }
         }
+
         /// <summary>
         /// 获取数据
         /// </summary>
         /// <param name="type"></param>
         /// <param name="arg"></param>
         /// <returns></returns>
+        [Tip("少用,内部反射")]
         public T Get(Type type, IEventArgs arg = null)
         {
-            T recyclable = GetPool(type).Get(arg);
-            return recyclable;
+            MethodInfo m2;
+            if (!_getpools.TryGetValue(type, out m2))
+            {
+                m2 = _getMethodInfo.MakeGenericMethod(type);
+                _getpools.Add(type, m2);
+            }
+            return (T)m2.Invoke(this, new object[] { arg });
         }
         /// <summary>
         /// 获取数据
@@ -109,7 +109,8 @@ namespace IFramework
         /// <returns></returns>
         public Object Get<Object>(IEventArgs arg = null) where Object : T
         {
-            Object t = (Object)GetPool(typeof(Object)).Get(arg);
+            var pool = GetPool<Object>();
+            Object t = pool.Get(arg);
             return t;
         }
         /// <summary>
@@ -118,9 +119,16 @@ namespace IFramework
         /// <param name="type"></param>
         /// <param name="t"></param>
         /// <param name="arg"></param>
+        [Tip("少用,内部反射")]
         public void Set(Type type, T t, IEventArgs arg = null)
         {
-            GetPool(type).Set(t, arg);
+            MethodInfo m2;
+            if (!_setpools.TryGetValue(type, out m2))
+            {
+                m2 = _setMethodInfo.MakeGenericMethod(type);
+                _setpools.Add(type, m2);
+            }
+            m2.Invoke(this, new object[] { t, arg });
         }
         /// <summary>
         /// 回收数据
@@ -130,7 +138,8 @@ namespace IFramework
         /// <param name="arg"></param>
         public void Set<Object>(Object t, IEventArgs arg = null) where Object : T
         {
-            Set(t.GetType(), t, arg);
+            var pool = GetPool<Object>();
+            pool.Set(t, arg);
         }
 
         /// <summary>
@@ -142,8 +151,10 @@ namespace IFramework
             {
                 OnDispose();
                 foreach (var item in _poolMap.Values)
-                    (item as BaseTypeInnerPool<T>).Dispose();
+                    (item as IObjectPool).Dispose();
                 _poolMap.Clear();
+                _getpools.Clear();
+                _setpools.Clear();
             }
         }
         /// <summary>

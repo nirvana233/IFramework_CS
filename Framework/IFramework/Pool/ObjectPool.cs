@@ -7,7 +7,7 @@ namespace IFramework
     /// 基础对象池
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ObjectPool<T> : Unit, IDisposable
+    public abstract class ObjectPool<T> : Unit, IDisposable, IObjectPool
     {
         /// <summary>
         /// 数据容器

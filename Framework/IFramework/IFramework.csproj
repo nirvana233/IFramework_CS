@@ -79,6 +79,7 @@
     <Compile Include="Extension\StringEx.cs" />
     <Compile Include="Extension\StringEx_Regex.cs" />
     <Compile Include="Extension\TypeEx.cs" />
+    <Compile Include="Pool\IObjectPool.cs" />
     <Compile Include="Serialization\String\Extra\ArrayStringConverter.cs" />
     <Compile Include="Serialization\String\Extra\DictionaryStringConverter.cs" />
     <Compile Include="Serialization\String\Extra\LinkedListStringConverter.cs" />
@@ -251,7 +252,7 @@
     <Compile Include="Packet\PacketHeader.cs" />
     <Compile Include="Packet\PacketQueue.cs" />
     <Compile Include="Packet\PacketReader.cs" />
-    <Compile Include="Pool\AutoCreatePool.cs" />
+    <Compile Include="Pool\ActivatorCreatePool.cs" />
     <Compile Include="Queue\FastPriorityQueue.cs" />
     <Compile Include="Queue\FastPriorityQueueNode.cs" />
     <Compile Include="Queue\GenericPriorityQueue.cs" />

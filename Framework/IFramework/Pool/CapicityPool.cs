@@ -24,7 +24,6 @@
         /// <returns></returns>
         protected override bool OnSet(T t, IEventArgs arg)
         {
-             base.OnSet(t, arg);
             return count <= capcity;
         }
     }
