@@ -15,20 +15,20 @@ namespace IFramework.Serialization.DataTable
     /// <summary>
     /// string 解释器
     /// </summary>
-    [VersionUpdate(1,"数据转化")]
-    [VersionUpdate(10,"处理序列化过程中存在 , \" 的情况")]
+    [VersionUpdate(1, "数据转化")]
+    [VersionUpdate(10, "处理序列化过程中存在 , \" 的情况")]
     [ScriptVersion(10)]
     [RequireAttribute(typeof(StringConvert))]
     public class DataExplainer : IDataExplainer
     {
-        private string dot;
-        private string quotes;
+        private char dot;
+        private char quotes;
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="dot">替换逗号的字符</param>
         /// <param name="quotes">替换双引号的字符</param>
-        public DataExplainer(string dot= "◞", string quotes= "◜")
+        public DataExplainer(char dot = '◞', char quotes = '◜')
         {
             this.dot = dot;
             this.quotes = quotes;
@@ -126,11 +126,11 @@ namespace IFramework.Serialization.DataTable
 
         private string FitterCsv_GetColum(string source)
         {
-            return source.Replace(",", dot).Replace("\"", quotes);
+            return source.Replace(StringConverter.dot, dot).Replace('\"', quotes);
         }
         private string FitterCsv_CreatInstance(string source)
         {
-            return source.Replace( dot,",").Replace(quotes, "\"");
+            return source.Replace(dot, StringConverter.dot).Replace(quotes, '\"');
         }
     }
 }

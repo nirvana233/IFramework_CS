@@ -90,7 +90,7 @@ namespace IFramework
         /// <returns></returns>
         public static IEnvironment GetEnv(EnvironmentType envType)
         {
-            using(new LockWait(ref _lock))
+            using (new LockWait(ref _lock))
             {
                 IEnvironment env;
                 if (envs.TryGetValue((int)envType, out env))
@@ -110,7 +110,7 @@ namespace IFramework
         public static void DisposeEnv(EnvironmentType envType)
         {
             var env = GetEnv(envType);
-            if (env!=null)
+            if (env != null)
             {
                 env.Dispose();
                 using (new LockWait(ref _lock))
@@ -118,7 +118,7 @@ namespace IFramework
                     envs.Remove((int)envType);
                 }
             }
-           
+
         }
 
 
@@ -194,6 +194,29 @@ namespace IFramework
         public static void UnBindEnvDispose(this Action action, EnvironmentType envType)
         {
             action.UnBindEnvDispose(GetEnv(envType));
+        }
+
+        private class ObjectPool : BaseTypePool<object> { }
+        static private ObjectPool pool = new ObjectPool();
+        
+        /// <summary>
+        /// 全局分配
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static T GlobalAllocate<T>(this object t)
+        {
+           return pool.Get<T>();
+        }
+        /// <summary>
+        /// 全局回收
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        public static void GlobalRecyle<T>(this T t)
+        {
+            pool.Set(t);
         }
     }
 }

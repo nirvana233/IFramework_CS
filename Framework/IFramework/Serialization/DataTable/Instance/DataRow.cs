@@ -81,10 +81,10 @@ namespace IFramework.Serialization.DataTable
                 var c = cols[index];
                 string val = c.value;
                 val = val.Replace("\"", "\"\"");
-                if (val.Contains(",") || val.Contains("\"") || val.Contains('\r') || val.Contains('\n'))
+                if (val.Contains(StringConverter.dot) || val.Contains("\"") || val.Contains('\r') || val.Contains('\n'))
                     val = string.Format("\"{0}\"", val);
-                if (index == cols.Count - 1) result = result.Append(val).Append(",");
-                else result = result.Append(val).Append(",");
+                if (index == cols.Count - 1) result = result.Append(val, StringConverter.dot.ToString());
+                else result = result.Append(val, StringConverter.dot.ToString());
             }
             return result;
         }
@@ -101,10 +101,10 @@ namespace IFramework.Serialization.DataTable
                 var index = i;
                 var val = headNames[index];
                 val = val.Replace("\"", "\"\"");
-                if (val.Contains(",") || val.Contains("\"") || val.Contains('\r') || val.Contains('\n'))
+                if (val.Contains(StringConverter.dot) || val.Contains("\"") || val.Contains('\r') || val.Contains('\n'))
                     val = string.Format("\"{0}\"", val);
-                if (index == headNames.Count - 1) result = result.Append(val).Append(",");
-                else result = result.Append(val).Append(",");
+                if (index == headNames.Count - 1) result = result.Append(val, StringConverter.dot.ToString());
+                else result = result.Append(val, StringConverter.dot.ToString());
             }
             return result;
         }

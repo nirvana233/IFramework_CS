@@ -67,10 +67,10 @@ namespace IFramework.Serialization.DataTable
         public string WriteString(List<string> headNames, List<List<DataColumn>> rows)
         {
             string result = string.Empty;
-            result = result.Append(_rowWriter.WriteHeadLine(headNames)).Append("\r\n");
+            result = result.Append(_rowWriter.WriteHeadLine(headNames), "\r\n");
             for (int i = 0; i < rows.Count; i++)
             {
-                result = result.Append(_rowWriter.WriteLine(rows[i])).Append("\r\n");
+                result = result.Append(_rowWriter.WriteLine(rows[i]), "\r\n");
             }
             return result;
         }

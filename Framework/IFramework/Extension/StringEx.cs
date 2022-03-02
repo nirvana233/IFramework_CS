@@ -136,15 +136,25 @@ namespace IFramework
         {
             return new StringBuilder(self).Append(toAppend).ToString();
         }
+
         /// <summary>
         /// 拼接字符串
         /// </summary>
         /// <param name="self"></param>
         /// <param name="toAppend"></param>
         /// <returns></returns>
-        public static string Append(this string self, string[] toAppend)
+        public static string Append(this string self,params string[] toAppend)
         {
-            return new StringBuilder(self).Append(toAppend).ToString();
+            if (toAppend==null)
+            {
+                return self;
+            }
+            StringBuilder result = new StringBuilder(self);
+            foreach (string str in toAppend)
+            {
+                result= result.Append(str);
+            }
+            return result.ToString();
         }
         /// <summary>
         /// 在字符串之间加空格，根据大小写

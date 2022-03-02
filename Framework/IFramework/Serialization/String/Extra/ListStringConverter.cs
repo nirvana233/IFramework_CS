@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace IFramework.Serialization
 {
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-    public class ListStringConverter<T>: StringConverter<List<T>>
+    public class ListStringConverter<T> : StringConverter<List<T>>
     {
         ObjectStringConverter<T> c = Get(typeof(T)) as ObjectStringConverter<T>;
 
@@ -95,7 +95,7 @@ namespace IFramework.Serialization
                 }
                 else
                 {
-                    result = result.Append($"{c.ConvertToString(t[i])}{ dot}");
+                    result = result.Append($"{c.ConvertToString(t[i])}{dot}");
                 }
             }
             return $"{midLeftBound}{result}{midRightBound}";

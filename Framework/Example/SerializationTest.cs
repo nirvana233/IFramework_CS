@@ -37,8 +37,8 @@ namespace Example
         }
         protected override void Start()
         {
-            String();
-            Write();
+           // String();
+           // Write();
             Read();
         }
 

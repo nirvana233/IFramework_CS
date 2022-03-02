@@ -20,7 +20,7 @@ namespace IFramework.Serialization
             if (!self.StartsWith(flag) || !self.EndsWith(flag)) 
             {
                 result = self;
-                return false;
+                return true;
             }
             else
             {

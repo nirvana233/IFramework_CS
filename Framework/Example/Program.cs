@@ -57,11 +57,11 @@ namespace Example
         {
     
             // new AstarTest();                 //  A 星寻路
-             // new SerializationTest();             // 数据表 CSV
+              new SerializationTest();             // 数据表 CSV
             //  new BindTest();                   //数据绑定 （单向/数据变化监听，双向/数值同步变化）
             //new NetTest();                    // 网络测试
             //   new SingletonTest();             //单例测试
-               new PoolTest();                   //对象池测试
+             //  new PoolTest();                   //对象池测试
             // new PriorityQueueTest();            //优先级队列
 
             // new MvvmTest();
