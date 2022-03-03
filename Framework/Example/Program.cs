@@ -31,14 +31,15 @@ namespace Example
     }
     class Program
     {
-        private static System.Timers.Timer timer = new System.Timers.Timer(1000);
+        private static System.Timers.Timer timer = new System.Timers.Timer(100);
         static void Main(string[] args)
         {
             timer.Elapsed += Timer_Elapsed;
-            timer.Start();
             Log.L("按键盘 esc 关闭测试环境 ");
             Log.L("开启  0 号环境 测试 ");
-            Framework.CreateEnv(EnvironmentType.Ev0).InitWithAttribute();
+          var env=  Framework.CreateEnv(EnvironmentType.Ev0);
+            env.InitWithAttribute();
+            timer.Start();
 
             TestScripts();
             while (Console.ReadKey().Key != ConsoleKey.Escape) { }
@@ -57,11 +58,11 @@ namespace Example
         {
     
             // new AstarTest();                 //  A 星寻路
-              new SerializationTest();             // 数据表 CSV
+         //     new SerializationTest();             // 数据表 CSV
             //  new BindTest();                   //数据绑定 （单向/数据变化监听，双向/数值同步变化）
             //new NetTest();                    // 网络测试
             //   new SingletonTest();             //单例测试
-             //  new PoolTest();                   //对象池测试
+               new PoolTest();                   //对象池测试
             // new PriorityQueueTest();            //优先级队列
 
             // new MvvmTest();

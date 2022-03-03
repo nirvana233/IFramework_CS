@@ -48,14 +48,16 @@ namespace IFramework
         /// <typeparam name="Object"></typeparam>
         public ObjectPool<Object> GetPool<Object>() where Object : T
         {
-            return GetPool(typeof(Object)) as ObjectPool<Object>;
+            Type type = typeof(Object);
+            var pool = GetPool(type);
+            return pool as ObjectPool<Object>;
         }
         /// <summary>
         /// 设置内部对象池
         /// </summary>
         /// <param name="type"></param>
         /// <param name="pool"></param>
-        public virtual void SetPool(Type type, IObjectPool pool)
+        public void SetPool(Type type, IObjectPool pool)
         {
             using (new LockWait(ref para))
             {
@@ -70,18 +72,32 @@ namespace IFramework
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IObjectPool GetPool(Type type)
+        public IObjectPool GetPool(Type type)
         {
             using (new LockWait(ref para))
             {
-                if (!_poolMap.ContainsKey(type))
+                IObjectPool pool;
+                if (!_poolMap.TryGetValue(type, out pool))
                 {
-                    var pooType = typeof(ActivatorCreatePool<>).MakeGenericType(type);
-                    var pool = Activator.CreateInstance(pooType, null) as IObjectPool;
+                    pool = CreatePool(type);
+                    if (pool == null)
+                    {
+                        var pooType = typeof(ActivatorCreatePool<>).MakeGenericType(type);
+                        pool = Activator.CreateInstance(pooType, null) as IObjectPool;
+                    }
                     _poolMap.Add(type, pool);
                 }
-                return _poolMap[type];
+                return pool;
             }
+        }
+        /// <summary>
+        /// 創建对象池
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        protected virtual IObjectPool CreatePool(Type type)
+        {
+            return null;
         }
 
         /// <summary>
@@ -110,6 +126,7 @@ namespace IFramework
         public Object Get<Object>(IEventArgs arg = null) where Object : T
         {
             var pool = GetPool<Object>();
+
             Object t = pool.Get(arg);
             return t;
         }

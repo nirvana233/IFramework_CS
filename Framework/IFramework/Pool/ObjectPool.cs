@@ -17,7 +17,7 @@ namespace IFramework
         /// <summary>
         /// 自旋锁
         /// </summary>
-        protected LockParam lockParam;
+        protected LockParam lockParam = new LockParam();
         /// <summary>
         /// 存储数据类型
         /// </summary>
@@ -27,22 +27,14 @@ namespace IFramework
         /// 池子数量
         /// </summary>
         public int count { get { return pool.Count; } }
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        protected ObjectPool() { lockParam = new LockParam(); }
+
 
         /// <summary>
         /// 释放时
         /// </summary>
         protected override void OnDispose()
         {
-            while (pool.Count > 0)
-            {
-                IDisposable dispose = pool.Dequeue() as IDisposable;
-                if (dispose != null)
-                    dispose.Dispose();
-            }
+            Clear(null);
         }
 
         /// <summary>
@@ -50,7 +42,7 @@ namespace IFramework
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        public T Get(IEventArgs arg = null)
+        public virtual T Get(IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
             {
@@ -75,7 +67,7 @@ namespace IFramework
         /// <param name="t"></param>
         /// <param name="arg"></param>
         /// <returns></returns>
-        public bool Set(T t, IEventArgs arg = null)
+        public virtual bool Set(T t, IEventArgs arg = null)
         {
             using (LockWait wait = new LockWait(ref lockParam))
             {
@@ -107,6 +99,9 @@ namespace IFramework
                 {
                     var t = pool.Dequeue();
                     OnClear(t, arg);
+                    IDisposable dispose = t as IDisposable;
+                    if (dispose != null)
+                        dispose.Dispose();
                 }
             }
         }

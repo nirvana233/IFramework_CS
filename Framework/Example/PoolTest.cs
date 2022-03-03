@@ -10,9 +10,12 @@ namespace Example
         public class Obj_B : IObject { }
         public class Obj_C
         {
+            public readonly int age;
+
             public Obj_C(int age)
             {
                 Log.L("age is    "+age);
+                this.age = age;
             }
         }
 
@@ -86,12 +89,18 @@ namespace Example
         }
         protected override void Start()
         {
-            Log.L("--------------------------");
-            FastExample();
-            Log.L("--------------------------");
-            NormalTest();
-            Log.L("--------------------------");
-            MutiTest();
+            //Log.L("--------------------------");
+            //FastExample();
+            //Log.L("--------------------------");
+            //NormalTest();
+            //Log.L("--------------------------");
+            //MutiTest();
+            var arr = Framework.GlobalAllocateArray<Obj_C>(10);
+            Console.WriteLine(arr.Length);
+            arr[0] = new Obj_C(15);
+            arr.GlobalRecyle();
+            arr = Framework.GlobalAllocateArray<Obj_C>(10);
+            Console.WriteLine(arr[0].age);
         }
 
         protected override void Stop()

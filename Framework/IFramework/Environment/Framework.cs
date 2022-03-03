@@ -118,9 +118,7 @@ namespace IFramework
                     envs.Remove((int)envType);
                 }
             }
-
         }
-
 
         /// <summary>
         /// 绑顶 方法 到一个环境的 Update
@@ -196,27 +194,54 @@ namespace IFramework
             action.UnBindEnvDispose(GetEnv(envType));
         }
 
-        private class ObjectPool : BaseTypePool<object> { }
-        static private ObjectPool pool = new ObjectPool();
-        
+        private class GlobalPool : BaseTypePool<object>
+        {
+            protected override IObjectPool CreatePool(Type type)
+            {
+                if (type.IsArray)
+                {
+                    var poolType = typeof(ArrayPool<>).MakeGenericType(type.GetElementType());
+                    return Activator.CreateInstance(poolType) as IObjectPool;
+                }
+                return null;
+            }
+        }
+        static private GlobalPool pool = new GlobalPool();
+
         /// <summary>
         /// 全局分配
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="t"></param>
+        /// <param name="arg"></param>
         /// <returns></returns>
-        public static T GlobalAllocate<T>(this object t)
+        public static T GlobalAllocate<T>(IEventArgs arg = null)
         {
-           return pool.Get<T>();
+            return pool.Get<T>(arg);
         }
         /// <summary>
         /// 全局回收
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="t"></param>
-        public static void GlobalRecyle<T>(this T t)
+        /// <param name="arg"></param>
+        public static void GlobalRecyle<T>(this T t, IEventArgs arg = null)
         {
-            pool.Set(t);
+            pool.Set(t, arg);
+        }
+
+        /// <summary>
+        /// 分配数组
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static T[] GlobalAllocateArray<T>(int length)
+        {
+            ArrayPoolArg args = GlobalAllocate<ArrayPoolArg>();
+            args.length = length;
+            var result = GlobalAllocate<T[]>(args);
+            GlobalRecyle(args);
+            return result;
         }
     }
 }

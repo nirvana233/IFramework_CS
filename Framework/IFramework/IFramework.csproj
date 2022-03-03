@@ -79,6 +79,7 @@
     <Compile Include="Extension\StringEx.cs" />
     <Compile Include="Extension\StringEx_Regex.cs" />
     <Compile Include="Extension\TypeEx.cs" />
+    <Compile Include="Pool\ArrayPool.cs" />
     <Compile Include="Pool\IObjectPool.cs" />
     <Compile Include="Serialization\String\Extra\ArrayStringConverter.cs" />
     <Compile Include="Serialization\String\Extra\DictionaryStringConverter.cs" />
