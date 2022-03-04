@@ -10,21 +10,6 @@ namespace IFramework.Modules.Coroutine
     [ScriptVersionAttribute(8)]
     public class CoroutineModule : UpdateModule, ICoroutineModule
     {
-        class CoroutinePool : ObjectPool<Coroutine>
-        {
-            protected override Coroutine CreatNew(IEventArgs arg)
-            {
-                return new Coroutine();
-            }
-            protected override void OnGet(Coroutine t, IEventArgs arg)
-            {
-                t.OnGet();
-            }
-        }
-
-      
-        private CoroutinePool _pool;
-
         /// <summary>
         /// 开启一个携程
         /// </summary>
@@ -40,14 +25,15 @@ namespace IFramework.Modules.Coroutine
 
         internal Coroutine Get(IEnumerator routine)
         {
-            var coroutine = _pool.Get();
+            var coroutine = Framework.GlobalAllocate<Coroutine>();
+            coroutine.OnGet();
             coroutine._routine = routine;
             coroutine._module = this;
             return coroutine;
         }
         internal void Set(Coroutine routine)
         {
-            _pool.Set(routine);
+            routine.GlobalRecyle();
         }
 
         internal event Action update;
@@ -66,12 +52,12 @@ namespace IFramework.Modules.Coroutine
         }
         protected override void OnDispose()
         {
-            _pool.Dispose();
+            //_pool.Dispose();
         }
 
         protected override void Awake()
         {
-            _pool = new CoroutinePool();
+            //_pool = new CoroutinePool();
         }
 
         public void StopCoroutine(ICoroutine routine)

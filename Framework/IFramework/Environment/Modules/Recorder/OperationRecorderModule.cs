@@ -8,7 +8,6 @@ namespace IFramework.Modules.Recorder
     /// </summary>
     public class OperationRecorderModule : Module, IOperationRecorderModule
     {
-        private class StatePool : BaseTypePool<BaseState> { }
         private class HeadState : BaseState
         {
             protected override void OnRedo() { }
@@ -18,8 +17,6 @@ namespace IFramework.Modules.Recorder
             protected override void OnReset() { }
         }
         private HeadState _head;
-        private StatePool _pool;
-        //private List<BaseState> _states;
         private BaseState _current;
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
@@ -29,14 +26,12 @@ namespace IFramework.Modules.Recorder
         }
         protected override void Awake()
         {
-            _head = new HeadState();
-            //_states = new List<BaseState>();
-            _pool = new StatePool();
+            _head = Allocate<HeadState>();
         }
         protected override void OnDispose()
         {
-            //_states.Clear();
-            _pool.Dispose();
+            Recyle(_head);
+            _current = _head = null;
         }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
@@ -45,9 +40,9 @@ namespace IFramework.Modules.Recorder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Allocate<T>()where T: BaseState,new ()
+        public T Allocate<T>() where T : BaseState, new()
         {
-            var state=_pool.Get<T>();
+            var state = Framework.GlobalAllocate<T>();
             state.recorder = this;
             return state;
         }
@@ -56,13 +51,12 @@ namespace IFramework.Modules.Recorder
         /// </summary>
         /// <param name="state"></param>
         /// <param name="redo"></param>
-        public void Subscribe(BaseState state,bool redo=true)
+        public void Subscribe(BaseState state, bool redo = true)
         {
             if (state.recorder == null)
                 Log.E("Don't Create new State ,Use Allocate,");
-            //_states.Add(state);
             if (_current == null) _current = _head;
-            if (_current.next!=null) Recyle(_current.next);
+            if (_current.next != null) Recyle(_current.next);
             _current.next = state;
             state.front = _current;
             if (redo) state.Redo();
@@ -70,13 +64,19 @@ namespace IFramework.Modules.Recorder
         }
         private void Recyle(BaseState state)
         {
+            Queue<BaseState> queue = Framework.GlobalAllocate<Queue<BaseState>>();
             do
             {
                 var now = state;
                 state = state.next;
                 now.Reset();
-                _pool.Set(now);
-            } while (state!=null);
+                queue.Enqueue(now);
+            } while (state != null);
+            while (queue.Count!=0)
+            {
+                queue.Dequeue().GlobalRecyle();
+            }
+            queue.GlobalRecyle();
         }
         /// <summary>
         /// 撤回
@@ -112,7 +112,7 @@ namespace IFramework.Modules.Recorder
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        public static CommandState AllocateCommand(this IOperationRecorderModule t) 
+        public static CommandState AllocateCommand(this IOperationRecorderModule t)
         {
             return t.Allocate<CommandState>();
         }
@@ -152,7 +152,7 @@ namespace IFramework.Modules.Recorder
         /// <param name="redo"></param>
         /// <param name="undo"></param>
         /// <returns></returns>
-        public static T SetCommand<T>(this T t,ICommand redo,ICommand undo)where T:CommandState
+        public static T SetCommand<T>(this T t, ICommand redo, ICommand undo) where T : CommandState
         {
             t.SetValue(redo, undo);
             return t;
@@ -203,9 +203,9 @@ namespace IFramework.Modules.Recorder
         /// <param name="t"></param>
         /// <param name="redo"></param>
         /// <returns></returns>
-        public static T Subscribe<T>(this T t, bool redo = true) where T :BaseState
+        public static T Subscribe<T>(this T t, bool redo = true) where T : BaseState
         {
-            t.recorder.Subscribe(t,redo);
+            t.recorder.Subscribe(t, redo);
             return t;
         }
     }

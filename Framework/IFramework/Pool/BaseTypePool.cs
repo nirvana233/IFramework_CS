@@ -8,14 +8,36 @@ namespace IFramework
     /// 统一类型的对象池
     /// </summary>
     /// <typeparam name="T">基础类型</typeparam>
-    public abstract class BaseTypePool<T> : IDisposable
+    public abstract class BaseTypePool<T> : Unit
     {
+        private Dictionary<Type, MethodInfo> __getpools;
+        private Dictionary<Type, MethodInfo> __setpools;
         private Dictionary<Type, IObjectPool> _poolMap;
-
         private MethodInfo _getMethodInfo;
         private MethodInfo _setMethodInfo;
-        private Dictionary<Type, MethodInfo> _getpools;
-        private Dictionary<Type, MethodInfo> _setpools;
+
+        private Dictionary<Type, MethodInfo> _getpools
+        {
+            get
+            {
+                if (__getpools == null)
+                {
+                    __getpools = Framework.GlobalAllocate<Dictionary<Type, MethodInfo>>();
+                }
+                return __getpools;
+            }
+        }
+        private Dictionary<Type, MethodInfo> _setpools
+        {
+            get
+            {
+                if (__setpools == null)
+                {
+                    __setpools = Framework.GlobalAllocate<Dictionary<Type, MethodInfo>>();
+                }
+                return __setpools;
+            }
+        }
 
         /// <summary>
         /// 自旋锁
@@ -27,11 +49,11 @@ namespace IFramework
         /// </summary>
         public BaseTypePool()
         {
+            Type[] types = new Type[] { typeof(IEventArgs) };
+            Type type = GetType();
+            _getMethodInfo = type.GetMethod(nameof(Get), types);
+            _setMethodInfo = type.GetMethod(nameof(Set), types);
             _poolMap = new Dictionary<Type, IObjectPool>();
-            _getMethodInfo = GetType().GetMethod(nameof(Get), new Type[] { typeof(IEventArgs) });
-            _setMethodInfo = GetType().GetMethod(nameof(Set), new Type[] { typeof(IEventArgs) });
-            _getpools = new Dictionary<Type, MethodInfo>();
-            _setpools = new Dictionary<Type, MethodInfo>();
         }
         /// <summary>
         /// 设置内部对象池
@@ -118,19 +140,6 @@ namespace IFramework
             return (T)m2.Invoke(this, new object[] { arg });
         }
         /// <summary>
-        /// 获取数据
-        /// </summary>
-        /// <typeparam name="Object"></typeparam>
-        /// <param name="arg"></param>
-        /// <returns></returns>
-        public Object Get<Object>(IEventArgs arg = null) where Object : T
-        {
-            var pool = GetPool<Object>();
-
-            Object t = pool.Get(arg);
-            return t;
-        }
-        /// <summary>
         /// 回收数据
         /// </summary>
         /// <param name="type"></param>
@@ -148,6 +157,20 @@ namespace IFramework
             m2.Invoke(this, new object[] { t, arg });
         }
         /// <summary>
+        /// 获取数据
+        /// </summary>
+        /// <typeparam name="Object"></typeparam>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public Object Get<Object>(IEventArgs arg = null) where Object : T
+        {
+            var pool = GetPool<Object>();
+
+            Object t = pool.Get(arg);
+            return t;
+        }
+
+        /// <summary>
         /// 回收数据
         /// </summary>
         /// <typeparam name="Object"></typeparam>
@@ -158,26 +181,56 @@ namespace IFramework
             var pool = GetPool<Object>();
             pool.Set(t, arg);
         }
+        /// <summary>
+        /// 获取现有数量
+        /// </summary>
+        /// <typeparam name="Object"></typeparam>
+        /// <returns></returns>
+        public int GetPoolCount<Object>() where Object : T
+        {
+            return GetPoolCount(typeof(Object));
+        }
+        /// <summary>
+        /// 获取现有数量
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public int GetPoolCount(Type type)
+        {
+            var pool = GetPool(type);
+            return pool.count;
+        }
 
         /// <summary>
         /// 释放
         /// </summary>
-        public void Dispose()
+        public override void Dispose()
         {
             using (new LockWait(ref para))
             {
-                OnDispose();
-                foreach (var item in _poolMap.Values)
-                    (item as IObjectPool).Dispose();
+                if (disposed) return;
+                base.Dispose();
+                foreach (var item in _poolMap.Values) item.Dispose();
                 _poolMap.Clear();
-                _getpools.Clear();
-                _setpools.Clear();
+                if (__getpools != null)
+                {
+                    __getpools.Clear();
+                    __getpools.GlobalRecyle();
+                }
+                if (__setpools != null)
+                {
+                    __setpools.Clear();
+                    __setpools.GlobalRecyle();
+                }
             }
         }
         /// <summary>
         /// 释放时
         /// </summary>
-        protected virtual void OnDispose() { }
+        protected override void OnDispose()
+        {
+
+        }
     }
 
 }

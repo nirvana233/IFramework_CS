@@ -117,61 +117,38 @@ namespace IFramework.Modules.Message
                     return new MessageAwaiter(this);
                 }
             }
-            private class MessagePool : ObjectPool<Message>
-            {
-                protected override Message CreatNew(IEventArgs arg)
-                {
-                    return new Message();
-                }
-
-                protected override void OnGet(Message t, IEventArgs arg)
-                {
-                   // t.Begin();
-                }
-                protected override bool OnSet(Message t, IEventArgs arg)
-                {
-                   // t.End();
-                    return true;
-                }
-            }
-            private class StablePriorityQueueNodePool : ActivatorCreatePool<StablePriorityQueueNode> { }
             public int count
             {
                 get
                 {
                     using (new LockWait(ref _lock_message))
                     {
-                        return _queue.count;
+                        return _priorityQueue.count;
                     }
                 }
             }
 
             private readonly MessageModule module;
-            private MessagePool _pool;
+            private int _processesPerFrame = -1;
             private LockParam _lock_message = new LockParam();
-            private StablePriorityQueueNodePool nodePool;
-            private StablePriorityQueue<StablePriorityQueueNode> _queue;
-            private List<StablePriorityQueueNode> _list;
-            private Queue<Message> _tmp = new Queue<Message>();
-            private int _processesPerFrame=-1;
 
 
+            private StablePriorityQueue<StablePriorityQueueNode> _priorityQueue;
+            private List<StablePriorityQueueNode> _updatelist;
             private Dictionary<StablePriorityQueueNode, Message> excuteMap;
             public int processesPerFrame { get { return _processesPerFrame; } set { _processesPerFrame = value; } }
 
             public MessageQueue(MessageModule module)
             {
-                nodePool = new StablePriorityQueueNodePool();
-                excuteMap = new Dictionary<StablePriorityQueueNode, Message>();
-                _pool = new MessagePool();
-                _queue = new StablePriorityQueue<StablePriorityQueueNode>();
-                _list = new List<StablePriorityQueueNode>();
-                _tmp = new Queue<Message>();
+                excuteMap = Framework.GlobalAllocate<Dictionary<StablePriorityQueueNode, Message>>();
+                int count = Framework.GetGlbalPoolCount<StablePriorityQueue<StablePriorityQueueNode>>();
+                _priorityQueue = count == 0 ? new StablePriorityQueue<StablePriorityQueueNode>() : Framework.GlobalAllocate<StablePriorityQueue<StablePriorityQueueNode>>();
+                _updatelist = Framework.GlobalAllocate<List<StablePriorityQueueNode>>();
                 this.module = module;
             }
             public IMessage PublishByNumber(Type type, IEventArgs args, int priority = MessageUrgency.Common)
             {
-                var message = _pool.Get();
+                var message = Framework.GlobalAllocate<Message>();
                 message.Begin();
                 message.SetArgs(args).SetType(type);
                 if (priority < 0)
@@ -182,14 +159,14 @@ namespace IFramework.Modules.Message
                 {
                     using (new LockWait(ref _lock_message))
                     {
-                        if (_queue.count == _queue.capcity)
+                        if (_priorityQueue.count == _priorityQueue.capcity)
                         {
-                            _queue.Resize(_queue.capcity * 2);
+                            _priorityQueue.Resize(_priorityQueue.capcity * 2);
                         }
-                        var node = nodePool.Get();
-                        _queue.Enqueue(node, priority);
+                        StablePriorityQueueNode node = Framework.GlobalAllocate<StablePriorityQueueNode>();
+                        _priorityQueue.Enqueue(node, priority);
                         excuteMap.Add(node, message);
-                        _list.Add(node);
+                        _updatelist.Add(node);
                     }
                 }
                 return message;
@@ -205,30 +182,33 @@ namespace IFramework.Modules.Message
                 sucess |= module.handlers.Publish(message);
                 message.SetErrorCode(sucess ? MessageErrorCode.Success : MessageErrorCode.NoneListen);
                 message.End();
-                _pool.Set(message);
+                message.GlobalRecyle();
             }
             public void Update()
             {
                 int count = 0;
+                Queue<Message> _tmp = Framework.GlobalAllocate<Queue<Message>>();
                 using (new LockWait(ref _lock_message))
                 {
-                    count = processesPerFrame==-1? _queue.count : Math.Min(processesPerFrame, _queue.count);
+                    count = processesPerFrame == -1 ? _priorityQueue.count : Math.Min(processesPerFrame, _priorityQueue.count);
                     if (count == 0) return;
                     for (int i = 0; i < count; i++)
                     {
-                        var node = _queue.Dequeue();
-                        _list.Remove(node);
+                        StablePriorityQueueNode node = _priorityQueue.Dequeue();
                         Message message;
                         if (excuteMap.TryGetValue(node, out message))
                         {
                             _tmp.Enqueue(message);
+                            excuteMap.Remove(node);
                         }
+                        _updatelist.Remove(node);
+                        node.GlobalRecyle();
                     }
-                    if (_list.Count > 0)
+                    if (_updatelist.Count > 0)
                     {
-                        for (int i = _list.Count - 1; i >= 0; i--)
+                        for (int i = _updatelist.Count - 1; i >= 0; i--)
                         {
-                            _queue.UpdatePriority(_list[i], _list[i].priority - 1);
+                            _priorityQueue.UpdatePriority(_updatelist[i], _updatelist[i].priority - 1);
                         }
                     }
                 }
@@ -236,21 +216,25 @@ namespace IFramework.Modules.Message
                 {
                     var message = _tmp.Dequeue();
                     HandleMessage(message);
-
                 }
+                _tmp.GlobalRecyle();
             }
-           
+
 
             public void Dispose()
             {
-                _queue.Clear();
-                _pool.Clear();
-                _list.Clear();
+                foreach (var item in excuteMap.Values) item.GlobalRecyle();
+                while (_priorityQueue.count != 0) _priorityQueue.Dequeue().GlobalRecyle();
+                _updatelist.Clear();
+                excuteMap.Clear();
+                _priorityQueue.GlobalRecyle();
+                _updatelist.GlobalRecyle();
+                excuteMap.GlobalRecyle();
             }
         }
-        private class HandlerQueue:IDisposable
+        private class HandlerQueue : IDisposable
         {
-            private class Subject : IDisposable
+            private struct Subject : IDisposable
             {
                 private readonly Type _listenType;
                 public Type listenType { get { return _listenType; } }
@@ -258,7 +242,7 @@ namespace IFramework.Modules.Message
                 public Subject(Type listenType)
                 {
                     this._listenType = listenType;
-                    _listeners = new List<MessageListener>();
+                    _listeners = Framework.GlobalAllocate<List<MessageListener>>();
                 }
                 public bool Subscribe(MessageListener listener)
                 {
@@ -284,49 +268,28 @@ namespace IFramework.Modules.Message
                 public void Dispose()
                 {
                     _listeners.Clear();
-                    _listeners = null;
+                    _listeners.GlobalRecyle();
                 }
             }
-
-            private class DelegateSubscribe : IValueContainer<MessageListener> {
+            private class DelegateSubscribe : IValueContainer<MessageListener>
+            {
                 public Type type;
                 public MessageListener value { get; set; }
             }
-            private class DelegateSubscribePool : ObjectPool<DelegateSubscribe>
-            {
-                protected override DelegateSubscribe CreatNew(IEventArgs arg)
-                {
-                    return new DelegateSubscribe();
-                }
-                protected override bool OnSet(DelegateSubscribe t, IEventArgs arg)
-                {
-                    t.type = null;
-                    t.value = null;
-                    return base.OnSet(t, arg);
-                }
-            }
-            private DelegateSubscribePool _pool;
-            private Queue<DelegateSubscribe> _subscribeQueue, _unsubscribeQueue;
+            private Queue<DelegateSubscribe> _subscribeQueue = Framework.GlobalAllocate<Queue<DelegateSubscribe>>();
+            private Queue<DelegateSubscribe> _unsubscribeQueue = Framework.GlobalAllocate<Queue<DelegateSubscribe>>();
+            private List<Subject> subjects = Framework.GlobalAllocate<List<Subject>>();
+            private Dictionary<Type, int> subjectMap = Framework.GlobalAllocate<Dictionary<Type, int>>();
             private LockParam _lock = new LockParam();
-            private List<Subject> subjects;
-            private Dictionary<Type, int> subjectMap;
-            private bool _fitSubType=false;
+            private bool _fitSubType = false;
 
             public bool fitSubType { get { return _fitSubType; } set { _fitSubType = value; } }
 
-            public HandlerQueue()
-            {
-                _pool = new DelegateSubscribePool();
-                _subscribeQueue = new Queue<DelegateSubscribe>();
-                _unsubscribeQueue = new Queue<DelegateSubscribe>();
-                subjects = new List<Subject>();
-                subjectMap = new Dictionary<Type, int>();
-            }
             public void Subscribe(Type type, MessageListener listener)
             {
                 using (new LockWait(ref _lock))
                 {
-                    var s = _pool.Get();
+                    var s = Framework.GlobalAllocate<DelegateSubscribe>();
                     s.type = type;
                     s.value = listener;
                     _subscribeQueue.Enqueue(s);
@@ -336,14 +299,12 @@ namespace IFramework.Modules.Message
             {
                 using (new LockWait(ref _lock))
                 {
-                    var s = _pool.Get();
+                    var s = Framework.GlobalAllocate<DelegateSubscribe>();
                     s.type = type;
                     s.value = listener;
                     _unsubscribeQueue.Enqueue(s);
                 }
-
             }
-
             public bool Publish(IMessage message)
             {
                 bool success = false;
@@ -393,7 +354,7 @@ namespace IFramework.Modules.Message
                             en = subjects[subjectMap[type]];
                         }
                         en.Subscribe(value.value);
-                        _pool.Set(value);
+                        value.GlobalRecyle();
                     }
                     count = _unsubscribeQueue.Count;
                     for (int i = 0; i < count; i++)
@@ -404,7 +365,7 @@ namespace IFramework.Modules.Message
                         {
                             subjects[subjectMap[type]].UnSubscribe(value.value);
                         }
-                        _pool.Set(value);
+                        value.GlobalRecyle();
                     }
                 }
 
@@ -412,15 +373,15 @@ namespace IFramework.Modules.Message
 
             public void Dispose()
             {
-        
                 for (int i = 0; i < subjects.Count; i++) subjects[i].Dispose();
                 subjects.Clear();
                 subjectMap.Clear();
-                _pool.Dispose();
                 _subscribeQueue.Clear();
                 _unsubscribeQueue.Clear();
-       
-                subjects = null;
+                _subscribeQueue.GlobalRecyle();
+                _unsubscribeQueue.GlobalRecyle();
+                subjects.GlobalRecyle();
+                subjectMap.GlobalRecyle();
             }
         }
 
@@ -469,10 +430,10 @@ namespace IFramework.Modules.Message
         /// 每帧处理消息个数
         /// </summary>
         public int processesPerFrame { get { return messages.processesPerFrame; } set { messages.processesPerFrame = value; } }
-      
-        
-        
-        
+
+
+
+
         /// <summary>
         /// 注册监听
         /// </summary>
@@ -510,7 +471,7 @@ namespace IFramework.Modules.Message
         /// <returns></returns>
         public void UnSubscribe<T>(IMessageListener listener)
         {
-             UnSubscribe(typeof(T), listener);
+            UnSubscribe(typeof(T), listener);
         }
 
 
@@ -531,7 +492,7 @@ namespace IFramework.Modules.Message
         /// <typeparam name="T"></typeparam>
         /// <param name="listener"></param>
         /// <returns></returns>
-        public void Subscribe<T>(MessageListener listener) 
+        public void Subscribe<T>(MessageListener listener)
         {
             Subscribe(typeof(T), listener);
         }
@@ -563,7 +524,7 @@ namespace IFramework.Modules.Message
         /// <param name="args"></param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public IMessage Publish<T>(IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common) 
+        public IMessage Publish<T>(IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common)
         {
             return Publish(typeof(T), args, priority);
         }
@@ -575,7 +536,7 @@ namespace IFramework.Modules.Message
         /// <param name="args"></param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public IMessage Publish<T>(T t, IEventArgs args,  MessageUrgencyType priority = MessageUrgencyType.Common) 
+        public IMessage Publish<T>(T t, IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common)
         {
             return Publish(typeof(T), args, priority);
         }
@@ -598,7 +559,7 @@ namespace IFramework.Modules.Message
         /// <param name="args"></param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public IMessage PublishByNumber<T>(T t, IEventArgs args, int priority = MessageUrgency.Common) 
+        public IMessage PublishByNumber<T>(T t, IEventArgs args, int priority = MessageUrgency.Common)
         {
             return PublishByNumber(typeof(T), args, priority);
         }
@@ -609,7 +570,7 @@ namespace IFramework.Modules.Message
         /// <param name="args"></param>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public IMessage Publish(Type type, IEventArgs args,  MessageUrgencyType priority = MessageUrgencyType.Common)
+        public IMessage Publish(Type type, IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common)
         {
             return PublishByNumber(type, args, (int)priority);
         }
@@ -620,9 +581,9 @@ namespace IFramework.Modules.Message
         /// <param name="args"></param>
         /// <param name="priority">越大处理越晚</param>
         /// <returns></returns>
-        public IMessage PublishByNumber(Type type, IEventArgs args,int priority = MessageUrgency.Common)
+        public IMessage PublishByNumber(Type type, IEventArgs args, int priority = MessageUrgency.Common)
         {
-           return messages.PublishByNumber(type, args, priority);
+            return messages.PublishByNumber(type, args, priority);
         }
     }
 }

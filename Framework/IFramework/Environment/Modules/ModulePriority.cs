@@ -52,7 +52,15 @@
         /// </summary>
         public int value { get { return _value; }set { _value = value; } }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static ModulePriority FromValue(int value)
+        {
+            return new ModulePriority(value);
+        }
         /// <summary>
         /// 
         /// </summary>

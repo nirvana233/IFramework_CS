@@ -90,7 +90,7 @@
     <Compile Include="Serialization\String\Extra\StackStringConverter.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="Utility\SimpleReference.cs" />
-    <Compile Include="__Interfaces\IBelongToEnvironment.cs" />
+    <Compile Include="Environment\IBelongToEnvironment.cs" />
     <Compile Include="__Interfaces\IContainer.cs" />
     <Compile Include="__Interfaces\Awaitable\IAwaitable.cs" />
     <Compile Include="__Interfaces\Awaitable\IAwaiter.cs" />
@@ -273,7 +273,7 @@
     <Compile Include="Pool\BaseTypePool.cs" />
     <Compile Include="Pool\CapicityPool.cs" />
     <Compile Include="Environment\Recylable\RecyclableObject.cs" />
-    <Compile Include="Environment\Framework.cs" />
+    <Compile Include="Framework.cs" />
     <Compile Include="Environment\Modules\Fsm\FsmModule.cs" />
     <Compile Include="Environment\Modules\Fsm\ConditionValue.cs" />
     <Compile Include="Environment\Modules\Fsm\Transition.cs" />

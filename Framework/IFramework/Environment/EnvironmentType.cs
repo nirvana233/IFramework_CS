@@ -53,7 +53,19 @@ namespace IFramework
         /// </summary>
         Ev9 = 1024,
 
-
+        /// <summary>
+        /// 环境10
+        /// </summary>
+        Ev10 = 2048,
+        /// <summary>
+        /// 
+        /// </summary>
+        Ev11 = 4096,
+        /// <summary>
+        /// 
+        /// </summary>
+        Ev12 = 8192,
+  
         /// <summary>
         /// 额外的1
         /// </summary>
@@ -74,6 +86,10 @@ namespace IFramework
         /// 额外的4
         /// </summary>
         Extra4 = 262144,
+        /// <summary>
+        /// 
+        /// </summary>
+        Extra5 = 524288,
     }
 
 }

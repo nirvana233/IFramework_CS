@@ -18,7 +18,18 @@ namespace IFramework
     /// <typeparam name="T"></typeparam>
     public class ArrayPool<T> : ObjectPool<T[]>
     {
-        private Queue<int> _lengthqueue = new Queue<int>();
+        private Queue<int> __lengthqueue;
+        private Queue<int> _lengthqueue
+        {
+            get
+            {
+                if (__lengthqueue == null)
+                {
+                    __lengthqueue = Framework.GlobalAllocate<Queue<int>>();
+                }
+                return __lengthqueue;
+            }
+        }
         /// <summary>
         /// 创建
         /// </summary>
@@ -98,6 +109,19 @@ namespace IFramework
                     Log.E("Set Err: Exist " + type);
                     return false;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 释放
+        /// </summary>
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            if (_lengthqueue!=null)
+            {
+                _lengthqueue.Clear();
+                _lengthqueue.GlobalRecyle();
             }
         }
     }

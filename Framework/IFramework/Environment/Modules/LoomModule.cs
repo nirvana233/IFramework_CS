@@ -18,21 +18,7 @@ namespace IFramework.Modules
             }
 
         }
-        private class Pool : ObjectPool<DelayedTask>
-        {
-            protected override bool OnSet(DelayedTask t, IEventArgs arg)
-            {
-                t.action = null;
-                return base.OnSet(t, arg);
-            }
-            protected override DelayedTask CreatNew(IEventArgs arg)
-            {
-                return new DelayedTask();
-            }
-        }
-        private Queue<DelayedTask> _tasks;
         private Queue<DelayedTask> _delay;
-        private Pool _pool;
         /// <summary>
         /// 在主线程跑一个方法
         /// </summary>
@@ -42,7 +28,7 @@ namespace IFramework.Modules
             if (action == null) return;
             lock (_delay)
             {
-                _delay.Enqueue(_pool.Get().Config(action));
+                _delay.Enqueue(Framework.GlobalAllocate<DelayedTask>().Config(action));
             }
         }
 
@@ -53,6 +39,7 @@ namespace IFramework.Modules
         protected override void OnUpdate()
         {
             int count = 0;
+            Queue<DelayedTask> _tasks = Framework.GlobalAllocate<Queue<DelayedTask>>();
             lock (_delay)
             {
                 count = _delay.Count;
@@ -65,20 +52,19 @@ namespace IFramework.Modules
             {
                 var _task = _tasks.Dequeue();
                 _task.action();
-                _pool.Set(_task);
+                _task.GlobalRecyle();
             }
+            _tasks.GlobalRecyle();
         }
         protected override void OnDispose()
         {
-            _tasks.Clear();
+            while (_delay.Count != 0) _delay.Dequeue().GlobalRecyle();
             _delay.Clear();
-            _pool.Dispose();
+            _delay.GlobalRecyle();
         }
         protected override void Awake()
         {
-            _tasks = new Queue<DelayedTask>();
-            _delay = new Queue<DelayedTask>();
-            _pool = new Pool();
+            _delay = Framework.GlobalAllocate<Queue<DelayedTask>>();
         }
     }
 }

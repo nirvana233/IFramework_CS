@@ -51,7 +51,7 @@ namespace IFramework.Modules.Coroutine
         }
 
 
-        internal Coroutine() { _isDone = false;}
+        public Coroutine() { _isDone = false;}
 
         internal void Start()
         {

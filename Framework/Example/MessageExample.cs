@@ -33,7 +33,7 @@ namespace Example
                 .SetCode(100)
                 .OnCompelete((msg)=> {
                     Log.L($"state  {msg.state}   err   {msg.errorCode}");
-                    Log.L("\n\n");
+                    //Log.L("\n");
                     Log.L("开始按键");
                 });
         }
@@ -41,6 +41,7 @@ namespace Example
         protected async override void Update()
         {
             var key = Console.ReadKey();
+            if (key.Key == ConsoleKey.Escape) return;
             Log.L($"检测到按键  {key.Key} 并且发送消息 ,  按键序号为    {(int)key.Key}");
             Log.L($"剩余消息条数  {Framework.GetEnv(EnvironmentType.Ev0).modules.Message.count}");
             for (int i = 0; i < 10; i++)

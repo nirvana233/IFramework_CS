@@ -101,6 +101,7 @@ namespace Example
             arr.GlobalRecyle();
             arr = Framework.GlobalAllocateArray<Obj_C>(10);
             Console.WriteLine(arr[0].age);
+            Console.WriteLine(1231111111111);
         }
 
         protected override void Stop()

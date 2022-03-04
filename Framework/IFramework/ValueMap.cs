@@ -10,13 +10,13 @@ namespace IFramework
     {
         private interface ITypeMap
         {
-            object Get(string name,bool autoCreate=true);
+            object Get(string name, bool autoCreate = true);
             void Set(string name, object obj);
             bool Exist(string name);
         }
         private interface ITypeMap<T> : ITypeMap
         {
-            T GetValue(string name,bool autoCreate= true);
+            T GetValue(string name, bool autoCreate = true);
             void SetValue(string name, T obj);
         }
         private class TypeMap<T> : ITypeMap<T>
@@ -35,7 +35,7 @@ namespace IFramework
             {
                 for (int i = 0; i < values.Count; i++)
                 {
-                    if (values[i].name==name)
+                    if (values[i].name == name)
                     {
                         return values[i].value;
                     }
@@ -57,7 +57,7 @@ namespace IFramework
                 {
                     if (values[i].name == name)
                     {
-                        values[i].value=obj;
+                        values[i].value = obj;
                         return;
                     }
                 }
@@ -86,7 +86,7 @@ namespace IFramework
             }
             public object Get(string name, bool autoCreate = true)
             {
-                return GetValue(name,autoCreate);
+                return GetValue(name, autoCreate);
             }
 
             public bool Exist(string name)
@@ -101,7 +101,7 @@ namespace IFramework
                 return false;
             }
         }
-        private Dictionary<Type, ITypeMap> values=new Dictionary<Type, ITypeMap>();
+        private Dictionary<Type, ITypeMap> values = new Dictionary<Type, ITypeMap>();
 
         /// <summary>
         /// 是否存在对应名字类型的实例
@@ -145,7 +145,7 @@ namespace IFramework
                 map = new TypeMap<T>();
                 values.Add(type, map);
             }
-            return (map as TypeMap<T>).GetValue(name,autoCreate);
+            return (map as TypeMap<T>).GetValue(name, autoCreate);
         }
         /// <summary>
         /// 设置对应名字类型的实例
@@ -179,7 +179,7 @@ namespace IFramework
                 map = Activator.CreateInstance(typeof(TypeMap<>).MakeGenericType(type)) as ITypeMap;
                 values.Add(type, map);
             }
-            return map.Get(name,autoCreate);
+            return map.Get(name, autoCreate);
         }
         /// <summary>
         /// 设置对应名字类型的实例

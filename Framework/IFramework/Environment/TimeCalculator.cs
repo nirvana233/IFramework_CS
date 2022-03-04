@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace IFramework
 {
-    class TimeCalculator : ITimeCalculator,IDisposable
+    class TimeCalculator : Unit, ITimeCalculator
     {
         private Stopwatch sw_init;
         private Stopwatch sw_delta;
@@ -39,9 +39,9 @@ namespace IFramework
             deltaTime = sw_delta.Elapsed;
         }
 
-        public void Dispose()
+        protected override void OnDispose()
         {
-           
+
         }
     }
 }

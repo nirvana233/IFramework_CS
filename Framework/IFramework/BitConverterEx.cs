@@ -455,8 +455,8 @@ namespace IFramework
         public static char ToChar(byte[] buffer, int offset)
         {
             if (BitConverter.IsLittleEndian)
-                return (char)(((buffer[offset] & 0xFF) << 8) | (buffer[offset+1] & 0xFF));
-            return (char)(((buffer[offset+1] & 0xFF) << 8) | (buffer[offset ] & 0xFF));
+                return (char)(((buffer[offset] & 0xFF) << 8) | (buffer[offset + 1] & 0xFF));
+            return (char)(((buffer[offset + 1] & 0xFF) << 8) | (buffer[offset] & 0xFF));
         }
         /// <summary>
         /// byte[]
@@ -465,7 +465,7 @@ namespace IFramework
         /// <returns></returns>
         public static byte[] GetBytes(sbyte value)
         {
-            if (value <0)
+            if (value < 0)
                 return new byte[] {
                     (byte)(value + 256),
                 };
@@ -1018,6 +1018,5 @@ namespace IFramework
             public Guid Value;
         }
     }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
 }

@@ -206,8 +206,25 @@ namespace IFramework
                 return null;
             }
         }
-        static private GlobalPool pool = new GlobalPool();
+        static private GlobalPool _globalPool = new GlobalPool();
 
+        /// <summary>
+        /// 获取全局对象池数量
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public static int GetGlbalPoolCount<T>()
+        {
+            return _globalPool.GetPoolCount<T>();
+        }
+        /// <summary>
+        /// 设置全局对象池
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pool"></param>
+        public static void SetGlbalPool<T>(ObjectPool<T> pool)
+        {
+            _globalPool.SetPool(pool);
+        }
         /// <summary>
         /// 全局分配
         /// </summary>
@@ -216,7 +233,7 @@ namespace IFramework
         /// <returns></returns>
         public static T GlobalAllocate<T>(IEventArgs arg = null)
         {
-            return pool.Get<T>(arg);
+            return _globalPool.Get<T>(arg);
         }
         /// <summary>
         /// 全局回收
@@ -226,7 +243,7 @@ namespace IFramework
         /// <param name="arg"></param>
         public static void GlobalRecyle<T>(this T t, IEventArgs arg = null)
         {
-            pool.Set(t, arg);
+            _globalPool.Set(t, arg);
         }
 
         /// <summary>
