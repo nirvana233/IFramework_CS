@@ -7,19 +7,31 @@ namespace Example
     public class RecorderTest : Test
     {
         IOperationRecorderModule module { get { return Framework.GetEnv(EnvironmentType.Ev0).modules.Recoder; } }
-       int value = 0;
+        int value = 0;
         protected override void Start()
         {
             Log.L("按下  A/D   切换状态");
 
+            //Log.L($"The value is   {value}");
+            //module.AllocateAction().SetCommand(() => { value++; }, () => { value--; }).Subscribe();
+            //Log.L($"The value is   {value}");
+            //module.AllocateAction().SetCommand(() => { value += 4; }, () => { value -= 4; }).Subscribe();
+            //Log.L($"The value is   {value}");
+            //module.AllocateAction().SetCommand(() => { value += 8; }, () => { value -= 8; }).Subscribe();
             Log.L($"The value is   {value}");
-            module.AllocateAction().SetCommand(() => { value++; }, () => { value--; }).Subscribe();
+            var state = module.AllocateAction().SetCommand(() => { value += 16; }, () => { value -= 16; });
+            state.Subscribe();
             Log.L($"The value is   {value}");
-            module.AllocateAction().SetCommand(() => { value+=4; }, () => { value-=4; }).Subscribe();
+            state.Subscribe();
+            Log.L($"The value is   {value}"); 
+            state.Subscribe();
+            Log.L($"The value is   {value}"); 
+            state.Subscribe();
             Log.L($"The value is   {value}");
-            module.AllocateAction().SetCommand(() => { value += 8; }, () => { value -= 8; }).Subscribe();
+            state.Subscribe();
             Log.L($"The value is   {value}");
-
+            state.Subscribe();
+            Log.L($"The value is   {value}");
         }
 
         protected override void Stop()

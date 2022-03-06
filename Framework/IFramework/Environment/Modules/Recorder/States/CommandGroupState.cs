@@ -40,6 +40,20 @@ namespace IFramework.Modules.Recorder
             redo.Clear();
             undo.Clear();
         }
+        /// <summary>
+        /// 复制
+        /// </summary>
+        /// <returns></returns>
+        public override object Clone()
+        {
+            return new CommandGroupState()
+            {
+                recorder = recorder,
+                redo = redo,
+                undo = undo,
+                _id = _id
+            };
+        }
 
         private List<ICommand> redo = new List<ICommand>();
         private List<ICommand> undo = new List<ICommand>();

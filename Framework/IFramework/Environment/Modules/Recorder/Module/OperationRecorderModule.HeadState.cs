@@ -9,6 +9,11 @@
             protected override void OnUndo() { }
 
             protected override void OnReset() { }
+
+            public override object Clone()
+            {
+                return null;
+            }
         }
     }
 }

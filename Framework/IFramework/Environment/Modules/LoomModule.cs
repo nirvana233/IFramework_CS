@@ -39,10 +39,12 @@ namespace IFramework.Modules
         protected override void OnUpdate()
         {
             int count = 0;
-            Queue<DelayedTask> _tasks = Framework.GlobalAllocate<Queue<DelayedTask>>();
+            Queue<DelayedTask> _tasks = null;
             lock (_delay)
             {
                 count = _delay.Count;
+                if (count <= 0) return;
+                _tasks = Framework.GlobalAllocate<Queue<DelayedTask>>();
                 for (int i = 0; i < count; i++)
                 {
                     _tasks.Enqueue(_delay.Dequeue());

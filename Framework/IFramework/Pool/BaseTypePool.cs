@@ -165,7 +165,6 @@ namespace IFramework
         public Object Get<Object>(IEventArgs arg = null) where Object : T
         {
             var pool = GetPool<Object>();
-
             Object t = pool.Get(arg);
             return t;
         }
@@ -178,9 +177,11 @@ namespace IFramework
         /// <param name="arg"></param>
         public void Set<Object>(Object t, IEventArgs arg = null) where Object : T
         {
-            var pool = GetPool<Object>();
+            Type type = t.GetType();
+            var pool = GetPool(type);
             pool.Set(t, arg);
         }
+
         /// <summary>
         /// 获取现有数量
         /// </summary>

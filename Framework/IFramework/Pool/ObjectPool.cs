@@ -60,7 +60,18 @@ namespace IFramework
                 return t;
             }
         }
-
+        /// <summary>
+        /// 回收
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="args"></param>
+        public void Set(object obj, IEventArgs args)
+        {
+            if (obj is T)
+            {
+                OnSet((T)obj, args);
+            }
+        }
         /// <summary>
         /// 回收
         /// </summary>

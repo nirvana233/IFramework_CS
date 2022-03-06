@@ -42,6 +42,21 @@ namespace IFramework.Modules.Recorder
             undo.Clear();
         }
 
+        /// <summary>
+        /// 赋值
+        /// </summary>
+        /// <returns></returns>
+        public override object Clone()
+        {
+            return new ActionGroupState()
+            {
+                recorder = recorder,
+                redo = redo,
+                undo = undo,
+                _id = _id
+            };
+        }
+
         private List<Action> redo = new List<Action>();
         private List<Action> undo = new List<Action>();
     }

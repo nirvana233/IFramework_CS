@@ -15,5 +15,11 @@ namespace IFramework
         /// 类型
         /// </summary>
         Type type { get; }
+        /// <summary>
+        /// 回收
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="args"></param>
+        void Set(object obj,IEventArgs args);
     }
 }

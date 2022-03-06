@@ -33,6 +33,17 @@
             redo = null;
             undo = null;
         }
+        //复制
+        public override object Clone()
+        {
+            return new CommandState()
+            {
+                recorder = recorder,
+                redo = redo,
+                undo = undo,
+                _id = _id
+            };
+        }
 
         private ICommand redo;
         private ICommand undo;

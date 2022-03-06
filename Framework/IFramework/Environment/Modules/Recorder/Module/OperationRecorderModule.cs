@@ -47,11 +47,18 @@ namespace IFramework.Modules.Recorder
             if (state.recorder == null)
                 Log.E("Don't Create new State ,Use Allocate,");
             if (_current == null) _current = _head;
-            if (_current.next != null) Recyle(_current.next);
+            if (state.guid == _current.guid)
+            {
+                state = state.Clone() as BaseState;
+            }
+            if (_current.next != null)
+            {
+                Recyle(_current.next);
+            }
             _current.next = state;
             state.front = _current;
-            if (redo) state.Redo();
             _current = state;
+            if (redo) state.Redo();
         }
         private void Recyle(BaseState state)
         {
@@ -63,7 +70,7 @@ namespace IFramework.Modules.Recorder
                 now.Reset();
                 queue.Enqueue(now);
             } while (state != null);
-            while (queue.Count!=0)
+            while (queue.Count != 0)
             {
                 queue.Dequeue().GlobalRecyle();
             }

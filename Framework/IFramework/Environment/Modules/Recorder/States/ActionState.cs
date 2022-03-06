@@ -34,6 +34,20 @@ namespace IFramework.Modules.Recorder
             redo = null;
             undo = null;
         }
+        /// <summary>
+        /// 复制
+        /// </summary>
+        /// <returns></returns>
+        public override object Clone()
+        {
+            return new ActionState()
+            {
+                recorder = recorder,
+                redo = redo,
+                undo = undo,
+                _id = _id
+            };
+        }
 
         private Action redo;
         private Action undo;
