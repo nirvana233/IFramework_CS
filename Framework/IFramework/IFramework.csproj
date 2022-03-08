@@ -79,7 +79,6 @@
     <Compile Include="Environment\Modules\ModulePriority.cs" />
     <Compile Include="Environment\Modules\Recorder\Module\OperationRecorderEx.cs" />
     <Compile Include="Environment\Modules\Recorder\Module\OperationRecorderModule.HeadState.cs" />
-    <Compile Include="Environment\Modules\Recorder\States\ValueState.cs" />
     <Compile Include="Environment\TimeCalculator.cs" />
     <Compile Include="Extension\FloatEx.cs" />
     <Compile Include="Extension\IEnumerableEx.cs" />
