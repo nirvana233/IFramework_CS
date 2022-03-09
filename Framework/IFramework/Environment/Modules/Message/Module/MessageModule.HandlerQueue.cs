@@ -7,7 +7,6 @@ namespace IFramework.Modules.Message
         private partial class HandlerQueue : IDisposable
         {
             private Queue<DelegateSubscribe> _subscribeQueue = Framework.GlobalAllocate<Queue<DelegateSubscribe>>();
-            private Queue<DelegateSubscribe> _unsubscribeQueue = Framework.GlobalAllocate<Queue<DelegateSubscribe>>();
             private List<Subject> subjects = Framework.GlobalAllocate<List<Subject>>();
             private Dictionary<Type, int> subjectMap = Framework.GlobalAllocate<Dictionary<Type, int>>();
             private LockParam _lock = new LockParam();
@@ -29,10 +28,10 @@ namespace IFramework.Modules.Message
             {
                 using (new LockWait(ref _lock))
                 {
-                    var s = Framework.GlobalAllocate<DelegateSubscribe>();
+                    var s = Framework.GlobalAllocate<DelegateUnsubscribe>();
                     s.type = type;
                     s.value = listener;
-                    _unsubscribeQueue.Enqueue(s);
+                    _subscribeQueue.Enqueue(s);
                 }
             }
             public bool Publish(IMessage message)
@@ -71,30 +70,30 @@ namespace IFramework.Modules.Message
                     {
                         var value = _subscribeQueue.Dequeue();
                         type = value.type;
-                        Subject en;
-                        if (!subjectMap.TryGetValue(type, out index))
+                        if (value is DelegateUnsubscribe)
                         {
-                            index = subjects.Count;
-                            en = new Subject(type);
-                            subjectMap.Add(type, index);
-                            subjects.Add(en);
+                            if (subjectMap.TryGetValue(type, out index))
+                            {
+                                subjects[subjectMap[type]].UnSubscribe(value.value);
+                            }
                         }
                         else
                         {
-                            en = subjects[subjectMap[type]];
+                            Subject en;
+                            if (!subjectMap.TryGetValue(type, out index))
+                            {
+                                index = subjects.Count;
+                                en = new Subject(type);
+                                subjectMap.Add(type, index);
+                                subjects.Add(en);
+                            }
+                            else
+                            {
+                                en = subjects[subjectMap[type]];
+                            }
+                            en.Subscribe(value.value);
                         }
-                        en.Subscribe(value.value);
-                        value.GlobalRecyle();
-                    }
-                    count = _unsubscribeQueue.Count;
-                    for (int i = 0; i < count; i++)
-                    {
-                        var value = _unsubscribeQueue.Dequeue();
-                        type = value.type;
-                        if (subjectMap.TryGetValue(type, out index))
-                        {
-                            subjects[subjectMap[type]].UnSubscribe(value.value);
-                        }
+                       
                         value.GlobalRecyle();
                     }
                 }
@@ -107,9 +106,7 @@ namespace IFramework.Modules.Message
                 subjects.Clear();
                 subjectMap.Clear();
                 _subscribeQueue.Clear();
-                _unsubscribeQueue.Clear();
                 _subscribeQueue.GlobalRecyle();
-                _unsubscribeQueue.GlobalRecyle();
                 subjects.GlobalRecyle();
                 subjectMap.GlobalRecyle();
             }
