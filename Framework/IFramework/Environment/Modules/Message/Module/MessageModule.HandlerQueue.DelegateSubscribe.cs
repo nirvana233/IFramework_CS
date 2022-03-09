@@ -10,8 +10,6 @@ namespace IFramework.Modules.Message
                 public Type type;
                 public MessageListener value { get; set; }
             }
-
-            private class DelegateUnsubscribe : DelegateSubscribe { }
         }
     }
 }
