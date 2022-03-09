@@ -7,3 +7,6 @@ Plugins/
 Framework/IFramework/obj/
 Framework/IFramework.UnityPlugin/obj/
 Framework/Example/obj/
+Framework/packages/
+Framework/IFramework.Tests/bin/
+Framework/IFramework.Tests/obj/
