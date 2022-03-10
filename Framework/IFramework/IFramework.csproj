@@ -72,6 +72,7 @@
     <Compile Include="Environment\Modules\Message\Message\MessageErrorCode.cs" />
     <Compile Include="Environment\Modules\Message\Module\MessageModule.cs" />
     <Compile Include="Environment\Modules\Message\Module\MessageModule.HandlerQueue.DelegateSubscribe.cs" />
+    <Compile Include="Environment\Modules\Message\Module\MessageModule.HandlerQueue.DelegateUnsubscribe.cs" />
     <Compile Include="Environment\Modules\Message\Module\MessageModule.HandlerQueue.Subject.cs" />
     <Compile Include="Environment\Modules\Message\Module\MessageModule.MessageQueue.cs" />
     <Compile Include="Environment\Modules\Message\Module\MessageModule.MessageQueue.Message.cs" />

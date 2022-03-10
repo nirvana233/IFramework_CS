@@ -88,7 +88,8 @@ namespace Example
                             Log.L("发送的消息可以添加MessageUrgencyType参数来提高优先级");
                             Log.L("紧急程度为立即的消息不受processesPerFrame规则影响");
                             Log.L("----------------开始按键----------------");
-                            Log.L("按键之后将分别发送三条普通、三条不重要、三条非常紧急和一条立即 的紧急程度的消息\n");
+                            Log.L("按键之后将分别发送三条普通、三条不重要、三条非常紧急、一条立即");
+                            Log.L("然后再以异步的方式发送一条重要的消息");
                         });
 
         }
@@ -103,9 +104,9 @@ namespace Example
             Log.L($"剩余消息条数  {messageModule.count}");
             SendMessage();
 
-            Log.L("开始发送紧急类型为立即的一条消息");
-            await messageModule.PublishByNumber(this, null, (int)MessageUrgencyType.Important);
-            Log.L("已发送紧急类型为立即的一条消息");
+            Log.L("开始发送紧急类型为重要的一条消息");
+            await messageModule.PublishByNumber(this, null, (int)MessageUrgencyType.Important).SetCode(10);
+            Log.L("已发送紧急类型为重要的一条消息");
 
         }
         /// <summary>
@@ -128,6 +129,10 @@ namespace Example
                 messageModule.Publish(this, null, MessageUrgencyType.VeryUrgent).SetCode(i + 7);
             }
             Log.L("已发送紧急类型为非常紧急的三条消息");
+
+            messageModule.PublishByNumber(this, null,MessageUrgency.Immediately);
+            Log.L("已发送紧急类型为立即的一条消息");
+            Log.L("立即执行的消息不在等待队列中，因此无法设置值\n");
 
         }
 
