@@ -5,13 +5,13 @@ namespace IFramework.Modules.Coroutine
 {
 
     /// <summary>
-    /// 携程模块
+    /// 协程模块
     /// </summary>
     [ScriptVersionAttribute(8)]
     public class CoroutineModule : UpdateModule, ICoroutineModule
     {
         /// <summary>
-        /// 开启一个携程
+        /// 开启一个协程
         /// </summary>
         /// <param name="routine"></param>
         /// <returns></returns>

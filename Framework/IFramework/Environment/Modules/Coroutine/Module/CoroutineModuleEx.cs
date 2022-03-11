@@ -11,7 +11,7 @@ namespace IFramework.Modules.Coroutine
     public static class CoroutineModuleEx
     {
         /// <summary>
-        /// 开启一个携程
+        /// 开启一个协程
         /// </summary>
         /// <param name="obj"></param>
         /// <param name=" envType"></param>
@@ -23,7 +23,7 @@ namespace IFramework.Modules.Coroutine
             return _env.modules.Coroutine.StartCoroutine(routine);
         }
         /// <summary>
-        /// 开启一个携程
+        /// 开启一个协程
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="env"></param>
@@ -34,7 +34,7 @@ namespace IFramework.Modules.Coroutine
             return env.modules.Coroutine.StartCoroutine(routine);
         }
         /// <summary>
-        /// 结束一个携程
+        /// 结束一个协程
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="routine">迭代器</param>

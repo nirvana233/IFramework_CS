@@ -22,10 +22,10 @@ namespace IFramework.Modules.Message
         /// <summary>
         /// 发布消息
         /// </summary>
-        /// <param name="tyoe"></param>
+        /// <param name="type"></param>
         /// <param name="args"></param>
         /// <param name="priority"></param>
-        IMessage Publish(Type tyoe, IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common);
+        IMessage Publish(Type type, IEventArgs args, MessageUrgencyType priority = MessageUrgencyType.Common);
         /// <summary>
         /// 发布消息
         /// </summary>
@@ -74,10 +74,10 @@ namespace IFramework.Modules.Message
         /// <summary>
         /// 注册
         /// </summary>
-        /// <param name="tyoe"></param>
+        /// <param name="type"></param>
         /// <param name="listener"></param>
         /// <returns></returns>
-        void Subscribe(Type tyoe, MessageListener listener);
+        void Subscribe(Type type, MessageListener listener);
         /// <summary>
         /// 注册
         /// </summary>

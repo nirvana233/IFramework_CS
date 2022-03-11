@@ -4,7 +4,7 @@ using System.Collections;
 namespace IFramework.Modules.Coroutine
 {
     /// <summary>
-    /// 携程 模拟
+    /// 协程 模拟
     /// </summary>
     internal class Coroutine : YieldInstruction,ICoroutine
     {
@@ -26,11 +26,11 @@ namespace IFramework.Modules.Coroutine
         }
 
         /// <summary>
-        /// 携程完成时候回调
+        /// 协程完成时候回调
         /// </summary>
         internal event Action onCompelete;
         /// <summary>
-        /// 手动结束携程
+        /// 手动结束协程
         /// </summary>
         public void Compelete()
         {
