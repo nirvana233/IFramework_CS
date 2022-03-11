@@ -65,13 +65,13 @@ namespace Example
             //new PriorityQueueTest();         //优先级队列
 
             //new MvvmTest();
-            new MessageExample();            //消息模块
+           // new MessageExample();            //消息模块
             //new RecyclableObjectTest();      //可回收对象测试
             //new NodeActionTest();            //节点事件
             //new RecorderTest();              //操作记录模块
             //new InjectTest();                //依赖注入
             //new ConfigTest();                //配置模块
-            //new CoroutineTest();             //协程 模块
+            new CoroutineTest();             //协程 模块
             //new FsmTest();                   //状态机模块
             //new MouduleTest();               //自定义模块
 

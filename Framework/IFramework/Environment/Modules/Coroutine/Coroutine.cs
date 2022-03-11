@@ -93,7 +93,7 @@ namespace IFramework.Modules.Coroutine
         {
             if (_innerAction == null)
             {
-                if (!_routine.MoveNext())
+                if (_routine==null || !_routine.MoveNext())
                 {
                     return true;
                 }
