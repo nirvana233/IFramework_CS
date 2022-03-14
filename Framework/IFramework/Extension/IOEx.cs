@@ -349,7 +349,7 @@ namespace IFramework
         /// <param name="path"></param>
         public static void MakeDirectoryExist(this string path)
         {
-            if (Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }

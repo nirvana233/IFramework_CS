@@ -28,7 +28,7 @@ namespace IFramework.Modules.Recorder
         /// </summary>
         protected override void OnUndo()
         {
-            for (int i = 0; i < redo.Count; i++)
+            for (int i = redo.Count - 1; i >= 0; i--)
             {
                 undo[i]();
             }
