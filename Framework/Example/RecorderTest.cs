@@ -4,34 +4,75 @@ using IFramework.Modules.Recorder;
 
 namespace Example
 {
+    //记录模块例子(撤销与反撤销)
     public class RecorderTest : Test
     {
-        IOperationRecorderModule module { get { return Framework.GetEnv(EnvironmentType.Ev0).modules.Recoder; } }
-        int value = 0;
+        static int value = 0; //本例子的主角,全都改在它身上
+
+        //让Value增加1的Command操作
+        struct AddValueCommand : ICommand
+        {
+            public void Excute()
+            {
+                value++;
+            }
+        }
+
+        //让Value减少1的Command操作
+        struct SubValueCommand : ICommand
+        {
+            public void Excute()
+            {
+                value--;
+            }
+        }
+
+        //获取模块
+        IOperationRecorderModule recorderModule { get { return Framework.GetEnv(EnvironmentType.Ev0).modules.Recoder; } }
+
         protected override void Start()
         {
-            Log.L("按下  A/D   切换状态");
 
-            //Log.L($"The value is   {value}");
-            //module.AllocateAction().SetCommand(() => { value++; }, () => { value--; }).Subscribe();
-            //Log.L($"The value is   {value}");
-            //module.AllocateAction().SetCommand(() => { value += 4; }, () => { value -= 4; }).Subscribe();
-            //Log.L($"The value is   {value}");
-            //module.AllocateAction().SetCommand(() => { value += 8; }, () => { value -= 8; }).Subscribe();
-            Log.L($"The value is   {value}");
-            var state = module.AllocateAction().SetCommand(() => { value += 16; }, () => { value -= 16; });
-            state.Subscribe();
-            Log.L($"The value is   {value}");
-            state.Subscribe();
-            Log.L($"The value is   {value}"); 
-            state.Subscribe();
-            Log.L($"The value is   {value}"); 
-            state.Subscribe();
-            Log.L($"The value is   {value}");
-            state.Subscribe();
-            Log.L($"The value is   {value}");
-            state.Subscribe();
-            Log.L($"The value is   {value}");
+            Log.L("操作分为CommandState、ActionState、CommandGroupState、ActionGroupState");
+            Log.L("State为一次操作的声明，其中包含了Redo和Undo两个步骤，也就是操作和撤回");
+            Log.L("使用State的Subscribe方法将操作注册到记录模块中，此时就会开始State的Redo步骤");
+
+            Log.L($"例子开始：Value的值是{value} \n");
+
+            Log.L("注册一个ActionState，使Value的值增加16");
+            var actionState = recorderModule.AllocateAction().SetCommand(() => { value += 16; }, () => { value -= 16; });
+            actionState.Subscribe();
+            Log.L($"此时Value的值为{value} \n");
+
+            Log.L("注册一个CommandState，使Value的值增加1");
+            var commandState = recorderModule.AllocateCommand().SetCommand(new AddValueCommand(), new SubValueCommand());
+            commandState.Subscribe();
+            Log.L($"此时Value的值为{value} \n");
+
+            Log.L("注册一组ActionState，使Value的值依次增加1、2、3");
+            var actionGroupState = recorderModule.AllocateActionGroup()
+                                                 .SetGroupCommand(() => { value += 1; }, () => { value -= 1; })
+                                                 .SetGroupCommand(() => { value += 2; }, () => { value -= 2; })
+                                                 .SetGroupCommand(() => { value += 3; }, () => { value -= 3; });
+            actionGroupState.Subscribe();
+            Log.L($"此时Value的值为{value} \n");
+
+            Log.L("注册一组CommandState，使Value的值增加三次1");
+            var commandGroupState = recorderModule.AllocateCommandGroup()
+                                                 .SetGroupCommand(new AddValueCommand(), new SubValueCommand())
+                                                 .SetGroupCommand(new AddValueCommand(), new SubValueCommand())
+                                                 .SetGroupCommand(new AddValueCommand(), new SubValueCommand());
+            commandGroupState.Subscribe();
+            Log.L($"此时Value的值为{value} \n");
+
+            Log.L("保存的state可以多次注册,将commandGroupState调用三次");
+            commandGroupState.Subscribe();
+            commandGroupState.Subscribe();
+            commandGroupState.Subscribe();
+            Log.L($"此时Value的值为{value} \n");
+
+
+            Log.L("按A撤销，按D反撤销\n");
         }
 
         protected override void Stop()
@@ -42,19 +83,15 @@ namespace Example
         {
             if (Console.ReadKey().Key == ConsoleKey.A)
             {
-                bool bo = module.Undo();
-                Log.L("");
-
-                Log.L($"Undo  success {bo}");
-                Log.L($"The value is   {value}");
+                bool bo = recorderModule.Undo();
+                Log.L(bo?"撤销成功" : "撤销失败");
+                Log.L($"此时Value的值为{value} \n");
             }
             if (Console.ReadKey().Key == ConsoleKey.D)
             {
-                bool bo = module.Redo();
-                Log.L("");
-
-                Log.L($"Redo sucess   {bo}");
-                Log.L($"The value is   {value}");
+                bool bo = recorderModule.Redo();
+                Log.L(bo ? "反撤销成功" : "反撤销失败");
+                Log.L($"此时Value的值为{value} \n");
             }
         }
     }
