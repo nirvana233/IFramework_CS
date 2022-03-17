@@ -69,7 +69,7 @@ namespace IFramework
         {
             if (obj is T)
             {
-                OnSet((T)obj, args);
+                Set((T)obj, args);
             }
         }
         /// <summary>
