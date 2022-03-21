@@ -49,8 +49,8 @@ namespace IFramework.Modules.Recorder
             return new CommandGroupState()
             {
                 recorder = recorder,
-                redo = redo,
-                undo = undo,
+                redo = new List<ICommand>(redo),
+                undo = new List<ICommand>(undo),
                 _id = _id
             };
         }

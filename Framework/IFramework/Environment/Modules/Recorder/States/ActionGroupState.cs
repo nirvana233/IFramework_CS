@@ -51,8 +51,8 @@ namespace IFramework.Modules.Recorder
             return new ActionGroupState()
             {
                 recorder = recorder,
-                redo = redo,
-                undo = undo,
+                redo = new List<Action>(redo),
+                undo = new List<Action>(undo),
                 _id = _id
             };
         }
