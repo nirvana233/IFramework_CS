@@ -10,7 +10,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace IFramework.Utility
+namespace IFramework
 {
     /// <summary>
     /// 校验相关的实用函数

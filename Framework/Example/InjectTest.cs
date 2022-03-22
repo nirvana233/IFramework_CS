@@ -1,5 +1,4 @@
 ﻿using IFramework;
-using IFramework.Injection;
 using System.Collections.Generic;
 
 namespace Example

@@ -16,7 +16,6 @@ namespace IFramework.Serialization.DataTable
     /// <summary>
     /// 数据写入者
     /// </summary>
-    [RequireAttribute(typeof(StringConvert))]
     internal class DataWriter : Unit, IDataWriter
     {
         private IDataExplainer _explainer;

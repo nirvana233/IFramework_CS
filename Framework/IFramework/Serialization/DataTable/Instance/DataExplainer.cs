@@ -15,10 +15,6 @@ namespace IFramework.Serialization.DataTable
     /// <summary>
     /// string 解释器
     /// </summary>
-    [VersionUpdate(1, "数据转化")]
-    [VersionUpdate(10, "处理序列化过程中存在 , \" 的情况")]
-    [ScriptVersion(10)]
-    [RequireAttribute(typeof(StringConvert))]
     public class DataExplainer : IDataExplainer
     {
         private char dot;

@@ -128,7 +128,6 @@ namespace IFramework
         /// <param name="type"></param>
         /// <param name="arg"></param>
         /// <returns></returns>
-        [Tip("少用,内部反射")]
         public T Get(Type type, IEventArgs arg = null)
         {
             MethodInfo m2;
@@ -145,7 +144,6 @@ namespace IFramework
         /// <param name="type"></param>
         /// <param name="t"></param>
         /// <param name="arg"></param>
-        [Tip("少用,内部反射")]
         public void Set(Type type, T t, IEventArgs arg = null)
         {
             MethodInfo m2;

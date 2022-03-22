@@ -10,52 +10,9 @@ namespace IFramework
     /// <summary>
     /// 框架入口
     /// </summary>
-    [RequireAttribute(typeof(FrameworkEnvironment))]
-    [ScriptVersionAttribute(10)]
-    [VersionUpdateAttribute(8, "增加环境数量")]
-    [VersionUpdateAttribute(10, "改变环境为属性")]
     public static class Framework
     {
-        static Framework()
-        {
-            CalcVersion();
-        }
-        private static string CalcVersion()
-        {
-            int sum = 0;
-            Version = "";
-            AppDomain.CurrentDomain.GetAssemblies()
-                             .SelectMany(item => item.GetTypes())
-                             .ToList()
-                             .ForEach((type) =>
-                             {
-                                 if (!type.FullName.Contains(FrameworkName)) return;
-                                 if (type.IsDefined(typeof(ScriptVersionAttribute), false))
-                                 {
-                                     ScriptVersionAttribute attr = type.GetCustomAttributes(typeof(ScriptVersionAttribute), false).First() as ScriptVersionAttribute;
-                                     sum += attr.version;
-                                 }
-                                 else
-                                     sum += 1;
-                             });
-            int mul = 1000;
-            do
-            {
-                float tval = sum % mul;
-                Version = Version.AppendHead(string.Format(".{0}", tval));
-                sum = sum / mul;
-            } while (sum > 0);
-            Version = Version.Substring(1);
-            int tmp = 4 - Version.Split('.').Length;
-            for (int i = 0; i < tmp; i++)
-                Version = Version.AppendHead("0.");
-            return Version;
-        }
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        public const string FrameworkName = "IFramework";
-        public const string Author = "OnClick";
-        public static string Version;
-        public const string Description = FrameworkName;
         private static Dictionary<int, IEnvironment> envs = new Dictionary<int, IEnvironment>();
         private static LockParam _lock = new LockParam();
 

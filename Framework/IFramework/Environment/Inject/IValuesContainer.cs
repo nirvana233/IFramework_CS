@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IFramework.Injection
+namespace IFramework
 {
     /// <summary>
     /// 对象注入容器

@@ -1,6 +1,5 @@
 ﻿namespace IFramework.NodeAction
 {
-    [ScriptVersion(3)]
     class SequenceNode : ContainerNode, ISequenceNode
     {
         private int _curIndex;

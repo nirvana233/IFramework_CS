@@ -6,8 +6,6 @@ namespace IFramework
     /// <summary>
     /// 可回收集合
     /// </summary>
-    [ScriptVersion(21)]
-    [VersionUpdate(20, "增加未回收实例的控制")]
     internal class RecyclableObjectCollection : IDisposable
     {
         private class RecyclableObjectPool : BaseTypePool<RecyclableObject> { }
@@ -86,7 +84,6 @@ namespace IFramework
         /// <param name="type"></param>
         /// <param name="arg"></param>
         /// <returns></returns>
-        [Tip("少用,内部反射")]
         public RecyclableObject Get(Type type, IEventArgs arg = null)
         {
             var obj = _createPool.Get(type, arg);
@@ -112,7 +109,6 @@ namespace IFramework
         /// <param name="type"></param>
         /// <param name="t"></param>
         /// <param name="arg"></param>
-        [Tip("少用,内部反射")]
         public void Set(Type type, RecyclableObject t, IEventArgs arg = null)
         {
             _memory.Remove(t.guid);

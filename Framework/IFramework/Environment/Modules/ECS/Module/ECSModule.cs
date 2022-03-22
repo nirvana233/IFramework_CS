@@ -6,9 +6,6 @@ namespace IFramework.Modules.ECS
     /// <summary>
     /// 模仿Ecs结构
     /// </summary>
-    [ScriptVersionAttribute(633)]
-    [VersionUpdateAttribute(552, "IComponent 采用Array统一管理")]
-    [VersionUpdateAttribute(633, "内部代码上锁")]
     public partial class ECSModule : UpdateModule, IECSModule
     {
         private Systems _systems;

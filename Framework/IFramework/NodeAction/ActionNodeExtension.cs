@@ -7,10 +7,6 @@ namespace IFramework.NodeAction
     /// <summary>
     /// 静态扩展
     /// </summary>
-    [ScriptVersion(65)]
-    [VersionUpdateAttribute(55, "面向接口")]
-    [VersionUpdateAttribute(60, "增加节点类型")]
-    [VersionUpdateAttribute(65, "减少迭代器使用")]
 
     public static class ActionNodeExtension
     {
@@ -103,7 +99,6 @@ namespace IFramework.NodeAction
         /// <param name="envType"></param>
         /// <param name="autoRecyle"></param>
         /// <returns></returns>
-        [RequireAttribute(typeof(FrameworkEnvironment))]
         public static ISequenceNode Sequence(this object self, EnvironmentType envType, bool autoRecyle = true)
         {
             SequenceNode node = Allocate<SequenceNode>(envType);
@@ -117,7 +112,6 @@ namespace IFramework.NodeAction
         /// <param name="env"></param>
         /// <param name="autoRecyle"></param>
         /// <returns></returns>
-        [RequireAttribute(typeof(FrameworkEnvironment))]
         public static ISequenceNode Sequence(this object self, IEnvironment env, bool autoRecyle = true)
         {
             SequenceNode node = Allocate<SequenceNode>(env);

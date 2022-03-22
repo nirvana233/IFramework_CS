@@ -6,7 +6,6 @@ namespace IFramework.Modules.Fsm
     /// <summary>
     /// 状态机
     /// </summary>
-    [ScriptVersion(66)]
     public class FsmModule : UpdateModule, IFsmModule
     {
         private class StateInfo

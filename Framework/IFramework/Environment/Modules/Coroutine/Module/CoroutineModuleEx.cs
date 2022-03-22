@@ -6,8 +6,6 @@ namespace IFramework.Modules.Coroutine
     /// <summary>
     /// 协程模块扩展
     /// </summary>
-    [ScriptVersionAttribute(5)]
-    [VersionUpdateAttribute(5,"面向接口")]
     public static class CoroutineModuleEx
     {
         /// <summary>

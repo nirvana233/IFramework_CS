@@ -1,5 +1,4 @@
-﻿using IFramework.Modules.Config;
-using IFramework.Modules.Coroutine;
+﻿using IFramework.Modules.Coroutine;
 using IFramework.Modules.ECS;
 using IFramework.Modules.Fsm;
 using IFramework.Modules.Message;
@@ -29,10 +28,6 @@ namespace IFramework.Modules
         /// </summary>
         IMessageModule Message { get; }
 
-        /// <summary>
-        /// config
-        /// </summary>
-        IConfigModule Config { get; }
         /// <summary>
         /// 操作记录
         /// </summary>

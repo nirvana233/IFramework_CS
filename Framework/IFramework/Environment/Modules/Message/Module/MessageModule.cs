@@ -4,12 +4,6 @@ namespace IFramework.Modules.Message
     /// <summary>
     /// 消息模块
     /// </summary>
-    [ScriptVersion(230)]
-    [VersionUpdate(120, "加入消息优先级以及进程等待")]
-    [VersionUpdate(140, "增加子类型匹配")]
-    [VersionUpdate(180, "抽象出IMessage")]
-    [VersionUpdate(200, "增加立刻处理")]
-    [VersionUpdate(230, "注册延时处理")]
     public partial class MessageModule : UpdateModule, IMessageModule
     {
         private MessageQueue messages;

@@ -6,8 +6,6 @@ namespace IFramework
     /// <summary>
     /// 可回收类
     /// </summary>
-    [ScriptVersionAttribute(20)]
-    [VersionUpdateAttribute(20, "增加未回收实例的控制")]
     public abstract class RecyclableObject : Unit, IRecyclable, IBelongToEnvironment, IUniqueIDObject
     {
         private static RecyclableObjectCollection GetCollection(IEnvironment env)
@@ -20,7 +18,6 @@ namespace IFramework
         /// <param name="type">类型</param>
         /// <param name=" envType"></param>
         /// <returns></returns>
-        [Tip("少用,内部反射")]
         public static RecyclableObject Allocate(Type type, EnvironmentType envType)
         {
             var _env = Framework.GetEnv(envType);
@@ -32,7 +29,6 @@ namespace IFramework
         /// <param name="type"></param>
         /// <param name="env"></param>
         /// <returns></returns>
-        [Tip("少用,内部反射")]
         public static RecyclableObject Allocate(Type type, IEnvironment env)
         {
             RecyclableObject t = GetCollection(env).Get(type) as RecyclableObject;

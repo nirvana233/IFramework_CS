@@ -2,7 +2,6 @@
 
 namespace IFramework.NodeAction
 {
-    [ScriptVersion(3)]
     class EventNode : ActionNode, IEventNode
     {
         private Action _body;

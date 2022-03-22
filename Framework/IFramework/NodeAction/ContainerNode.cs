@@ -5,7 +5,6 @@ namespace IFramework.NodeAction
     /// <summary>
     /// 容器节点
     /// </summary>
-    [ScriptVersion(3)]
      abstract class ContainerNode : ActionNode, IContainerNode
     {
         /// <summary>

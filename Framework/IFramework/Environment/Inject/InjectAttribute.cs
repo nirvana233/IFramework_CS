@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IFramework.Injection
+namespace IFramework
 {
     /// <summary>
     /// 注入标记

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using IFramework.Injection;
 using IFramework.Modules;
 
 namespace IFramework
@@ -8,11 +7,6 @@ namespace IFramework
     /// <summary>
     /// 环境
     /// </summary>
-    [ScriptVersionAttribute(35)]
-    [VersionUpdateAttribute(21, "替换可回收对象池子类型")]
-    [VersionUpdateAttribute(22, "调整释放时候的成员顺序")]
-    [VersionUpdateAttribute(23, "增加数据绑定器")]
-    [VersionUpdateAttribute(35, "抽象化环境")]
     public interface IEnvironment: IDisposable
     {
         /// <summary>

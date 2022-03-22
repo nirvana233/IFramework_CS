@@ -6,7 +6,6 @@ namespace IFramework.MVVM
     /// <summary>
     /// 界面
     /// </summary>
-    [ScriptVersion(12)]
     public abstract class View : IDisposable
     {
         private ObservableValue<ViewModel> _context = new ObservableValue<ViewModel>(null);

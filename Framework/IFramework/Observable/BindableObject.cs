@@ -8,7 +8,6 @@ namespace IFramework
     /// <summary>
     /// 绑定对象
     /// </summary>
-    [ScriptVersion(11)]
     public abstract class BindableObject : Unit
     {
         /// <summary>

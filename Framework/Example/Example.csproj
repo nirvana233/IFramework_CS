@@ -46,9 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AstarTest.cs" />
     <Compile Include="BindTest.cs" />
-    <Compile Include="ConfigTest.cs" />
     <Compile Include="CoroutineTest.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="FsmTest.cs" />

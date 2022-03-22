@@ -2,7 +2,6 @@
 
 namespace IFramework.NodeAction
 {
-    [ScriptVersion(3)]
     class RepeatNode : ContainerNode, IRepeatNode
     {
         private int _curRepeat;

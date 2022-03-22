@@ -1,5 +1,4 @@
-﻿using IFramework.Injection;
-using IFramework.Modules;
+﻿using IFramework.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;

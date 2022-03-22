@@ -47,7 +47,7 @@ namespace IFramework
         /// <returns></returns>
         public static object CreatInstance(this Type self)
         {
-            return self.IsValueType ? Activator.CreateInstance(self) : null;
+            return self.IsValueType ? null : Activator.CreateInstance(self);
         }
         /// <summary>
         /// 是否继承接口
@@ -59,7 +59,7 @@ namespace IFramework
         {
             return self.GetInterfaces().Contains(Interface);
         }
-        
+
         /// <summary>
         /// 是否继承自泛型类
         /// </summary>
@@ -114,7 +114,7 @@ namespace IFramework
             {
                 types.Add(t);
                 t = t.BaseType;
-            } while (t!=null);
+            } while (t != null);
             types.AddRange(tmp.GetInterfaces());
             return types;
         }
@@ -124,7 +124,7 @@ namespace IFramework
         /// <param name="self"></param>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        public static IEnumerable<MethodInfo> GetExtensionMethods(this Type self,Assembly assembly)
+        public static IEnumerable<MethodInfo> GetExtensionMethods(this Type self, Assembly assembly)
         {
             var query = from type in assembly.GetTypes()
                         where !type.IsGenericType && !type.IsNested

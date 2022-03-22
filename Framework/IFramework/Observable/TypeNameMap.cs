@@ -6,7 +6,7 @@ namespace IFramework
     /// <summary>
     /// 数据存储器   类型,名字,实例
     /// </summary>
-    public class ValueMap
+    class TypeNameMap
     {
         private interface ITypeMap
         {

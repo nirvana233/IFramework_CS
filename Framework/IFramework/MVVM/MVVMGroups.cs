@@ -7,7 +7,6 @@ namespace IFramework.MVVM
     /// <summary>
     /// MVVM 模块
     /// </summary>
-    [ScriptVersion(56)]
     public class MVVMGroups : Unit
     {
         /// <summary>

@@ -6,7 +6,6 @@ namespace IFramework
     /// 可观测树值
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [ScriptVersion(10)]
     public class ObservableValue<T> : ObservableObject
     {
         /// <summary>

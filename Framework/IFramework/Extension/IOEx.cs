@@ -12,34 +12,6 @@ namespace IFramework
     public static partial class IOEx
     {
         /// <summary>
-        /// 文件大小等级
-        /// </summary>
-        public enum FileSizeLev
-        {
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-            B = 0, KB, MB, GB, TB
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
-        }
-        /// <summary>
-        /// 获取文件的 带等级的大小
-        /// 结果中间有空格
-        /// </summary>
-        /// <param name="length">文件长度</param>
-        /// <returns></returns>
-        public static string GetFileSize(long length)
-        {
-            int lev = 0;
-            long len = length;
-            if (length == 0) return "0 " + ((FileSizeLev)0).ToString();
-            while (len / 1024 > 0)
-            {
-                len /= 1024;
-                lev++;
-            }
-            return Math.Round(length / Math.Pow(1024, lev), 2).ToString() + " " + ((FileSizeLev)lev).ToString();
-        }
-
-        /// <summary>
         /// 获取文件长度
         /// </summary>
         /// <param name="filePath">文件路径</param>
@@ -49,26 +21,6 @@ namespace IFramework
             if (!File.Exists(filePath) && !Directory.Exists(filePath)) return 0;
             FileInfo info = new FileInfo(filePath);
             return info.Length;
-        }
-        /// <summary>
-        /// 获取文件的 带等级的大小通过文件路径
-        /// 结果中间有空格
-        /// </summary>
-        /// <param name="filePath">文件路径</param>
-        /// <returns></returns>
-        public static string GetFileSize(this string filePath)
-        {
-            if (!File.Exists(filePath) && !Directory.Exists(filePath)) return string.Empty;
-            FileInfo info = new FileInfo(filePath);
-            long length = info.Length;
-            int lev = 0;
-            if (length == 0) return info.Length + " " + ((FileSizeLev)0).ToString();
-            while (length / 1024 > 0)
-            {
-                length /= 1024;
-                lev++;
-            }
-            return Math.Round(info.Length / Math.Pow(1024, lev), 2).ToString() + " " + ((FileSizeLev)lev).ToString();
         }
         /// <summary>
         /// 读取 string
@@ -186,6 +138,15 @@ namespace IFramework
         }
 
         /// <summary>
+        /// 是否存在文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool ExistFile(this string path)
+        {
+            return File.Exists(path);
+        }
+        /// <summary>
         /// 是否是一个文件夹
         /// </summary>
         /// <param name="path"></param>
@@ -291,7 +252,7 @@ namespace IFramework
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string GetFileExtendName(this string path)
+        public static string GetFileExtend(this string path)
         {
             var lastIndex = path.LastIndexOf(".");
             if (lastIndex >= 0)

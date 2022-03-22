@@ -5,8 +5,6 @@ namespace IFramework.Modules.Message
     /// <summary>
     /// 消息
     /// </summary>
-    [Tip("如果需要缓存此类型的引用，必须绑定回收事件OnCompelete，并制空引用,以防出错")]
-    [Tip("部分 Api 只在特殊时期有效")]
     public interface IMessage:IAwaitable<MessageAwaiter>
     {
         /// <summary>

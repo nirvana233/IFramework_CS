@@ -7,7 +7,6 @@ namespace IFramework.Modules.Coroutine
     /// <summary>
     /// 协程模块
     /// </summary>
-    [ScriptVersionAttribute(8)]
     public class CoroutineModule : UpdateModule, ICoroutineModule
     {
         /// <summary>

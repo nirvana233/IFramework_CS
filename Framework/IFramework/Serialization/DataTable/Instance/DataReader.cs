@@ -15,7 +15,6 @@ namespace IFramework.Serialization.DataTable
     /// <summary>
     /// 数据表读者
     /// </summary>
-    [RequireAttribute(typeof(StringConvert))]
     internal class DataReader : Unit, IDataReader
     {
         private List<List<DataColumn>> _rows;

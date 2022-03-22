@@ -6,7 +6,6 @@ namespace IFramework
     /// <summary>
     /// 绑定器
     /// </summary>
-    [ScriptVersion(11)]
     public class BindableObjectHandler : Unit
     {
         struct BindEntity
@@ -49,7 +48,7 @@ namespace IFramework
         internal static BindableObjectHandler handler;
         private List<BindEntity> _entitys = new List<BindEntity>();
 
-        private ValueMap _valuemap = new ValueMap();
+        private TypeNameMap _valuemap = new TypeNameMap();
         private Dictionary<Type, Dictionary<string, Action<string, object>>> _callmap = new Dictionary<Type, Dictionary<string, Action<string, object>>>();
 
         /// <summary>

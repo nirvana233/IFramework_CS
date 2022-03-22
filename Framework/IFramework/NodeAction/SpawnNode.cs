@@ -1,6 +1,5 @@
 ﻿namespace IFramework.NodeAction
 {
-    [ScriptVersion(3)]
     class SpawnNode : ContainerNode, ISpawnNode
     {
         private int _mFinishCount;
