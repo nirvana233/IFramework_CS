@@ -19,7 +19,10 @@ namespace IFramework.Modules.Recorder
         /// id
         /// </summary>
         public Guid guid { get { return _id; } }
-
+        /// <summary>
+        /// 名字
+        /// </summary>
+        public string name { get; private set; }
         internal void Redo() { OnRedo(); }
         internal void Undo() { OnUndo(); }
         internal virtual void Reset()
@@ -50,5 +53,13 @@ namespace IFramework.Modules.Recorder
         /// <returns></returns>
         public abstract object Clone();
 
+        /// <summary>
+        /// 设置名字
+        /// </summary>
+        /// <param name="name">名字</param>
+        public void SetName(string name)
+        {
+            this.name = name;
+        }
     }
 }

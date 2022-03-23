@@ -18,6 +18,8 @@ namespace IFramework.Modules.Recorder
         protected override void Awake()
         {
             _head = Allocate<HeadState>();
+            _head.SetName("head");
+            _current = _head;
         }
         protected override void OnDispose()
         {
@@ -35,6 +37,7 @@ namespace IFramework.Modules.Recorder
         {
             var state = Framework.GlobalAllocate<T>();
             state.recorder = this;
+            state.SetName(null);
             return state;
         }
         /// <summary>
@@ -60,6 +63,25 @@ namespace IFramework.Modules.Recorder
             _current = state;
             if (redo) state.Redo();
         }
+
+        /// <summary>
+        /// 获取记录列表
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetRecordNames()
+        {
+            List<string> names = new List<string>();
+            BaseState baseState = _head;
+            while (baseState != null)
+            {
+                names.Add(baseState.name);
+                baseState = baseState.next;
+            }
+            return names;
+        }
+
+       
+
         private void Recyle(BaseState state)
         {
             Queue<BaseState> queue = Framework.GlobalAllocate<Queue<BaseState>>();
@@ -97,6 +119,15 @@ namespace IFramework.Modules.Recorder
             _current = _current.next;
             _current.Redo();
             return true;
+        }
+
+        /// <summary>
+        /// 获取当前节点的名字
+        /// </summary>
+        /// <returns></returns>
+        public string GetCurrentRecordName()
+        {
+            return _current.name;
         }
     }
 }

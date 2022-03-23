@@ -1,4 +1,6 @@
-﻿namespace IFramework.Modules.Recorder
+﻿using System.Collections.Generic;
+
+namespace IFramework.Modules.Recorder
 {
     /// <summary>
     /// 操作记录
@@ -28,5 +30,16 @@
         /// </summary>
         /// <returns></returns>
         bool Undo();
+
+        /// <summary>
+        /// 获取记录列表
+        /// </summary>
+        /// <returns></returns>
+        List<string> GetRecordNames();
+        /// <summary>
+        /// 获取当前节点的名字
+        /// </summary>
+        /// <returns></returns>
+        string GetCurrentRecordName();
     }
 }
