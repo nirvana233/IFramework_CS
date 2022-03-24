@@ -53,6 +53,7 @@ namespace IFramework.Modules.Recorder
             if (state.guid == _current.guid)
             {
                 state = state.Clone() as BaseState;
+                state.SetName(_current.name.Append("#Clone"));
             }
             if (_current.next != null)
             {
@@ -63,17 +64,22 @@ namespace IFramework.Modules.Recorder
             _current = state;
             if (redo) state.Redo();
         }
-
         /// <summary>
         /// 获取记录列表
         /// </summary>
+        /// <param name="index">当前记录的位置</param>
         /// <returns></returns>
-        public List<string> GetRecordNames()
+        public List<string> GetRecordNames(out int index)
         {
+            index=0;
             List<string> names = new List<string>();
             BaseState baseState = _head;
             while (baseState != null)
             {
+                if (_current == baseState)
+                {
+                    index = names.Count;
+                }
                 names.Add(baseState.name);
                 baseState = baseState.next;
             }

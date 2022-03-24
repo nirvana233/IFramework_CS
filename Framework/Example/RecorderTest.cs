@@ -39,13 +39,15 @@ namespace Example
 
             Log.L($"例子开始：Value的值是{value} \n");
 
-            Log.L("注册一个ActionState，使Value的值增加16");
+            Log.L("注册一个ActionState，使Value的值增加16，并给这一步操作赋予一个名字   ");
             var actionState = recorderModule.AllocateAction().SetCommand(() => { value += 16; }, () => { value -= 16; });
+            actionState.SetName("增加了16");
             actionState.Subscribe();
             Log.L($"此时Value的值为{value} \n");
 
             Log.L("注册一个CommandState，使Value的值增加1");
             var commandState = recorderModule.AllocateCommand().SetCommand(new AddValueCommand(), new SubValueCommand());
+            commandState.SetName("增加了1");
             commandState.Subscribe();
             Log.L($"此时Value的值为{value} \n");
 
@@ -54,6 +56,7 @@ namespace Example
                                                  .SetGroupCommand(() => { value += 1; }, () => { value -= 1; })
                                                  .SetGroupCommand(() => { value += 2; }, () => { value -= 2; })
                                                  .SetGroupCommand(() => { value += 3; }, () => { value -= 3; });
+            actionGroupState.SetName("增加了6");
             actionGroupState.Subscribe();
             Log.L($"此时Value的值为{value} \n");
 
@@ -62,6 +65,7 @@ namespace Example
                                                  .SetGroupCommand(new AddValueCommand(), new SubValueCommand())
                                                  .SetGroupCommand(new AddValueCommand(), new SubValueCommand())
                                                  .SetGroupCommand(new AddValueCommand(), new SubValueCommand());
+            commandGroupState.SetName("增加了3");
             commandGroupState.Subscribe();
             Log.L($"此时Value的值为{value} \n");
 
@@ -72,7 +76,7 @@ namespace Example
             Log.L($"此时Value的值为{value} \n");
 
 
-            Log.L("按A撤销，按D反撤销\n");
+            Log.L("按A撤销，按D反撤销，按S注册新的操作，按W获取当前操作记录\n");
         }
 
         protected override void Stop()
@@ -85,13 +89,31 @@ namespace Example
             {
                 bool bo = recorderModule.Undo();
                 Log.L(bo?"撤销成功" : "撤销失败");
-                Log.L($"此时Value的值为{value} \n");
+                Log.L($"此时Value的值为{value}，当前的操作是{recorderModule.GetCurrentRecordName()}\n");
             }
             if (Console.ReadKey().Key == ConsoleKey.D)
             {
                 bool bo = recorderModule.Redo();
                 Log.L(bo ? "反撤销成功" : "反撤销失败");
-                Log.L($"此时Value的值为{value} \n");
+                Log.L($"此时Value的值为{value}，当前的操作是{recorderModule.GetCurrentRecordName()}\n");
+            }
+            if (Console.ReadKey().Key == ConsoleKey.S)
+            {
+                int i = new Random().Next(20);
+                var state = recorderModule.AllocateAction().SetCommand(() => { value += i; }, () => { value -= i; });
+                state.SetName($"增加了{i}");
+                state.Subscribe();
+                Log.L($"此时Value的值为{value}，当前的操作是{recorderModule.GetCurrentRecordName()}\n");
+            }
+            if (Console.ReadKey().Key == ConsoleKey.W)
+            {
+                var records = recorderModule.GetRecordNames(out int index);
+                Log.L("当前的操作列表为：");
+                foreach (var item in records)
+                {
+                    Console.WriteLine(item);
+                }
+                Console.WriteLine($"当前的操作位置为：{index}");
             }
         }
     }

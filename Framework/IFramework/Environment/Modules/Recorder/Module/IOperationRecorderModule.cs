@@ -35,7 +35,7 @@ namespace IFramework.Modules.Recorder
         /// 获取记录列表
         /// </summary>
         /// <returns></returns>
-        List<string> GetRecordNames();
+        List<string> GetRecordNames(out int index);
         /// <summary>
         /// 获取当前节点的名字
         /// </summary>
