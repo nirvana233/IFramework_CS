@@ -38,10 +38,19 @@ namespace IFramework
             }
             public void UnBind(bool unbind=true)
             {
-                if (unbind)
-                    _handler._callmap[_type][_propertyName] -= setValueAction;
+                //此处更改
                 if (_bind.bindOperation == BindableObject.BindOperation.Both && operation == BindableObject.BindOperation.Both)
                     bindable.UnSubscribe(propertyName, _listenner);
+                if (unbind)
+                    _handler._callmap[_type][_propertyName] -= setValueAction;
+            }
+
+            /// <summary>
+            /// 去除监听
+            /// </summary>
+            public void RemoveListener()
+            {
+                _handler._callmap[_type][_propertyName] -= setValueAction;
             }
         }
 
@@ -106,13 +115,22 @@ namespace IFramework
                 }
             }
 
+
+            //此处更改
+            for (int i = 0; i < _entitys.Count; i++)
+            {
+                if (_entitys[i].type == type && _entitys[i].propertyName == propertyName)
+                {
+                    _entitys[i].UnBind(false);
+                }
+            }
+
             _callmap[type][propertyName] += _entitys[_entitys.Count - 1].setValueAction;
 
             for (int i = 0; i < _entitys.Count; i++)
             {
                 if (_entitys[i].type == type && _entitys[i].propertyName == propertyName)
                 {
-                    _entitys[i].UnBind(false);
                     _entitys[i].Bind();
                 }
             }
@@ -203,9 +221,15 @@ namespace IFramework
         /// </summary>
         public void UnBind()
         {
+            //此处更改
             _entitys.ForEach((entity) =>
             {
-                entity.UnBind(true);
+                entity.UnBind(false);
+            });
+
+            _entitys.ForEach((entity) =>
+            {
+                entity.RemoveListener();
             });
             _entitys.Clear();
         }
@@ -215,14 +239,20 @@ namespace IFramework
         /// <param name="_object"></param>
         public void UnBind(BindableObject _object)
         {
+            //此处更改
+            _entitys.ForEach((entity) =>
+            {
+                entity.UnBind(false);
+            });
+
             var result = _entitys.RemoveAll((entity) =>
             {
                 if (entity.bindable != _object)
                 {
-                    entity.UnBind();
                     return false;
                 }
-                entity.UnBind(true);
+
+                entity.RemoveListener();
                 return true;
             });
             _entitys.ForEach((entity) =>
@@ -236,14 +266,19 @@ namespace IFramework
         /// <param name="propertyName"></param>
         public void UnBind(string propertyName)
         {
+            //此处更改
+            _entitys.ForEach((entity) =>
+            {
+                entity.UnBind(false);
+            });
+
             var result = _entitys.RemoveAll((entity) =>
             {
                 if (entity.propertyName != propertyName)
                 {
-                    entity.UnBind();
                     return false;
-                } 
-                entity.UnBind(true);
+                }
+                entity.RemoveListener();
                 return true;
             });
             _entitys.ForEach((entity) =>
@@ -259,14 +294,19 @@ namespace IFramework
         /// <param name="propertyName"></param>
         public void UnBind(BindableObject _object, string propertyName)
         {
+            //此处更改
+            _entitys.ForEach((entity) =>
+            {
+                entity.UnBind(false);
+            });
+
             var result = _entitys.RemoveAll((entity) =>
             {
                 if (entity.bindable != _object || entity.propertyName != propertyName) {
 
-                    entity.UnBind(false);
                     return false;
                 }
-                entity.UnBind();
+                entity.RemoveListener();
                 return true;
             });
             _entitys.ForEach((entity) =>
@@ -282,13 +322,18 @@ namespace IFramework
         /// <param name="propertyName"></param>
         public void UnBind(BindableObject _object, Type type, string propertyName)
         {
+            //此处更改
+            _entitys.ForEach((entity) =>
+            {
+                entity.UnBind(false);
+            });
+
             var result = _entitys.RemoveAll((entity) =>
             {
                 if (entity.bindable != _object || entity.type != type || entity.propertyName != propertyName) {
-                    entity.UnBind(false);
                     return false;
                 }
-                entity.UnBind();
+                entity.RemoveListener();
                 return true;
             });
             _entitys.ForEach((entity) =>
