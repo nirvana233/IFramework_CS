@@ -18,7 +18,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\..\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -88,6 +88,8 @@
     <Compile Include="Extension\StringEx.cs" />
     <Compile Include="Extension\StringEx_Regex.cs" />
     <Compile Include="Extension\TypeEx.cs" />
+    <Compile Include="Observable\ObservableDictionary.cs" />
+    <Compile Include="Observable\ObservableList.cs" />
     <Compile Include="Pool\ArrayPool.cs" />
     <Compile Include="Pool\IObjectPool.cs" />
     <Compile Include="Serialization\String\Extra\ArrayStringConverter.cs" />

@@ -40,15 +40,7 @@ namespace IFramework
                             .SelectMany(item => item.GetTypes())
                             .Where(item => item.IsSubclassOf(self));
         }
-        /// <summary>
-        /// 实例化
-        /// </summary>
-        /// <param name="self"></param>
-        /// <returns></returns>
-        public static object CreatInstance(this Type self)
-        {
-            return self.IsValueType ? null : Activator.CreateInstance(self);
-        }
+
         /// <summary>
         /// 是否继承接口
         /// </summary>
