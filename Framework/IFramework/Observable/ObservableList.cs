@@ -33,7 +33,7 @@ namespace IFramework
         }
 
         /// <summary>
-        /// 注册 添加一个元素
+        /// 注册方法 添加一个元素
         /// </summary>
         /// <param name="action">void fun(int index, T item)</param>
         public void SubscribeAddItem(Action<int, T> action)
@@ -41,7 +41,7 @@ namespace IFramework
             onItemAdded += action;
         }
         /// <summary>
-        /// 移除 添加一个元素
+        /// 移除方法 添加一个元素
         /// </summary>
         /// <param name="action">void fun(int index, T item)</param>
         public void UnSubscribeAddItem(Action<int, T> action)
@@ -49,7 +49,7 @@ namespace IFramework
             onItemAdded -= action;
         }
         /// <summary>
-        /// 注册 移动一个元素
+        /// 注册方法 移动一个元素
         /// </summary>
         /// <param name="action">void fun(int oldIndex,int newIndex,T item)</param>
         public void SubscribeMoveItem(Action<int, int, T> action)
@@ -57,7 +57,7 @@ namespace IFramework
             onItemMoved += action;
         }
         /// <summary>
-        /// 移除 移动一个元素
+        /// 移除方法 移动一个元素
         /// </summary>
         /// <param name="action">void fun(int oldIndex,int newIndex,T item)</param>
         public void UnSubscribeMoveItem(Action<int, int, T> action)
@@ -65,7 +65,7 @@ namespace IFramework
             onItemMoved -= action;
         }
         /// <summary>
-        /// 注册 移除一个元素
+        /// 注册方法 移除一个元素
         /// </summary>
         /// <param name="action">void fun(int index,T item)</param>
         public void SubscribeRemoveItem(Action<int, T> action)
@@ -73,7 +73,7 @@ namespace IFramework
             onItemRemoved += action;
         }
         /// <summary>
-        /// 移除 移除一个元素
+        /// 移除方法 移除一个元素
         /// </summary>
         /// <param name="action">void fun(int index,T item)</param>
         public void UnSubscribeRemoveItem(Action<int, T> action)
@@ -81,7 +81,7 @@ namespace IFramework
             onItemRemoved -= action;
         }
         /// <summary>
-        /// 注册 替换一个元素
+        /// 注册方法 替换一个元素
         /// </summary>
         /// <param name="action">void fun(int index,T oldItem,T newItem)</param>
         public void SubscribeReplaceItem(Action<int, T, T> action)
@@ -89,7 +89,7 @@ namespace IFramework
             onItemReplaced += action;
         }
         /// <summary>
-        /// 移除 替换一个元素
+        /// 移除方法 替换一个元素
         /// </summary>
         /// <param name="action">void fun(int index,T oldItem,T newItem)</param>
         public void UnSubscribeReplaceItem(Action<int, T, T> action)
@@ -97,7 +97,7 @@ namespace IFramework
             onItemReplaced -= action;
         }
         /// <summary>
-        /// 注册 清空元素
+        /// 注册方法 清空元素
         /// </summary>
         /// <param name="action">void fun()</param>
         public void SubscribeClearItem(Action action)
@@ -105,7 +105,7 @@ namespace IFramework
             onItemCleared += action;
         }
         /// <summary>
-        /// 移除 清空元素
+        /// 移除方法 清空元素
         /// </summary>
         /// <param name="action">void fun()</param>
         public void UnSubscribeClearItem(Action action)
@@ -126,10 +126,7 @@ namespace IFramework
         /// </summary>
         public bool IsReadOnly
         {
-            get
-            {
-                return false;
-            }
+            get { return ((IList)this.value).IsReadOnly; }
         }
 
         /// <summary>
@@ -220,16 +217,9 @@ namespace IFramework
             if (oldIndex < 0 || newIndex < 0 || oldIndex == newIndex) return;
 
             T item = value[oldIndex];
-            if (oldIndex > newIndex)
-            {
-                value.RemoveAt(oldIndex);
-                value.Insert(newIndex, item);
-            }
-            else
-            {
-                value.Insert(newIndex, item);
-                value.RemoveAt(oldIndex);
-            }
+
+            value.RemoveAt(oldIndex);
+            value.Insert(newIndex, item);
 
 
             onItemMoved?.Invoke(oldIndex, newIndex, item);
