@@ -144,8 +144,11 @@ namespace IFramework
         /// </summary>
         public void Clear()
         {
-            value.Clear();
-            onItemCleared?.Invoke();
+            if (value.Count >0 )
+            {
+                value.Clear();
+                onItemCleared?.Invoke();
+            }
         }
 
         /// <summary>
