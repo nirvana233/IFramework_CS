@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace IFramework
 {
@@ -11,27 +9,27 @@ namespace IFramework
     /// 可观测List
     /// </summary>
     /// <typeparam name="T">Object</typeparam>
-    public class ObservableList<T> : Unit, IEnumerable<T>, IList<T>
+    public class ObservableList<T> : Unit, IList<T>, IList
     {
+        #region 事件与变量定义
         private Action<int, T> onItemAdded;
         private Action<int, int, T> onItemMoved;
         private Action<int, T> onItemRemoved;
         private Action<int, T, T> onItemReplaced;
         private Action onItemCleared;
+
+        private Action<IList, int> onRangeAdded;
+        private Action <IList, int> onRangeRemoved;
+
+
+        [NonSerialized]
+        private Object syncRoot; //同步访问对象
+
         private Lazy<List<T>> _value = new Lazy<List<T>>(() => { return new List<T>(); });
-        private List<T> value { get { return _value.Value; } }
+        private IList<T> value { get { return _value.Value; } }
+        #endregion
 
-        /// <summary>
-        /// 索引器
-        /// </summary>
-        /// <param name="index">索引</param>
-        /// <returns></returns>
-        public T this[int index]
-        {
-            get { return value[index]; }
-            set { SetItem(index, value); }
-        }
-
+        #region 注册与移除监听方法
         /// <summary>
         /// 注册方法 添加一个元素
         /// </summary>
@@ -112,7 +110,60 @@ namespace IFramework
         {
             onItemCleared -= action;
         }
+        /// <summary>
+        /// 注册方法 插入一个集合
+        /// </summary>
+        /// <param name="action">void fun(IList addItems,int index)</param>
+        public void SubScribeAddRange(Action<IList, int> action)
+        {
+            onRangeAdded+=action;
+        }
+        /// <summary>
+        /// 移除方法 插入一个集合
+        /// </summary>
+        /// <param name="action">void fun(IList addItems,int index)</param>
+        public void UnSubScribeAddRange(Action<IList, int> action)
+        {
+            onRangeAdded -= action;
+        }
+        /// <summary>
+        /// 注册方法 删除多个元素
+        /// </summary>
+        /// <param name="action">void fun(IList addItems,int index)</param>
+        public void SubScribeRemoveRange(Action<IList, int> action)
+        {
+            onRangeRemoved += action;
+        }
+        /// <summary>
+        /// 移除方法 插入一个集合
+        /// </summary>
+        /// <param name="action">void fun(IList addItems,int index)</param>
+        public void UnSubScribeRemoveRange(Action<IList, int> action)
+        {
+            onRangeRemoved -= action;
+        }
+        #endregion
 
+        #region 接口实现
+
+        /// <summary>
+        /// 索引器
+        /// </summary>
+        /// <param name="index">索引</param>
+        /// <returns></returns>
+        public T this[int index]
+        {
+            get { return value[index]; }
+            set
+            {
+                if (this.value.IsReadOnly)
+                    throw new NotSupportedException("ReadOnlyCollection");
+                if (index < 0 || index >= this.value.Count)
+                    throw new ArgumentOutOfRangeException($"index:{index}");
+
+                ReplaceItem(index, value);
+            }
+        }
         /// <summary>
         /// 数量
         /// </summary>
@@ -120,13 +171,12 @@ namespace IFramework
         {
             get { return value.Count; }
         }
-
         /// <summary>
         /// 只读
         /// </summary>
         public bool IsReadOnly
         {
-            get { return ((IList)this.value).IsReadOnly; }
+            get { return value.IsReadOnly; }
         }
 
         /// <summary>
@@ -135,22 +185,23 @@ namespace IFramework
         /// <param name="item">要添加到List末尾的对象</param>
         public void Add(T item)
         {
-            value.Add(item);
-            onItemAdded?.Invoke(value.Count - 1, item);
+            int index = value.Count;
+            Insert(index, item);
         }
-
         /// <summary>
         /// 移除List中的所有元素
         /// </summary>
         public void Clear()
         {
-            if (value.Count >0 )
+            if (value.IsReadOnly)
+                throw new NotSupportedException("ReadOnlyCollection");
+
+            if (value.Count > 0)
             {
                 value.Clear();
                 onItemCleared?.Invoke();
             }
         }
-
         /// <summary>
         /// 确定某元素是否在List中
         /// </summary>
@@ -160,7 +211,6 @@ namespace IFramework
         {
             return value.Contains(item);
         }
-
         /// <summary>
         /// 从目标数组的指定索引处开始将整个List复制到兼容的一维Array
         /// </summary>
@@ -170,7 +220,6 @@ namespace IFramework
         {
             value.CopyTo(array, arrayIndex);
         }
-
         /// <summary>
         /// 返回循环访问List的IEnumerator
         /// </summary>
@@ -179,16 +228,6 @@ namespace IFramework
         {
             return value.GetEnumerator();
         }
-
-        /// <summary>
-        /// 返回循环访问List的IEnumerator
-        /// </summary>
-        /// <returns>List的泛型枚举器</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return value.GetEnumerator();
-        }
-
         /// <summary>
         /// 搜索指定的对象，并返回整个List中第一个匹配项的从零开始的索引
         /// </summary>
@@ -198,7 +237,6 @@ namespace IFramework
         {
             return value.IndexOf(item);
         }
-
         /// <summary>
         /// 将元素插入List的指定索引处
         /// </summary>
@@ -206,26 +244,14 @@ namespace IFramework
         /// <param name="item">要插入的对象</param>
         public void Insert(int index, T item)
         {
+            if (value.IsReadOnly)
+                throw new NotSupportedException("ReadOnlyCollection");
+
+            if (index < 0 || index > value.Count)
+                throw new ArgumentOutOfRangeException($"index:{index}");
+
             value.Insert(index, item);
             onItemAdded?.Invoke(index, item);
-        }
-
-        /// <summary>
-        /// 将指定索引处的项移至列表中的新位置
-        /// </summary>
-        /// <param name="oldIndex">指定要移动的项的位置的从零开始的索引</param>
-        /// <param name="newIndex">当前状态下指定项的新位置的从零开始的索引</param>
-        public void Move(int oldIndex, int newIndex)
-        {
-            if (oldIndex < 0 || newIndex < 0 || oldIndex == newIndex) return;
-
-            T item = value[oldIndex];
-
-            value.RemoveAt(oldIndex);
-            value.Insert(newIndex, item);
-
-
-            onItemMoved?.Invoke(oldIndex, newIndex, item);
         }
 
         /// <summary>
@@ -235,7 +261,12 @@ namespace IFramework
         /// <returns>成功移除返回true，否则为false；如果未找到也返回false</returns>
         public bool Remove(T item)
         {
+            if (value.IsReadOnly)
+                throw new NotSupportedException("ReadOnlyCollection");
+
             int index = IndexOf(item);
+            if (index < 0)
+                return false;
             var result = value.Remove(item);
             if (result)
             {
@@ -243,30 +274,34 @@ namespace IFramework
             }
             return result;
         }
-
         /// <summary>
         /// 移除List的指定索引处的元素
         /// </summary>
         /// <param name="index">要移除的元素的从零开始的索引</param>
         public void RemoveAt(int index)
         {
+            if (value.IsReadOnly)
+                throw new NotSupportedException("ReadOnlyCollection");
+
+            if (index < 0 || index >= value.Count)
+                throw new ArgumentOutOfRangeException($"index:{index}");
+
+
             T item = value[index];
             value.RemoveAt(index);
             onItemRemoved?.Invoke(index, item);
         }
-
         /// <summary>
         /// 替换指定索引处的元素
         /// </summary>
         /// <param name="index">待替换元素的从零开始的索引</param>
         /// <param name="item">位于指定索引处的元素的新值</param>
-        public void SetItem(int index, T item)
+        private void ReplaceItem(int index, T item)
         {
             var oldItem = value[index];
             value[index] = item;
             onItemReplaced?.Invoke(index, oldItem, item);
         }
-
         /// <summary>
         /// 列表对象释放时调用（继承自Unit）
         /// </summary>
@@ -279,6 +314,268 @@ namespace IFramework
             onItemReplaced -= onItemReplaced;
             onItemCleared -= onItemCleared;
         }
+
+        int IList.Add(object value)
+        {
+            if (this.value.IsReadOnly)
+                throw new NotSupportedException("ReadOnlyCollection");
+
+            if (value == null && !(default(T) == null))
+                throw new ArgumentNullException("value is null");
+
+            try
+            {
+                Add((T)value);
+            }
+            catch (InvalidCastException e)
+            {
+                throw new ArgumentException("", e);
+            }
+
+            return this.Count - 1;
+        }
+        bool IList.Contains(object value)
+        {
+            if ((value is T) || (value == null && default(T) == null))
+            {
+                return Contains((T)value);
+            }
+            return false;
+        }
+        int IList.IndexOf(object value)
+        {
+            int index = -1;
+            if ((value is T) || (value == null && default(T) == null))
+            {
+                index = IndexOf((T)value);
+            }
+            return index;
+        }
+        void IList.Insert(int index, object value)
+        {
+            if (this.value.IsReadOnly)
+                throw new NotSupportedException("ReadOnlyCollection");
+
+            if (value == null && !(default(T) == null))
+                throw new ArgumentNullException("value is null");
+
+            try
+            {
+                Insert(index, (T)value);
+            }
+            catch (InvalidCastException e)
+            {
+                throw new ArgumentException("", e);
+            }
+        }
+        void IList.Remove(object value)
+        {
+            if (this.value.IsReadOnly)
+                throw new NotSupportedException("ReadOnlyCollection");
+
+            if ((value is T) || (value == null && default(T) == null))
+            {
+                Remove((T)value);
+            }
+        }
+        object IList.this[int index]
+        {
+            get { return value[index]; }
+            set
+            {
+                if (value == null && !(default(T) == null))
+                    throw new ArgumentNullException("value is null");
+
+                try
+                {
+                    this[index] = (T)value;
+                }
+                catch (InvalidCastException e)
+                {
+                    throw new ArgumentException("", e);
+                }
+            }
+        }
+        bool IList.IsFixedSize
+        {
+            get
+            {
+                IList list = value as IList;
+                if (list != null)
+                {
+                    return list.IsFixedSize;
+                }
+                return list.IsReadOnly;
+            }
+        }
+        bool IList.IsReadOnly
+        {
+            get
+            {
+                return value.IsReadOnly;
+            }
+        }
+        object ICollection.SyncRoot
+        {
+            get
+            {
+                if (this.syncRoot == null)
+                {
+                    if (value is ICollection c)
+                    {
+                        this.syncRoot = c.SyncRoot;
+                    }
+                    else
+                    {
+                        Interlocked.CompareExchange<Object>(ref this.syncRoot, new Object(), null);
+                    }
+                }
+                return this.syncRoot;
+            }
+        }
+        bool ICollection.IsSynchronized
+        {
+            get { return false; }
+        }
+        void ICollection.CopyTo(Array array, int index)
+        {
+            if (array == null)
+                throw new ArgumentNullException("array is null");
+
+            if (array.Rank != 1)
+                throw new ArgumentException("RankMultiDimNotSupported");
+
+            if (array.GetLowerBound(0) != 0)
+                throw new ArgumentException("NonZeroLowerBound");
+
+            if (index < 0)
+                throw new ArgumentOutOfRangeException($"index:{index}");
+
+            if (array.Length - index < Count)
+                throw new ArgumentException("ArrayPlusOffTooSmall");
+
+            if (array is T[] tArray)
+            {
+                value.CopyTo(tArray, index);
+            }
+            else
+            {
+                Type targetType = array.GetType().GetElementType();
+                Type sourceType = typeof(T);
+                if (!(targetType.IsAssignableFrom(sourceType) || sourceType.IsAssignableFrom(targetType)))
+                    throw new ArgumentException("InvalidArrayType");
+
+                if (!(array is object[] objects))
+                    throw new ArgumentException("InvalidArrayType");
+
+                int count = value.Count;
+                try
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        objects[index++] = value[i];
+                    }
+                }
+                catch (ArrayTypeMismatchException)
+                {
+                    throw new ArgumentException("InvalidArrayType");
+                }
+            }
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)value).GetEnumerator();
+        }
+        #endregion
+
+        #region 额外方法实现
+        /// <summary>
+        /// 将指定索引处的项移至列表中的新位置
+        /// </summary>
+        /// <param name="oldIndex">指定要移动的项的位置的从零开始的索引</param>
+        /// <param name="newIndex">当前状态下指定项的新位置的从零开始的索引</param>
+        public void Move(int oldIndex, int newIndex)
+        {
+            if (oldIndex < 0 || oldIndex >= value.Count)
+                throw new ArgumentOutOfRangeException($"oldIndex:{oldIndex}");
+            if (newIndex < 0 || newIndex >= value.Count)
+                throw new ArgumentOutOfRangeException($"newIndex:{newIndex}");
+
+            if (oldIndex == newIndex) return;
+
+            T item = value[oldIndex];
+
+            value.RemoveAt(oldIndex);
+            value.Insert(newIndex, item);
+
+            onItemMoved?.Invoke(oldIndex, newIndex, item);
+        }
+
+        /// <summary>
+        /// 在List末尾处添加一个集合
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <exception cref="NotSupportedException">只读警告</exception>
+        public void AddRange(IEnumerable<T> collection)
+        {
+            int index = value.Count;
+            InsertRange(index, collection);
+        }
+        /// <summary>
+        /// 从索引处插入一个集合
+        /// </summary>
+        /// <param name="index">索引</param>
+        /// <param name="collection">集合</param>
+        /// <exception cref="NotSupportedException">只读错误</exception>
+        /// <exception cref="ArgumentOutOfRangeException">越界报错</exception>
+        public void InsertRange(int index, IEnumerable<T> collection)
+        {
+            if (value.IsReadOnly)
+                throw new NotSupportedException("ReadOnlyCollection");
+
+            if (index < 0 || index > value.Count)
+                throw new ArgumentOutOfRangeException($"index:{index}");
+
+            (value as List<T>).InsertRange(index, collection);
+
+            onRangeAdded?.Invoke(ToList(collection), index);
+        }
+        /// <summary>
+        /// 从索引处删除对应数量的元素
+        /// </summary>
+        /// <param name="index">索引</param>
+        /// <param name="count">数量</param>
+        /// <exception cref="NotSupportedException">只读报错</exception>
+        /// <exception cref="ArgumentOutOfRangeException">越界报错</exception>
+        public void RemoveRange(int index, int count)
+        {
+            if (value.IsReadOnly)
+                throw new NotSupportedException("ReadOnlyCollection");
+
+            if (index < 0 || index >= value.Count)
+                throw new ArgumentOutOfRangeException($"index:{index}");
+
+            List<T> list = value as List<T>;
+            List<T> deletedItems = list.GetRange(index, count);
+            list.RemoveRange(index, count);
+            onRangeRemoved?.Invoke(deletedItems, index);
+        }
+
+        /// <summary>
+        /// IEnumerable to IList
+        /// </summary>
+        /// <param name="collection">IEnumerable Collection</param>
+        /// <returns>IList Collection</returns>
+        private IList ToList(IEnumerable<T> collection)
+        {
+            if (collection is IList list)
+                return list;
+
+            List<T> newList = new List<T>();
+            newList.AddRange(collection);
+            return newList;
+        }
+        #endregion
     }
 
 }
