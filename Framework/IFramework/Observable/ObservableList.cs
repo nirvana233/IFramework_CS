@@ -19,7 +19,7 @@ namespace IFramework
         private Action onItemCleared;
 
         private Action<IList, int> onRangeAdded;
-        private Action <IList, int> onRangeRemoved;
+        private Action<IList, int> onRangeRemoved;
 
 
         [NonSerialized]
@@ -33,7 +33,12 @@ namespace IFramework
         /// <summary>
         /// 注册方法 添加一个元素
         /// </summary>
-        /// <param name="action">void fun(int index, T item)</param>
+        /// <param name="action">
+        ///     action arg1 : the index of the added item  <br/>
+        ///     参数1为添加的元素的索引 <br/><br/>
+        ///     action arg2 : the added item  <br/>
+        ///     参数2为添加的元素，类型为<typeparamref name="T" />
+        /// </param>
         public void SubscribeAddItem(Action<int, T> action)
         {
             onItemAdded += action;
@@ -41,7 +46,12 @@ namespace IFramework
         /// <summary>
         /// 移除方法 添加一个元素
         /// </summary>
-        /// <param name="action">void fun(int index, T item)</param>
+        /// <param name="action">
+        ///     action arg1 : the index of the added item  <br/>
+        ///     参数1为添加的元素的索引 <br/><br/>
+        ///     action arg2 : the added item  <br/>
+        ///     参数2为添加的元素，类型为<typeparamref name="T" />
+        /// </param>
         public void UnSubscribeAddItem(Action<int, T> action)
         {
             onItemAdded -= action;
@@ -49,7 +59,14 @@ namespace IFramework
         /// <summary>
         /// 注册方法 移动一个元素
         /// </summary>
-        /// <param name="action">void fun(int oldIndex,int newIndex,T item)</param>
+        /// <param name="action">
+        ///     action arg1 : the old index of the moved item  <br/>
+        ///     参数1为元素移动前的索引 <br/><br/>
+        ///     action arg2 : the new index of the moved item  <br/>
+        ///     参数1为元素移动后的索引 <br/><br/>
+        ///     action arg3 : the added item  <br/>
+        ///     参数3为移动的元素，类型为<typeparamref name="T" />
+        /// </param>
         public void SubscribeMoveItem(Action<int, int, T> action)
         {
             onItemMoved += action;
@@ -57,7 +74,14 @@ namespace IFramework
         /// <summary>
         /// 移除方法 移动一个元素
         /// </summary>
-        /// <param name="action">void fun(int oldIndex,int newIndex,T item)</param>
+        /// <param name="action">
+        ///     action arg1 : the old index of the moved item  <br/>
+        ///     参数1为元素移动前的索引 <br/><br/>
+        ///     action arg2 : the new index of the moved item  <br/>
+        ///     参数1为元素移动后的索引 <br/><br/>
+        ///     action arg3 : the added item  <br/>
+        ///     参数3为移动的元素，类型为<typeparamref name="T" />
+        ///</param>
         public void UnSubscribeMoveItem(Action<int, int, T> action)
         {
             onItemMoved -= action;
@@ -65,7 +89,12 @@ namespace IFramework
         /// <summary>
         /// 注册方法 移除一个元素
         /// </summary>
-        /// <param name="action">void fun(int index,T item)</param>
+        /// <param name="action">
+        ///     action arg1 : the index of the removed item  <br/>
+        ///     参数1为移除的元素的索引 <br/><br/>
+        ///     action arg2 : the removed item  <br/>
+        ///     参数2为移除的元素，类型为<typeparamref name="T" />
+        /// </param>
         public void SubscribeRemoveItem(Action<int, T> action)
         {
             onItemRemoved += action;
@@ -73,7 +102,12 @@ namespace IFramework
         /// <summary>
         /// 移除方法 移除一个元素
         /// </summary>
-        /// <param name="action">void fun(int index,T item)</param>
+        /// <param name="action">
+        ///     action arg1 : the index of the removed item  <br/>
+        ///     参数1为移除的元素的索引 <br/><br/>
+        ///     action arg2 : the removed item  <br/>
+        ///     参数2为移除的元素，类型为<typeparamref name="T" />
+        /// </param>
         public void UnSubscribeRemoveItem(Action<int, T> action)
         {
             onItemRemoved -= action;
@@ -81,7 +115,14 @@ namespace IFramework
         /// <summary>
         /// 注册方法 替换一个元素
         /// </summary>
-        /// <param name="action">void fun(int index,T oldItem,T newItem)</param>
+        /// <param name="action">
+        ///     action arg1 : the index of the replaced item  <br/>
+        ///     参数1为被替换的元素的索引 <br/><br/>
+        ///     action arg2 : the old item which has been replaced <br/>
+        ///     参数2为被替换的元素，类型为<typeparamref name="T" /> <br/><br/>
+        ///     action arg3 : the new item which replaced the old one <br/>
+        ///     参数3为替换进来的元素，类型为<typeparamref name="T" />
+        /// </param>
         public void SubscribeReplaceItem(Action<int, T, T> action)
         {
             onItemReplaced += action;
@@ -89,7 +130,14 @@ namespace IFramework
         /// <summary>
         /// 移除方法 替换一个元素
         /// </summary>
-        /// <param name="action">void fun(int index,T oldItem,T newItem)</param>
+        /// <param name="action">
+        ///     action arg1 : the index of the replaced item  <br/>
+        ///     参数1为被替换的元素的索引 <br/><br/>
+        ///     action arg2 : the old item which has been replaced <br/>
+        ///     参数2为被替换的元素，类型为<typeparamref name="T" /> <br/><br/>
+        ///     action arg3 : the new item which replaced the old one <br/>
+        ///     参数3为替换进来的元素，类型为<typeparamref name="T" />
+        /// </param>
         public void UnSubscribeReplaceItem(Action<int, T, T> action)
         {
             onItemReplaced -= action;
@@ -97,7 +145,7 @@ namespace IFramework
         /// <summary>
         /// 注册方法 清空元素
         /// </summary>
-        /// <param name="action">void fun()</param>
+        /// <param name="action">none arg Action</param>
         public void SubscribeClearItem(Action action)
         {
             onItemCleared += action;
@@ -105,7 +153,7 @@ namespace IFramework
         /// <summary>
         /// 移除方法 清空元素
         /// </summary>
-        /// <param name="action">void fun()</param>
+        /// <param name="action">none arg Action</param>
         public void UnSubscribeClearItem(Action action)
         {
             onItemCleared -= action;
@@ -113,15 +161,25 @@ namespace IFramework
         /// <summary>
         /// 注册方法 插入一个集合
         /// </summary>
-        /// <param name="action">void fun(IList addItems,int index)</param>
+        /// <param name="action">
+        ///     action arg1 : the list of the insert items<br/>
+        ///     参数1为插入的IList列表对象 <br/><br/>
+        ///     action arg2 : the index of the insert items<br/>
+        ///     参数2为插入开始时的索引
+        /// </param>
         public void SubScribeAddRange(Action<IList, int> action)
         {
-            onRangeAdded+=action;
+            onRangeAdded += action;
         }
         /// <summary>
         /// 移除方法 插入一个集合
         /// </summary>
-        /// <param name="action">void fun(IList addItems,int index)</param>
+        /// <param name="action">
+        ///     action arg1 : the list of the insert items<br/>
+        ///     参数1为插入的IList列表对象 <br/><br/>
+        ///     action arg2 : the index of the insert items<br/>
+        ///     参数2为插入开始时的索引
+        /// </param>
         public void UnSubScribeAddRange(Action<IList, int> action)
         {
             onRangeAdded -= action;
@@ -129,15 +187,25 @@ namespace IFramework
         /// <summary>
         /// 注册方法 删除多个元素
         /// </summary>
-        /// <param name="action">void fun(IList addItems,int index)</param>
+        /// <param name="action">
+        ///     action arg1 : the list of the deleted items<br/>
+        ///     参数1为删除的IList列表对象 <br/><br/>
+        ///     action arg2 : the first index of the deleted items<br/>
+        ///     参数2为删除时对应的索引
+        /// </param>
         public void SubScribeRemoveRange(Action<IList, int> action)
         {
             onRangeRemoved += action;
         }
         /// <summary>
-        /// 移除方法 插入一个集合
+        /// 移除方法 删除多个元素
         /// </summary>
-        /// <param name="action">void fun(IList addItems,int index)</param>
+        /// <param name="action">
+        ///     action arg1 : the list of the deleted items<br/>
+        ///     参数1为删除的IList列表对象 <br/><br/>
+        ///     action arg2 : the first index of the deleted items<br/>
+        ///     参数2为删除时对应的索引
+        /// </param>
         public void UnSubScribeRemoveRange(Action<IList, int> action)
         {
             onRangeRemoved -= action;
