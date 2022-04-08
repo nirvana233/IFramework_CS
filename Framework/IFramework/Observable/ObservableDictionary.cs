@@ -1,123 +1,380 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IFramework
 {
-    class ObservableDictionary<TKey,TValue>:Unit, IDictionary<TKey, TValue>
+    /// <summary>
+    /// 可观测Dictionary
+    /// </summary>
+    /// <typeparam name="TKey">TKey</typeparam>
+    /// <typeparam name="TValue">TValue</typeparam>
+    public class ObservableDictionary<TKey, TValue> : Unit, IDictionary<TKey, TValue>, IDictionary
     {
-        public event Action<TKey> OnAdded;
-        public event Action<TKey, TValue> OnItemValueChanged;
-        public event Action<KeyValuePair<TKey, TValue>> OnRemoved;
-        public event Action OnClear;
+        #region 事件与变量定义
+        private Action<KeyValuePair<TKey, TValue>> onKeyValuePairAdded;
+        private Action<KeyValuePair<TKey, TValue>, KeyValuePair<TKey, TValue>> onKeyValuePairReplaced;
+        private Action<KeyValuePair<TKey, TValue>> onKeyValuePairRemoved;
+        private Action onClear;
+        private Action<KeyValuePair<TKey, TValue>[]> onKeyValuePairRangeAdded;
 
-        Dictionary<TKey, TValue> Value { get; set; }
+        private Lazy<Dictionary<TKey, TValue>> _dictionary = new Lazy<Dictionary<TKey, TValue>>(() => { return new Dictionary<TKey, TValue>(); });
+        private Dictionary<TKey, TValue> dictionary { get { return _dictionary.Value; } }
+        #endregion
 
-
-        public ICollection<TKey> Keys
+        #region 注册与移除监听方法
+        /// <summary>
+        /// 注册方法 添加键值对
+        /// </summary>
+        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 addedPair)</param>
+        public void SubscribeAddKeyValuePair(Action<KeyValuePair<TKey, TValue>> action)
         {
-            get { return Value.Keys; }
+            onKeyValuePairAdded += action;
         }
-
-        public ICollection<TValue> Values
+        /// <summary>
+        /// 移除方法 添加键值对
+        /// </summary>
+        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 addedPair)</param>
+        public void UnSubscribeAddKeyValuePair(Action<KeyValuePair<TKey, TValue>> action)
         {
-            get { return Value.Values; }
+            onKeyValuePairAdded -= action;
         }
-
-        public int Count
+        /// <summary>
+        /// 注册方法 替换键值对
+        /// </summary>
+        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 oldPair,KeyValuePair《TKey, TValue》 newPair)</param>
+        public void SubscribeReplaceKeyValuePair(Action<KeyValuePair<TKey, TValue>, KeyValuePair<TKey, TValue>> action)
         {
-            get { return Value.Count; }
+            onKeyValuePairReplaced += action;
         }
+        /// <summary>
+        /// 移除方法 替换键值对
+        /// </summary>
+        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 oldPair,KeyValuePair《TKey, TValue》 newPair)</param>
+        public void UnSubscribeReplaceKeyValuePair(Action<KeyValuePair<TKey, TValue>, KeyValuePair<TKey, TValue>> action)
+        {
+            onKeyValuePairReplaced -= action;
+        }
+        /// <summary>
+        /// 注册方法 移除键值对
+        /// </summary>
+        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 removdPair)</param>
+        public void SubscribeRemoveKeyValuePair(Action<KeyValuePair<TKey, TValue>> action)
+        {
+            onKeyValuePairRemoved += action;
+        }
+        /// <summary>
+        /// 移除方法 移除键值对
+        /// </summary>
+        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 removdPair)</param>
+        public void UnSubscribeRemoveKeyValuePair(Action<KeyValuePair<TKey, TValue>> action)
+        {
+            onKeyValuePairRemoved -= action;
+        }
+        /// <summary>
+        /// 注册方法 清除所有键值对
+        /// </summary>
+        /// <param name="action">void fun()</param>
+        public void SubscribeClear(Action action)
+        {
+            onClear += action;
+        }
+        /// <summary>
+        /// 移除方法 清除所有键值对
+        /// </summary>
+        /// <param name="action">void fun()</param>
+        public void UnSbscribeClear(Action action)
+        {
+            onClear -= action;
+        }
+        /// <summary>
+        /// 注册方法 添加多个键值对
+        /// </summary>
+        /// <param name="action">void fun(KeyValuePair《TKey, TValue》[] items)</param>
+        public void SubscribeAddRange(Action<KeyValuePair<TKey, TValue>[]> action)
+        {
+            onKeyValuePairRangeAdded += action;
+        }
+        /// <summary>
+        /// 移除方法 添加添加多个键值对
+        /// </summary>
+        /// <param name="action">void fun(KeyValuePair《TKey, TValue》[] items)</param>
+        public void UnSubscribeAddRange(Action<KeyValuePair<TKey, TValue>[]> action)
+        {
+            onKeyValuePairRangeAdded -= action;
+        }
+        #endregion
 
+        #region 接口实现
+        /// <summary>
+        /// 索引器
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <returns>值</returns>
         public TValue this[TKey key]
         {
-            get { return Value[key]; }
+            get
+            {
+                if (!dictionary.ContainsKey(key))
+                    return default(TValue);
+                return dictionary[key];
+            }
             set
             {
-                if (Value.ContainsKey(key))
-                {
-                    Value[key] = value;
-                    OnItemValueChanged?.Invoke(key, value);
-                }
-                else
-                {
-                    Value[key] = value;
-                    OnAdded?.Invoke(key);
-                }
+                Insert(key, value, false);
             }
         }
-
-        public ObservableDictionary()
+        /// <summary>
+        /// 键集合
+        /// </summary>
+        public ICollection<TKey> Keys
         {
-            Value = new Dictionary<TKey, TValue>();
+            get { return dictionary.Keys; }
+        }
+        /// <summary>
+        /// 值集合
+        /// </summary>
+        public ICollection<TValue> Values
+        {
+            get { return dictionary.Values; }
+        }
+        /// <summary>
+        /// 数量
+        /// </summary>
+        public int Count
+        {
+            get { return dictionary.Count; }
+        }
+        /// <summary>
+        /// 是否只读
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return ((IDictionary)this.dictionary).IsReadOnly; }
         }
 
+        /// <summary>
+        /// 添加键值对
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <param name="value">值</param>
+        public void Add(TKey key, TValue value)
+        {
+            Insert(key, value, true);
+        }
+        /// <summary>
+        /// 添加键值对
+        /// </summary>
+        /// <param name="pair">键值对</param>
+        public void Add(KeyValuePair<TKey, TValue> pair)
+        {
+            Insert(pair.Key, pair.Value, true);
+        }
+        /// <summary>
+        /// 清除所有键值对
+        /// </summary>
+        public void Clear()
+        {
+            if (dictionary.Count > 0)
+            {
+                dictionary.Clear();
+                onClear?.Invoke();
+            }
+        }
+        /// <summary>
+        /// 是否存在键值对
+        /// </summary>
+        /// <param name="pair">键值对</param>
+        /// <returns></returns>
+        public bool Contains(KeyValuePair<TKey, TValue> pair)
+        {
+            return dictionary.Contains(pair);
+        }
+        /// <summary>
+        /// 是否存在键
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <returns>存在情况</returns>
+        public bool ContainsKey(TKey key)
+        {
+            return dictionary.ContainsKey(key);
+        }
+        /// <summary>
+        /// 将字典里的键值对拷贝到指定数组中
+        /// </summary>
+        /// <param name="array">接收的数组</param>
+        /// <param name="arrayIndex">开始保存在数组的索引</param>
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        {
+            ((IDictionary)this.dictionary).CopyTo(array, arrayIndex);
+        }
+        /// <summary>
+        /// 获取迭代器
+        /// </summary>
+        /// <returns>迭代器</returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return Value.GetEnumerator();
+            return dictionary.GetEnumerator();
+        }
+        /// <summary>
+        /// 删除键值对
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <returns>是否删除成功</returns>
+        public bool Remove(TKey key)
+        {
+            if (key == null)
+                throw new ArgumentNullException("key is null");
+
+            dictionary.TryGetValue(key, out TValue value);
+            var removed = dictionary.Remove(key);
+            if (removed)
+            {
+                onKeyValuePairRemoved.Invoke(new KeyValuePair<TKey, TValue>(key, value));
+            }
+
+            return removed;
+        }
+        /// <summary>
+        /// 删除键值对
+        /// </summary>
+        /// <param name="pair">键值对</param>
+        /// <returns>是否删除成功，如果对应的键值对不存在，返回false</returns>
+        public bool Remove(KeyValuePair<TKey, TValue> pair)
+        {
+            if (Contains(pair))
+            {
+                return Remove(pair.Key);
+            }
+            return false;
+        }
+        /// <summary>
+        /// 获取指定键对应的值
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <param name="value">保存值的对象</param>
+        /// <returns>是否获取成功</returns>
+        public bool TryGetValue(TKey key, out TValue value)
+        {
+            return dictionary.TryGetValue(key, out value);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return ((IEnumerable)dictionary).GetEnumerator();
         }
-
-        public void Add(TKey key, TValue value)
+        object IDictionary.this[object key]
         {
-            Value.Add(key, value);
-            OnAdded?.Invoke(key);
+            get
+            {
+                return ((IDictionary)this.dictionary)[key];
+            }
+            set
+            {
+                Insert((TKey)key, (TValue)value, false);
+            }
         }
-
-        public bool ContainsKey(TKey key)
+        ICollection IDictionary.Keys
         {
-            return Value.ContainsKey(key);
+            get { return ((IDictionary)this.dictionary).Keys; }
         }
-
-        bool IDictionary<TKey, TValue>.Remove(TKey key)
+        ICollection IDictionary.Values
         {
-            var value = Value[key];
-            var result = Value.Remove(key);
-            if (result)
-                OnRemoved?.Invoke(new KeyValuePair<TKey, TValue>(key, value));
-            return result;
+            get { return ((IDictionary)this.dictionary).Values; }
         }
-
-        public bool TryGetValue(TKey key, out TValue value)
+        IDictionaryEnumerator IDictionary.GetEnumerator()
         {
-            return Value.TryGetValue(key, out value);
+            return ((IDictionary)this.dictionary).GetEnumerator();
         }
-
-        public void Clear()
+        bool IDictionary.Contains(object key)
         {
-            Value.Clear();
-            OnClear?.Invoke();
+            return ((IDictionary)this.dictionary).Contains(key);
         }
-
-        public bool IsReadOnly => throw new NotImplementedException();
-
-        public void Add(KeyValuePair<TKey, TValue> item)
+        void IDictionary.Add(object key, object value)
         {
-            throw new NotImplementedException();
+            this.Add((TKey)key, (TValue)value);
         }
-
-        public bool Contains(KeyValuePair<TKey, TValue> item)
+        void IDictionary.Remove(object key)
         {
-            throw new NotImplementedException();
+            this.Remove((TKey)key);
         }
-
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        bool IDictionary.IsFixedSize
         {
-            throw new NotImplementedException();
+            get { return ((IDictionary)this.dictionary).IsFixedSize; }
         }
-
-        public bool Remove(KeyValuePair<TKey, TValue> item)
+        object ICollection.SyncRoot
         {
-            throw new NotImplementedException();
+            get { return ((IDictionary)this.dictionary).SyncRoot; }
+        }
+        bool ICollection.IsSynchronized
+        {
+            get { return ((IDictionary)this.dictionary).IsSynchronized; }
+        }
+        void ICollection.CopyTo(Array array, int index)
+        {
+            ((IDictionary)this.dictionary).CopyTo(array, index);
         }
 
+        /// <summary>
+        /// 对象释放时调用（继承自Unit）
+        /// </summary>
         protected override void OnDispose()
         {
-            Value.Clear();
+            dictionary.Clear();
+            onKeyValuePairAdded -= onKeyValuePairAdded;
+            onKeyValuePairReplaced -= onKeyValuePairReplaced;
+            onKeyValuePairRemoved -= onKeyValuePairRemoved;
         }
+        #endregion
+
+        #region 额外方法实现
+
+        private void Insert(TKey key, TValue value, bool isAdd)
+        {
+            if (key == null)
+                throw new ArgumentNullException("key is null");
+
+            if (dictionary.TryGetValue(key, out TValue oldValue))
+            {
+                if (isAdd)
+                    throw new ArgumentException("this key has already been added");
+
+                if (Equals(oldValue, value))
+                    return;
+
+                dictionary[key] = value;
+                onKeyValuePairReplaced?.Invoke(new KeyValuePair<TKey, TValue>(key, oldValue), new KeyValuePair<TKey, TValue>(key, value));
+            }
+            else
+            {
+                dictionary[key] = value;
+                onKeyValuePairAdded?.Invoke(new KeyValuePair<TKey, TValue>(key, value));
+            }
+        }
+
+        /// <summary>
+        /// 将一个字典添加到另一个字典中
+        /// </summary>
+        /// <param name="items">字典对象</param>
+        public void AddRange(IDictionary<TKey, TValue> items)
+        {
+            if (items == null)
+                throw new ArgumentNullException("items is null");
+
+            if (items.Count > 0)
+            {
+                if (items.Keys.Any((k) => this.dictionary.ContainsKey(k)))
+                    throw new ArgumentException("a key or some keys in this dictionary has already been added");
+                else
+                {
+                    foreach (var item in items)
+                        ((IDictionary<TKey, TValue>)this.dictionary).Add(item);
+                }
+                onKeyValuePairRangeAdded?.Invoke(items.ToArray());
+            }
+        }
+
+        #endregion
     }
 }
