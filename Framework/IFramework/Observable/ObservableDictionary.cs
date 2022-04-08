@@ -27,7 +27,10 @@ namespace IFramework
         /// <summary>
         /// 注册方法 添加键值对
         /// </summary>
-        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 addedPair)</param>
+        /// <param name="action">
+        ///     action arg1 : the Added KeyValuePair of <typeparamref name="TKey" /> and <typeparamref name="TValue" /><br/>
+        ///     参数1为添加的键值对对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" />
+        /// </param>
         public void SubscribeAddKeyValuePair(Action<KeyValuePair<TKey, TValue>> action)
         {
             onKeyValuePairAdded += action;
@@ -35,7 +38,10 @@ namespace IFramework
         /// <summary>
         /// 移除方法 添加键值对
         /// </summary>
-        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 addedPair)</param>
+        /// <param name="action">
+        ///     action arg1 : the Added KeyValuePair of <typeparamref name="TKey" /> and <typeparamref name="TValue" /><br/>
+        ///     参数1为添加的键值对对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" />
+        /// </param>
         public void UnSubscribeAddKeyValuePair(Action<KeyValuePair<TKey, TValue>> action)
         {
             onKeyValuePairAdded -= action;
@@ -43,7 +49,12 @@ namespace IFramework
         /// <summary>
         /// 注册方法 替换键值对
         /// </summary>
-        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 oldPair,KeyValuePair《TKey, TValue》 newPair)</param>
+        /// <param name = "action" >
+        ///     action arg1 : the old KeyValuePair of <typeparamref name="TKey" /> and <typeparamref name="TValue" /> which has been replaced<br/>
+        ///     参数1为被替换的键值对对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" /><br/><br/>
+        ///     action arg2 : the new KeyValuePair of <typeparamref name="TKey" /> and <typeparamref name="TValue" /> which replaced the old one<br/>
+        ///     参数1为新的键值对对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" /><br/>
+        /// </param>
         public void SubscribeReplaceKeyValuePair(Action<KeyValuePair<TKey, TValue>, KeyValuePair<TKey, TValue>> action)
         {
             onKeyValuePairReplaced += action;
@@ -51,7 +62,12 @@ namespace IFramework
         /// <summary>
         /// 移除方法 替换键值对
         /// </summary>
-        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 oldPair,KeyValuePair《TKey, TValue》 newPair)</param>
+        /// <param name = "action" >
+        ///     action arg1 : the old KeyValuePair of <typeparamref name="TKey" /> and <typeparamref name="TValue" /> which has been replaced<br/>
+        ///     参数1为被替换的键值对对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" /><br/><br/>
+        ///     action arg2 : the new KeyValuePair of <typeparamref name="TKey" /> and <typeparamref name="TValue" /> which replaced the old one<br/>
+        ///     参数1为新的键值对对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" /><br/>
+        /// </param>
         public void UnSubscribeReplaceKeyValuePair(Action<KeyValuePair<TKey, TValue>, KeyValuePair<TKey, TValue>> action)
         {
             onKeyValuePairReplaced -= action;
@@ -59,7 +75,10 @@ namespace IFramework
         /// <summary>
         /// 注册方法 移除键值对
         /// </summary>
-        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 removdPair)</param>
+        /// <param name="action">
+        ///     action arg1 : the removed KeyValuePair with <typeparamref name="TKey" /> and <typeparamref name="TValue" /><br/>
+        ///     参数1为移除的键值对对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" />
+        /// </param>
         public void SubscribeRemoveKeyValuePair(Action<KeyValuePair<TKey, TValue>> action)
         {
             onKeyValuePairRemoved += action;
@@ -67,7 +86,10 @@ namespace IFramework
         /// <summary>
         /// 移除方法 移除键值对
         /// </summary>
-        /// <param name="action">void fun(KeyValuePair《TKey, TValue》 removdPair)</param>
+        /// <param name="action">
+        ///     action arg1 : the removed KeyValuePair with <typeparamref name="TKey" /> and <typeparamref name="TValue" /><br/>
+        ///     参数1为移除的键值对对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" />
+        /// </param>
         public void UnSubscribeRemoveKeyValuePair(Action<KeyValuePair<TKey, TValue>> action)
         {
             onKeyValuePairRemoved -= action;
@@ -75,7 +97,7 @@ namespace IFramework
         /// <summary>
         /// 注册方法 清除所有键值对
         /// </summary>
-        /// <param name="action">void fun()</param>
+        /// <param name="action">none arg Action</param>
         public void SubscribeClear(Action action)
         {
             onClear += action;
@@ -83,7 +105,7 @@ namespace IFramework
         /// <summary>
         /// 移除方法 清除所有键值对
         /// </summary>
-        /// <param name="action">void fun()</param>
+        /// <param name="action">none arg Action</param>
         public void UnSbscribeClear(Action action)
         {
             onClear -= action;
@@ -91,7 +113,10 @@ namespace IFramework
         /// <summary>
         /// 注册方法 添加多个键值对
         /// </summary>
-        /// <param name="action">void fun(KeyValuePair《TKey, TValue》[] items)</param>
+        /// <param name="action">
+        ///     action arg1 : the Added array of KeyValuePair with <typeparamref name="TKey" /> and <typeparamref name="TValue" /><br/>
+        ///     参数1为添加的键值对数组对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" />
+        /// </param>
         public void SubscribeAddRange(Action<KeyValuePair<TKey, TValue>[]> action)
         {
             onKeyValuePairRangeAdded += action;
@@ -99,7 +124,10 @@ namespace IFramework
         /// <summary>
         /// 移除方法 添加添加多个键值对
         /// </summary>
-        /// <param name="action">void fun(KeyValuePair《TKey, TValue》[] items)</param>
+        /// <param name="action">
+        ///     action arg1 : the Added array of KeyValuePair with <typeparamref name="TKey" /> and <typeparamref name="TValue" /><br/>
+        ///     参数1为添加的键值对数组对象,键的类型为<typeparamref name="TKey" />，值的类型为<typeparamref name="TValue" />
+        /// </param>
         public void UnSubscribeAddRange(Action<KeyValuePair<TKey, TValue>[]> action)
         {
             onKeyValuePairRangeAdded -= action;
