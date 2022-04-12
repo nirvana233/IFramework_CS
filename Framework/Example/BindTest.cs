@@ -16,7 +16,6 @@ namespace Example
         }
 
 
-
         class Binder_A : BindableObject
         {
             private int _value;
@@ -104,15 +103,35 @@ namespace Example
             c.value = 2;
             Log.L($"a的value值为{a.value}\tb的value值为{b.value}\tc的value值为{c.value}\n");
 
-            Log.L("将b解绑，再将abc的值分别改为3、4、5(按对象解绑)");
-
-
-
-            binder.UnBind();
-            Log.L($"a的value值为{a.value}\tb的value值为{b.value}\tc的value值为{c.value}\n");
+            Log.L("将b解绑，再将ab的值分别改为3、4(按对象解绑)");
+            binder.UnBind(b);
             a.value = 3;
             b.value = 4;
-            c.value = 5;
+            Log.L($"a的value值为{a.value}\tb的value值为{b.value}\tc的value值为{c.value}\n");
+
+            Log.L("将b绑定回去，对a的\"value\"属性进行解绑，再将ab的值分别改为5、6(按对象绑定的属性名解绑)");
+            binder.BindProperty((value) => { b.value = value; }, () => { return b.value; });
+            binder.UnBind(a, "value");
+            a.value = 5;
+            b.value = 6;
+            Log.L($"a的value值为{a.value}\tb的value值为{b.value}\tc的value值为{c.value}\n");
+
+            Log.L($"解绑所有value属性，将bc的值改为7、8(按属性名解绑)");
+            binder.UnBind("value");
+            b.value = 7;
+            c.value = 8;
+            Log.L($"a的value值为{a.value}\tb的value值为{b.value}\tc的value值为{c.value}\n");
+
+            Log.L($"全部绑定回去，全部解绑,将abc的值分别改为9、10、11（全部解绑）");
+            binder.BindProperty((value) => { a.value = value; }, () => { return a.value; });
+            binder.BindProperty((value) => { b.value = value; }, () => { return b.value; });
+            binder.BindProperty((value) => { c.value = value; }, () => { return c.value; });
+
+            binder.UnBind();
+
+            a.value = 9;
+            b.value = 10;
+            c.value = 11;
             Log.L($"a的value值为{a.value}\tb的value值为{b.value}\tc的value值为{c.value}\n");
         }
 
